@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <Types>
+        <Row>
+            <TypeType>UNIT_GONDOR_SCOUT</TypeType>
+            <Kind>KIND_UNIT</Kind>
+        </Row>
+    </Types>
+    <Units>
+        <Row>
+            <UnitType>UNIT_GONDOR_SCOUT</UnitType>
+            <BaseMoves>2</BaseMoves>
+            <BaseSightRange>10</BaseSightRange>
+        </Row>
+    </Units>
+    <Unit_Costs>
+        <Row>
+            <UnitType>UNIT_GONDOR_SCOUT</UnitType>
+            <YieldType>YIELD_PRODUCTION</YieldType>
+            <Amount>20</Amount>
+        </Row>
+    </Unit_Costs>
+    <Unit_Stats>
+        <Row>
+            <UnitType>UNIT_GONDOR_SCOUT</UnitType>
+            <Combat>0</Combat>
+        </Row>
+    </Unit_Stats>
+</Database>

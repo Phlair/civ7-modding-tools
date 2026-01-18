@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <EnglishText>
+        <Row>
+            <Tag>UNIT_GONDOR_SCOUT_NAME</Tag>
+            <Text>Custom scout</Text>
+        </Row>
+    </EnglishText>
+    <EnglishText>
+        <Row>
+            <Tag>UNIT_GONDOR_SCOUT_DESCRIPTION</Tag>
+            <Text>test description</Text>
+        </Row>
+    </EnglishText>
+</Database>

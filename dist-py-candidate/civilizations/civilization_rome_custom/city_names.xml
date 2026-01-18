@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <Table>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Rome"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Milan"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Venice"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Florence"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Naples"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Palermo"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Genoa"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Bologna"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Ravenna"></Row>
+        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" CityName="Siena"></Row>
+    </Table>
+</Database>

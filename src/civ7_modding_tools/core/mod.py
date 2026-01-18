@@ -1,11 +1,10 @@
 """Main Mod orchestrator for building Civilization 7 mods."""
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 from uuid import uuid4
 import xmltodict
 from civ7_modding_tools.files import BaseFile, XmlFile
-from civ7_modding_tools.nodes.action_groups import ActionGroupNode, CriteriaNode
 
 if TYPE_CHECKING:
     from civ7_modding_tools.builders.builders import BaseBuilder
@@ -17,7 +16,7 @@ class ActionGroupBundle:
     
     Action groups control when mod content is loaded (e.g., specific ages).
     This class manages the relationship between entities and their loading criteria,
-    including ActionGroupNode instances for shell, always, current, and persist groups.
+    including metadata for shell, always, current, and persist groups.
     """
 
     def __init__(
@@ -32,36 +31,37 @@ class ActionGroupBundle:
             action_group_id: The action group identifier (e.g., "AGE_ANTIQUITY")
             criteria_id: The criteria for loading (optional)
         """
+        from uuid import uuid4
+        
         self.action_group_id = action_group_id or "ALWAYS"
         self.criteria_id = criteria_id or str(uuid4())
         
-        # Create ActionGroupNode instances for each scope
-        self.shell = ActionGroupNode({
+        # Create action group metadata dictionaries (not ActionGroupNode instances)
+        # These are used to tag files with their action group
+        self.shell = {
             "id": f"SHELL_{self.action_group_id}",
             "scope": "shell",
-            "criteria": CriteriaNode({"id": f"CRITERIA_SHELL_{self.criteria_id}"}),
-        })
+            "criteria": f"CRITERIA_SHELL_{self.criteria_id}",
+        }
         
-        self.always = ActionGroupNode({
-            "id": "ALWAYS",
+        self.always = {
+            "id": f"ALWAYS_{self.action_group_id}",
             "scope": "game",
-            "criteria": CriteriaNode({"id": "CRITERIA_ALWAYS"}),
-        })
+            "criteria": "CRITERIA_ALWAYS",
+        }
         
-        self.current = ActionGroupNode({
-            "id": self.action_group_id,
+        self.current = {
+            "id": f"CURRENT_{self.action_group_id}",
             "scope": "game",
-            "criteria": CriteriaNode({
-                "id": f"CRITERIA_{self.action_group_id}",
-                "ages": [self.action_group_id] if (self.action_group_id and not self.action_group_id.startswith("AGE_")) else [self.action_group_id] if self.action_group_id else [],
-            }),
-        })
+            "criteria": f"CRITERIA_{self.action_group_id}",
+            "age": self.action_group_id if self.action_group_id.startswith("AGE_") else None,
+        }
         
-        self.persist = ActionGroupNode({
+        self.persist = {
             "id": f"PERSIST_{self.action_group_id}",
             "scope": "game",
-            "criteria": CriteriaNode({"id": f"CRITERIA_PERSIST_{self.criteria_id}"}),
-        })
+            "criteria": f"CRITERIA_PERSIST_{self.criteria_id}",
+        }
 
     def __repr__(self) -> str:
         """String representation."""
@@ -205,7 +205,8 @@ class Mod:
         """
         Generate .modinfo XML content.
         
-        Creates the mod metadata file with references to all generated files.
+        Creates the mod metadata file with references to all generated files,
+        organized into ActionCriteria and ActionGroups based on file action_groups.
         
         Args:
             files: List of generated files
@@ -213,7 +214,8 @@ class Mod:
         Returns:
             XML string for .modinfo file
         """
-        # Build mod metadata structure with proper attributes
+        
+        # Build mod metadata structure
         properties_list = []
         if self.name:
             properties_list.append({"@name": "Name", "@value": self.name})
@@ -227,12 +229,131 @@ class Mod:
             "@value": "true" if self.affects_saved_games else "false"
         })
         
-        # Build files list
-        files_list = []
-        for file in files:
-            files_list.append({"@path": file.mod_info_path})
+        # Collect all unique action groups and criteria from files
+        action_groups_map: dict[str, dict] = {}  # id -> {criteria, scope, files_by_type}
+        criteria_map: dict[str, dict] = {}  # criteria_id -> criteria info
         
-        # Create mod structure
+        for file in files:
+            # Determine file type for categorization
+            file_type = self._get_action_type(file)
+            file_path = file.mod_info_path
+            
+            # If file has explicit action groups, use those
+            if file.action_groups:
+                for action_group in file.action_groups:
+                    group_id = action_group.get("id", "ALWAYS")
+                    criteria_id = action_group.get("criteria", "CRITERIA_ALWAYS")
+                    scope = action_group.get("scope", "game")
+                    
+                    # Initialize action group if needed
+                    if group_id not in action_groups_map:
+                        action_groups_map[group_id] = {
+                            "id": group_id,
+                            "scope": scope,
+                            "criteria": criteria_id,
+                            "files_by_type": {}
+                        }
+                    
+                    # Add criteria to criteria map
+                    if criteria_id not in criteria_map:
+                        criteria_map[criteria_id] = {
+                            "id": criteria_id,
+                            "scope": scope,
+                            "age": action_group.get("age"),
+                        }
+                    
+                    # Initialize file type if needed
+                    if file_type not in action_groups_map[group_id]["files_by_type"]:
+                        action_groups_map[group_id]["files_by_type"][file_type] = []
+                    
+                    # Add file to action group
+                    action_groups_map[group_id]["files_by_type"][file_type].append(file_path)
+            else:
+                # Default: use ALWAYS action group
+                group_id = "ALWAYS"
+                criteria_id = "CRITERIA_ALWAYS"
+                scope = "game"
+                
+                if group_id not in action_groups_map:
+                    action_groups_map[group_id] = {
+                        "id": group_id,
+                        "scope": scope,
+                        "criteria": criteria_id,
+                        "files_by_type": {}
+                    }
+                
+                if criteria_id not in criteria_map:
+                    criteria_map[criteria_id] = {
+                        "id": criteria_id,
+                        "scope": scope,
+                        "age": None,
+                    }
+                
+                if file_type not in action_groups_map[group_id]["files_by_type"]:
+                    action_groups_map[group_id]["files_by_type"][file_type] = []
+                
+                action_groups_map[group_id]["files_by_type"][file_type].append(file_path)
+        
+        # Create ActionCriteria
+        action_criteria_list = []
+        for criteria_id, criteria_info in criteria_map.items():
+            criteria_entry = {"@id": criteria_id}
+            
+            # Add appropriate child element based on criteria type
+            if criteria_id == "CRITERIA_ALWAYS":
+                criteria_entry["AlwaysMet"] = None
+            elif criteria_info["age"]:
+                # Age-based criteria
+                criteria_entry["@age"] = criteria_info["age"]
+            else:
+                # Default to always met if no specific criteria
+                criteria_entry["AlwaysMet"] = None
+            
+            action_criteria_list.append(criteria_entry)
+        
+        # Create ActionGroups from categorized files
+        action_groups_list = []
+        type_to_action = {
+            "xml": "UpdateDatabase",
+            "png": "UpdateIcons",
+            "dds": "UpdateIcons",
+            "localization": "UpdateText",
+            "import": "ImportFiles",
+            "sql": "ImportFiles",
+            "lua": "ImportFiles",
+        }
+        
+        for group_id, group_info in action_groups_map.items():
+            actions = {}
+            
+            # Build actions for this group
+            for file_type, files_in_type in group_info["files_by_type"].items():
+                action_name = type_to_action.get(file_type, "ImportFiles")
+                
+                if action_name not in actions:
+                    actions[action_name] = {"Item": []}
+                
+                # Ensure Item is a list
+                if not isinstance(actions[action_name]["Item"], list):
+                    actions[action_name]["Item"] = [actions[action_name]["Item"]]
+                
+                actions[action_name]["Item"].extend(files_in_type)
+            
+            # Only add action group if it has content
+            if actions:
+                action_group_entry = {
+                    "@id": group_id,
+                    "@scope": group_info["scope"],
+                    "@criteria": group_info["criteria"],
+                }
+                
+                # Add actions
+                if actions:
+                    action_group_entry["Actions"] = actions
+                
+                action_groups_list.append(action_group_entry)
+        
+        # Build mod structure
         mod_dict = {
             "@id": self.mod_id,
             "@version": self.version,
@@ -241,8 +362,13 @@ class Mod:
         if properties_list:
             mod_dict["Properties"] = {"Property": properties_list}
         
-        if files_list:
-            mod_dict["Files"] = {"File": files_list}
+        # Add ActionCriteria if we have any files
+        if files:
+            mod_dict["ActionCriteria"] = {"Criteria": action_criteria_list}
+        
+        # Add ActionGroups if we have any
+        if action_groups_list:
+            mod_dict["ActionGroups"] = {"ActionGroup": action_groups_list}
         
         # Wrap in Mod element
         output = {"Mod": mod_dict}
@@ -252,6 +378,38 @@ class Mod:
         
         # xmltodict.unparse already includes XML declaration, so don't add it again
         return xml_str
+
+    def _get_action_type(self, file: BaseFile) -> str:
+        """
+        Determine the action type for a file based on its name and path.
+        
+        Args:
+            file: The file to categorize
+            
+        Returns:
+            File type string (xml, png, dds, localization, import, sql, lua)
+        """
+        filename_lower = file.name.lower()
+        path_lower = file.path.lower()
+        
+        if filename_lower.endswith(".xml"):
+            # Check if it's a localization file
+            if "localization" in path_lower or "localization" in filename_lower:
+                return "localization"
+            return "xml"
+        elif filename_lower.endswith(".png"):
+            return "png"
+        elif filename_lower.endswith(".dds"):
+            return "dds"
+        elif filename_lower.endswith(".sql"):
+            return "sql"
+        elif filename_lower.endswith(".lua"):
+            return "lua"
+        elif "import" in path_lower:
+            return "import"
+        else:
+            # Default to import for unknown types
+            return "import"
 
     def __repr__(self) -> str:
         """String representation."""

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="rome-expansion" version="1.0.0">
+    <Properties>
+        <Property name="Name" value="Roman Empire Expansion"></Property>
+        <Property name="Description" value="Adds a custom Roman civilization with unique units and buildings"></Property>
+        <Property name="Authors" value="Civ7 Modding Tools"></Property>
+        <Property name="AffectsSavedGames" value="true"></Property>
+    </Properties>
+    <Files>
+        <File path="civilizations/civilization_rome_custom/current.xml"></File>
+        <File path="civilizations/civilization_rome_custom/city_names.xml"></File>
+        <File path="units/unit_roman_legion/unit.xml"></File>
+        <File path="units/unit_roman_archer/unit.xml"></File>
+        <File path="constructibles/building_roman_forum/constructible.xml"></File>
+        <File path="constructibles/building_roman_temple/constructible.xml"></File>
+        <File path="constructibles/improvement_roman_aqueduct/constructible.xml"></File>
+    </Files>
+</Mod>

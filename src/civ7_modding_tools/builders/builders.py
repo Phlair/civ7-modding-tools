@@ -9,8 +9,20 @@ from civ7_modding_tools.nodes import (
     CivilizationNode,
     CivilizationTraitNode,
     UnitNode,
+    UnitCostNode,
+    UnitStatNode,
     ConstructibleNode,
+    ConstructibleYieldChangeNode,
     CityNameNode,
+    DatabaseNode,
+    TypeNode,
+    TraitNode,
+    StartBiasBiomeNode,
+    StartBiasTerrainNode,
+    IconDefinitionNode,
+    LegacyCivilizationNode,
+    LegacyCivilizationTraitNode,
+    EnglishTextNode,
 )
 from civ7_modding_tools.localizations import BaseLocalization
 
@@ -89,169 +101,549 @@ class BaseBuilder(ABC):
 
 
 class CivilizationBuilder(BaseBuilder):
-    """Builder for creating civilizations."""
+    """Builder for creating civilizations with full file generation."""
     
     def __init__(self) -> None:
-        """Initialize civilization builder."""
+        """Initialize civilization builder with all database variants."""
         super().__init__()
+        # Database variants for different scopes and ages
+        self._current = DatabaseNode()         # Current age data
+        self._shell = DatabaseNode()           # UI/shell scope data
+        self._legacy = DatabaseNode()          # Legacy compatibility (INSERT OR IGNORE)
+        self._icons = DatabaseNode()           # Icon definitions
+        self._localizations = DatabaseNode()   # Localized text
+        self._game_effects = DatabaseNode()    # Modifiers and effects
+        
+        # Builder configuration
         self.civilization_type: Optional[str] = None
         self.civilization: Dict[str, Any] = {}
         self.civilization_traits: List[str] = []
-        self.localizations: List[BaseLocalization] = []
+        self.civilization_tags: List[str] = []
+        self.localizations: List[Dict[str, Any]] = []
         self.start_bias_biomes: List[Dict[str, Any]] = []
         self.start_bias_terrains: List[Dict[str, Any]] = []
+        self.start_bias_resources: List[Dict[str, Any]] = []
+        self.start_bias_rivers: Optional[int] = None
+        self.start_bias_adjacent_coasts: Optional[int] = None
+        self.start_bias_feature_classes: List[Dict[str, Any]] = []
         self.city_names: List[str] = []
+        self.icon: Dict[str, Any] = {}
+        self.civilization_items: List[Dict[str, Any]] = []
+        self.civilization_unlocks: List[Dict[str, Any]] = []
+        self.leader_unlocks: List[Dict[str, Any]] = []
+        self.modifiers: List[Dict[str, Any]] = []
+        self.trait: Dict[str, str] = {}
+        self.trait_ability: Dict[str, str] = {}
+        self.civilization_legacy: Dict[str, Any] = {}
+
+    def fill(self, payload: Dict[str, Any]) -> "CivilizationBuilder":
+        """Fill civilization builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "CivilizationBuilder":
+        """Migrate and populate all database variants."""
+        if not self.civilization_type:
+            return self
+        
+        # Generate trait types from civilization type if not provided
+        if not self.trait:
+            trait_base = self.civilization_type.replace('CIVILIZATION_', '')
+            self.trait = {"trait_type": f"TRAIT_{trait_base}"}
+        if not self.trait_ability:
+            self.trait_ability = {"trait_type": f"{self.trait.get('trait_type', 'TRAIT')}_ABILITY"}
+        
+        trait_type = self.trait.get("trait_type", "TRAIT_CUSTOM")
+        trait_ability_type = self.trait_ability.get("trait_type", "TRAIT_CUSTOM_ABILITY")
+        
+        # ==== POPULATE _current DATABASE ====
+        # Types section
+        self._current.types = [
+            TypeNode(type_type=trait_type, kind="KIND_TRAIT"),
+            TypeNode(type_type=trait_ability_type, kind="KIND_TRAIT"),
+        ]
+        
+        # Traits section
+        self._current.traits = [
+            TraitNode(trait_type=trait_type, internal_only=True),
+            TraitNode(trait_type=trait_ability_type, internal_only=True),
+        ]
+        
+        # Civilizations section
+        civ_node = CivilizationNode(civilization_type=self.civilization_type)
+        for key, value in self.civilization.items():
+            if key not in ['civilization_type']:  # Skip the key we already set
+                setattr(civ_node, key, value)
+        self._current.civilizations = [civ_node]
+        
+        # Civilization-Trait relationships
+        civ_trait_nodes = [
+            CivilizationTraitNode(
+                civilization_type=self.civilization_type,
+                trait_type=trait_type
+            ),
+            CivilizationTraitNode(
+                civilization_type=self.civilization_type,
+                trait_type=trait_ability_type
+            ),
+        ]
+        # Add additional traits specified by user
+        for trait in self.civilization_traits:
+            civ_trait_nodes.append(
+                CivilizationTraitNode(
+                    civilization_type=self.civilization_type,
+                    trait_type=trait
+                )
+            )
+        self._current.civilization_traits = civ_trait_nodes
+        
+        # Start biases - biome_type should be mapped to biome_type attribute
+        start_bias_biomes = []
+        for bias in self.start_bias_biomes:
+            node = StartBiasBiomeNode(civilization_type=self.civilization_type)
+            for key, value in bias.items():
+                setattr(node, key, value)
+            start_bias_biomes.append(node)
+        self._current.start_bias_biomes = start_bias_biomes
+        
+        # Start biases - terrain
+        start_bias_terrains = []
+        for bias in self.start_bias_terrains:
+            node = StartBiasTerrainNode(civilization_type=self.civilization_type)
+            for key, value in bias.items():
+                setattr(node, key, value)
+            start_bias_terrains.append(node)
+        self._current.start_bias_terrains = start_bias_terrains
+        
+        # City names
+        city_name_nodes = []
+        for city_name in self.city_names:
+            city_name_nodes.append(
+                CityNameNode(
+                    civilization_type=self.civilization_type,
+                    city_name=city_name
+                )
+            )
+        if city_name_nodes:
+            self._current.city_names = city_name_nodes
+        
+        # ==== POPULATE _shell DATABASE ====
+        shell_civ_node = CivilizationNode(civilization_type=self.civilization_type)
+        for key, value in self.civilization.items():
+            if key != 'civilization_type':
+                setattr(shell_civ_node, key, value)
+        self._shell.civilizations = [shell_civ_node]
+        
+        # ==== POPULATE _legacy DATABASE ====
+        self._legacy.types = [
+            TypeNode(type_type=self.civilization_type, kind="KIND_CIVILIZATION"),
+            TypeNode(type_type=trait_type, kind="KIND_TRAIT"),
+            TypeNode(type_type=trait_ability_type, kind="KIND_TRAIT"),
+        ]
+        
+        legacy_civ = LegacyCivilizationNode(
+            civilization_type=self.civilization_type,
+            age=self.civilization_legacy.get("age", "AGE_ANTIQUITY")
+        )
+        self._legacy.legacy_civilizations = [legacy_civ]
+        
+        legacy_civ_trait = LegacyCivilizationTraitNode(
+            civilization_type=self.civilization_type,
+            trait_type=trait_type
+        )
+        self._legacy.legacy_civilization_traits = [legacy_civ_trait]
+        
+        # ==== POPULATE _icons DATABASE ====
+        if self.icon:
+            icon_node = IconDefinitionNode(id=self.civilization_type)
+            for key, value in self.icon.items():
+                setattr(icon_node, key, value)
+            self._icons.icon_definitions = [icon_node]
+        
+        # ==== POPULATE _localizations DATABASE ====
+        # Note: This will be populated as generic Row elements
+        # In practice, localization is more complex in real mods
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                prefix = self.civilization_type
+                if "name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=f"{prefix}_NAME",
+                        text=loc["name"]
+                    ))
+                if "description" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=f"{prefix}_DESCRIPTION",
+                        text=loc["description"]
+                    ))
+                if "full_name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=f"{prefix}_FULL_NAME",
+                        text=loc["full_name"]
+                    ))
+                if "adjective" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=f"{prefix}_ADJECTIVE",
+                        text=loc["adjective"]
+                    ))
+                if "city_names" in loc:
+                    for i, city_name in enumerate(loc["city_names"], 1):
+                        localization_rows.append(EnglishTextNode(
+                            tag=f"{prefix}_CITY_NAME_{i}",
+                            text=city_name
+                        ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        return self
 
     def build(self) -> list[BaseFile]:
         """Build civilization files."""
-        files: list[BaseFile] = []
-        
         if not self.civilization_type:
-            return files
+            return []
         
-        # Build civilization data file
-        civ_nodes: list[BaseNode] = []
+        self.migrate()
         
-        # Add civilization row
-        civ_node = CivilizationNode()
-        civ_node.civilization_type = self.civilization_type
-        for key, value in self.civilization.items():
-            setattr(civ_node, key, value)
-        civ_nodes.append(civ_node)
+        # Generate path from civilization type
+        path = f"/civilizations/{self.civilization_type.lower()}/"
         
-        # Add traits
-        for trait in self.civilization_traits:
-            trait_node = CivilizationTraitNode()
-            trait_node.civilization_type = self.civilization_type
-            trait_node.trait_type = trait
-            civ_nodes.append(trait_node)
+        files: list[BaseFile] = [
+            XmlFile(
+                path=path,
+                name="current.xml",
+                content=self._current,
+                action_group=self.action_group_bundle.current
+            ),
+            XmlFile(
+                path=path,
+                name="legacy.xml",
+                content=self._legacy,
+                action_group=self.action_group_bundle.always
+            ),
+            XmlFile(
+                path=path,
+                name="shell.xml",
+                content=self._shell,
+                action_group=self.action_group_bundle.shell
+            ),
+            XmlFile(
+                path=path,
+                name="icons.xml",
+                content=self._icons,
+                action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+            ),
+            XmlFile(
+                path=path,
+                name="localization.xml",
+                content=self._localizations,
+                action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+            ),
+            XmlFile(
+                path=path,
+                name="game-effects.xml",
+                content=self._game_effects,
+                action_group=self.action_group_bundle.current
+            ),
+        ]
         
-        # Create civilization file
-        civ_file = XmlFile(
-            path=f"/civilizations/{self.civilization_type.lower()}/",
-            name="current.xml",
-            content=civ_nodes
-        )
-        files.append(civ_file)
-        
-        # Add city names localization if provided
-        if self.city_names:
-            city_name_nodes: list[BaseNode] = []
-            for city_name in self.city_names:
-                city_node = CityNameNode()
-                city_node.civilization_type = self.civilization_type
-                city_node.city_name = city_name
-                city_name_nodes.append(city_node)
-            
-            city_file = XmlFile(
-                path=f"/civilizations/{self.civilization_type.lower()}/",
-                name="city_names.xml",
-                content=city_name_nodes
-            )
-            files.append(city_file)
+        # Filter out empty files (content is None)
+        files = [f for f in files if f.content is not None]
         
         return files
 
 
 class UnitBuilder(BaseBuilder):
-    """Builder for creating units."""
+    """Builder for creating units with multiple file generation."""
     
     def __init__(self) -> None:
-        """Initialize unit builder."""
+        """Initialize unit builder with database variants."""
         super().__init__()
+        self._current = DatabaseNode()
+        self._icons = DatabaseNode()
+        self._localizations = DatabaseNode()
+        self._visual_remap: Optional[DatabaseNode] = None
+        
         self.unit_type: Optional[str] = None
         self.unit: Dict[str, Any] = {}
         self.unit_stats: list[Dict[str, Any]] = []
         self.unit_costs: list[Dict[str, Any]] = []
-        self.localizations: list[BaseLocalization] = []
+        self.unit_replace: Optional[Dict[str, Any]] = None
+        self.unit_upgrade: Optional[Dict[str, Any]] = None
+        self.unit_advisories: list[Dict[str, Any]] = []
+        self.visual_remap: Optional[Dict[str, Any]] = None
+        self.icon: Dict[str, Any] = {}
+        self.localizations: list[Dict[str, Any]] = []
 
-    def build(self) -> list[BaseFile]:
-        """Build unit files."""
-        files: list[BaseFile] = []
-        
+    def fill(self, payload: Dict[str, Any]) -> "UnitBuilder":
+        """Fill unit builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "UnitBuilder":
+        """Migrate and populate all database variants."""
         if not self.unit_type:
-            return files
+            return self
         
-        # Build unit data file
-        unit_nodes: list[BaseNode] = []
+        # ==== POPULATE _current DATABASE ====
+        self._current.types = [
+            TypeNode(type_type=self.unit_type, kind="KIND_UNIT"),
+        ]
         
-        # Add unit row
-        unit_node = UnitNode()
-        unit_node.unit_type = self.unit_type
+        # Unit definition
+        unit_node = UnitNode(unit_type=self.unit_type)
         for key, value in self.unit.items():
             setattr(unit_node, key, value)
-        unit_nodes.append(unit_node)
+        self._current.units = [unit_node]
         
-        # Add unit stats
-        for stat in self.unit_stats:
-            stat_node = BaseNode()
-            stat_node.unit_type = self.unit_type
-            for key, value in stat.items():
-                setattr(stat_node, key, value)
-            unit_nodes.append(stat_node)
+        # Unit stats
+        if self.unit_stats:
+            self._current.unit_stats = [
+                UnitStatNode(unit_type=self.unit_type, **stat)
+                for stat in self.unit_stats
+            ]
         
-        # Add unit costs
-        for cost in self.unit_costs:
-            cost_node = BaseNode()
-            cost_node.unit_type = self.unit_type
-            for key, value in cost.items():
-                setattr(cost_node, key, value)
-            unit_nodes.append(cost_node)
+        # Unit costs
+        if self.unit_costs:
+            self._current.unit_costs = [
+                UnitCostNode(unit_type=self.unit_type, **cost)
+                for cost in self.unit_costs
+            ]
         
-        # Create unit file
-        unit_file = XmlFile(
-            path=f"/units/{self.unit_type.lower()}/",
-            name="unit.xml",
-            content=unit_nodes
-        )
-        files.append(unit_file)
+        # Unit replace
+        if self.unit_replace:
+            node_data = {"civUniqueUnitType": self.unit_type}
+            node_data.update(self.unit_replace)
+            # TODO: Add UnitReplaceNode when available
+        
+        # Unit upgrade
+        if self.unit_upgrade:
+            node_data = {"unit": self.unit_type}
+            node_data.update(self.unit_upgrade)
+            # TODO: Add UnitUpgradeNode when available
+        
+        # Unit advisories
+        for advisory in self.unit_advisories:
+            # TODO: Add UnitAdvisoryNode when available
+            pass
+        
+        # ==== POPULATE _icons DATABASE ====
+        if self.icon:
+            icon_node = IconDefinitionNode(id=self.unit_type)
+            for key, value in self.icon.items():
+                setattr(icon_node, key, value)
+            self._icons.icon_definitions = [icon_node]
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                prefix = self.unit_type
+                if "name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=f"{prefix}_NAME",
+                        text=loc["name"]
+                    ))
+                if "description" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=f"{prefix}_DESCRIPTION",
+                        text=loc["description"]
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        # ==== POPULATE _visual_remap DATABASE ====
+        if self.visual_remap:
+            self._visual_remap = DatabaseNode()
+            # TODO: Add VisualRemapNode when available
+            pass
+        
+        return self
+
+    def build(self) -> list[BaseFile]:
+        """Build unit files with multiple variants."""
+        if not self.unit_type:
+            return []
+        
+        self.migrate()
+        
+        path = f"/units/{self.unit_type.lower()}/"
+        
+        files: list[BaseFile] = [
+            XmlFile(
+                path=path,
+                name="current.xml",
+                content=self._current,
+                action_group=self.action_group_bundle.current
+            ),
+            XmlFile(
+                path=path,
+                name="icons.xml",
+                content=self._icons,
+                action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+            ),
+            XmlFile(
+                path=path,
+                name="localization.xml",
+                content=self._localizations,
+                action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+            ),
+        ]
+        
+        # Add visual-remap if present
+        if self._visual_remap:
+            files.append(XmlFile(
+                path=path,
+                name="visual-remap.xml",
+                content=self._visual_remap,
+                action_group=self.action_group_bundle.current
+            ))
+        
+        # Filter out empty files
+        files = [f for f in files if f.content is not None]
         
         return files
 
 
 class ConstructibleBuilder(BaseBuilder):
-    """Builder for creating buildings and improvements."""
+    """Builder for creating buildings and improvements with multiple file generation."""
     
     def __init__(self) -> None:
-        """Initialize constructible builder."""
+        """Initialize constructible builder with database variants."""
         super().__init__()
+        self._current = DatabaseNode()
+        self._icons = DatabaseNode()
+        self._localizations = DatabaseNode()
+        self._game_effects: Optional[DatabaseNode] = None
+        
         self.constructible_type: Optional[str] = None
         self.constructible: Dict[str, Any] = {}
         self.yield_changes: list[Dict[str, Any]] = []
-        self.localizations: list[BaseLocalization] = []
+        self.localizations: list[Dict[str, Any]] = []
+        self.modifiers: list[Dict[str, Any]] = []
+        self.icon: Dict[str, Any] = {}
 
-    def build(self) -> list[BaseFile]:
-        """Build constructible files."""
-        files: list[BaseFile] = []
-        
+    def fill(self, payload: Dict[str, Any]) -> "ConstructibleBuilder":
+        """Fill constructible builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "ConstructibleBuilder":
+        """Migrate and populate all database variants."""
         if not self.constructible_type:
-            return files
+            return self
         
-        # Build constructible data file
-        const_nodes: list[BaseNode] = []
+        # ==== POPULATE _current DATABASE ====
+        self._current.types = [
+            TypeNode(type_type=self.constructible_type, kind="KIND_CONSTRUCTIBLE"),
+        ]
         
-        # Add constructible row
-        const_node = ConstructibleNode()
-        const_node.constructible_type = self.constructible_type
+        # Constructible definition
+        const_node = ConstructibleNode(constructible_type=self.constructible_type)
         for key, value in self.constructible.items():
             setattr(const_node, key, value)
-        const_nodes.append(const_node)
+        self._current.constructibles = [const_node]
         
-        # Add yield changes
-        for yield_change in self.yield_changes:
-            yield_node = BaseNode()
-            yield_node.constructible_type = self.constructible_type
-            for key, value in yield_change.items():
-                setattr(yield_node, key, value)
-            const_nodes.append(yield_node)
+        # Yield changes
+        if self.yield_changes:
+            self._current.constructible_yield_changes = [
+                ConstructibleYieldChangeNode(
+                    constructible_type=self.constructible_type,
+                    **yield_change
+                )
+                for yield_change in self.yield_changes
+            ]
         
-        # Create constructible file
-        const_file = XmlFile(
-            path=f"/constructibles/{self.constructible_type.lower()}/",
-            name="constructible.xml",
-            content=const_nodes
-        )
-        files.append(const_file)
+        # ==== POPULATE _icons DATABASE ====
+        if self.icon:
+            icon_node = IconDefinitionNode(id=self.constructible_type)
+            for key, value in self.icon.items():
+                setattr(icon_node, key, value)
+            self._icons.icon_definitions = [icon_node]
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                prefix = self.constructible_type
+                if "name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=f"{prefix}_NAME",
+                        text=loc["name"]
+                    ))
+                if "description" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=f"{prefix}_DESCRIPTION",
+                        text=loc["description"]
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        # ==== POPULATE _game_effects DATABASE ====
+        if self.modifiers:
+            self._game_effects = DatabaseNode()
+            modifier_nodes = []
+            for modifier in self.modifiers:
+                mod_node = {
+                    "modifier_id": modifier.get("modifier_id", f"MOD_{self.constructible_type}"),
+                    "effect": modifier.get("effect"),
+                }
+                mod_node.update(modifier)
+                modifier_nodes.append(mod_node)
+            self._game_effects.modifiers = modifier_nodes
+        
+        return self
+
+    def build(self) -> list[BaseFile]:
+        """Build constructible files with multiple variants."""
+        if not self.constructible_type:
+            return []
+        
+        self.migrate()
+        
+        path = f"/constructibles/{self.constructible_type.lower()}/"
+        
+        files: list[BaseFile] = [
+            XmlFile(
+                path=path,
+                name="constructible.xml",
+                content=self._current,
+                action_group=self.action_group_bundle.current
+            ),
+            XmlFile(
+                path=path,
+                name="icons.xml",
+                content=self._icons,
+                action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+            ),
+            XmlFile(
+                path=path,
+                name="localization.xml",
+                content=self._localizations,
+                action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+            ),
+        ]
+        
+        # Add game-effects if present
+        if self._game_effects:
+            files.append(XmlFile(
+                path=path,
+                name="game-effects.xml",
+                content=self._game_effects,
+                action_group=self.action_group_bundle.current
+            ))
+        
+        # Filter out empty files
+        files = [f for f in files if f.content is not None]
         
         return files
 

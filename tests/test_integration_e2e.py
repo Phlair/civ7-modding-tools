@@ -264,12 +264,17 @@ class TestXmlOutputValidation:
             # Verify root is Database (Civ7 XML structure)
             assert root.tag == "Database"
             
-            # Verify Row exists with CivilizationType
-            rows = root.findall(".//Row")
-            assert len(rows) > 0
+            # Verify semantic tables exist (new structure)
+            assert root.find(".//Civilizations") is not None, "Should have Civilizations table"
+            assert root.find(".//Traits") is not None, "Should have Traits table"
+            assert root.find(".//Types") is not None, "Should have Types table"
+            
+            # Verify civilization row exists in Civilizations table
+            civ_rows = root.findall(".//Civilizations/Row")
+            assert len(civ_rows) > 0
             assert any(
-                row.get("CivilizationType") == "CIVILIZATION_ROME" 
-                for row in rows
+                row.find("CivilizationType").text == "CIVILIZATION_ROME" 
+                for row in civ_rows if row.find("CivilizationType") is not None
             )
 
     def test_unit_xml_with_costs(self):
@@ -299,11 +304,12 @@ class TestXmlOutputValidation:
             tree = ET.parse(unit_file)
             root = tree.getroot()
             
-            # Verify cost rows exist
-            cost_rows = [
-                row for row in root.findall(".//Row")
-                if row.get("YieldType") in [Yield.PRODUCTION.value, Yield.GOLD.value]
-            ]
+            # Verify semantic tables exist
+            assert root.find(".//Units") is not None, "Should have Units table"
+            assert root.find(".//Unit_Costs") is not None, "Should have Unit_Costs table"
+            
+            # Verify cost rows exist in Unit_Costs table
+            cost_rows = root.findall(".//Unit_Costs/Row")
             assert len(cost_rows) >= 2
 
     def test_building_xml_with_yields(self):
@@ -334,11 +340,12 @@ class TestXmlOutputValidation:
             tree = ET.parse(building_file)
             root = tree.getroot()
             
-            # Verify yield rows exist
-            yield_rows = [
-                row for row in root.findall(".//Row")
-                if row.get("YieldType") in [Yield.GOLD.value, Yield.CULTURE.value]
-            ]
+            # Verify semantic tables exist
+            assert root.find(".//Constructibles") is not None, "Should have Constructibles table"
+            assert root.find(".//Constructible_YieldChanges") is not None, "Should have Constructible_YieldChanges table"
+            
+            # Verify yield rows exist in Constructible_YieldChanges table
+            yield_rows = root.findall(".//Constructible_YieldChanges/Row")
             assert len(yield_rows) >= 2
 
 

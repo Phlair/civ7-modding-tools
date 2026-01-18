@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <Types>
+        <Row>
+            <TypeType>CIVILIZATION_GONDOR</TypeType>
+            <Kind>KIND_CIVILIZATION</Kind>
+        </Row>
+    </Types>
+    <Types>
+        <Row>
+            <TypeType>TRAIT_GONDOR</TypeType>
+            <Kind>KIND_TRAIT</Kind>
+        </Row>
+    </Types>
+    <Types>
+        <Row>
+            <TypeType>TRAIT_GONDOR_ABILITY</TypeType>
+            <Kind>KIND_TRAIT</Kind>
+        </Row>
+    </Types>
+    <LegacyCivilizationTraits>
+        <Row>
+            <CivilizationType>CIVILIZATION_GONDOR</CivilizationType>
+            <TraitType>TRAIT_GONDOR</TraitType>
+        </Row>
+    </LegacyCivilizationTraits>
+    <LegacyCivilizations>
+        <Row>
+            <CivilizationType>CIVILIZATION_GONDOR</CivilizationType>
+            <Age>AGE_ANTIQUITY</Age>
+        </Row>
+    </LegacyCivilizations>
+</Database>

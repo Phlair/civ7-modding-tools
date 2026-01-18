@@ -2,10 +2,13 @@
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, Union, TYPE_CHECKING
 import shutil
 import xmltodict
 from civ7_modding_tools.nodes import BaseNode
+
+if TYPE_CHECKING:
+    from civ7_modding_tools.nodes import DatabaseNode
 
 
 class BaseFile(ABC):
@@ -21,6 +24,8 @@ class BaseFile(ABC):
         path: str = "/",
         name: str = "file.txt",
         content: Union[list[BaseNode], BaseNode, dict, str, None] = None,
+        action_group: Optional[dict] = None,
+        action_groups: Optional[list] = None,
     ) -> None:
         """
         Initialize a base file.
@@ -29,12 +34,20 @@ class BaseFile(ABC):
             path: Directory path relative to mod root (e.g., "/civilizations/rome/")
             name: Filename (e.g., "current.xml")
             content: File content (format depends on subclass)
+            action_group: Single action group (dict with id, scope, criteria info)
+            action_groups: List of action groups this file belongs to
         """
         self.path = path
         self.name = name
         self.content = content
-        self.action_groups: list[str] = []
+        self.action_groups: list[dict] = []
         self.action_group_actions: list[str] = []
+        
+        # Handle action group assignment
+        if action_group:
+            self.action_groups.append(action_group)
+        if action_groups:
+            self.action_groups.extend(action_groups)
 
     @property
     def is_empty(self) -> bool:
@@ -85,6 +98,8 @@ class XmlFile(BaseFile):
         path: str = "/",
         name: str = "file.xml",
         content: Union[list[BaseNode], BaseNode, dict, None] = None,
+        action_group: Optional[dict] = None,
+        action_groups: Optional[list] = None,
     ) -> None:
         """
         Initialize an XML file.
@@ -93,8 +108,10 @@ class XmlFile(BaseFile):
             path: Directory path
             name: XML filename
             content: List of BaseNode objects or nested structure
+            action_group: Single action group this file belongs to
+            action_groups: List of action groups this file belongs to
         """
-        super().__init__(path, name, content)
+        super().__init__(path, name, content, action_group, action_groups)
 
     def write(self, dist: str) -> None:
         """
@@ -128,19 +145,40 @@ class XmlFile(BaseFile):
                 xml_content = '\n'.join(lines[1:])
             f.write(xml_content)
 
-    def _serialize_content(self, content: Union[list[BaseNode], BaseNode, dict, None]) -> str:
+    def _serialize_content(self, content: Union["DatabaseNode", list[BaseNode], BaseNode, dict, None]) -> str:
         """
         Serialize content to XML string.
         
-        Handles lists of nodes, nested structures, and mixed content.
+        Priority order:
+        1. DatabaseNode - Uses proper semantic table structure (PREFERRED)
+        2. List of nodes - Flat Table/Row structure (legacy support)
+        3. Single node - Single row structure
+        4. Dict - Custom structure
         
         Args:
-            content: Content to serialize (nodes, lists, dicts)
+            content: Content to serialize
             
         Returns:
             XML string
         """
-        if isinstance(content, list):
+        # Import here to avoid circular dependency
+        from civ7_modding_tools.nodes.database import DatabaseNode
+        
+        # Priority 1: DatabaseNode (proper semantic structure)
+        if isinstance(content, DatabaseNode):
+            xml_elem = content.to_xml_element()
+            if not xml_elem:
+                return ""
+            
+            xml_str = xmltodict.unparse(
+                xml_elem,
+                pretty=True,
+                indent="    "
+            )
+            return xml_str
+        
+        # Priority 2: List of nodes (legacy support - flat structure)
+        elif isinstance(content, list):
             # Convert list of nodes to Database structure
             rows = []
             for item in content:
@@ -155,7 +193,7 @@ class XmlFile(BaseFile):
             if not rows:
                 return ""
             
-            # Wrap rows in Database -> Table -> Row structure
+            # Wrap rows in Database -> Table -> Row structure (flat)
             # Each row becomes a Row element
             row_elements = [{"@" + k: v for k, v in row.items()} for row in rows]
             

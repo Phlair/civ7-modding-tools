@@ -27,6 +27,7 @@ htmlcov/
 *.swo
 *~
 .DS_Store
+*.code-search
 
 # OS
 Thumbs.db
@@ -36,11 +37,27 @@ Thumbs.db
 .env
 .env.local
 
+# Generated example mods and build outputs
+example-generated-mod/
+**/example-generated-mod/
+
+# Node.js (for TypeScript build tooling)
+node_modules/
+npm-debug.log
+
+# Working documentation (temp files)
+IMPLEMENTATION_COMPLETE.md
+PARITY_FIX_PLAN.md
+REVIEW_PLAN.md
+
 # Keep these files
 !.gitignore
 !README.md
 !LICENSE
 !pyproject.toml
+!tsconfig.json
+!package.json
+!build.ts
 !src/
 !src/**
 !tests/
@@ -48,6 +65,7 @@ Thumbs.db
 !docs/
 !docs/**
 !examples/
+!.github/
 !examples/**
 !assets/
 !assets/**

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="mod-test" version="1">
+    <Properties>
+        <Property name="Name" value="Gondor Civilization Mod"></Property>
+        <Property name="Description" value="Test mod featuring Gondor civilization"></Property>
+        <Property name="Authors" value="Civ7 Modding Tools"></Property>
+        <Property name="AffectsSavedGames" value="true"></Property>
+    </Properties>
+    <ActionCriteria>
+        <Criteria id="CRITERIA_ALWAYS">
+            <AlwaysMet></AlwaysMet>
+        </Criteria>
+        <Criteria id="CRITERIA_SHELL_499bf9ef-c79f-43c8-bae2-8090098aa707">
+            <AlwaysMet></AlwaysMet>
+        </Criteria>
+        <Criteria id="CRITERIA_SHELL_47693d78-5cd5-4d6a-abac-418978c1b17a">
+            <AlwaysMet></AlwaysMet>
+        </Criteria>
+        <Criteria id="CRITERIA_SHELL_cee57f43-e1db-40f0-a01c-ca98019dc231">
+            <AlwaysMet></AlwaysMet>
+        </Criteria>
+    </ActionCriteria>
+    <ActionGroups>
+        <ActionGroup id="CURRENT_ALWAYS" scope="game" criteria="CRITERIA_ALWAYS">
+            <Actions>
+                <UpdateDatabase>
+                    <Item>civilizations/civilization_gondor/current.xml</Item>
+                    <Item>civilizations/civilization_gondor/game-effects.xml</Item>
+                    <Item>units/unit_gondor_scout/current.xml</Item>
+                    <Item>constructibles/building_gondor_custom/constructible.xml</Item>
+                </UpdateDatabase>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="ALWAYS_ALWAYS" scope="game" criteria="CRITERIA_ALWAYS">
+            <Actions>
+                <UpdateDatabase>
+                    <Item>civilizations/civilization_gondor/legacy.xml</Item>
+                    <Item>civilizations/civilization_gondor/icons.xml</Item>
+                    <Item>units/unit_gondor_scout/icons.xml</Item>
+                    <Item>constructibles/building_gondor_custom/icons.xml</Item>
+                </UpdateDatabase>
+                <UpdateText>
+                    <Item>civilizations/civilization_gondor/localization.xml</Item>
+                    <Item>units/unit_gondor_scout/localization.xml</Item>
+                    <Item>constructibles/building_gondor_custom/localization.xml</Item>
+                </UpdateText>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="SHELL_ALWAYS" scope="shell" criteria="CRITERIA_SHELL_499bf9ef-c79f-43c8-bae2-8090098aa707">
+            <Actions>
+                <UpdateDatabase>
+                    <Item>civilizations/civilization_gondor/shell.xml</Item>
+                    <Item>civilizations/civilization_gondor/icons.xml</Item>
+                    <Item>units/unit_gondor_scout/icons.xml</Item>
+                    <Item>constructibles/building_gondor_custom/icons.xml</Item>
+                </UpdateDatabase>
+                <UpdateText>
+                    <Item>civilizations/civilization_gondor/localization.xml</Item>
+                    <Item>units/unit_gondor_scout/localization.xml</Item>
+                    <Item>constructibles/building_gondor_custom/localization.xml</Item>
+                </UpdateText>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="ALWAYS" scope="game" criteria="CRITERIA_ALWAYS">
+            <Actions>
+                <ImportFiles>
+                    <Item>imports/civ_sym_gondor</Item>
+                </ImportFiles>
+                <UpdateIcons>
+                    <Item>imports/scout.png</Item>
+                </UpdateIcons>
+            </Actions>
+        </ActionGroup>
+    </ActionGroups>
+</Mod>

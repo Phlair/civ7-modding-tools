@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <Table>
+        <Row UnitType="UNIT_ROMAN_ARCHER" UnitClass="UNIT_CLASS_RANGED" UnitMovementClass="UNIT_MOVEMENT_CLASS_LAND" Combat="18" RangedCombat="32" Range="2" Movement="2" EraType="ERA_CLASSICAL"></Row>
+        <Row UnitType="UNIT_ROMAN_ARCHER" YieldType="YIELD_PRODUCTION" Amount="50"></Row>
+    </Table>
+</Database>

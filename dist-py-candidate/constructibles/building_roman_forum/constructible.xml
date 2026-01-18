@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <Table>
+        <Row ConstructibleType="BUILDING_ROMAN_FORUM" Maintenance="2" Cost="150" DistrictType="DISTRICT_COMMERCIAL_HUB" EraType="ERA_CLASSICAL"></Row>
+        <Row ConstructibleType="BUILDING_ROMAN_FORUM" YieldType="YIELD_GOLD" Amount="4"></Row>
+        <Row ConstructibleType="BUILDING_ROMAN_FORUM" YieldType="YIELD_CULTURE" Amount="2"></Row>
+    </Table>
+</Database>

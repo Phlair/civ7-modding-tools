@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <Types>
+        <Row>
+            <TypeType>BUILDING_GONDOR_CUSTOM</TypeType>
+            <Kind>KIND_CONSTRUCTIBLE</Kind>
+        </Row>
+    </Types>
+    <Constructibles>
+        <Row>
+            <ConstructibleType>BUILDING_GONDOR_CUSTOM</ConstructibleType>
+        </Row>
+    </Constructibles>
+</Database>

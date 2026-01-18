@@ -69,6 +69,8 @@ class TestCivilizationBuilder:
 
     def test_civilization_builder_build_content(self):
         """Test that built civilization file contains correct nodes."""
+        from civ7_modding_tools.nodes import DatabaseNode
+        
         builder = CivilizationBuilder()
         builder.fill({
             "civilization_type": "CIVILIZATION_ROME",
@@ -79,19 +81,23 @@ class TestCivilizationBuilder:
         files = builder.build()
         file = files[0]
         
-        # Check content is a list of nodes
-        assert isinstance(file.content, list)
-        assert len(file.content) >= 2  # At least 1 civilization + 1 trait
+        # Check content is a DatabaseNode
+        assert isinstance(file.content, DatabaseNode)
         
-        # First node should be CivilizationNode
-        assert isinstance(file.content[0], CivilizationNode)
-        assert file.content[0].civilization_type == "CIVILIZATION_ROME"
+        # Should have proper table structure
+        db = file.content
+        assert len(db.civilizations) == 1
+        assert db.civilizations[0].civilization_type == "CIVILIZATION_ROME"
         
-        # Second should be trait node
-        assert isinstance(file.content[1], CivilizationTraitNode)
+        # Should have traits
+        assert len(db.traits) == 1
+        assert db.civilization_traits  # At least the default trait + TRAIT_ECONOMIC
+        assert any(t.trait_type == "TRAIT_ECONOMIC" for t in db.civilization_traits)
 
     def test_civilization_builder_with_city_names(self):
         """Test civilization builder with city names."""
+        from civ7_modding_tools.nodes import DatabaseNode
+        
         builder = CivilizationBuilder()
         builder.fill({
             "civilization_type": "CIVILIZATION_ROME",
@@ -101,15 +107,15 @@ class TestCivilizationBuilder:
         
         files = builder.build()
         
-        # Should have civilization file and city names file
-        assert len(files) == 2
+        # Should have single civilization file with city names in DatabaseNode
+        assert len(files) == 1
         assert files[0].name == "current.xml"
-        assert files[1].name == "city_names.xml"
         
-        # City names file should have city nodes
-        city_file = files[1]
-        assert len(city_file.content) == 3
-        assert all(isinstance(node, CityNameNode) for node in city_file.content)
+        # DatabaseNode should have city names
+        db = files[0].content
+        assert isinstance(db, DatabaseNode)
+        assert len(db.city_names) == 3
+        assert all(isinstance(node, CityNameNode) for node in db.city_names)
 
     def test_civilization_builder_fluent_api(self):
         """Test fluent API chaining."""
@@ -170,6 +176,8 @@ class TestUnitBuilder:
 
     def test_unit_builder_with_stats_and_costs(self):
         """Test unit builder with stats and costs."""
+        from civ7_modding_tools.nodes import DatabaseNode
+        
         builder = UnitBuilder()
         builder.fill({
             "unit_type": "UNIT_WARRIOR",
@@ -181,9 +189,12 @@ class TestUnitBuilder:
         files = builder.build()
         unit_file = files[0]
         
-        # Should have 1 unit + 1 stat + 1 cost = 3 nodes
-        assert len(unit_file.content) == 3
-        assert isinstance(unit_file.content[0], UnitNode)
+        # Should have DatabaseNode with semantic tables
+        assert isinstance(unit_file.content, DatabaseNode)
+        db = unit_file.content
+        assert len(db.units) == 1
+        assert len(db.unit_stats) == 1
+        assert len(db.unit_costs) == 1
 
     def test_unit_builder_fluent_api(self):
         """Test fluent API chaining."""
@@ -243,6 +254,8 @@ class TestConstructibleBuilder:
 
     def test_constructible_builder_with_yield_changes(self):
         """Test constructible builder with yield changes."""
+        from civ7_modding_tools.nodes import DatabaseNode
+        
         builder = ConstructibleBuilder()
         builder.fill({
             "constructible_type": "BUILDING_LIBRARY",
@@ -256,8 +269,11 @@ class TestConstructibleBuilder:
         files = builder.build()
         const_file = files[0]
         
-        # Should have 1 constructible + 2 yield changes = 3 nodes
-        assert len(const_file.content) == 3
+        # Should have DatabaseNode with semantic tables
+        assert isinstance(const_file.content, DatabaseNode)
+        db = const_file.content
+        assert len(db.constructibles) == 1
+        assert len(db.constructible_yield_changes) == 2
 
     def test_constructible_builder_fluent_api(self):
         """Test fluent API chaining."""
