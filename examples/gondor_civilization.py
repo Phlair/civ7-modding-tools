@@ -42,6 +42,8 @@ mod = Mod({
     'description': 'LOC_MODULE_GONDOR_DESCRIPTION',
     'authors': 'LOC_AUTHORS_GONDOR',
     'affects_saved_games': True,
+    'enabled_by_default': True,
+    'package': 'Gondor',
 })
 
 # ACTION_GROUP_BUNDLE.AGE_ANTIQUITY equivalent (matching TS constant usage)

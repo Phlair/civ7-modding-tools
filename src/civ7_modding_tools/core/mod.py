@@ -116,6 +116,8 @@ class Mod:
         authors: str | list[str] = DEFAULT_METADATA_SOURCE,
         affects_saved_games: bool = True,
         dependencies: Optional[list[dict[str, str]]] = None,
+        enabled_by_default: bool = True,
+        package: str = "",
         id: Optional[str] = None,
     ) -> None:
         """
@@ -134,6 +136,8 @@ class Mod:
             authors: Comma-separated author list or list of author strings
             affects_saved_games: Whether mod affects saved games
             dependencies: List of dependency dicts with 'id' and 'title' keys
+            enabled_by_default: Whether mod is enabled by default in mod manager
+            package: Package name for mod categorisation (e.g., "Gondor", "Carlisle")
             id: Alias for mod_id parameter (for convenience)
         """
         # Support 'id' as alias for 'mod_id'
@@ -154,6 +158,8 @@ class Mod:
             else:
                 self.authors = [a.strip() for a in str(authors_config).split(",") if a.strip()]
             self.affects_saved_games = config.get("affects_saved_games", True)
+            self.enabled_by_default = config.get("enabled_by_default", True)
+            self.package = config.get("package", "")
             self.dependencies = config.get("dependencies") or [
                 {"id": "base-standard", "title": "LOC_MODULE_BASE_STANDARD_NAME"}
             ]
@@ -168,6 +174,8 @@ class Mod:
             else:
                 self.authors = [a.strip() for a in str(authors).split(",") if a.strip()]
             self.affects_saved_games = affects_saved_games
+            self.enabled_by_default = enabled_by_default
+            self.package = package
             self.dependencies = dependencies or [
                 {"id": "base-standard", "title": "LOC_MODULE_BASE_STANDARD_NAME"}
             ]
@@ -297,6 +305,12 @@ class Mod:
             properties["Version"] = self.version
         
         properties["AffectsSavedGames"] = "1" if self.affects_saved_games else "0"
+        
+        if self.enabled_by_default is not None:
+            properties["EnabledByDefault"] = "1" if self.enabled_by_default else "0"
+        
+        if self.package:
+            properties["Package"] = self.package
         
         # Collect all unique action groups and criteria from files
         action_groups_map: dict[str, dict] = {}  # id -> {criteria, scope, files_by_type}
