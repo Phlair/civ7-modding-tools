@@ -281,7 +281,6 @@ All contributions must follow the coding conventions in [.github/instructions/py
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/Phlair/civ7-modding-tools/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Phlair/civ7-modding-tools/discussions)
 - **Documentation**: [docs/INDEX.md](docs/INDEX.md)
 
 ---

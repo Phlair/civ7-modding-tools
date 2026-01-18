@@ -497,9 +497,6 @@ from civ7_modding_tools import TRAIT, UNIT_CLASS, EFFECT
 ## Next Steps
 
 - **[API Reference](API.md)**: Complete reference for all classes and methods
-- **[Examples](EXAMPLES.md)**: More complex examples and use cases
-- **[Migration Guide](MIGRATION.md)**: Coming from TypeScript? See the migration guide
-- **[Contributing](../CONTRIBUTING.md)**: Help improve the library
 
 ## Resources
 
