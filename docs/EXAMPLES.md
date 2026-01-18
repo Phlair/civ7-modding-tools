@@ -1,6 +1,8 @@
-# Civ7 Modding Tools - Examples
+# Phlair's Civ VII Modding Tools - Examples
 
 Practical examples for common modding scenarios.
+
+> **Note**: This project is a complete rework of the original toolset. Original fork from [izica](https://github.com/izica).
 
 > 💡 **Parity Test Example**: See [examples/gondor_civilization.py](../examples/gondor_civilization.py) for a complete example that generates identical output to the TypeScript reference implementation (22 files with exact path/naming parity).
 

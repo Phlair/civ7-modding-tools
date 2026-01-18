@@ -1,6 +1,6 @@
-# Civ7 Modding Tools - API Reference
+# Phlair's Civ VII Modding Tools - API Reference
 
-Complete API documentation for the Civ7 Modding Tools library.
+Complete API documentation for the Phlair's Civ VII Modding Tools library.
 
 ## Table of Contents
 

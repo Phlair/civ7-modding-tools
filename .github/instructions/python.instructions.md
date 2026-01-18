@@ -1,15 +1,17 @@
 ---
-description: "Python coding conventions for Civ7 Modding Tools"
+description: "Python coding conventions for Phlair's Civ VII Modding Tools"
 applyTo: "**/*.py"
 ---
 
-# Python Coding Conventions for Civ7 Modding Tools
+# Python Coding Conventions for Phlair's Civ VII Modding Tools
 
 ## Project-Specific Style
 
 ### Overview
 
-Civ7 Modding Tools is a strongly-typed Python library for generating Civilization 7 mod files. All code must follow these conventions to maintain consistency with the builder pattern, pydantic models, and type-safe API.
+Phlair's Civ VII Modding Tools is a strongly-typed Python library for generating Civilization 7 mod files. All code must follow these conventions to maintain consistency with the builder pattern, pydantic models, and type-safe API.
+
+> **Credit**: This project is a complete rework of the original toolset by [izica](https://github.com/izica).
 
 ### Core Principles
 

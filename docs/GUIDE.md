@@ -1,6 +1,8 @@
-# Civ7 Modding Tools - Getting Started Guide
+# Phlair's Civ VII Modding Tools - Getting Started Guide
 
-Welcome to **Civ7 Modding Tools**, a Python library for creating Civilization 7 mods programmatically. This guide will walk you through building your first mod from scratch.
+Welcome to **Phlair's Civ VII Modding Tools**, a Python library for creating Civilization 7 mods programmatically. This guide will walk you through building your first mod from scratch.
+
+> **Note**: This project is a complete rework of the original toolset. Original fork from [izica](https://github.com/izica).
 
 > ✅ **Python v1.3.0**: Pure Python implementation with full builder pattern support. All 13 builders, 79 nodes, 21 constants, and 11 localization classes fully implemented with 94% test coverage (324 tests passing).
 
