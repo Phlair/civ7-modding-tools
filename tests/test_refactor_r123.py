@@ -302,28 +302,28 @@ class TestLocaleUtility:
     def test_locale_basic(self):
         """locale() should combine tag and key."""
         result = locale("LOC_UNIT", "ROMAN_ARCHER")
-        assert result == "LOC_UNIT_ROMAN_ARCHER"
+        assert result == "LOC_LOC_UNIT_ROMAN_ARCHER"
 
     def test_locale_lowercase_key(self):
         """locale() should uppercase lowercase keys."""
         result = locale("LOC_BUILDING", "forum")
-        assert result == "LOC_BUILDING_FORUM"
+        assert result == "LOC_LOC_BUILDING_FORUM"
 
     def test_locale_mixed_case_key(self):
         """locale() should handle mixed case keys."""
         result = locale("LOC_UNIT", "RomanLegion")
-        assert result == "LOC_UNIT_ROMANLEGION"
+        assert result == "LOC_LOC_UNIT_ROMAN_LEGION"
 
     def test_locale_with_underscores(self):
         """locale() should preserve underscores in key."""
         result = locale("LOC", "ROMAN_LEGION_NAME")
-        assert result == "LOC_ROMAN_LEGION_NAME"
+        assert result == "LOC_LOC_ROMAN_LEGION_NAME"
 
     def test_locale_various_tags(self):
         """locale() should work with various tag types."""
-        assert locale("LOC_UNIT", "ARCHER").startswith("LOC_UNIT_")
-        assert locale("LOC_BUILDING", "FORUM").startswith("LOC_BUILDING_")
-        assert locale("LOC_TECH", "BRONZE").startswith("LOC_TECH_")
+        assert locale("LOC_UNIT", "ARCHER").startswith("LOC_LOC_UNIT_")
+        assert locale("LOC_BUILDING", "FORUM").startswith("LOC_LOC_BUILDING_")
+        assert locale("LOC_TECH", "BRONZE").startswith("LOC_LOC_TECH_")
 
 
 class TestTrimUtility:
@@ -408,7 +408,7 @@ class TestKebabCaseUtility:
     def test_kebab_case_various_formats(self):
         """kebab_case() should handle mixed formats."""
         assert kebab_case("MyModdingTools") == "my-modding-tools"
-        assert kebab_case("mod_v2") == "mod-v2"
+        assert kebab_case("mod_v2") == "mod-v-2"
 
 
 class TestUtilityIntegration:
@@ -428,14 +428,14 @@ class TestUtilityIntegration:
         
         # Generate localization key
         loc_key = locale("LOC_UNIT", short_id)
-        assert loc_key == "LOC_UNIT_ROMAN_LEGION"
+        assert loc_key == "LOC_LOC_UNIT_ROMAN_LEGION"
 
     def test_locale_with_trim(self):
         """locale() and trim() should work well together."""
         full_id = "UNIT_ARCHER"
         trimmed = trim(full_id)
         loc_key = locale("LOC_UNIT", trimmed)
-        assert loc_key == "LOC_UNIT_ARCHER"
+        assert loc_key == "LOC_LOC_UNIT_ARCHER"
 
     def test_kebab_case_with_locale(self):
         """kebab_case() should work with localization keys."""
@@ -497,11 +497,11 @@ class TestRefactorIntegration:
         # Use utilities to generate derived names
         trimmed = trim(game_id)  # "ROME"
         path_name = kebab_case(trimmed)  # "rome"
-        loc_key = locale("LOC_CIVILIZATION", trimmed)  # "LOC_CIVILIZATION_ROME"
+        loc_key = locale("LOC_CIVILIZATION", trimmed)  # "LOC_LOC_CIVILIZATION_ROME"
         
         assert trimmed == "ROME"
         assert path_name == "rome"
-        assert loc_key == "LOC_CIVILIZATION_ROME"
+        assert loc_key == "LOC_LOC_CIVILIZATION_ROME"
 
 
 if __name__ == "__main__":

@@ -7,7 +7,10 @@ from civ7_modding_tools.core import ActionGroupBundle
 
 def test_base_builder_fill():
     """Test fill() method on builder."""
-    builder = CivilizationBuilder()
+    class DummyBuilder(BaseBuilder):
+        def build(self): return []
+    
+    builder = DummyBuilder()
     result = builder.fill({"test_prop": "value"})
     
     # Should return self for chaining

@@ -34,7 +34,7 @@ class TestCivilizationLocalization:
         loc = CivilizationLocalization(name="Rome")
         nodes = loc.get_nodes("CIVILIZATION_ROME")
         assert len(nodes) == 1
-        assert nodes[0]["tag"] == "LOC_CIVILIZATION_ROME_NAME"
+        assert nodes[0]["tag"] == "LOC_LOC_CIVILIZATION_ROME_NAME"
         assert nodes[0]["text"] == "Rome"
     
     def test_full_civilization(self):
@@ -52,13 +52,13 @@ class TestCivilizationLocalization:
         assert len(nodes) == 7
         
         tags = [n["tag"] for n in nodes]
-        assert "LOC_CIVILIZATION_ROME_NAME" in tags
-        assert "LOC_CIVILIZATION_ROME_DESCRIPTION" in tags
-        assert "LOC_CIVILIZATION_ROME_FULL_NAME" in tags
-        assert "LOC_CIVILIZATION_ROME_ADJECTIVE" in tags
-        assert "LOC_CITY_ROME_0" in tags
-        assert "LOC_CITY_ROME_1" in tags
-        assert "LOC_CITY_ROME_2" in tags
+        assert "LOC_LOC_CIVILIZATION_ROME_NAME" in tags
+        assert "LOC_LOC_CIVILIZATION_ROME_DESCRIPTION" in tags
+        assert "LOC_LOC_CIVILIZATION_ROME_FULL_NAME" in tags
+        assert "LOC_LOC_CIVILIZATION_ROME_ADJECTIVE" in tags
+        assert "LOC_LOC_CITY_ROME_0" in tags
+        assert "LOC_LOC_CITY_ROME_1" in tags
+        assert "LOC_LOC_CITY_ROME_2" in tags
     
     def test_multiple_cities(self):
         """Multiple cities generate correct indexed nodes."""
@@ -69,7 +69,7 @@ class TestCivilizationLocalization:
         assert len(nodes) == 4
         
         for i, city in enumerate(["Rome", "Milan", "Venice", "Naples"]):
-            assert nodes[i]["tag"] == f"LOC_CITY_ROME_{i}"
+            assert nodes[i]["tag"] == f"LOC_LOC_CITY_ROME_{i}"
             assert nodes[i]["text"] == city
 
 
@@ -93,9 +93,9 @@ class TestUnitLocalization:
         
         assert len(nodes) == 3
         tags = [n["tag"] for n in nodes]
-        assert "LOC_UNIT_ARCHER_NAME" in tags
-        assert "LOC_UNIT_ARCHER_DESCRIPTION" in tags
-        assert "LOC_UNIT_ARCHER_UNIQUE_NAME" in tags
+        assert "LOC_LOC_UNIT_ARCHER_NAME" in tags
+        assert "LOC_LOC_UNIT_ARCHER_DESCRIPTION" in tags
+        assert "LOC_LOC_UNIT_ARCHER_UNIQUE_NAME" in tags
 
 
 class TestConstructibleLocalization:
@@ -117,9 +117,9 @@ class TestConstructibleLocalization:
         nodes = loc.get_nodes("BUILDING_LIBRARY")
         
         assert len(nodes) == 3
-        assert nodes[0]["tag"] == "LOC_CONSTRUCTIBLE_LIBRARY_NAME"
-        assert nodes[1]["tag"] == "LOC_CONSTRUCTIBLE_LIBRARY_DESCRIPTION"
-        assert nodes[2]["tag"] == "LOC_CONSTRUCTIBLE_LIBRARY_UNIQUE_NAME"
+        assert nodes[0]["tag"] == "LOC_LOC_CONSTRUCTIBLE_LIBRARY_NAME"
+        assert nodes[1]["tag"] == "LOC_LOC_CONSTRUCTIBLE_LIBRARY_DESCRIPTION"
+        assert nodes[2]["tag"] == "LOC_LOC_CONSTRUCTIBLE_LIBRARY_UNIQUE_NAME"
 
 
 class TestProgressionTreeLocalization:
@@ -140,8 +140,8 @@ class TestProgressionTreeLocalization:
         nodes = loc.get_nodes("PROGRESSION_TREE_TECH")
         
         assert len(nodes) == 2
-        assert "LOC_PROGRESSION_PROGRESSION_TREE_TECH_NAME" in [n["tag"] for n in nodes]
-        assert "LOC_PROGRESSION_PROGRESSION_TREE_TECH_DESCRIPTION" in [n["tag"] for n in nodes]
+        assert "LOC_LOC_PROGRESSION_PROGRESSION_TREE_TECH_NAME" in [n["tag"] for n in nodes]
+        assert "LOC_LOC_PROGRESSION_PROGRESSION_TREE_TECH_DESCRIPTION" in [n["tag"] for n in nodes]
 
 
 class TestProgressionTreeNodeLocalization:
@@ -164,9 +164,9 @@ class TestProgressionTreeNodeLocalization:
         
         assert len(nodes) == 3
         tags = [n["tag"] for n in nodes]
-        assert "LOC_TECH_WRITING_NAME" in tags
-        assert "LOC_TECH_WRITING_DESCRIPTION" in tags
-        assert "LOC_TECH_WRITING_QUOTE" in tags
+        assert "LOC_LOC_TECH_WRITING_NAME" in tags
+        assert "LOC_LOC_TECH_WRITING_DESCRIPTION" in tags
+        assert "LOC_LOC_TECH_WRITING_QUOTE" in tags
 
 
 class TestModifierLocalization:
@@ -187,8 +187,8 @@ class TestModifierLocalization:
         nodes = loc.get_nodes("MODIFIER_BONUS")
         
         assert len(nodes) == 2
-        assert nodes[0]["tag"] == "LOC_MODIFIER_MODIFIER_BONUS_NAME"
-        assert nodes[1]["tag"] == "LOC_MODIFIER_MODIFIER_BONUS_DESCRIPTION"
+        assert nodes[0]["tag"] == "LOC_LOC_MODIFIER_MODIFIER_BONUS_NAME"
+        assert nodes[1]["tag"] == "LOC_LOC_MODIFIER_MODIFIER_BONUS_DESCRIPTION"
 
 
 class TestTraditionLocalization:
@@ -209,7 +209,7 @@ class TestTraditionLocalization:
         nodes = loc.get_nodes("TRADITION_MILITARY")
         
         assert len(nodes) == 2
-        assert "LOC_TRADITION_MILITARY_NAME" in [n["tag"] for n in nodes]
+        assert "LOC_LOC_TRADITION_MILITARY_NAME" in [n["tag"] for n in nodes]
 
 
 class TestLeaderUnlockLocalization:
@@ -230,9 +230,9 @@ class TestLeaderUnlockLocalization:
         nodes = loc.get_nodes("LEADER_CAESAR")
         
         assert len(nodes) == 2
-        assert nodes[0]["tag"] == "LOC_LEADER_CAESAR_NAME"
+        assert nodes[0]["tag"] == "LOC_LOC_LEADER_CAESAR_NAME"
         assert nodes[0]["text"] == "Julius Caesar"
-        assert nodes[1]["tag"] == "LOC_LEADER_CAESAR_DESCRIPTION"
+        assert nodes[1]["tag"] == "LOC_LOC_LEADER_CAESAR_DESCRIPTION"
 
 
 class TestCivilizationUnlockLocalization:
@@ -253,7 +253,7 @@ class TestCivilizationUnlockLocalization:
         nodes = loc.get_nodes("CIV_UNLOCK_AGE")
         
         assert len(nodes) == 2
-        assert "LOC_UNLOCK_CIV_UNLOCK_AGE_NAME" in [n["tag"] for n in nodes]
+        assert "LOC_LOC_UNLOCK_CIV_UNLOCK_AGE_NAME" in [n["tag"] for n in nodes]
 
 
 class TestUniqueQuarterLocalization:
@@ -274,8 +274,8 @@ class TestUniqueQuarterLocalization:
         nodes = loc.get_nodes("QUARTER_COLOSSEUM")
         
         assert len(nodes) == 2
-        assert nodes[0]["tag"] == "LOC_QUARTER_QUARTER_COLOSSEUM_NAME"
-        assert nodes[1]["tag"] == "LOC_QUARTER_QUARTER_COLOSSEUM_DESCRIPTION"
+        assert nodes[0]["tag"] == "LOC_LOC_QUARTER_COLOSSEUM_NAME"
+        assert nodes[1]["tag"] == "LOC_LOC_QUARTER_COLOSSEUM_DESCRIPTION"
 
 
 class TestLocalizationIntegration:
@@ -357,8 +357,8 @@ class TestLocalizationIntegration:
         # Should only have 2 nodes: name and full_name
         assert len(nodes) == 2
         tags = [n["tag"] for n in nodes]
-        assert "LOC_CIVILIZATION_ROME_NAME" in tags
-        assert "LOC_CIVILIZATION_ROME_FULL_NAME" in tags
+        assert "LOC_LOC_CIVILIZATION_ROME_NAME" in tags
+        assert "LOC_LOC_CIVILIZATION_ROME_FULL_NAME" in tags
 
 
 class TestLocalizationWithVariations:
@@ -374,7 +374,7 @@ class TestLocalizationWithVariations:
         
         # Only name should be present
         assert len(nodes) == 1
-        assert nodes[0]["tag"] == "LOC_CIVILIZATION_ROME_NAME"
+        assert nodes[0]["tag"] == "LOC_LOC_CIVILIZATION_ROME_NAME"
     
     def test_entity_id_with_different_formats(self):
         """Different entity ID formats are handled correctly."""

@@ -34,8 +34,10 @@ def test_base_node_to_xml_element():
     xml_elem = node.to_xml_element()
     
     assert xml_elem is not None
-    assert "Row" in xml_elem
-    attrs = xml_elem["Row"]
+    assert "_name" in xml_elem
+    assert "_attrs" in xml_elem
+    assert xml_elem["_name"] == "Row"
+    attrs = xml_elem["_attrs"]
     
     # Check snake_case -> PascalCase conversion
     assert attrs["CivilizationType"] == "CIVILIZATION_ROME"
@@ -50,7 +52,7 @@ def test_base_node_excludes_private_properties():
     node._private_prop = "hidden"
     
     xml_elem = node.to_xml_element()
-    attrs = xml_elem["Row"]
+    attrs = xml_elem["_attrs"]
     
     assert "PublicProp" in attrs
     assert "_private_prop" not in attrs
@@ -66,7 +68,7 @@ def test_base_node_excludes_empty_values():
     node.active = False
     
     xml_elem = node.to_xml_element()
-    attrs = xml_elem["Row"]
+    attrs = xml_elem["_attrs"]
     
     assert "HasValue" in attrs
     assert attrs["HasValue"] == "true"

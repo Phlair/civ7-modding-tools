@@ -58,7 +58,7 @@ def test_mod_build_creates_modinfo(tmp_path):
     
     # Check content
     content = modinfo_file.read_text()
-    assert '<?xml version="1.0" encoding="utf-8"?>' in content
+    assert '<?xml version="1.0" encoding="UTF-8"?>' in content
     assert '<Mod id="test-mod"' in content
 
 

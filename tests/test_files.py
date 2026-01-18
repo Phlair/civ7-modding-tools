@@ -36,7 +36,7 @@ def test_xml_file_write(tmp_path):
     assert output_file.exists()
     
     content = output_file.read_text()
-    assert '<?xml version="1.0" encoding="utf-8"?>' in content
+    assert '<?xml version="1.0" encoding="UTF-8"?>' in content
     assert "TestAttr" in content
 
 
@@ -87,6 +87,7 @@ def test_import_file_write(tmp_path):
     # Create import file
     import_file = ImportFile(
         path="/imports/",
+        name="icon.png",
         content=str(source_file)
     )
     
