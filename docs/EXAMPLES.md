@@ -691,10 +691,14 @@ python
 ## More Examples
 
 See the [examples/](../examples/) directory in the repository for additional working examples:
-- `examples/civilization.ts` → `civilization.py`
-- `examples/unit.ts` → `unit.py`
-- `examples/progression-tree.ts` → `progression_tree.py`
-- And more...
+- `examples/babylon_civilization.py` - Scientific civilization example
+- `examples/gondor_civilization.py` - Complete civilization with all features
+- `examples/unit.py` - Create custom units
+- `examples/progression_tree.py` - Build civics trees
+- `examples/unique_quarter.py` - Civilization-unique districts
+- `examples/import_custom_icon.py` - Import custom assets
+- `examples/import_sql_file.py` - SQL database imports
+- `examples/unlock_builder.py` - Game progression unlocks
 
 ---
 

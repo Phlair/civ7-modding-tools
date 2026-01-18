@@ -1,161 +1,88 @@
-# Phlair's civ7 modding tools - forked from izica
-Mod generation tool for Civilization 7.
+# Civ7 Modding Tools - Python Library
+Python library for programmatically generating Civilization 7 mods with full type safety and builder patterns.
 
-- [Usage](#usage)
-- [Currently state](#currently-state)
-    - [Done](#done)
-    - [Working on](#working-on)
-    - [TODO](#todo)
-- [Getting started](#getting-started)
-    - [Install from repository](#install-from-repository)
-    - [Install from NPM](#install-from-npm)
-- [Previews](#previews)
-    - [Use builders for easier and faster mod creation](#use-builders-for-easy-and-faster-mod-creating)
-    - [Full strongly typed](#full-strongly-typed)
-    - [Full control of generation](#full-control-of-generation)
-    - [Possibility of fully manual creation](#possibility-of-full-manually-creation)
-- [Examples](https://github.com/izica/civ7-modding-tools/tree/main/examples)
-    - [Init and create civilization](https://github.com/izica/civ7-modding-tools/blob/main/examples/civilization.ts)
-    - [Create unit](https://github.com/izica/civ7-modding-tools/blob/main/examples/unit.ts)
-    - [Import sql file](https://github.com/izica/civ7-modding-tools/blob/main/examples/import-sql-file.ts)
-    - [Import custom icon](https://github.com/izica/civ7-modding-tools/blob/main/examples/import-custom-icon.ts)
-    - [Create civics progression tree](https://github.com/izica/civ7-modding-tools/blob/main/examples/progression-tree.ts)
-    - [Unique-quarter](https://github.com/izica/civ7-modding-tools/blob/main/examples/unique-quarter.ts)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Examples](#examples)
+- [Documentation](#documentation)
+- [Development](#development)
 
-## Currently state
-### Done
-- [x] Mod info
-- [x] Import custom files
-- [x] Localization
-    - [x] English
-    - [x] Internalization
-- [x] Units
-- [x] Civilizations
-  - [x] Civilization unlocks
-  - [x] Leader unlocks
-- [x] Constructibles
-    - [x] Base building
-    - [x] Improvement
-    - [x] Unique quarter
-- [x] City names
-- [x] Civics
-- [x] Traditions
-- [x] Game Effects
+## Features
+- **Type-safe builders** for civilizations, units, buildings, and progression trees
+- **Automatic XML generation** with proper formatting and structure
+- **Action group support** for age-specific content loading
+- **Localization support** for multiple languages
+- **Asset imports** for custom icons and files
+- **Mod orchestration** via simple, fluent API
 
-### Working on
-- [ ] Great People nodes(+builder?)
+## Getting Started
 
-### Todo
-- [ ] AI nodes(+builder?)
-- [ ] Unit abilities nodes(+builder?)
-- [ ] Wonder nodes(+builder?)
-- [ ] ???
+### Installation
 
-
-## Getting started
-### Install from repository
-Download repo ZIP file or clone:
-
+Using `uv` (recommended):
 ```bash
-clone https://github.com/izica/civ7-modding-tools
+uv add civ7-modding-tools
 ```
 
-[build.ts](https://github.com/izica/civ7-modding-tools/blob/main/build.ts) contains all the necessary code to get started, so you can begin by modifying it to fit your needs.
-Also you can copy an example from the [examples](https://github.com/izica/civ7-modding-tools/tree/main/examples) folder into [build.ts](https://github.com/izica/civ7-modding-tools/blob/main/build.ts).
-
-Then, run the following commands:
-
+Using pip:
 ```bash
-npm install
-npm run build
+pip install civ7-modding-tools
 ```
 
-### Install from npm
+### Quick Start
 
-```bash
-npm install civ7-modding-tools
-```
+```python
+from civ7_modding_tools import Mod, CivilizationBuilder, Trait
 
-```typescript
-import { Mod } from 'civ7-modding-tools';
-// or you can import from 'civ7-modding-tools/src' for full typescript source
+mod = Mod(id='my-mod', version='1.0', name='My Mod')
 
-let mod = new Mod({
-    id: 'test-mod',
-    version: '1',
-});
-/* ... */
-mod.build('./dist');
-```
-
-To build mod you need to run your script with `node.js` or `tsx`;
-```bash
-tsx build.ts
-```
-
-
-## Previews
-#### Use builders for easier and faster mod creation
-```typescript
-const mod = new Mod({
-    id: 'mod-test',
-    version: '1',
-});
-
-const unit = new UnitBuilder({
-    actionGroupBundle: ACTION_GROUP_BUNDLE.AGE_ANTIQUITY,
-    typeTags: [UNIT_CLASS.RECON, UNIT_CLASS.RECON_ABILITIES],
-    unit: {
-        unitType: 'UNIT_CUSTOM_SCOUT',
-        baseMoves: 2,
-        baseSightRange: 10,
-    },
-    unitCost: { cost: 20 },
-    unitStat: { combat: 0 },
-    unitReplace: { replacesUnitType: UNIT.SCOUT },
-    visualRemap: { to: UNIT.ARMY_COMMANDER },
-    localizations: [
-        { name: 'Custom scout', description: 'test description' }
-    ],
-});
-
-
-mod.add([unit]).build('./dist');
-```
-
-#### Full strongly typed
-![Typed](previews/typed.png)
-
-#### Full control of generation
-![Controllable](previews/controllable.png)
-
-#### Possibility of fully manual creation
-```typescript
-const mod = new Mod({
-    id: 'mod-test',
-    version: '1',
-});
-
-const unit = new UnitNode({
-    unitType: 'UNIT_CUSTOM_SCOUT',
-    baseMoves: 2,
-    baseSightRange: 10,
+civ = CivilizationBuilder({
+    'civilization': {'civilization_type': 'CIVILIZATION_CUSTOM'},
+    'civilization_traits': [Trait.ECONOMIC],
+    'localizations': [{'name': 'Custom Civ', 'city_names': ['Capital']}]
 })
 
-const database = new DatabaseNode({
-    types: [
-        new TypeNode({ type: unit.unitType, kind: KIND.UNIT })
-    ],
-    units: [unit]
-});
-
-const unitFile = new XmlFile({
-    path: `/units/${unit.unitType}.xml`,
-    name: 'unit.xml',
-    content: database.toXmlElement(),
-    actionGroups: [ACTION_GROUP.AGE_ANTIQUITY_CURRENT],
-    actionGroupActions: [ACTION_GROUP_ACTION.UPDATE_DATABASE]
-});
-
-mod.addFiles([unitFile]).build('./dist');
+mod.add(civ)
+mod.build('./dist')
 ```
+
+## Examples
+
+See [examples/](examples/) folder for complete working examples:
+
+- **[babylon_civilization.py](examples/babylon_civilization.py)** - Full civilization with units, buildings, and progression trees (scientific focus)
+- **[gondor_civilization.py](examples/gondor_civilization.py)** - Complete Middle Earth civilization example
+- **[unit.py](examples/unit.py)** - Create custom military units
+- **[progression_tree.py](examples/progression_tree.py)** - Build civics progression trees
+- **[unique_quarter.py](examples/unique_quarter.py)** - Create civilization-unique districts
+- **[import_custom_icon.py](examples/import_custom_icon.py)** - Import custom asset files
+- **[import_sql_file.py](examples/import_sql_file.py)** - Integrate SQL database modifications
+- **[unlock_builder.py](examples/unlock_builder.py)** - Define game progression unlocks
+
+## Documentation
+
+- **[API.md](docs/API.md)** - Complete API reference with all builders, nodes, and utilities
+- **[GUIDE.md](docs/GUIDE.md)** - User guide with common patterns and architecture
+- **[EXAMPLES.md](docs/EXAMPLES.md)** - Example walkthroughs and explanations
+- **[INDEX.md](docs/INDEX.md)** - Project structure and file organization
+
+## Development
+
+### Setup
+```bash
+uv sync
+```
+
+### Testing
+```bash
+uv run pytest              # Run all tests
+uv run pytest --cov        # With coverage report
+```
+
+### Build
+The library generates Civilization 7 mods by creating XML files and metadata. Mods are built to a specified output directory with:
+- ModInfo configuration file
+- Automatically organized XML files
+- Asset imports and localization
+
+For detailed development info, see [.github/instructions/python.instructions.md](.github/instructions/python.instructions.md)
