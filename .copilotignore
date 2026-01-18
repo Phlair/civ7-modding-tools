@@ -1,0 +1,18 @@
+# Generated artifacts and duplicate code
+dist-py-candidate/
+dist-ts-reference/
+example-generated-mod/
+
+# Dependencies and lock files
+.venv/
+node_modules/
+uv.lock
+package-lock.json
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Assets and previews
+previews/
+assets/
