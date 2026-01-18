@@ -29,22 +29,22 @@ Phlair's Civ VII Modding Tools is a strongly-typed Python library for generating
 All functions and methods must have complete type hints:
 
 ```python
-from typing import Any, Dict, List, Optional, Union, TypeVar, Callable
+from typing import Any, TypeVar, Callable
 
 T = TypeVar("T")
 
-def fill(obj: T, payload: Dict[str, Any]) -> T:
+def fill(obj: T, payload: dict[str, Any]) -> T:
     """Populate object properties from a dictionary, preserving type."""
     ...
 
-def without(lst: List[T], *values: T) -> List[T]:
+def without(lst: list[T], *values: T) -> list[T]:
     """Return list with specified values removed, preserving type."""
     ...
 
 def uniq_by(
-    lst: List[T],
+    lst: list[T],
     key_func: Callable[[T], Any] | None = None
-) -> List[T]:
+) -> list[T]:
     """Return unique items by key function, preserving type."""
     ...
 ```
@@ -72,9 +72,9 @@ def fill(obj: T, payload: Dict[str, Any]) -> T:
 ### All Builders Must Follow This Structure
 
 ```python
+from typing import Any
 from civ7_modding_tools.builders.builders import BaseBuilder
 from civ7_modding_tools.files import BaseFile, XmlFile
-from typing import Any
 
 class MyBuilder(BaseBuilder):
     """Builder for MyEntity, following builder pattern."""
@@ -82,7 +82,7 @@ class MyBuilder(BaseBuilder):
     my_property: str = 'default'
     another_property: int = 0
     
-    def fill(self, payload: Dict[str, Any]) -> "MyBuilder":
+    def fill(self, payload: dict[str, Any]) -> "MyBuilder":
         """Set properties from dictionary and return self for chaining."""
         for key, value in payload.items():
             if hasattr(self, key):
@@ -124,18 +124,16 @@ builder.fill({
 All localization classes extend pydantic BaseModel:
 
 ```python
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 class MyLocalization(BaseModel):
     """Localization for my entity."""
     
+    model_config = ConfigDict(extra='forbid')  # Disallow unknown fields
+    
     name: str = ''
     description: str = ''
     my_field: str = Field(default='', alias='myField')
-    
-    class Config:
-        """Pydantic configuration."""
-        extra = 'forbid'  # Disallow unknown fields
 ```
 
 ### Node Classes
@@ -201,7 +199,7 @@ class TRAIT(str, Enum):
 Follow PEP 257 with clear description:
 
 ```python
-def fill(self, payload: Dict[str, Any]) -> "MyBuilder":
+def fill(self, payload: dict[str, Any]) -> "MyBuilder":
     """
     Populate builder properties from a dictionary.
     
@@ -283,7 +281,7 @@ node = CivilizationNode(
 
 ```python
 # 1. Imports (stdlib, third-party, local)
-from typing import Any, Dict, List
+from typing import Any
 from pydantic import BaseModel
 from civ7_modding_tools.nodes import BaseNode
 
@@ -313,7 +311,7 @@ def helper_function() -> None:
 ```python
 # Standard library
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Union, TypeVar, Callable
+from typing import Any, TypeVar, Callable
 from pathlib import Path
 
 # Third-party
@@ -451,7 +449,7 @@ class UnitBuilder(BaseBuilder):
 ### Complete Builder Implementation
 
 ```python
-from typing import Any, Dict, List
+from typing import Any
 from civ7_modding_tools.builders.builders import BaseBuilder
 from civ7_modding_tools.files import BaseFile, XmlFile
 from civ7_modding_tools.nodes import MyNode
@@ -465,9 +463,9 @@ class MyBuilder(BaseBuilder):
     
     my_property: str = ''
     another_property: int = 0
-    optional_list: List[Dict[str, Any]] = []
+    optional_list: list[dict[str, Any]] = []
     
-    def fill(self, payload: Dict[str, Any]) -> "MyBuilder":
+    def fill(self, payload: dict[str, Any]) -> "MyBuilder":
         """
         Populate properties from dictionary.
         
