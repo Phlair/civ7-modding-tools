@@ -49,16 +49,21 @@ class BaseNode(BaseModel):
 
     def to_xml_element(self) -> Optional[Dict[str, Any]]:
         """
-        Convert this node to an XML element dictionary compatible with xmltodict.
+        Convert this node to an XML element dictionary compatible with jstoxml format.
         
         Properties are serialized as XML attributes with the following rules:
         - Properties starting with '_' are excluded
-        - camelCase properties are converted to PascalCase
+        - snake_case properties are converted to PascalCase
         - None, empty string, and False values are omitted
+        - Boolean True converted to "true", False is omitted
         - All other values are stringified
         
         Returns:
-            Dictionary suitable for xmltodict serialization, or None if node is empty
+            Dictionary with _name and _attrs keys matching TypeScript jstoxml format,
+            or None if node is empty
+            
+        Example:
+            {'_name': 'Row', '_attrs': {'Type': 'VALUE', 'Kind': 'KIND_TYPE'}}
         """
         attributes: Dict[str, str] = {}
         
@@ -74,20 +79,21 @@ class BaseNode(BaseModel):
             if value is None or value == "" or value is False:
                 continue
             
-            # Convert boolean True to string
+            # Convert boolean True to string "true"
             if value is True:
                 value = "true"
             
-            # Convert property name from camelCase/snake_case to PascalCase
-            # Handle snake_case by converting back to camelCase first if needed
+            # Convert property name from snake_case to PascalCase
+            # This matches TypeScript lodash.startCase behavior
             if "_" in key:
-                # Convert snake_case to camelCase
+                # Split by underscore and capitalize each part
                 parts = key.split("_")
-                camel_key = parts[0] + "".join(p.capitalize() for p in parts[1:])
+                # PascalCase: capitalize each part (but skip empty trailing parts from trailing underscore)
+                # Handle special case: 'type_' becomes 'Type' not 'Type' + empty
+                xml_key = "".join(p.capitalize() for p in parts if p)
             else:
-                camel_key = key
-            
-            xml_key = camel_to_pascal(camel_key)
+                # Already camelCase or single word - just capitalize first letter
+                xml_key = key[0].upper() + key[1:] if key else key
             
             # Stringify all values
             attributes[xml_key] = str(value)
@@ -96,8 +102,12 @@ class BaseNode(BaseModel):
         if not attributes:
             return None
         
-        # Return as xmltodict-compatible element
-        return {self._name: attributes}
+        # Return in jstoxml-compatible format
+        # This matches TypeScript: {_name: this._name, _attrs: this.getAttributes()}
+        return {
+            '_name': self._name,
+            '_attrs': attributes
+        }
 
     def __repr__(self) -> str:
         """String representation of the node."""

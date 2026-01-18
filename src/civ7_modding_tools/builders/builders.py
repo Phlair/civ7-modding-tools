@@ -11,12 +11,31 @@ from civ7_modding_tools.nodes import (
     UnitNode,
     UnitCostNode,
     UnitStatNode,
+    UnitReplaceNode,
     ConstructibleNode,
     ConstructibleYieldChangeNode,
+    ConstructibleValidDistrictNode,
+    ConstructibleMaintenanceNode,
+    UniqueQuarterNode,
+    UniqueQuarterModifierNode,
+    ProgressionTreeNode,
+    ProgressionTreeNodeNode,
+    ProgressionTreePrereqNode,
+    ProgressionTreeAdvisoryNode,
+    ProgressionTreeNodeUnlockNode,
+    GameModifierNode,
+    ModifierNode,
+    StringNode,
+    TraditionNode,
+    TraditionModifierNode,
     CityNameNode,
     DatabaseNode,
     TypeNode,
     TraitNode,
+    TagNode,
+    TypeTagNode,
+    BuildingNode,
+    ImprovementNode,
     StartBiasBiomeNode,
     StartBiasTerrainNode,
     IconDefinitionNode,
@@ -25,6 +44,7 @@ from civ7_modding_tools.nodes import (
     EnglishTextNode,
 )
 from civ7_modding_tools.localizations import BaseLocalization
+from civ7_modding_tools.utils import locale
 
 T = TypeVar("T")
 
@@ -135,6 +155,9 @@ class CivilizationBuilder(BaseBuilder):
         self.trait: Dict[str, str] = {}
         self.trait_ability: Dict[str, str] = {}
         self.civilization_legacy: Dict[str, Any] = {}
+        
+        # Store bound items for processing during migration
+        self._bound_items: List[BaseBuilder] = []
 
     def fill(self, payload: Dict[str, Any]) -> "CivilizationBuilder":
         """Fill civilization builder from payload."""
@@ -144,9 +167,9 @@ class CivilizationBuilder(BaseBuilder):
         return self
 
     def migrate(self) -> "CivilizationBuilder":
-        """Migrate and populate all database variants."""
+        """Migrate and populate all database variants with full localization."""
         if not self.civilization_type:
-            return self
+            self.civilization_type = self.civilization.get('civilization_type', 'CIVILIZATION_CUSTOM')
         
         # Generate trait types from civilization type if not provided
         if not self.trait:
@@ -158,24 +181,44 @@ class CivilizationBuilder(BaseBuilder):
         trait_type = self.trait.get("trait_type", "TRAIT_CUSTOM")
         trait_ability_type = self.trait_ability.get("trait_type", "TRAIT_CUSTOM_ABILITY")
         
+        # Create civilization node with full localization
+        civ_node = CivilizationNode(
+            civilization_type=self.civilization_type,
+            adjective=locale(self.civilization_type, 'adjective'),
+            capital_name=locale(self.civilization_type, 'cityNames_1'),
+            full_name=locale(self.civilization_type, 'fullName'),
+            name=locale(self.civilization_type, 'name'),
+            starting_civilization_level_type='CIVILIZATION_LEVEL_FULL_CIV',
+        )
+        # Apply any overrides from self.civilization dict
+        for key, value in self.civilization.items():
+            if key != 'civilization_type' and hasattr(civ_node, key):
+                setattr(civ_node, key, value)
+        
+        # Create trait nodes
+        trait_node = TraitNode(
+            trait_type=trait_type,
+            internal_only=True
+        )
+        
+        trait_ability_node = TraitNode(
+            trait_type=trait_ability_type,
+            name=locale(self.civilization_type + '_ABILITY', 'name'),
+            description=locale(self.civilization_type + '_ABILITY', 'description'),
+            internal_only=True
+        )
+        
         # ==== POPULATE _current DATABASE ====
         # Types section
         self._current.types = [
-            TypeNode(type_type=trait_type, kind="KIND_TRAIT"),
-            TypeNode(type_type=trait_ability_type, kind="KIND_TRAIT"),
+            TypeNode(type_=trait_type, kind="KIND_TRAIT"),
+            TypeNode(type_=trait_ability_type, kind="KIND_TRAIT"),
         ]
         
         # Traits section
-        self._current.traits = [
-            TraitNode(trait_type=trait_type, internal_only=True),
-            TraitNode(trait_type=trait_ability_type, internal_only=True),
-        ]
+        self._current.traits = [trait_node, trait_ability_node]
         
         # Civilizations section
-        civ_node = CivilizationNode(civilization_type=self.civilization_type)
-        for key, value in self.civilization.items():
-            if key not in ['civilization_type']:  # Skip the key we already set
-                setattr(civ_node, key, value)
         self._current.civilizations = [civ_node]
         
         # Civilization-Trait relationships
@@ -199,7 +242,7 @@ class CivilizationBuilder(BaseBuilder):
             )
         self._current.civilization_traits = civ_trait_nodes
         
-        # Start biases - biome_type should be mapped to biome_type attribute
+        # Start biases - biomes
         start_bias_biomes = []
         for bias in self.start_bias_biomes:
             node = StartBiasBiomeNode(civilization_type=self.civilization_type)
@@ -217,31 +260,46 @@ class CivilizationBuilder(BaseBuilder):
             start_bias_terrains.append(node)
         self._current.start_bias_terrains = start_bias_terrains
         
-        # City names
-        city_name_nodes = []
-        for city_name in self.city_names:
-            city_name_nodes.append(
-                CityNameNode(
-                    civilization_type=self.civilization_type,
-                    city_name=city_name
+        # City names - extract from localizations
+        city_name_count = 0
+        for loc in self.localizations:
+            if isinstance(loc, dict) and 'city_names' in loc:
+                city_name_count = max(city_name_count, len(loc['city_names']))
+        
+        if city_name_count > 0:
+            city_name_nodes = []
+            for i in range(1, city_name_count + 1):
+                loc_key = locale(self.civilization_type, f'cityNames_{i}')
+                city_name_nodes.append(
+                    CityNameNode(
+                        civilization_type=self.civilization_type,
+                        city_name=loc_key
+                    )
                 )
-            )
-        if city_name_nodes:
             self._current.city_names = city_name_nodes
         
         # ==== POPULATE _shell DATABASE ====
-        shell_civ_node = CivilizationNode(civilization_type=self.civilization_type)
-        for key, value in self.civilization.items():
-            if key != 'civilization_type':
-                setattr(shell_civ_node, key, value)
-        self._shell.civilizations = [shell_civ_node]
+        self._shell.civilizations = [civ_node]
         
         # ==== POPULATE _legacy DATABASE ====
+        # Legacy types use insertOrIgnore
+        legacy_civ_type = TypeNode(type_=self.civilization_type, kind="KIND_CIVILIZATION")
+        legacy_civ_type.insert_or_ignore()
+        legacy_trait_type = TypeNode(type_=trait_type, kind="KIND_TRAIT")
+        legacy_trait_type.insert_or_ignore()
+        legacy_trait_ability_type = TypeNode(type_=trait_ability_type, kind="KIND_TRAIT")
+        legacy_trait_ability_type.insert_or_ignore()
+        
         self._legacy.types = [
-            TypeNode(type_type=self.civilization_type, kind="KIND_CIVILIZATION"),
-            TypeNode(type_type=trait_type, kind="KIND_TRAIT"),
-            TypeNode(type_type=trait_ability_type, kind="KIND_TRAIT"),
+            legacy_civ_type,
+            legacy_trait_type,
+            legacy_trait_ability_type,
         ]
+        
+        # Legacy trait uses insertOrIgnore
+        legacy_trait = TraitNode(trait_type=trait_type, internal_only=True)
+        legacy_trait.insert_or_ignore()
+        self._legacy.traits = [legacy_trait]
         
         legacy_civ = LegacyCivilizationNode(
             civilization_type=self.civilization_type,
@@ -299,6 +357,82 @@ class CivilizationBuilder(BaseBuilder):
         if localization_rows:
             self._localizations.english_text = localization_rows
         
+        # ==== PROCESS BOUND ITEMS (after migration) ====
+        if self._bound_items:
+            from civ7_modding_tools.nodes import TraitModifierNode, GameModifierNode
+            
+            trait_type = self.trait.get("trait_type", "TRAIT_CUSTOM")
+            trait_ability_type = self.trait_ability.get("trait_type", "TRAIT_CUSTOM_ABILITY")
+            
+            for item in self._bound_items:
+                # Handle ModifierBuilder
+                if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
+                    if hasattr(item, 'migrate'):
+                        item.migrate()
+                    
+                    if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
+                        if not self._game_effects.game_modifiers:
+                            self._game_effects.game_modifiers = []
+                        for modifier in item._game_effects.modifiers:
+                            modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
+                            if modifier_id:
+                                self._game_effects.game_modifiers.append(
+                                    GameModifierNode(modifier_id=modifier_id)
+                                )
+                        
+                        if not getattr(item, 'is_detached', False):
+                            if not self._current.trait_modifiers:
+                                self._current.trait_modifiers = []
+                            for modifier in item._game_effects.modifiers:
+                                modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
+                                if modifier_id:
+                                    self._current.trait_modifiers.append(
+                                        TraitModifierNode(
+                                            trait_type=trait_ability_type,
+                                            modifier_id=modifier_id
+                                        )
+                                    )
+                    
+                    if hasattr(item, '_localizations') and item._localizations:
+                        if item._localizations.english_text:
+                            if not self._localizations.english_text:
+                                self._localizations.english_text = []
+                            self._localizations.english_text.extend(item._localizations.english_text)
+                
+                # Handle UnitBuilder
+                elif hasattr(item, 'unit_type') and item.unit_type:
+                    if hasattr(item, '_current') and item._current:
+                        for unit in getattr(item._current, 'units', []):
+                            unit.trait_type = trait_type
+                
+                # Handle ConstructibleBuilder
+                elif hasattr(item, 'constructible_type') and item.constructible_type:
+                    if hasattr(item, '_always') and item._always:
+                        for building in getattr(item._always, 'buildings', []):
+                            building.trait_type = trait_type
+                        for improvement in getattr(item._always, 'improvements', []):
+                            improvement.trait_type = trait_type
+                
+                # Handle UniqueQuarterBuilder
+                elif hasattr(item, 'unique_quarter_type') and item.unique_quarter_type:
+                    if hasattr(item, '_always') and item._always:
+                        for unique_quarter in getattr(item._always, 'unique_quarters', []):
+                            unique_quarter.trait_type = trait_type
+                
+                # Handle ProgressionTreeBuilder
+                elif hasattr(item, 'progression_tree_type') and item.progression_tree_type:
+                    if hasattr(item, '_game_effects') and item._game_effects:
+                        if item._game_effects.game_modifiers:
+                            if not self._game_effects.game_modifiers:
+                                self._game_effects.game_modifiers = []
+                            self._game_effects.game_modifiers.extend(item._game_effects.game_modifiers)
+        
+        return self
+
+    def bind(self, items: List[BaseBuilder]) -> "CivilizationBuilder":
+        """Bind entities to this civilization (units, buildings, modifiers, etc.)."""
+        # Store items for processing during migration
+        self._bound_items.extend(items)
         return self
 
     def build(self) -> list[BaseFile]:
@@ -373,12 +507,15 @@ class UnitBuilder(BaseBuilder):
         self.unit: Dict[str, Any] = {}
         self.unit_stats: list[Dict[str, Any]] = []
         self.unit_costs: list[Dict[str, Any]] = []
+        self.unit_cost: Dict[str, Any] = {}  # Support single cost format
+        self.unit_stat: Dict[str, Any] = {}  # Support single stat format
         self.unit_replace: Optional[Dict[str, Any]] = None
         self.unit_upgrade: Optional[Dict[str, Any]] = None
         self.unit_advisories: list[Dict[str, Any]] = []
         self.visual_remap: Optional[Dict[str, Any]] = None
         self.icon: Dict[str, Any] = {}
         self.localizations: list[Dict[str, Any]] = []
+        self.type_tags: list[str] = []  # Additional type tags (e.g., UNIT_CLASS_RECON)
 
     def fill(self, payload: Dict[str, Any]) -> "UnitBuilder":
         """Fill unit builder from payload."""
@@ -389,49 +526,96 @@ class UnitBuilder(BaseBuilder):
 
     def migrate(self) -> "UnitBuilder":
         """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
+        
         if not self.unit_type:
             return self
         
+        # Generate localization keys
+        loc_name = locale(self.unit_type, 'name')
+        loc_description = locale(self.unit_type, 'description')
+        
         # ==== POPULATE _current DATABASE ====
+        # Types
         self._current.types = [
-            TypeNode(type_type=self.unit_type, kind="KIND_UNIT"),
+            TypeNode(type_=self.unit_type, kind="KIND_UNIT"),
         ]
         
-        # Unit definition
-        unit_node = UnitNode(unit_type=self.unit_type)
+        # Tags - create unit class tag
+        unit_class_tag = self.unit_type.replace('UNIT_', 'UNIT_CLASS_')
+        self._current.tags = [
+            TagNode(tag=unit_class_tag, category='UNIT_CLASS')
+        ]
+        
+        # TypeTags - link unit to its class tag and any additional type tags
+        type_tags = [
+            TypeTagNode(type_=self.unit_type, tag=unit_class_tag)
+        ]
+        # Add user-specified type tags (like UNIT_CLASS_RECON)
+        if hasattr(self, 'type_tags') and self.type_tags:
+            for tag in self.type_tags:
+                type_tags.append(TypeTagNode(type_=self.unit_type, tag=tag))
+        self._current.type_tags = type_tags
+        
+        # Unit definition with full properties and localization
+        unit_node = UnitNode(
+            unit_type=self.unit_type,
+            name=loc_name,
+            description=loc_description,
+        )
+        # Apply all user-provided unit properties
         for key, value in self.unit.items():
             setattr(unit_node, key, value)
         self._current.units = [unit_node]
         
-        # Unit stats
-        if self.unit_stats:
-            self._current.unit_stats = [
-                UnitStatNode(unit_type=self.unit_type, **stat)
-                for stat in self.unit_stats
-            ]
-        
         # Unit costs
         if self.unit_costs:
-            self._current.unit_costs = [
-                UnitCostNode(unit_type=self.unit_type, **cost)
-                for cost in self.unit_costs
-            ]
+            cost_nodes = []
+            for cost in self.unit_costs:
+                cost_node = UnitCostNode(unit_type=self.unit_type)
+                for key, value in cost.items():
+                    setattr(cost_node, key, value)
+                cost_nodes.append(cost_node)
+            self._current.unit_costs = cost_nodes
+        elif hasattr(self, 'unit_cost') and self.unit_cost:
+            # Support single cost format
+            cost_node = UnitCostNode(unit_type=self.unit_type)
+            for key, value in self.unit_cost.items():
+                setattr(cost_node, key, value)
+            self._current.unit_costs = [cost_node]
         
         # Unit replace
         if self.unit_replace:
-            node_data = {"civUniqueUnitType": self.unit_type}
-            node_data.update(self.unit_replace)
-            # TODO: Add UnitReplaceNode when available
+            replace_node = UnitReplaceNode(
+                civ_unique_unit_type=self.unit_type,
+                replaces_unit_type=self.unit_replace.get('replaces_unit_type') or self.unit_replace.get('replacesUnitType')
+            )
+            self._current.unit_replaces = [replace_node]
+        
+        # Unit stats
+        if self.unit_stats:
+            stat_nodes = []
+            for stat in self.unit_stats:
+                stat_node = UnitStatNode(unit_type=self.unit_type)
+                for key, value in stat.items():
+                    setattr(stat_node, key, value)
+                stat_nodes.append(stat_node)
+            self._current.unit_stats = stat_nodes
+        elif hasattr(self, 'unit_stat') and self.unit_stat:
+            # Support single stat format
+            stat_node = UnitStatNode(unit_type=self.unit_type)
+            for key, value in self.unit_stat.items():
+                setattr(stat_node, key, value)
+            self._current.unit_stats = [stat_node]
         
         # Unit upgrade
         if self.unit_upgrade:
-            node_data = {"unit": self.unit_type}
-            node_data.update(self.unit_upgrade)
-            # TODO: Add UnitUpgradeNode when available
+            # TODO: Add UnitUpgradeNode when needed
+            pass
         
         # Unit advisories
-        for advisory in self.unit_advisories:
-            # TODO: Add UnitAdvisoryNode when available
+        if self.unit_advisories:
+            # TODO: Add UnitAdvisoryNode when needed
             pass
         
         # ==== POPULATE _icons DATABASE ====
@@ -445,15 +629,14 @@ class UnitBuilder(BaseBuilder):
         localization_rows = []
         for loc in self.localizations:
             if isinstance(loc, dict):
-                prefix = self.unit_type
                 if "name" in loc:
                     localization_rows.append(EnglishTextNode(
-                        tag=f"{prefix}_NAME",
+                        tag=loc_name,
                         text=loc["name"]
                     ))
                 if "description" in loc:
                     localization_rows.append(EnglishTextNode(
-                        tag=f"{prefix}_DESCRIPTION",
+                        tag=loc_description,
                         text=loc["description"]
                     ))
         
@@ -522,13 +705,18 @@ class ConstructibleBuilder(BaseBuilder):
     def __init__(self) -> None:
         """Initialize constructible builder with database variants."""
         super().__init__()
-        self._current = DatabaseNode()
+        self._always = DatabaseNode()
         self._icons = DatabaseNode()
         self._localizations = DatabaseNode()
         self._game_effects: Optional[DatabaseNode] = None
         
         self.constructible_type: Optional[str] = None
         self.constructible: Dict[str, Any] = {}
+        self.building: Optional[Dict[str, Any]] = None
+        self.improvement: Optional[Dict[str, Any]] = None
+        self.type_tags: list[str] = []
+        self.constructible_valid_districts: list[str] = []
+        self.constructible_maintenances: list[Dict[str, Any]] = []
         self.yield_changes: list[Dict[str, Any]] = []
         self.localizations: list[Dict[str, Any]] = []
         self.modifiers: list[Dict[str, Any]] = []
@@ -543,28 +731,91 @@ class ConstructibleBuilder(BaseBuilder):
 
     def migrate(self) -> "ConstructibleBuilder":
         """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
+        
         if not self.constructible_type:
             return self
         
-        # ==== POPULATE _current DATABASE ====
-        self._current.types = [
-            TypeNode(type_type=self.constructible_type, kind="KIND_CONSTRUCTIBLE"),
+        # Auto-detect building vs improvement from type
+        if not self.building and not self.improvement:
+            if self.constructible_type.startswith('BUILDING_'):
+                self.building = {}
+            elif self.constructible_type.startswith('IMPROVEMENT_'):
+                self.improvement = {}
+        
+        # Generate localization keys
+        loc_name = locale(self.constructible_type, 'name')
+        loc_description = locale(self.constructible_type, 'description')
+        loc_tooltip = locale(self.constructible_type, 'tooltip')
+        
+        # ==== POPULATE _always DATABASE ====
+        # Types
+        self._always.types = [
+            TypeNode(type_=self.constructible_type, kind="KIND_CONSTRUCTIBLE"),
         ]
         
-        # Constructible definition
-        const_node = ConstructibleNode(constructible_type=self.constructible_type)
+        # TypeTags
+        if self.type_tags:
+            self._always.type_tags = [
+                TypeTagNode(type_=self.constructible_type, tag=tag)
+                for tag in self.type_tags
+            ]
+        
+        # Building (if this is a building)
+        if self.building is not None:
+            building_node = BuildingNode(constructible_type=self.constructible_type)
+            for key, value in self.building.items():
+                setattr(building_node, key, value)
+            self._always.buildings = [building_node]
+        
+        # Improvement (if this is an improvement)
+        if self.improvement is not None:
+            improvement_node = ImprovementNode(constructible_type=self.constructible_type)
+            for key, value in self.improvement.items():
+                setattr(improvement_node, key, value)
+            self._always.improvements = [improvement_node]
+        
+        # Constructible definition with localization
+        const_node = ConstructibleNode(
+            constructible_type=self.constructible_type,
+            name=loc_name,
+            description=loc_description,
+            tooltip=loc_tooltip,
+        )
         for key, value in self.constructible.items():
             setattr(const_node, key, value)
-        self._current.constructibles = [const_node]
+        self._always.constructibles = [const_node]
+        
+        # Valid districts
+        if self.constructible_valid_districts:
+            self._always.constructible_valid_districts = [
+                ConstructibleValidDistrictNode(
+                    constructible_type=self.constructible_type,
+                    district_type=district
+                )
+                for district in self.constructible_valid_districts
+            ]
+        
+        # Maintenances
+        if self.constructible_maintenances:
+            self._always.constructible_maintenances = [
+                ConstructibleMaintenanceNode(
+                    constructible_type=self.constructible_type,
+                    yield_type=maint.get('yield_type'),
+                    amount=maint.get('amount')
+                )
+                for maint in self.constructible_maintenances
+            ]
         
         # Yield changes
         if self.yield_changes:
-            self._current.constructible_yield_changes = [
+            self._always.constructible_yield_changes = [
                 ConstructibleYieldChangeNode(
                     constructible_type=self.constructible_type,
-                    **yield_change
+                    yield_type=yc.get('yield_type'),
+                    yield_change=yc.get('yield_change')
                 )
-                for yield_change in self.yield_changes
+                for yc in self.yield_changes
             ]
         
         # ==== POPULATE _icons DATABASE ====
@@ -578,16 +829,20 @@ class ConstructibleBuilder(BaseBuilder):
         localization_rows = []
         for loc in self.localizations:
             if isinstance(loc, dict):
-                prefix = self.constructible_type
                 if "name" in loc:
                     localization_rows.append(EnglishTextNode(
-                        tag=f"{prefix}_NAME",
+                        tag=loc_name,
                         text=loc["name"]
                     ))
                 if "description" in loc:
                     localization_rows.append(EnglishTextNode(
-                        tag=f"{prefix}_DESCRIPTION",
+                        tag=loc_description,
                         text=loc["description"]
+                    ))
+                if "tooltip" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_tooltip,
+                        text=loc["tooltip"]
                     ))
         
         if localization_rows:
@@ -596,15 +851,7 @@ class ConstructibleBuilder(BaseBuilder):
         # ==== POPULATE _game_effects DATABASE ====
         if self.modifiers:
             self._game_effects = DatabaseNode()
-            modifier_nodes = []
-            for modifier in self.modifiers:
-                mod_node = {
-                    "modifier_id": modifier.get("modifier_id", f"MOD_{self.constructible_type}"),
-                    "effect": modifier.get("effect"),
-                }
-                mod_node.update(modifier)
-                modifier_nodes.append(mod_node)
-            self._game_effects.modifiers = modifier_nodes
+            # Note: Full modifier integration would be here
         
         return self
 
@@ -624,8 +871,8 @@ class ConstructibleBuilder(BaseBuilder):
             XmlFile(
                 path=path,
                 name="always.xml",
-                content=self._current,
-                action_group=self.action_group_bundle.current
+                content=self._always,
+                action_groups=[self.action_group_bundle.always]
             ),
             XmlFile(
                 path=path,
@@ -662,19 +909,133 @@ class ProgressionTreeBuilder(BaseBuilder):
     def __init__(self) -> None:
         """Initialize progression tree builder."""
         super().__init__()
+        self._current = DatabaseNode()
+        self._game_effects = DatabaseNode()
+        self._localizations = DatabaseNode()
+        
         self.progression_tree_type: Optional[str] = None
         self.progression_tree: Dict[str, Any] = {}
-        self.progression_tree_nodes: List[Dict[str, Any]] = []
-        self.localizations: List[BaseLocalization] = []
-    
-    def build(self) -> list[BaseFile]:
-        """Build progression tree files."""
+        self.progression_tree_prereqs: List[Dict[str, Any]] = []
+        self.localizations: List[Dict[str, Any]] = []
+
+    def fill(self, payload: Dict[str, Any]) -> "ProgressionTreeBuilder":
+        """Fill progression tree builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "ProgressionTreeBuilder":
+        """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
         from civ7_modding_tools.nodes import (
             ProgressionTreeNode,
-            ProgressionTreeNodeNode,
             ProgressionTreePrereqNode,
         )
-        from civ7_modding_tools.nodes.database import DatabaseNode
+        
+        if not self.progression_tree_type:
+            return self
+        
+        # Generate localization keys
+        loc_name = locale(self.progression_tree_type, 'name')
+        
+        # ==== POPULATE _current DATABASE ====
+        # Types
+        self._current.types = [
+            TypeNode(type_=self.progression_tree_type, kind="KIND_TREE"),
+        ]
+        
+        # Progression tree definition with localization
+        tree_node = ProgressionTreeNode(
+            progression_tree_type=self.progression_tree_type,
+            name=loc_name,
+        )
+        for key, value in self.progression_tree.items():
+            setattr(tree_node, key, value)
+        self._current.progression_trees = [tree_node]
+        
+        # Prerequisites
+        if self.progression_tree_prereqs:
+            self._current.progression_tree_prereqs = [
+                ProgressionTreePrereqNode(
+                    node=prereq.get('node'),
+                    prereq_node=prereq.get('prereq_node')
+                )
+                for prereq in self.progression_tree_prereqs
+            ]
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                if "name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_name,
+                        text=loc["name"]
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        return self
+
+    def bind(self, items: List["ProgressionTreeNodeBuilder"]) -> "ProgressionTreeBuilder":
+        """Bind ProgressionTreeNodeBuilder items to this tree.
+        
+        This merges all nodes from the child node builders into this tree.
+        """
+        for item in items:
+            # Fill progression tree reference on all nodes
+            if hasattr(item, '_current') and item._current:
+                for node in getattr(item._current, 'progression_tree_nodes', []):
+                    node.progression_tree = self.progression_tree_type
+                
+                # Merge types
+                if item._current.types:
+                    self._current.types = self._current.types + item._current.types
+                
+                # Merge progression_tree_nodes
+                if item._current.progression_tree_nodes:
+                    if not self._current.progression_tree_nodes:
+                        self._current.progression_tree_nodes = []
+                    self._current.progression_tree_nodes = self._current.progression_tree_nodes + item._current.progression_tree_nodes
+                
+                # Merge progression_tree_advisories
+                if item._current.progression_tree_advisories:
+                    if not self._current.progression_tree_advisories:
+                        self._current.progression_tree_advisories = []
+                    self._current.progression_tree_advisories = self._current.progression_tree_advisories + item._current.progression_tree_advisories
+                
+                # Merge progression_tree_node_unlocks
+                if item._current.progression_tree_node_unlocks:
+                    if not self._current.progression_tree_node_unlocks:
+                        self._current.progression_tree_node_unlocks = []
+                    self._current.progression_tree_node_unlocks = self._current.progression_tree_node_unlocks + item._current.progression_tree_node_unlocks
+                
+                # Merge progression_tree_prereqs
+                if item._current.progression_tree_prereqs:
+                    if not self._current.progression_tree_prereqs:
+                        self._current.progression_tree_prereqs = []
+                    self._current.progression_tree_prereqs = self._current.progression_tree_prereqs + item._current.progression_tree_prereqs
+            
+            # Merge game_effects game_modifiers
+            if hasattr(item, '_game_effects') and item._game_effects:
+                if item._game_effects.game_modifiers:
+                    if not self._game_effects.game_modifiers:
+                        self._game_effects.game_modifiers = []
+                    self._game_effects.game_modifiers = self._game_effects.game_modifiers + item._game_effects.game_modifiers
+            
+            # Merge localizations
+            if hasattr(item, '_localizations') and item._localizations:
+                if item._localizations.english_text:
+                    if not self._localizations.english_text:
+                        self._localizations.english_text = []
+                    self._localizations.english_text = self._localizations.english_text + item._localizations.english_text
+        
+        return self
+
+    def build(self) -> list[BaseFile]:
+        """Build progression tree files."""
         from civ7_modding_tools.utils import trim, kebab_case
         
         files: list[BaseFile] = []
@@ -682,45 +1043,7 @@ class ProgressionTreeBuilder(BaseBuilder):
         if not self.progression_tree_type:
             return files
         
-        tree_nodes: list[BaseNode] = []
-        effects_nodes: list[BaseNode] = []
-        
-        # Add main progression tree row
-        tree_node = ProgressionTreeNode()
-        tree_node.progression_tree_type = self.progression_tree_type
-        for key, value in self.progression_tree.items():
-            setattr(tree_node, key, value)
-        tree_nodes.append(tree_node)
-        
-        # Add progression tree nodes and prerequisites
-        for node_data in self.progression_tree_nodes:
-            node_obj = ProgressionTreeNodeNode()
-            node_obj.progression_tree_type = self.progression_tree_type
-            for key, value in node_data.items():
-                if key == "prerequisites":
-                    continue  # Handle separately
-                setattr(node_obj, key, value)
-            tree_nodes.append(node_obj)
-            
-            # Add prerequisites for this node
-            if "prerequisites" in node_data:
-                for prereq in node_data["prerequisites"]:
-                    prereq_node = ProgressionTreePrereqNode()
-                    prereq_node.progression_tree_type = self.progression_tree_type
-                    prereq_node.progression_tree_node_type = node_data.get("progression_tree_node_type")
-                    for key, value in prereq.items():
-                        setattr(prereq_node, key, value)
-                    tree_nodes.append(prereq_node)
-        
-        # Create current database
-        current_db = DatabaseNode()
-        current_db.progression_trees = [tree_nodes[0]] if tree_nodes else []
-        if len(tree_nodes) > 1:
-            current_db.progression_tree_nodes = tree_nodes[1:]
-        
-        # Create effects database (for modifiers if any)
-        effects_db = None
-        # Note: modifiers would be added here if ProgressionTreeBuilder supported them
+        self.migrate()
         
         # Generate path (trimmed + kebab-case)
         trimmed = trim(self.progression_tree_type)
@@ -730,20 +1053,221 @@ class ProgressionTreeBuilder(BaseBuilder):
         files.append(XmlFile(
             path=path,
             name="current.xml",
-            content=current_db,
+            content=self._current,
             action_group=self.action_group_bundle.current
         ))
         
-        # Create game-effects.xml if there are modifiers
-        if effects_db:
+        # Create game-effects.xml if there are game_modifiers
+        if self._game_effects and (
+            (hasattr(self._game_effects, 'game_modifiers') and self._game_effects.game_modifiers) or
+            (hasattr(self._game_effects, 'modifiers') and self._game_effects.modifiers)
+        ):
             files.append(XmlFile(
                 path=path,
                 name="game-effects.xml",
-                content=effects_db,
+                content=self._game_effects,
                 action_group=self.action_group_bundle.current
             ))
         
+        # Create localization.xml
+        files.append(XmlFile(
+            path=path,
+            name="localization.xml",
+            content=self._localizations,
+            action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+        ))
+        
+        # Filter out empty files
+        files = [f for f in files if f.content is not None]
+        
         return files
+
+
+class ProgressionTreeNodeBuilder(BaseBuilder):
+    """Builder for creating progression tree nodes (tech/civic nodes)."""
+    
+    def __init__(self) -> None:
+        """Initialize progression tree node builder."""
+        super().__init__()
+        self._current = DatabaseNode()
+        self._game_effects = DatabaseNode()
+        self._localizations = DatabaseNode()
+        
+        self.progression_tree_node_type: Optional[str] = None
+        self.progression_tree_node: Dict[str, Any] = {}
+        self.progression_tree_advisories: List[str] = []
+        self.localizations: List[Dict[str, Any]] = []
+
+    def fill(self, payload: Dict[str, Any]) -> "ProgressionTreeNodeBuilder":
+        """Fill progression tree node builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "ProgressionTreeNodeBuilder":
+        """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
+        from civ7_modding_tools.nodes import (
+            ProgressionTreeNodeNode,
+        )
+        
+        if not self.progression_tree_node_type:
+            return self
+        
+        # Generate localization keys
+        loc_name = locale(self.progression_tree_node_type, 'name')
+        
+        # ==== POPULATE _current DATABASE ====
+        # Types
+        self._current.types = [
+            TypeNode(type_=self.progression_tree_node_type, kind="KIND_TREE_NODE"),
+        ]
+        
+        # Progression tree node definition with localization
+        node = ProgressionTreeNodeNode(
+            progression_tree_node_type=self.progression_tree_node_type,
+            name=loc_name,
+        )
+        for key, value in self.progression_tree_node.items():
+            setattr(node, key, value)
+        self._current.progression_tree_nodes = [node]
+        
+        # Advisories
+        if self.progression_tree_advisories:
+            self._current.progression_tree_advisories = [
+                ProgressionTreeAdvisoryNode(
+                    progression_tree_node_type=self.progression_tree_node_type,
+                    advisory_class_type=advisory
+                )
+                for advisory in self.progression_tree_advisories
+            ]
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                if "name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_name,
+                        text=loc["name"]
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        return self
+
+    def bind(self, items: List[BaseBuilder], unlock_depth: int = 1, hidden: Optional[bool] = None) -> "ProgressionTreeNodeBuilder":
+        """Bind builders to this node, creating unlock entries.
+        
+        Args:
+            items: List of ModifierBuilder, ConstructibleBuilder, UnitBuilder, or TraditionBuilder
+            unlock_depth: Depth of unlock (default 1)
+            hidden: Whether unlock is hidden (optional)
+        """
+        for item in items:
+            # Check for ModifierBuilder (has 'modifier' dict attribute)
+            if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
+                item.migrate()  # Ensure migration is done
+                if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
+                    for modifier in item._game_effects.modifiers:
+                        modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
+                        if modifier_id:
+                            if not self._current.progression_tree_node_unlocks:
+                                self._current.progression_tree_node_unlocks = []
+                            self._current.progression_tree_node_unlocks.append(
+                                ProgressionTreeNodeUnlockNode(
+                                    progression_tree_node_type=self.progression_tree_node_type,
+                                    target_kind="KIND_MODIFIER",
+                                    target_type=modifier_id,
+                                    unlock_depth=unlock_depth,
+                                    hidden=hidden
+                                )
+                            )
+                    # Merge modifiers to game_effects
+                    if not self._game_effects.game_modifiers:
+                        self._game_effects.game_modifiers = []
+                    # Convert modifiers to game_modifiers (GameModifierNode)
+                    for modifier in item._game_effects.modifiers:
+                        modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
+                        if modifier_id:
+                            from civ7_modding_tools.nodes import GameModifierNode
+                            self._game_effects.game_modifiers.append(
+                                GameModifierNode(modifier_id=modifier_id)
+                            )
+                
+                # Merge localizations
+                if hasattr(item, '_localizations') and item._localizations:
+                    if item._localizations.english_text:
+                        if not self._localizations.english_text:
+                            self._localizations.english_text = []
+                        self._localizations.english_text.extend(item._localizations.english_text)
+            
+            # Check for ConstructibleBuilder
+            elif hasattr(item, 'constructible_type') and item.constructible_type:
+                if hasattr(item, '_always') and item._always:
+                    for constructible in getattr(item._always, 'constructibles', []):
+                        const_type = getattr(constructible, 'constructible_type', None)
+                        if const_type:
+                            if not self._current.progression_tree_node_unlocks:
+                                self._current.progression_tree_node_unlocks = []
+                            self._current.progression_tree_node_unlocks.append(
+                                ProgressionTreeNodeUnlockNode(
+                                    progression_tree_node_type=self.progression_tree_node_type,
+                                    target_kind="KIND_CONSTRUCTIBLE",
+                                    target_type=const_type,
+                                    unlock_depth=unlock_depth,
+                                    hidden=hidden
+                                )
+                            )
+            
+            # Check for UnitBuilder
+            elif hasattr(item, 'unit_type') and item.unit_type:
+                if hasattr(item, '_current') and item._current:
+                    for unit in getattr(item._current, 'units', []):
+                        unit_type = getattr(unit, 'unit_type', None)
+                        if unit_type:
+                            if not self._current.progression_tree_node_unlocks:
+                                self._current.progression_tree_node_unlocks = []
+                            self._current.progression_tree_node_unlocks.append(
+                                ProgressionTreeNodeUnlockNode(
+                                    progression_tree_node_type=self.progression_tree_node_type,
+                                    target_kind="KIND_UNIT",
+                                    target_type=unit_type,
+                                    unlock_depth=unlock_depth,
+                                    hidden=hidden
+                                )
+                            )
+            
+            # Check for TraditionBuilder
+            elif hasattr(item, 'tradition_type') and item.tradition_type:
+                if hasattr(item, '_current') and item._current:
+                    for tradition in getattr(item._current, 'traditions', []):
+                        trad_type = getattr(tradition, 'tradition_type', None)
+                        if trad_type:
+                            if not self._current.progression_tree_node_unlocks:
+                                self._current.progression_tree_node_unlocks = []
+                            self._current.progression_tree_node_unlocks.append(
+                                ProgressionTreeNodeUnlockNode(
+                                    progression_tree_node_type=self.progression_tree_node_type,
+                                    target_kind="KIND_TRADITION",
+                                    target_type=trad_type,
+                                    unlock_depth=unlock_depth,
+                                    hidden=hidden
+                                )
+                            )
+        
+        return self
+
+    def build(self) -> list[BaseFile]:
+        """Build progression tree node files.
+        
+        Note: ProgressionTreeNodeBuilder doesn't generate files directly.
+        Instead, it's meant to be bound to a ProgressionTreeBuilder which
+        generates the combined output.
+        """
+        return []
 
 
 class ModifierBuilder(BaseBuilder):
@@ -752,70 +1276,59 @@ class ModifierBuilder(BaseBuilder):
     def __init__(self) -> None:
         """Initialize modifier builder."""
         super().__init__()
-        self.modifier_type: Optional[str] = None
+        self._game_effects = DatabaseNode()
+        self._localizations = DatabaseNode()
+        
         self.modifier: Dict[str, Any] = {}
-        self.game_modifiers: List[Dict[str, Any]] = []
-        self.requirements: List[Dict[str, Any]] = []
-        self.arguments: List[Dict[str, Any]] = []
-        self.localizations: List[BaseLocalization] = []
+        self.localizations: List[Dict[str, Any]] = []
         self.is_detached: bool = False  # Detached modifiers not bound to specific entity
+
+    def fill(self, payload: Dict[str, Any]) -> "ModifierBuilder":
+        """Fill modifier builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "ModifierBuilder":
+        """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
+        from civ7_modding_tools.nodes import ModifierNode, StringNode
+        
+        modifier_node = ModifierNode(**self.modifier)
+        
+        # Add localization strings to modifier (if modifier has attribute support)
+        if self.localizations and hasattr(modifier_node, '__dict__'):
+            for loc in self.localizations:
+                if isinstance(loc, dict):
+                    for key in loc.keys():
+                        # Create string node for localization
+                        # Note: strings may not be directly supported in current ModifierNode
+                        # so we skip this for now
+                        pass
+        
+        # Populate game_effects with modifier
+        self._game_effects.modifiers = [modifier_node]
+        
+        # Populate localizations
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                modifier_id = modifier_node.modifier_id if hasattr(modifier_node, 'modifier_id') else modifier_node.id if hasattr(modifier_node, 'id') else 'MODIFIER'
+                for key, text in loc.items():
+                    localization_rows.append(EnglishTextNode(
+                        tag=locale(modifier_id, key),
+                        text=text
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        return self
     
     def build(self) -> list[BaseFile]:
-        """Build modifier files."""
-        from civ7_modding_tools.nodes import (
-            ModifierNode,
-            GameModifierNode,
-            RequirementNode,
-            ArgumentNode,
-        )
-        
-        files: list[BaseFile] = []
-        
-        if not self.modifier_type:
-            return files
-        
-        modifier_nodes: list[BaseNode] = []
-        
-        # Add main modifier row
-        modifier_node = ModifierNode()
-        modifier_node.modifier_type = self.modifier_type
-        for key, value in self.modifier.items():
-            setattr(modifier_node, key, value)
-        modifier_nodes.append(modifier_node)
-        
-        # Add game modifiers
-        for game_mod in self.game_modifiers:
-            game_mod_node = GameModifierNode()
-            game_mod_node.modifier_type = self.modifier_type
-            for key, value in game_mod.items():
-                setattr(game_mod_node, key, value)
-            modifier_nodes.append(game_mod_node)
-        
-        # Add requirements
-        for req in self.requirements:
-            req_node = RequirementNode()
-            req_node.modifier_type = self.modifier_type
-            for key, value in req.items():
-                setattr(req_node, key, value)
-            modifier_nodes.append(req_node)
-        
-        # Add arguments
-        for arg in self.arguments:
-            arg_node = ArgumentNode()
-            arg_node.modifier_type = self.modifier_type
-            for key, value in arg.items():
-                setattr(arg_node, key, value)
-            modifier_nodes.append(arg_node)
-        
-        # Create modifier file
-        modifier_file = XmlFile(
-            path="/modifiers/" if self.is_detached else f"/modifiers/{self.modifier_type.lower()}/",
-            name="modifier.xml",
-            content=modifier_nodes
-        )
-        files.append(modifier_file)
-        
-        return files
+        """Build modifier files (returns empty as modifiers are bound to other builders)."""
+        return []
 
 
 class TraditionBuilder(BaseBuilder):
@@ -824,47 +1337,145 @@ class TraditionBuilder(BaseBuilder):
     def __init__(self) -> None:
         """Initialize tradition builder."""
         super().__init__()
+        self._current = DatabaseNode()
+        self._game_effects = DatabaseNode()
+        self._localizations = DatabaseNode()
+        
         self.tradition_type: Optional[str] = None
         self.tradition: Dict[str, Any] = {}
-        self.tradition_modifiers: List[Dict[str, Any]] = []
-        self.localizations: List[BaseLocalization] = []
+        self.localizations: List[Dict[str, Any]] = []
+
+    def fill(self, payload: Dict[str, Any]) -> "TraditionBuilder":
+        """Fill tradition builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "TraditionBuilder":
+        """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
+        from civ7_modding_tools.nodes import TraditionNode
+        
+        if not self.tradition_type:
+            return self
+        
+        # Generate localization keys
+        loc_name = locale(self.tradition_type, 'name')
+        loc_description = locale(self.tradition_type, 'description')
+        
+        # ==== POPULATE _current DATABASE ====
+        # Types
+        self._current.types = [
+            TypeNode(type_=self.tradition_type, kind="KIND_TRADITION"),
+        ]
+        
+        # Tradition definition with localization
+        tradition_node = TraditionNode(
+            tradition_type=self.tradition_type,
+            name=loc_name,
+            description=loc_description,
+        )
+        for key, value in self.tradition.items():
+            setattr(tradition_node, key, value)
+        self._current.traditions = [tradition_node]
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                if "name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_name,
+                        text=loc["name"]
+                    ))
+                if "description" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_description,
+                        text=loc["description"]
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        return self
+
+    def bind(self, items: List[BaseBuilder]) -> "TraditionBuilder":
+        """Bind ModifierBuilder items to this tradition."""
+        from civ7_modding_tools.nodes import TraditionModifierNode
+        
+        for item in items:
+            # Check for ModifierBuilder
+            if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
+                # Merge modifiers from game_effects
+                if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
+                    if not self._game_effects.modifiers:
+                        self._game_effects.modifiers = []
+                    self._game_effects.modifiers.extend(item._game_effects.modifiers)
+                    
+                    # Add tradition modifiers if not detached
+                    if not getattr(item, 'is_detached', False):
+                        if not self._current.tradition_modifiers:
+                            self._current.tradition_modifiers = []
+                        for modifier in item._game_effects.modifiers:
+                            modifier_id = getattr(modifier, 'id', None)
+                            if modifier_id:
+                                self._current.tradition_modifiers.append(
+                                    TraditionModifierNode(
+                                        tradition_type=self.tradition_type,
+                                        modifier_id=modifier_id
+                                    )
+                                )
+                
+                # Merge localizations
+                if hasattr(item, '_localizations') and item._localizations:
+                    if item._localizations.english_text:
+                        if not self._localizations.english_text:
+                            self._localizations.english_text = []
+                        self._localizations.english_text.extend(item._localizations.english_text)
+        
+        return self
     
     def build(self) -> list[BaseFile]:
         """Build tradition files."""
-        from civ7_modding_tools.nodes import (
-            TraditionNode,
-            TraditionModifierNode,
-        )
+        from civ7_modding_tools.utils import trim, kebab_case
         
         files: list[BaseFile] = []
         
         if not self.tradition_type:
             return files
         
-        tradition_nodes: list[BaseNode] = []
+        self.migrate()
         
-        # Add main tradition row
-        tradition_node = TraditionNode()
-        tradition_node.tradition_type = self.tradition_type
-        for key, value in self.tradition.items():
-            setattr(tradition_node, key, value)
-        tradition_nodes.append(tradition_node)
+        # Generate path (trimmed + kebab-case)
+        trimmed = trim(self.tradition_type)
+        path = f"/traditions/{kebab_case(trimmed)}/"
         
-        # Add tradition modifiers
-        for trad_mod in self.tradition_modifiers:
-            trad_mod_node = TraditionModifierNode()
-            trad_mod_node.tradition_type = self.tradition_type
-            for key, value in trad_mod.items():
-                setattr(trad_mod_node, key, value)
-            tradition_nodes.append(trad_mod_node)
+        # Create files
+        files.append(XmlFile(
+            path=path,
+            name="current.xml",
+            content=self._current,
+            action_group=self.action_group_bundle.current
+        ))
         
-        # Create tradition file
-        tradition_file = XmlFile(
-            path=f"/traditions/{self.tradition_type.lower()}/",
-            name="tradition.xml",
-            content=tradition_nodes
-        )
-        files.append(tradition_file)
+        if self._game_effects and len(self._game_effects.modifiers) > 0:
+            files.append(XmlFile(
+                path=path,
+                name="game-effects.xml",
+                content=self._game_effects,
+                action_group=self.action_group_bundle.current
+            ))
+        
+        files.append(XmlFile(
+            path=path,
+            name="localization.xml",
+            content=self._localizations,
+            action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+        ))
+        
+        # Filter out empty files
+        files = [f for f in files if f.content is not None]
         
         return files
 
@@ -875,72 +1486,202 @@ class UniqueQuarterBuilder(BaseBuilder):
     def __init__(self) -> None:
         """Initialize unique quarter builder."""
         super().__init__()
+        self._always = DatabaseNode()
+        self._icons = DatabaseNode()
+        self._localizations = DatabaseNode()
+        self._game_effects: Optional[DatabaseNode] = None
+        
         self.unique_quarter_type: Optional[str] = None
         self.unique_quarter: Dict[str, Any] = {}
         self.unique_quarter_modifiers: List[Dict[str, Any]] = []
-        self.localizations: List[BaseLocalization] = []
-    
-    def build(self) -> list[BaseFile]:
-        """Build unique quarter files."""
+        self.game_modifiers: List[Dict[str, Any]] = []
+        self.localizations: List[Dict[str, Any]] = []
+        self.icon: Dict[str, Any] = {}
+
+    def fill(self, payload: Dict[str, Any]) -> "UniqueQuarterBuilder":
+        """Fill unique quarter builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "UniqueQuarterBuilder":
+        """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
         from civ7_modding_tools.nodes import (
             UniqueQuarterNode,
             UniqueQuarterModifierNode,
         )
-        from civ7_modding_tools.nodes.database import DatabaseNode
-        from civ7_modding_tools.utils import trim, kebab_case
+        
+        if not self.unique_quarter_type:
+            return self
+        
+        # Generate localization keys
+        loc_name = locale(self.unique_quarter_type, 'name')
+        loc_description = locale(self.unique_quarter_type, 'description')
+        
+        # ==== POPULATE _always DATABASE ====
+        # Types
+        self._always.types = [
+            TypeNode(type_=self.unique_quarter_type, kind="KIND_UNIQUE_QUARTER"),
+        ]
+        
+        # Main unique quarter row with localization
+        quarter_node = UniqueQuarterNode(
+            unique_quarter_type=self.unique_quarter_type,
+            name=loc_name,
+            description=loc_description,
+        )
+        for key, value in self.unique_quarter.items():
+            setattr(quarter_node, key, value)
+        self._always.unique_quarters = [quarter_node]
+        
+        # Unique quarter modifiers (linked to effects)
+        if self.unique_quarter_modifiers:
+            self._always.unique_quarter_modifiers = [
+                UniqueQuarterModifierNode(
+                    unique_quarter_type=self.unique_quarter_type,
+                    modifier_id=mod.get('modifier_id')
+                )
+                for mod in self.unique_quarter_modifiers
+            ]
+        
+        # ==== POPULATE _icons DATABASE ====
+        if self.icon:
+            icon_node = IconDefinitionNode(id=self.unique_quarter_type)
+            for key, value in self.icon.items():
+                setattr(icon_node, key, value)
+            self._icons.icon_definitions = [icon_node]
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                if "name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_name,
+                        text=loc["name"]
+                    ))
+                if "description" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_description,
+                        text=loc["description"]
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        # ==== POPULATE _game_effects DATABASE ====
+        if self.game_modifiers:
+            self._game_effects = DatabaseNode()
+            self._game_effects.game_modifiers = [
+                GameModifierNode(
+                    modifier_id=mod.get('modifier_id'),
+                    target_type=mod.get('target_type', self.unique_quarter_type)
+                )
+                for mod in self.game_modifiers
+            ]
+        
+        return self
+
+    def bind(self, items: List[BaseBuilder]) -> "UniqueQuarterBuilder":
+        """Bind ModifierBuilder items to this unique quarter."""
+        from civ7_modding_tools.nodes import UniqueQuarterModifierNode, GameModifierNode
+        
+        for item in items:
+            # Check for ModifierBuilder
+            if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
+                item.migrate()  # Ensure migration is done
+                
+                # Merge modifiers from game_effects
+                if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
+                    if not self._game_effects:
+                        self._game_effects = DatabaseNode()
+                    if not self._game_effects.modifiers:
+                        self._game_effects.modifiers = []
+                    if not self._game_effects.game_modifiers:
+                        self._game_effects.game_modifiers = []
+                    
+                    # Add modifiers for requirements/effects
+                    self._game_effects.modifiers.extend(item._game_effects.modifiers)
+                    
+                    # Convert modifiers to game_modifiers (GameModifierNode)
+                    for modifier in item._game_effects.modifiers:
+                        modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
+                        if modifier_id:
+                            self._game_effects.game_modifiers.append(
+                                GameModifierNode(modifier_id=modifier_id)
+                            )
+                    
+                    # Add unique quarter modifiers if not detached
+                    if not getattr(item, 'is_detached', False):
+                        if not self._always.unique_quarter_modifiers:
+                            self._always.unique_quarter_modifiers = []
+                        for modifier in item._game_effects.modifiers:
+                            modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
+                            if modifier_id:
+                                self._always.unique_quarter_modifiers.append(
+                                    UniqueQuarterModifierNode(
+                                        unique_quarter_type=self.unique_quarter_type,
+                                        modifier_id=modifier_id
+                                    )
+                                )
+                
+                # Merge localizations
+                if hasattr(item, '_localizations') and item._localizations:
+                    if item._localizations.english_text:
+                        if not self._localizations.english_text:
+                            self._localizations.english_text = []
+                        self._localizations.english_text.extend(item._localizations.english_text)
+        
+        return self
+
+    def build(self) -> list[BaseFile]:
+        """Build unique quarter files."""
+        from civ7_modding_tools.utils import kebab_case
         
         files: list[BaseFile] = []
         
         if not self.unique_quarter_type:
             return files
         
-        # Split modifiers into always and game-effects databases
-        always_nodes: list[BaseNode] = []
-        effects_nodes: list[BaseNode] = []
+        self.migrate()
         
-        # Add main unique quarter row to always database
-        quarter_node = UniqueQuarterNode()
-        quarter_node.unique_quarter_type = self.unique_quarter_type
-        for key, value in self.unique_quarter.items():
-            setattr(quarter_node, key, value)
-        always_nodes.append(quarter_node)
-        
-        # Add unique quarter modifiers to appropriate database
-        for quarter_mod in self.unique_quarter_modifiers:
-            quarter_mod_node = UniqueQuarterModifierNode()
-            quarter_mod_node.unique_quarter_type = self.unique_quarter_type
-            for key, value in quarter_mod.items():
-                setattr(quarter_mod_node, key, value)
-            effects_nodes.append(quarter_mod_node)
-        
-        # Create database wrappers
-        always_db = DatabaseNode()
-        always_db.unique_quarters = always_nodes
-        
-        effects_db = None
-        if effects_nodes:
-            effects_db = DatabaseNode()
-            effects_db.unique_quarter_modifiers = effects_nodes
-        
-        # Generate path (trimmed + kebab-case)
-        trimmed = trim(self.unique_quarter_type)
-        path = f"/constructibles/{kebab_case(trimmed)}/"
+        # Generate path (kebab-case only, no trim)
+        path = f"/constructibles/{kebab_case(self.unique_quarter_type)}/"
         
         # Create files
         files.append(XmlFile(
             path=path,
             name="always.xml",
-            content=always_db,
-            action_group=self.action_group_bundle.always
+            content=self._always,
+            action_groups=[self.action_group_bundle.always]
         ))
         
-        if effects_db:
+        files.append(XmlFile(
+            path=path,
+            name="icons.xml",
+            content=self._icons,
+            action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+        ))
+        
+        files.append(XmlFile(
+            path=path,
+            name="localization.xml",
+            content=self._localizations,
+            action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+        ))
+        
+        if self._game_effects:
             files.append(XmlFile(
                 path=path,
                 name="game-effects.xml",
-                content=effects_db,
+                content=self._game_effects,
                 action_group=self.action_group_bundle.current
             ))
+        
+        # Filter out empty files
+        files = [f for f in files if f.content is not None]
         
         return files
 
@@ -1033,57 +1774,6 @@ class CivilizationUnlockBuilder(BaseBuilder):
             content=civ_unlock_nodes
         )
         files.append(unlock_file)
-        
-        return files
-
-
-class ProgressionTreeNodeBuilder(BaseBuilder):
-    """Builder for creating progression tree nodes (tech/civic nodes)."""
-    
-    def __init__(self) -> None:
-        """Initialize progression tree node builder."""
-        super().__init__()
-        self.progression_tree_node_type: Optional[str] = None
-        self.progression_tree_node: Dict[str, Any] = {}
-        self.progression_tree_node_unlocks: List[Dict[str, Any]] = []
-        self.localizations: List[BaseLocalization] = []
-    
-    def build(self) -> list[BaseFile]:
-        """Build progression tree node files."""
-        from civ7_modding_tools.nodes import (
-            ProgressionTreeNodeNode,
-            ProgressionTreeNodeUnlockNode,
-        )
-        
-        files: list[BaseFile] = []
-        
-        if not self.progression_tree_node_type:
-            return files
-        
-        node_nodes: list[BaseNode] = []
-        
-        # Add main progression tree node row
-        node = ProgressionTreeNodeNode()
-        node.progression_tree_node_type = self.progression_tree_node_type
-        for key, value in self.progression_tree_node.items():
-            setattr(node, key, value)
-        node_nodes.append(node)
-        
-        # Add node unlocks
-        for unlock in self.progression_tree_node_unlocks:
-            unlock_node = ProgressionTreeNodeUnlockNode()
-            unlock_node.progression_tree_node_type = self.progression_tree_node_type
-            for key, value in unlock.items():
-                setattr(unlock_node, key, value)
-            node_nodes.append(unlock_node)
-        
-        # Create progression tree node file
-        node_file = XmlFile(
-            path=f"/progression-tree-nodes/{self.progression_tree_node_type.lower()}/",
-            name="node.xml",
-            content=node_nodes
-        )
-        files.append(node_file)
         
         return files
 

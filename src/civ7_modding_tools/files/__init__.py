@@ -2,10 +2,10 @@
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Optional, Union, TYPE_CHECKING
+from typing import Optional, Union, TYPE_CHECKING, Any, Dict, List
 import shutil
-import xmltodict
 from civ7_modding_tools.nodes import BaseNode
+from civ7_modding_tools.xml_builder import XmlBuilder
 
 if TYPE_CHECKING:
     from civ7_modding_tools.nodes import DatabaseNode
@@ -117,7 +117,7 @@ class XmlFile(BaseFile):
         """
         Write XML file to disk.
         
-        Converts node hierarchy to XML and writes with proper formatting.
+        Converts node hierarchy to attribute-based compact XML matching TypeScript format.
         Creates directory structure as needed.
         
         Args:
@@ -133,33 +133,28 @@ class XmlFile(BaseFile):
         # Build output file path
         output_file = output_dir / self.name
         
-        # Serialize content to XML
+        # Serialize content to XML using new XmlBuilder
         xml_content = self._serialize_content(self.content)
         
-        # Write to file with XML declaration and formatting
-        with open(output_file, "w", encoding="utf-8") as f:
-            f.write('<?xml version="1.0" encoding="utf-8"?>\n')
-            # Strip any existing XML declarations from xmltodict
-            lines = xml_content.split('\n')
-            if lines and lines[0].startswith('<?xml'):
-                xml_content = '\n'.join(lines[1:])
+        # Write to file
+        with open(output_file, "w", encoding="UTF-8") as f:
             f.write(xml_content)
 
     def _serialize_content(self, content: Union["DatabaseNode", list[BaseNode], BaseNode, dict, None]) -> str:
         """
-        Serialize content to XML string.
+        Serialize content to XML string using attribute-based format matching TypeScript.
         
         Priority order:
         1. DatabaseNode - Uses proper semantic table structure (PREFERRED)
-        2. List of nodes - Flat Table/Row structure (legacy support)
-        3. Single node - Single row structure
-        4. Dict - Custom structure
+        2. Dict - Pre-formatted jstoxml structure
+        3. List of nodes - Flat table/row structure (legacy support)
+        4. Single node - Single row structure
         
         Args:
             content: Content to serialize
             
         Returns:
-            XML string
+            XML string with <?xml> declaration and footer comment
         """
         # Import here to avoid circular dependency
         from civ7_modding_tools.nodes.database import DatabaseNode
@@ -170,76 +165,71 @@ class XmlFile(BaseFile):
             if not xml_elem:
                 return ""
             
-            xml_str = xmltodict.unparse(
+            # xml_elem is in jstoxml format: {'Database': {table1: [rows...], table2: [rows...]}}
+            xml_str = XmlBuilder.build(
                 xml_elem,
-                pretty=True,
-                indent="    "
+                header=True,
+                indent='    ',
+                footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
             )
             return xml_str
         
-        # Priority 2: List of nodes (legacy support - flat structure)
+        # Priority 2: Pre-formatted dict in jstoxml format
+        elif isinstance(content, dict):
+            xml_str = XmlBuilder.build(
+                content,
+                header=True,
+                indent='    ',
+                footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
+            )
+            return xml_str
+        
+        # Priority 3: List of nodes (legacy support - convert to DatabaseNode format)
         elif isinstance(content, list):
-            # Convert list of nodes to Database structure
+            # Convert list of nodes to jstoxml format
             rows = []
             for item in content:
                 if isinstance(item, BaseNode):
                     xml_elem = item.to_xml_element()
                     if xml_elem:
-                        # Extract the row content from {_name: attributes}
-                        rows.append(list(xml_elem.values())[0])
-                elif isinstance(item, dict):
-                    rows.append(item)
+                        rows.append(xml_elem)
             
             if not rows:
                 return ""
             
-            # Wrap rows in Database -> Table -> Row structure (flat)
-            # Each row becomes a Row element
-            row_elements = [{"@" + k: v for k, v in row.items()} for row in rows]
-            
+            # Wrap in Database structure
             xml_dict = {
-                "Database": {
-                    "Table": {
-                        "Row": row_elements
-                    }
+                'Database': {
+                    'Table': rows  # Array of {'_name': 'Row', '_attrs': {...}}
                 }
             }
             
-            xml_str = xmltodict.unparse(
+            xml_str = XmlBuilder.build(
                 xml_dict,
-                pretty=True,
-                indent="    "
+                header=True,
+                indent='    ',
+                footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
             )
             return xml_str
         
+        # Priority 4: Single node
         elif isinstance(content, BaseNode):
-            # Single node
             xml_elem = content.to_xml_element()
             if not xml_elem:
                 return ""
             
-            # Extract row content
-            row_content = list(xml_elem.values())[0]
+            # Wrap in Database structure
             xml_dict = {
-                "Database": {
-                    "Table": {
-                        "Row": {"@" + k: v for k, v in row_content.items()}
-                    }
+                'Database': {
+                    'Table': [xml_elem]  # Single element array
                 }
             }
-            xml_str = xmltodict.unparse(
+            
+            xml_str = XmlBuilder.build(
                 xml_dict,
-                pretty=True,
-                indent="    "
-            )
-            return xml_str
-        
-        elif isinstance(content, dict):
-            # Already a dictionary structure
-            xml_str = xmltodict.unparse(
-                content,
-                pretty=True,
-                indent="    "
+                header=True,
+                indent='    ',
+                footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
             )
             return xml_str
         

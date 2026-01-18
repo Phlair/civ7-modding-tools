@@ -1,8 +1,39 @@
 """Utility functions for property filling and manipulation."""
 
 from typing import Any, Callable, Dict, TypeVar, Generic
+import re
 
 T = TypeVar("T")
+
+
+def locale(prefix: str | None, variable: str) -> str:
+    """
+    Generate localization key from prefix and variable name.
+    
+    Matches TypeScript locale() function behavior:
+    Converts to LOC_<PREFIX>_<VARIABLE_IN_UPPER_SNAKE_CASE>
+    
+    Examples:
+        locale('CIVILIZATION_GONDOR', 'name') -> 'LOC_CIVILIZATION_GONDOR_NAME'
+        locale('CIVILIZATION_GONDOR', 'cityNames_1') -> 'LOC_CIVILIZATION_GONDOR_CITY_NAMES_1'
+        locale('UNIT_GONDOR_SCOUT', 'description') -> 'LOC_UNIT_GONDOR_SCOUT_DESCRIPTION'
+    
+    Args:
+        prefix: Prefix for the localization key (e.g., 'CIVILIZATION_GONDOR')
+        variable: Variable name in camelCase or snake_case
+        
+    Returns:
+        Localization key string
+    """
+    if prefix is None:
+        prefix = ''
+    
+    # Convert camelCase to snake_case
+    # Handle sequences like 'cityNames_1' -> 'city_names_1'
+    snake = re.sub('([a-z0-9])([A-Z])', r'\1_\2', variable)
+    snake = snake.upper()
+    
+    return f"LOC_{prefix}_{snake}"
 
 
 def fill(obj: T, payload: Dict[str, Any]) -> T:
@@ -127,28 +158,6 @@ def flatten(lst: list[Any]) -> list[Any]:
     return result
 
 
-def locale(tag: str, key: str) -> str:
-    """
-    Generate a localization key in the format TAG_KEY.
-    
-    Used for creating standardized localization keys that match
-    game conventions. Converts input to uppercase and combines with tag.
-    
-    Args:
-        tag: The localization tag (e.g., "LOC_UNIT", "LOC_BUILDING")
-        key: The key name (e.g., "ROMAN_LEGION_NAME")
-        
-    Returns:
-        Combined localization key (e.g., "LOC_UNIT_ROMAN_LEGION_NAME")
-        
-    Examples:
-        locale("LOC_UNIT", "ROMAN_LEGION_NAME") -> "LOC_UNIT_ROMAN_LEGION_NAME"
-        locale("LOC_BUILDING", "forum") -> "LOC_BUILDING_FORUM"
-    """
-    key_upper = key.upper() if isinstance(key, str) else str(key)
-    return f"{tag}_{key_upper}"
-
-
 def trim(s: str) -> str:
     """
     Remove common game entity prefixes from an ID string.
@@ -166,6 +175,7 @@ def trim(s: str) -> str:
         trim("CIVILIZATION_ROME") -> "ROME"
         trim("UNIT_ROMAN_ARCHER") -> "ROMAN_ARCHER"
         trim("BUILDING_FORUM") -> "FORUM"
+        trim("TREE_CIVICS_GONDOR") -> "CIVICS_GONDOR"
     """
     prefixes_to_remove = [
         "CIVILIZATION_",
@@ -181,6 +191,8 @@ def trim(s: str) -> str:
         "GOLD_",
         "WONDER_",
         "GOVERNOR_",
+        "TREE_",
+        "QUARTER_",
     ]
     
     for prefix in prefixes_to_remove:
@@ -198,15 +210,16 @@ def kebab_case(s: str) -> str:
     Converts snake_case or PascalCase to kebab-case.
     
     Args:
-        s: The input string (e.g., "RomanLegion", "roman_legion", "ROMAN_LEGION")
+        s: The input string (e.g., "RomanLegion", "roman_legion", "ROMAN_LEGION", "GONDOR2")
         
     Returns:
-        Kebab-cased string (e.g., "roman-legion")
+        Kebab-cased string (e.g., "roman-legion", "gondor-2")
         
     Examples:
         kebab_case("RomanLegion") -> "roman-legion"
         kebab_case("roman_legion") -> "roman-legion"
         kebab_case("ROMAN_LEGION") -> "roman-legion"
+        kebab_case("GONDOR2") -> "gondor-2"
     """
     if not s:
         return s
@@ -214,19 +227,25 @@ def kebab_case(s: str) -> str:
     # First, replace underscores with hyphens
     result = s.replace('_', '-')
     
-    # Insert hyphens before uppercase letters (for PascalCase)
+    # Insert hyphens before uppercase letters and digits (for PascalCase)
     # but only if previous character is lowercase or next is lowercase (camelCase detection)
     final = []
     for i, char in enumerate(result):
-        if char.isupper() and i > 0:
+        if i > 0:
             prev_char = result[i - 1]
             next_char = result[i + 1] if i + 1 < len(result) else ''
             
-            # Insert hyphen if:
-            # 1. Previous is lowercase or digit (camelCase transition)
-            # 2. OR next is lowercase and this is part of an acronym transition (e.g., "XMLParser" -> "xml-parser")
-            if (prev_char.islower() or prev_char.isdigit()) or (next_char.islower() and prev_char.isupper()):
+            # Insert hyphen before uppercase if previous is lowercase or digit
+            if char.isupper() and (prev_char.islower() or prev_char.isdigit()):
                 if prev_char != '-':  # Don't add hyphen if already there
+                    final.append('-')
+            # Insert hyphen before digit if previous is letter
+            elif char.isdigit() and prev_char.isalpha():
+                if prev_char != '-':  # Don't add hyphen if already there
+                    final.append('-')
+            # Insert hyphen for acronym transition (e.g., "XMLParser" -> "xml-parser")
+            elif char.isupper() and next_char.islower() and prev_char.isupper():
+                if prev_char != '-':
                     final.append('-')
         
         final.append(char)

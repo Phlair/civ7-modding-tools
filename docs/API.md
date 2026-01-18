@@ -206,7 +206,7 @@ civ = CivilizationBuilder({
         "civilization_name": "CIVILIZATION_ROME",
         "base_tourism": 5,
     },
-    "civilization_traits": [TRAIT.ECONOMIC_CIV],
+    "civilization_traits": [Trait.ECONOMIC],
     "start_bias_biomes": [{"biome": "BIOME_PLAINS"}],
     "localizations": [{
         "name": "Rome",
@@ -262,8 +262,8 @@ unit = UnitBuilder({
     "unit": {
         "unit_type": "UNIT_LEGIONNAIRE",
         "unit_name": "UNIT_LEGIONNAIRE",
-        "unit_class": UNIT_CLASS.MELEE,
-        "unit_movement_class": UNIT_MOVEMENT_CLASS.LAND,
+        "unit_class": UnitClass.MELEE,
+        "unit_movement_class": UnitMovementClass.LAND,
         "base_movement": 2,
     },
     "unit_stats": {
@@ -331,11 +331,11 @@ building = ConstructibleBuilder({
     "building": {
         "building_type": "BUILDING_TEMPLE",
         "building_name": "BUILDING_TEMPLE",
-        "building_class": CONSTRUCTIBLE_CLASS.BUILDING,
+        "building_class": ConstructibleClass.ECONOMIC,
     },
     "production_cost": 150,
     "constructible_yield_changes": [{
-        "yield_type": YIELD.FAITH,
+        "yield_type": Yield.FAITH,
         "yield_change": 4,
     }],
     "maintenance": {YIELD.GOLD: 1},
@@ -605,55 +605,58 @@ Type-safe constants for game entities.
 ### Civilization Constants
 
 ```python
-TRAIT                      # Civilization traits
-TAG_TRAIT                  # Trait categories
+Trait                      # Civilization traits (ECONOMIC, CULTURAL, MILITARY, etc.)
+TagTrait                   # Trait tags for categorization
 ```
 
 ### Unit Constants
 
 ```python
-UNIT_CLASS                 # Unit types (MELEE, RECON, etc)
-UNIT_MOVEMENT_CLASS       # Movement types (LAND, NAVAL, etc)
-UNIT_CULTURE              # Unit cultures
-UNIT                      # Individual unit types
+UnitClass                  # Unit types (MELEE, RECON, etc)
+UnitMovementClass         # Movement types (LAND, WATER, AIR)
+UnitCulture               # Unit cultures
 ```
 
 ### Constructible Constants
 
 ```python
-CONSTRUCTIBLE_TYPE_TAG    # Building/improvement categories
-CONSTRUCTIBLE_CLASS       # Building class types
+ConstructibleTypeTag      # Building/improvement categories
+ConstructibleClass        # Building class types
+District                  # Districts for quarters
 ```
 
 ### Game Constants
 
 ```python
-EFFECT                    # Game modifiers
-REQUIREMENT               # Conditions and checks
-REQUIREMENT_SET           # Requirement grouping
-COLLECTION                # Entity collections
-YIELD                     # Resource types (GOLD, CULTURE, etc)
-AGE                       # Game eras
-ACTION_GROUP_BUNDLE       # Content loading criteria
-ADVISORY                  # Help text categories
+Effect                    # Game modifiers
+Requirement               # Conditions and checks
+RequirementSet            # Requirement grouping logic
+Collection                # Entity collections for modifiers
+Yield                     # Resource types (GOLD, CULTURE, etc)
+Age                       # Game eras
+ActionGroup               # Action groups for mod loading
+ActionGroupAction         # Action group actions
+Advisory                  # Help text categories
 ```
 
 ### Map Constants
 
 ```python
-TERRAIN                   # Terrain types
-BIOME                     # Biome types
-FEATURE                   # Map features
-FEATURE_CLASS             # Feature categories
-RESOURCE                  # Resource types
+Terrain                   # Terrain types
+Biome                     # Biome types
+Feature                   # Map features
+FeatureClass              # Feature categories
+Resource                  # Resource types
 ```
 
-### Display Constants
+### Other Constants
 
 ```python
-ICON                      # Icon references
-BUILDING_CULTURES         # Building visual cultures
-CIVILIZATION_DOMAIN       # Civilization categories
+Icon                      # Icon identifiers
+Language                  # Supported languages
+Domain                    # Unit domains (LAND, SEA, AIR)
+CivilizationDomain        # Civilization domain types
+Plunder                   # Plunder types for conquered entities
 ```
 
 ---
@@ -778,8 +781,8 @@ from civ7_modding_tools import (
     Mod,
     CivilizationBuilder,
     UnitBuilder,
-    TRAIT,
-    UNIT_CLASS,
+    Trait,
+    UnitClass,
 )
 
 mod: Mod = Mod(id="my-mod")

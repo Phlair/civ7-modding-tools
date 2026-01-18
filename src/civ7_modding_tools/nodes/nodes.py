@@ -9,6 +9,11 @@ class CivilizationNode(BaseNode):
     """Represents a Civilization database row."""
     _name: str = "Row"
     civilization_type: Optional[str] = None
+    name: Optional[str] = None
+    adjective: Optional[str] = None
+    full_name: Optional[str] = None
+    capital_name: Optional[str] = None
+    starting_civilization_level_type: Optional[str] = None
     base_tourism: Optional[int] = None
     legacy_modifier: Optional[bool] = None
 
@@ -25,18 +30,30 @@ class UnitNode(BaseNode):
     """Represents a Unit database row."""
     _name: str = "Row"
     unit_type: Optional[str] = None
-    base_movement: Optional[int] = None
-    unit_class: Optional[str] = None
-    cost: Optional[int] = None
+    base_moves: Optional[int] = None
+    base_sight_range: Optional[int] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    trait_type: Optional[str] = None
+    core_class: Optional[str] = None
+    domain: Optional[str] = None
+    formation_class: Optional[str] = None
+    unit_movement_class: Optional[str] = None
+    air_slots: Optional[int] = None
     maintenance: Optional[int] = None
+    promotion_class: Optional[str] = None
+    cost: Optional[int] = None
 
 
 class UnitStatNode(BaseNode):
     """Represents unit stats."""
     _name: str = "Row"
     unit_type: Optional[str] = None
-    state: Optional[str] = None
-    amount: Optional[int] = None
+    combat: Optional[int] = None
+    ranged_combat: Optional[int] = None
+    bombard_combat: Optional[int] = None
+    anti_air_combat: Optional[int] = None
+    range_: Optional[int] = None
 
 
 class UnitCostNode(BaseNode):
@@ -53,6 +70,11 @@ class ConstructibleNode(BaseNode):
     _name: str = "Row"
     constructible_type: Optional[str] = None
     constructible_class: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    tooltip: Optional[str] = None
+    cost: Optional[int] = None
+    population: Optional[int] = None
     construction_cost: Optional[int] = None
     maintenance: Optional[int] = None
 
@@ -85,14 +107,21 @@ class ProgressionTreeNode(BaseNode):
     """Represents a progression tree."""
     _name: str = "Row"
     progression_tree_type: Optional[str] = None
+    age_type: Optional[str] = None
+    system_type: Optional[str] = None
+    name: Optional[str] = None
 
 
 class ProgressionTreeNodeNode(BaseNode):
     """Represents a node in a progression tree."""
     _name: str = "Row"
-    progression_tree_type: Optional[str] = None
-    node_id: Optional[str] = None
-    tech_or_civic_type: Optional[str] = None
+    progression_tree_node_type: Optional[str] = None
+    progression_tree: Optional[str] = None
+    cost: Optional[int] = None
+    name: Optional[str] = None
+    icon_string: Optional[str] = None
+    depth: Optional[int] = None
+    index: Optional[int] = None
 
 
 # Modifier/Effect Nodes
@@ -153,14 +182,15 @@ class VisArtNode(BaseNode):
 class ProgressionTreePrereqNode(BaseNode):
     """Represents a prerequisite for a progression tree node."""
     _name: str = "Row"
-    progression_tree_type: Optional[str] = None
-    from_progression_tree_node_type: Optional[str] = None
+    node: Optional[str] = None
+    prereq_node: Optional[str] = None
 
 
 class TraditionNode(BaseNode):
     """Represents a cultural tradition."""
     _name: str = "Row"
     tradition_type: Optional[str] = None
+    name: Optional[str] = None
     description: Optional[str] = None
     loyalty_per_turn: Optional[int] = None
 
@@ -169,8 +199,11 @@ class UniqueQuarterNode(BaseNode):
     """Represents a district-specific unique quarter building."""
     _name: str = "Row"
     unique_quarter_type: Optional[str] = None
-    constructible_type: Optional[str] = None
-    district_type: Optional[str] = None
+    building_type_1: Optional[str] = None
+    building_type_2: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    trait_type: Optional[str] = None
 
 
 class LeaderUnlockNode(BaseNode):
@@ -221,9 +254,8 @@ class StringNode(BaseNode):
 class UnitReplaceNode(BaseNode):
     """Represents a unit replacement configuration."""
     _name: str = "Row"
-    unit_type: Optional[str] = None
+    civ_unique_unit_type: Optional[str] = None
     replaces_unit_type: Optional[str] = None
-    era: Optional[str] = None
 
 
 class VisArtCivilizationBuildingCultureNode(BaseNode):

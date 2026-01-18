@@ -24,8 +24,8 @@ The simplest possible mod—just one basic civilization:
 from civ7_modding_tools import (
     Mod,
     CivilizationBuilder,
-    ACTION_GROUP_BUNDLE,
-    TRAIT,
+    ActionGroupBundle,
+    Trait,
 )
 
 # Create mod container
@@ -83,9 +83,9 @@ A fully-featured civilization with all possible properties:
 from civ7_modding_tools import (
     Mod,
     CivilizationBuilder,
-    ACTION_GROUP_BUNDLE,
-    TRAIT,
-    TAG_TRAIT,
+    ActionGroupBundle,
+    Trait,
+    TagTrait,
 )
 
 mod = Mod(
@@ -110,13 +110,12 @@ rome = CivilizationBuilder({
     
     # Traits and tags
     "civilization_traits": [
-        TRAIT.ECONOMIC_CIV,
-        TRAIT.MILITARY_CIV,
+        Trait.ECONOMIC,
+        Trait.MILITARY,
     ],
     "trait_tags": [
-        TAG_TRAIT.ECONOMIC,
-        TAG_TRAIT.EXPANSIONIST,
-        TAG_TRAIT.DIPLOMATIC,
+        TagTrait.ECONOMIC,
+        TagTrait.DIPLOMATIC,
     ],
     
     # Start location preferences
@@ -178,9 +177,9 @@ Create a unique unit with special abilities and upgrades:
 from civ7_modding_tools import (
     Mod,
     UnitBuilder,
-    ACTION_GROUP_BUNDLE,
-    UNIT_CLASS,
-    UNIT_MOVEMENT_CLASS,
+    ActionGroupBundle,
+    UnitClass,
+    UnitMovementClass,
 )
 
 mod = Mod(
@@ -192,13 +191,13 @@ mod = Mod(
 
 # Create Legionnaire unit
 legionnaire = UnitBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     
     "unit": {
         "unit_type": "UNIT_ROMAN_LEGIONNAIRE",
         "unit_name": "UNIT_ROMAN_LEGIONNAIRE",
-        "unit_class": UNIT_CLASS.MELEE,
-        "unit_movement_class": UNIT_MOVEMENT_CLASS.LAND,
+        "unit_class": UnitClass.MELEE,
+        "unit_movement_class": UnitMovementClass.LAND,
         "base_movement": 2,
         "base_sight": 2,
         "era": "ERA_CLASSICAL",
@@ -261,7 +260,7 @@ Create a simple progression tree (tech tree):
 from civ7_modding_tools import (
     Mod,
     ProgressionTreeBuilder,
-    ACTION_GROUP_BUNDLE,
+    ActionGroupBundle,
 )
 
 mod = Mod(
@@ -320,10 +319,10 @@ Create gameplay modifiers that affect units, buildings, or players:
 from civ7_modding_tools import (
     Mod,
     ModifierBuilder,
-    ACTION_GROUP_BUNDLE,
-    COLLECTION,
-    EFFECT,
-    REQUIREMENT,
+    ActionGroupBundle,
+    Collection,
+    Effect,
+    Requirement,
 )
 
 mod = Mod(
@@ -335,10 +334,10 @@ mod = Mod(
 
 # Modifier 1: Increase movement for all units
 unit_movement_mod = ModifierBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     
-    "collection": COLLECTION.PLAYER_UNITS,
-    "effect": EFFECT.UNIT_ADJUST_MOVEMENT,
+    "collection": Collection.PLAYER_UNITS,
+    "effect": Effect.UNIT_ADJUST_MOVEMENT,
     "is_detached": False,  # Attached to specific units
     
     "arguments": [
@@ -347,7 +346,7 @@ unit_movement_mod = ModifierBuilder({
     
     "requirements": [
         {
-            "type": REQUIREMENT.UNIT_TAG_MATCHES,
+            "type": Requirement.UNIT_TAG_MATCHES,
             "arguments": [
                 {"name": "Tag", "value": "UNIT_CLASS_MELEE"}
             ]
@@ -362,10 +361,10 @@ unit_movement_mod = ModifierBuilder({
 
 # Modifier 2: Player-level bonus to production
 player_production_mod = ModifierBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     
-    "collection": COLLECTION.PLAYERS,
-    "effect": EFFECT.PLAYER_ADJUST_PRODUCTION_MODIFIER,
+    "collection": Collection.PLAYER_CITIES,
+    "effect": Effect.CITY_ADJUST_GROWTH,
     "is_detached": True,  # Detached global modifier
     
     "arguments": [
@@ -393,8 +392,8 @@ from civ7_modding_tools import (
     Mod,
     CivilizationBuilder,
     ImportFileBuilder,
-    ACTION_GROUP_BUNDLE,
-    TRAIT,
+    ActionGroupBundle,
+    Trait,
 )
 
 mod = Mod(
@@ -406,12 +405,12 @@ mod = Mod(
 
 # Add civilization
 civ = CivilizationBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     "civilization": {
         "civilization_type": "CIVILIZATION_CUSTOM",
         "civilization_name": "CIVILIZATION_CUSTOM",
     },
-    "civilization_traits": [TRAIT.ECONOMIC_CIV],
+    "civilization_traits": [Trait.ECONOMIC],
     "localizations": [{
         "name": "Custom Civ",
         "description": "Civ with custom assets"
@@ -466,12 +465,12 @@ from civ7_modding_tools import (
     CivilizationBuilder,
     UnitBuilder,
     ConstructibleBuilder,
-    ACTION_GROUP_BUNDLE,
-    TRAIT,
-    UNIT_CLASS,
-    UNIT_MOVEMENT_CLASS,
-    CONSTRUCTIBLE_CLASS,
-    YIELD,
+    ActionGroupBundle,
+    Trait,
+    UnitClass,
+    UnitMovementClass,
+    ConstructibleClass,
+    Yield,
 )
 
 # Create mod
@@ -485,12 +484,12 @@ mod = Mod(
 
 # ============ CIVILIZATION ============
 rome = CivilizationBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     "civilization": {
         "civilization_type": "CIVILIZATION_ROME",
         "civilization_name": "CIVILIZATION_ROME",
     },
-    "civilization_traits": [TRAIT.MILITARY_CIV],
+    "civilization_traits": [Trait.MILITARY],
     "localizations": [{
         "name": "Rome",
         "description": "Ancient Roman Empire",
@@ -502,12 +501,12 @@ rome = CivilizationBuilder({
 
 # ============ UNITS ============
 legionnaire = UnitBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     "unit": {
         "unit_type": "UNIT_LEGIONNAIRE",
         "unit_name": "UNIT_LEGIONNAIRE",
-        "unit_class": UNIT_CLASS.MELEE,
-        "unit_movement_class": UNIT_MOVEMENT_CLASS.LAND,
+        "unit_class": UnitClass.MELEE,
+        "unit_movement_class": UnitMovementClass.LAND,
         "base_movement": 2,
     },
     "unit_stats": {
@@ -524,12 +523,12 @@ legionnaire = UnitBuilder({
 })
 
 ballista = UnitBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     "unit": {
         "unit_type": "UNIT_BALLISTA",
         "unit_name": "UNIT_BALLISTA",
-        "unit_class": UNIT_CLASS.RANGED,
-        "unit_movement_class": UNIT_MOVEMENT_CLASS.LAND,
+        "unit_class": UnitClass.RANGED,
+        "unit_movement_class": UnitMovementClass.LAND,
         "base_movement": 2,
     },
     "unit_stats": {
@@ -550,18 +549,17 @@ ballista = UnitBuilder({
 
 # ============ BUILDINGS ============
 forum = ConstructibleBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     "building": {
         "building_type": "BUILDING_FORUM",
         "building_name": "BUILDING_FORUM",
-        "building_class": CONSTRUCTIBLE_CLASS.BUILDING,
+        "building_class": ConstructibleClass.ECONOMIC,
     },
     "production_cost": 120,
     "constructible_yield_changes": [
-        {"yield_type": YIELD.TRADE_ROUTE, "yield_change": 2},
-        {"yield_type": YIELD.GOLD, "yield_change": 2},
+        {"yield_type": Yield.GOLD, "yield_change": 2},
     ],
-    "maintenance": {YIELD.GOLD: 1},
+    "maintenance": {Yield.GOLD: 1},
     "localizations": [{
         "name": "Forum",
         "description": "Increases trade routes and gold"
@@ -569,17 +567,17 @@ forum = ConstructibleBuilder({
 })
 
 aqueduct = ConstructibleBuilder({
-    "action_group_bundle": ACTION_GROUP_BUNDLE.ALWAYS,
+    "action_group_bundle": ActionGroupBundle.ALWAYS,
     "building": {
         "building_type": "BUILDING_AQUEDUCT",
         "building_name": "BUILDING_AQUEDUCT",
-        "building_class": CONSTRUCTIBLE_CLASS.BUILDING,
+        "building_class": ConstructibleClass.ECONOMIC,
     },
     "production_cost": 100,
     "constructible_yield_changes": [
-        {"yield_type": YIELD.HOUSING, "yield_change": 3},
+        {"yield_type": Yield.HOUSING, "yield_change": 3},
     ],
-    "maintenance": {YIELD.GOLD": 2},
+    "maintenance": {Yield.GOLD: 2},
     "localizations": [{
         "name": "Aqueduct",
         "description": "Increases housing"

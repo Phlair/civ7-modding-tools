@@ -2,7 +2,7 @@
 
 Welcome to **Civ7 Modding Tools**, a Python library for creating Civilization 7 mods programmatically. This guide will walk you through building your first mod from scratch.
 
-> ✅ **Python Parity Achievement**: The Python implementation now generates identical output to the TypeScript reference (v1.3.0), with 100% file structure, path naming, and file naming parity. All 13 builders fully implemented and tested.
+> ✅ **Python v1.3.0**: Pure Python implementation with full builder pattern support. All 13 builders, 79 nodes, 21 constants, and 11 localization classes fully implemented with 94% test coverage (324 tests passing).
 
 ## Table of Contents
 
@@ -71,7 +71,7 @@ civilization = CivilizationBuilder({
         "civilization_type": "CIVILIZATION_CUSTOM_001",
         "civilization_name": "CIVILIZATION_CUSTOM_001",
     },
-    "civilization_traits": [TRAIT.ECONOMIC_CIV],
+    "civilization_traits": [Trait.ECONOMIC],
     "localizations": [
         {
             "name": "My Custom Civ",
@@ -161,20 +161,20 @@ Type-safe game constants replace magic strings:
 
 ```python
 from civ7_modding_tools import (
-    TRAIT,              # Civilization traits
-    UNIT_CLASS,         # Unit classifications
-    EFFECT,             # Game modifiers
-    REQUIREMENT,        # Game conditions
-    YIELD,              # Resource production
-    AGE,                # Game eras
+    Trait,              # Civilization traits
+    UnitClass,          # Unit classifications
+    Effect,             # Game modifiers
+    Requirement,        # Game conditions
+    Yield,              # Resource production
+    Age,                # Game eras
 )
 
 # Examples:
-TRAIT.ECONOMIC_CIV           # Trait
-UNIT_CLASS.RECON             # Unit type
-EFFECT.UNIT_ADJUST_MOVEMENT  # Game effect
-YIELD.CULTURE                # Resource
-AGE.EXPLORATION              # Game era
+Trait.ECONOMIC                  # Trait
+UnitClass.RECON                 # Unit type
+Effect.UNIT_ADJUST_MOVEMENT     # Game effect
+Yield.CULTURE                   # Resource
+Age.EXPLORATION                 # Game era
 ```
 
 ## Building a Civilization
@@ -209,12 +209,12 @@ civilization = CivilizationBuilder({
     
     # Civilization traits
     "civilization_traits": [
-        TRAIT.ECONOMIC_CIV,
-        TRAIT.SCIENTIFIC_CIV,
+        Trait.ECONOMIC,
+        Trait.SCIENTIFIC,
     ],
     "trait_tags": [
-        TAG_TRAIT.ECONOMIC,
-        TAG_TRAIT.EXPANSIONIST,
+        TagTrait.ECONOMIC,
+        TagTrait.DIPLOMATIC,
     ],
     
     # Start location preferences
@@ -251,9 +251,9 @@ Create custom units for your civilization:
 ```python
 from civ7_modding_tools import (
     UnitBuilder,
-    UNIT_CLASS,
-    UNIT_MOVEMENT_CLASS,
-    ACTION_GROUP_BUNDLE,
+    UnitClass,
+    UnitMovementClass,
+    ActionGroupBundle,
 )
 
 # Create a custom unit
@@ -264,8 +264,8 @@ unit = UnitBuilder({
     "unit": {
         "unit_type": "UNIT_ROMAN_LEGIONNAIRE",
         "unit_name": "UNIT_ROMAN_LEGIONNAIRE",
-        "unit_class": UNIT_CLASS.MELEE,
-        "unit_movement_class": UNIT_MOVEMENT_CLASS.LAND,
+        "unit_class": UnitClass.MELEE,
+        "unit_movement_class": UnitMovementClass.LAND,
         "base_movement": 2,
         "base_sight": 2,
     },
@@ -307,9 +307,9 @@ Create custom buildings and improvements:
 ```python
 from civ7_modding_tools import (
     ConstructibleBuilder,
-    CONSTRUCTIBLE_CLASS,
-    ACTION_GROUP_BUNDLE,
-    YIELD,
+    ConstructibleClass,
+    ActionGroupBundle,
+    Yield,
 )
 
 # Create a building
@@ -320,7 +320,7 @@ building = ConstructibleBuilder({
     "building": {
         "building_type": "BUILDING_ROMAN_TEMPLE",
         "building_name": "BUILDING_ROMAN_TEMPLE",
-        "building_class": CONSTRUCTIBLE_CLASS.BUILDING,
+        "building_class": ConstructibleClass.ECONOMIC,
     },
     
     # Production cost
@@ -330,14 +330,14 @@ building = ConstructibleBuilder({
     # Yields (what it produces)
     "constructible_yield_changes": [
         {
-            "yield_type": YIELD.FAITH,
+            "yield_type": Yield.FAITH,
             "yield_change": 4,
         }
     ],
     
     # Maintenance cost
     "maintenance": {
-        YIELD.GOLD: 1,
+        Yield.GOLD: 1,
     },
     
     # Localization

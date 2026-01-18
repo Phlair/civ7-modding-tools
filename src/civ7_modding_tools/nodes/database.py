@@ -11,14 +11,15 @@ from civ7_modding_tools.nodes.base import BaseNode
 class KindNode(BaseNode):
     """Represents a Kind definition (category/classification)."""
     _name: str = "Row"
-    kind_type: Optional[str] = None
-    kind_string: Optional[str] = None
+    kind: Optional[str] = None
 
 
 class TypeNode(BaseNode):
     """Represents a Type definition."""
     _name: str = "Row"
-    type_type: Optional[str] = None
+    # Using 'type_' to avoid conflict with Python built-in 'type'
+    # Will be serialized as 'Type' in XML
+    type_: Optional[str] = None
     kind: Optional[str] = None
 
 
@@ -27,13 +28,15 @@ class TagNode(BaseNode):
     _name: str = "Row"
     tag: Optional[str] = None
     tag_string: Optional[str] = None
+    category: Optional[str] = None
 
 
 class TypeTagNode(BaseNode):
     """Represents a Type-Tag relationship."""
     _name: str = "Row"
-    type_type: Optional[str] = None
+    type_: Optional[str] = None
     tag: Optional[str] = None
+    category: Optional[str] = None
 
 
 # ============================================================================
@@ -44,7 +47,9 @@ class TraitNode(BaseNode):
     """Represents a Trait definition."""
     _name: str = "Row"
     trait_type: Optional[str] = None
-    trait_string: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    internal_only: Optional[bool] = None
 
 
 class TraitModifierNode(BaseNode):
@@ -79,14 +84,15 @@ class CivilizationTagNode(BaseNode):
 class BuildingNode(BaseNode):
     """Represents a Building definition."""
     _name: str = "Row"
-    building_type: Optional[str] = None
-    building_class: Optional[str] = None
-    domain: Optional[str] = None
+    constructible_type: Optional[str] = None
+    movable: Optional[bool] = None
+    trait_type: Optional[str] = None
 
 
 class ImprovementNode(BaseNode):
     """Represents an Improvement definition."""
     _name: str = "Row"
+    constructible_type: Optional[str] = None
     improvement_type: Optional[str] = None
     improvement_class: Optional[str] = None
 
@@ -257,7 +263,6 @@ class GameModifierNode(BaseNode):
     """Represents a game-wide modifier."""
     _name: str = "Row"
     modifier_id: Optional[str] = None
-    game_effect_id: Optional[str] = None
 
 
 class ArgumentNode(BaseNode):
@@ -275,15 +280,18 @@ class ArgumentNode(BaseNode):
 class ProgressionTreeAdvisoryNode(BaseNode):
     """Represents progression tree advisory."""
     _name: str = "Row"
-    progression_tree_type: Optional[str] = None
-    advisory_type: Optional[str] = None
+    progression_tree_node_type: Optional[str] = None
+    advisory_class_type: Optional[str] = None
 
 
 class ProgressionTreeNodeUnlockNode(BaseNode):
     """Represents unlock in progression tree node."""
     _name: str = "Row"
-    progression_tree_node_id: Optional[str] = None
-    unlock_id: Optional[str] = None
+    progression_tree_node_type: Optional[str] = None
+    target_kind: Optional[str] = None
+    target_type: Optional[str] = None
+    unlock_depth: Optional[int] = None
+    hidden: Optional[bool] = None
 
 
 # ============================================================================
@@ -381,7 +389,7 @@ class LegacyCivilizationNode(BaseNode):
     """Represents legacy civilization data."""
     _name: str = "Row"
     civilization_type: Optional[str] = None
-    legacy_data: Optional[str] = None
+    age: Optional[str] = None
 
 
 class LegacyCivilizationTraitNode(BaseNode):
@@ -406,8 +414,8 @@ class VisualRemapNode(BaseNode):
 class IconDefinitionNode(BaseNode):
     """Represents icon definition."""
     _name: str = "Row"
-    icon_id: Optional[str] = None
-    icon_definition: Optional[str] = None
+    id: Optional[str] = None
+    path: Optional[str] = None
 
 
 # ============================================================================
@@ -533,14 +541,27 @@ class DatabaseNode(BaseNode):
 
     def to_xml_element(self) -> dict | None:
         """
-        Generate Database XML structure.
+        Generate Database XML structure in jstoxml-compatible format.
         
         Converts all populated node arrays into table elements within
-        the Database root element. Skips empty arrays and handles
-        special naming conventions for underscore-separated properties.
+        the Database root element. Each table contains an array of Row elements.
+        Skips empty arrays and handles special naming conventions for
+        underscore-separated properties.
         
         Returns:
-            XML element dict with Database structure, or None if empty
+            XML element dict with Database structure matching TypeScript jstoxml format,
+            or None if empty
+            
+        Format:
+            {
+                'Database': {
+                    'Types': [
+                        {'_name': 'Row', '_attrs': {'Type': 'VAL', 'Kind': 'KIND'}},
+                        {'_name': 'Row', '_attrs': {'Type': 'VAL2', 'Kind': 'KIND2'}}
+                    ],
+                    'Units': [...]
+                }
+            }
         """
         # Check if all arrays are empty
         array_attrs = [
@@ -580,7 +601,7 @@ class DatabaseNode(BaseNode):
             'unlock_requirements': 'Unlock_Requirements',
             'unlock_configuration_values': 'Unlock_ConfigurationValues',
             'requirement_sets': 'RequirementSets',
-            'requirement_arguments': 'Requirement_Arguments',
+            'requirement_arguments': 'RequirementArguments',
             'requirement_set_requirements': 'RequirementSet_Requirements',
             'legacy_civilizations': 'LegacyCivilizations',
             'legacy_civilization_traits': 'LegacyCivilizationTraits',
@@ -626,11 +647,17 @@ class DatabaseNode(BaseNode):
                 words = attr_name.split('_')
                 table_name = ''.join(word.capitalize() for word in words)
             
-            # Add table with rows
-            data[table_name] = [
-                node.to_xml_element()
-                for node in attr_value
-                if node and node.to_xml_element() is not None
-            ]
+            # Convert nodes to jstoxml format (array of {_name, _attrs})
+            # Each node returns {'_name': 'Row', '_attrs': {...}}
+            rows = []
+            for node in attr_value:
+                if node:
+                    xml_elem = node.to_xml_element()
+                    if xml_elem is not None:
+                        rows.append(xml_elem)
+            
+            # Only add table if it has rows
+            if rows:
+                data[table_name] = rows
         
         return {'Database': data} if data else None
