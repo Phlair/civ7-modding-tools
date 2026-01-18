@@ -1,4 +1,4 @@
-# Phlair`s civ7 modding tools - forked from izica
+# Phlair's civ7 modding tools - forked from izica
 Mod generation tool for Civilization 7.
 
 - [Usage](#usage)
