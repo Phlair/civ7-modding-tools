@@ -32,21 +32,27 @@ class CivilizationLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for civilization localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_CIVILIZATION", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_CIVILIZATION", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({
+                "tag": locale(prefix, "description"),
+                "text": self.description,
+            })
         if self.full_name:
-            nodes.append({"tag": locale("LOC_CIVILIZATION", f"{trimmed_id}_FULL_NAME"), "text": self.full_name})
+            nodes.append({"tag": locale(prefix, "fullName"), "text": self.full_name})
         if self.adjective:
-            nodes.append({"tag": locale("LOC_CIVILIZATION", f"{trimmed_id}_ADJECTIVE"), "text": self.adjective})
+            nodes.append({"tag": locale(prefix, "adjective"), "text": self.adjective})
         if self.city_names:
-            for i, city_name in enumerate(self.city_names):
-                nodes.append({"tag": locale("LOC_CITY", f"{trimmed_id}_{i}"), "text": city_name})
+            for i, city_name in enumerate(self.city_names, 1):
+                nodes.append({
+                    "tag": locale(prefix, f"cityNames_{i}"),
+                    "text": city_name,
+                })
         return nodes
 
 
@@ -58,16 +64,16 @@ class UnitLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for unit localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_UNIT", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_UNIT", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         if self.unique_name:
-            nodes.append({"tag": locale("LOC_UNIT", f"{trimmed_id}_UNIQUE_NAME"), "text": self.unique_name})
+            nodes.append({"tag": locale(prefix, "uniqueName"), "text": self.unique_name})
         return nodes
 
 
@@ -79,16 +85,16 @@ class ConstructibleLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for constructible localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_CONSTRUCTIBLE", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_CONSTRUCTIBLE", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         if self.unique_name:
-            nodes.append({"tag": locale("LOC_CONSTRUCTIBLE", f"{trimmed_id}_UNIQUE_NAME"), "text": self.unique_name})
+            nodes.append({"tag": locale(prefix, "uniqueName"), "text": self.unique_name})
         return nodes
 
 
@@ -99,14 +105,14 @@ class ProgressionTreeLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for progression tree localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_PROGRESSION", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_PROGRESSION", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         return nodes
 
 
@@ -118,16 +124,16 @@ class ProgressionTreeNodeLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for progression tree node localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_TECH", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_TECH", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         if self.quote:
-            nodes.append({"tag": locale("LOC_TECH", f"{trimmed_id}_QUOTE"), "text": self.quote})
+            nodes.append({"tag": locale(prefix, "quote"), "text": self.quote})
         return nodes
 
 
@@ -138,14 +144,14 @@ class ModifierLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for modifier localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_MODIFIER", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_MODIFIER", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         return nodes
 
 
@@ -156,14 +162,14 @@ class TraditionLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for tradition localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_TRADITION", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_TRADITION", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         return nodes
 
 
@@ -174,14 +180,14 @@ class LeaderUnlockLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for leader unlock localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.leader_name:
-            nodes.append({"tag": locale("LOC_LEADER", f"{trimmed_id}_NAME"), "text": self.leader_name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.leader_name})
         if self.description:
-            nodes.append({"tag": locale("LOC_LEADER", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         return nodes
 
 
@@ -192,14 +198,14 @@ class CivilizationUnlockLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for civilization unlock localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_UNLOCK", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_UNLOCK", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         return nodes
 
 
@@ -210,14 +216,14 @@ class UniqueQuarterLocalization(BaseLocalization):
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for unique quarter localization."""
-        from civ7_modding_tools.utils import locale, trim
+        from civ7_modding_tools.utils import locale
         nodes = []
-        trimmed_id = trim(entity_id)
+        prefix = entity_id.upper()
         
         if self.name:
-            nodes.append({"tag": locale("LOC_QUARTER", f"{trimmed_id}_NAME"), "text": self.name})
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
-            nodes.append({"tag": locale("LOC_QUARTER", f"{trimmed_id}_DESCRIPTION"), "text": self.description})
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
         return nodes
 
 

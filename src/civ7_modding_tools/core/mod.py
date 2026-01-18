@@ -37,33 +37,62 @@ class ActionGroupBundle:
         
         self.action_group_id = action_group_id or "ALWAYS"
         self.criteria_id = criteria_id or str(uuid4())
-        
+
         # Create action group metadata dictionaries (not ActionGroupNode instances)
         # These are used to tag files with their action group
-        self.shell = {
-            "id": f"SHELL_{self.action_group_id}",
-            "scope": "shell",
-            "criteria": f"CRITERIA_SHELL_{self.criteria_id}",
-        }
-        
-        self.always = {
-            "id": f"ALWAYS_{self.action_group_id}",
-            "scope": "game",
-            "criteria": "CRITERIA_ALWAYS",
-        }
-        
-        self.current = {
-            "id": f"CURRENT_{self.action_group_id}",
-            "scope": "game",
-            "criteria": f"CRITERIA_{self.action_group_id}",
-            "age": self.action_group_id if self.action_group_id.startswith("AGE_") else None,
-        }
-        
-        self.persist = {
-            "id": f"PERSIST_{self.action_group_id}",
-            "scope": "game",
-            "criteria": f"CRITERIA_PERSIST_{self.criteria_id}",
-        }
+        if self.action_group_id.startswith("AGE_"):
+            age_name = self.action_group_id.replace("AGE_", "").lower().replace("_", "-")
+            self.shell = {
+                "id": str(uuid4()),
+                "scope": "shell",
+                "criteria": "always",
+            }
+            self.always = {
+                "id": str(uuid4()),
+                "scope": "game",
+                "criteria": "always",
+            }
+            self.current = {
+                "id": f"age-{age_name}-current",
+                "scope": "game",
+                "criteria": f"{age_name}-age-current",
+                "age": self.action_group_id,
+            }
+            age_persist_map = {
+                "AGE_ANTIQUITY": ["AGE_ANTIQUITY", "AGE_EXPLORATION", "AGE_MODERN"],
+                "AGE_EXPLORATION": ["AGE_EXPLORATION", "AGE_MODERN"],
+                "AGE_MODERN": ["AGE_MODERN"],
+            }
+            self.persist = {
+                "id": f"age-{age_name}-persist",
+                "scope": "game",
+                "criteria": f"{age_name}-age-persist",
+                "ages": age_persist_map.get(self.action_group_id, [self.action_group_id]),
+            }
+        else:
+            default_criteria = criteria_id or "always"
+            group_id = self.action_group_id.lower().replace("_", "-")
+            self.shell = {
+                "id": str(uuid4()),
+                "scope": "shell",
+                "criteria": "always",
+            }
+            self.always = {
+                "id": str(uuid4()),
+                "scope": "game",
+                "criteria": "always",
+            }
+            self.current = {
+                "id": group_id,
+                "scope": "game",
+                "criteria": default_criteria,
+                "age": None,
+            }
+            self.persist = {
+                "id": f"{group_id}-persist",
+                "scope": "game",
+                "criteria": f"{group_id}-persist",
+            }
 
     def __repr__(self) -> str:
         """String representation."""
@@ -243,7 +272,7 @@ class Mod:
             if file.action_groups:
                 for action_group in file.action_groups:
                     group_id = action_group.get("id", "ALWAYS")
-                    criteria_id = action_group.get("criteria", "CRITERIA_ALWAYS")
+                    criteria_id = action_group.get("criteria", "always")
                     scope = action_group.get("scope", "game")
                     
                     # Initialize action group if needed
@@ -261,6 +290,7 @@ class Mod:
                             "id": criteria_id,
                             "scope": scope,
                             "age": action_group.get("age"),
+                            "ages": action_group.get("ages"),
                         }
                     
                     # Initialize file type if needed
@@ -272,7 +302,7 @@ class Mod:
             else:
                 # Default: use ALWAYS action group
                 group_id = "ALWAYS"
-                criteria_id = "CRITERIA_ALWAYS"
+                criteria_id = "always"
                 scope = "game"
                 
                 if group_id not in action_groups_map:
@@ -288,6 +318,7 @@ class Mod:
                         "id": criteria_id,
                         "scope": scope,
                         "age": None,
+                        "ages": None,
                     }
                 
                 if file_type not in action_groups_map[group_id]["files_by_type"]:
@@ -301,13 +332,14 @@ class Mod:
             criteria_entry = {"@id": criteria_id}
             
             # Add appropriate child element based on criteria type
-            if criteria_id == "CRITERIA_ALWAYS":
+            ages = criteria_info.get("ages")
+            if criteria_id == "always":
                 criteria_entry["AlwaysMet"] = None
-            elif criteria_info["age"]:
-                # Age-based criteria
+            elif ages:
+                criteria_entry["AgeInUse"] = ages
+            elif criteria_info.get("age"):
                 criteria_entry["AgeInUse"] = criteria_info["age"]
             else:
-                # Default to always met if no specific criteria
                 criteria_entry["AlwaysMet"] = None
             
             action_criteria_list.append(criteria_entry)
@@ -344,6 +376,18 @@ class Mod:
             
             # Only add action group if it has content
             if actions:
+                action_order = [
+                    "UpdateDatabase",
+                    "UpdateVisualRemaps",
+                    "UpdateIcons",
+                    "UpdateText",
+                    "ImportFiles",
+                ]
+                ordered_actions = {
+                    action_name: actions[action_name]
+                    for action_name in action_order
+                    if action_name in actions
+                }
                 action_group_entry = {
                     "@id": group_id,
                     "@scope": group_info["scope"],
@@ -351,8 +395,8 @@ class Mod:
                 }
                 
                 # Add actions
-                if actions:
-                    action_group_entry["Actions"] = actions
+                if ordered_actions:
+                    action_group_entry["Actions"] = ordered_actions
                 
                 action_groups_list.append(action_group_entry)
         
@@ -406,6 +450,10 @@ class Mod:
         """
         filename_lower = file.name.lower()
         path_lower = file.path.lower()
+
+        # Imports should always map to ImportFiles, regardless of extension
+        if "import" in path_lower:
+            return "import"
         
         # Check for visual-remap files first (they need UpdateVisualRemaps action)
         if "visual-remap" in filename_lower or "visual_remap" in filename_lower:
@@ -429,8 +477,6 @@ class Mod:
             return "sql"
         elif filename_lower.endswith(".lua"):
             return "lua"
-        elif "import" in path_lower:
-            return "import"
         else:
             # Default to import for unknown types
             return "import"

@@ -94,6 +94,26 @@ class EnglishTextNode(BaseNode):
     tag: Optional[str] = None
     text: Optional[str] = None
 
+    def to_xml_element(self) -> dict | None:
+        """Convert English text node to XML with nested Text element."""
+        if not self.tag:
+            return None
+
+        element: dict[str, object] = {
+            "_name": self._name,
+            "_attrs": {"Tag": self.tag},
+        }
+
+        if self.text is not None and self.text != "":
+            element["_content"] = [
+                {
+                    "_name": "Text",
+                    "_content": self.text,
+                }
+            ]
+
+        return element
+
 
 class CityNameNode(BaseNode):
     """Represents a city name."""

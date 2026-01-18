@@ -365,6 +365,8 @@ class ImportFile(BaseFile):
         path: str = "/",
         name: str = "file",
         content: str = "",
+        action_group: Optional[dict] = None,
+        action_groups: Optional[list] = None,
     ) -> None:
         """
         Initialize an import file.
@@ -373,8 +375,10 @@ class ImportFile(BaseFile):
             path: Directory path in mod
             name: Output filename (without extension)
             content: Source file path to copy from
+            action_group: Single action group this file belongs to
+            action_groups: List of action groups this file belongs to
         """
-        super().__init__(path, name, content)
+        super().__init__(path, name, content, action_group, action_groups)
         self.source_path = content  # content is the source file path
 
     @property

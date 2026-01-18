@@ -332,28 +332,28 @@ class CivilizationBuilder(BaseBuilder):
                 prefix = self.civilization_type
                 if "name" in loc:
                     localization_rows.append(EnglishTextNode(
-                        tag=f"{prefix}_NAME",
+                        tag=locale(prefix, "name"),
                         text=loc["name"]
                     ))
                 if "description" in loc:
                     localization_rows.append(EnglishTextNode(
-                        tag=f"{prefix}_DESCRIPTION",
+                        tag=locale(prefix, "description"),
                         text=loc["description"]
                     ))
                 if "full_name" in loc:
                     localization_rows.append(EnglishTextNode(
-                        tag=f"{prefix}_FULL_NAME",
+                        tag=locale(prefix, "fullName"),
                         text=loc["full_name"]
                     ))
                 if "adjective" in loc:
                     localization_rows.append(EnglishTextNode(
-                        tag=f"{prefix}_ADJECTIVE",
+                        tag=locale(prefix, "adjective"),
                         text=loc["adjective"]
                     ))
                 if "city_names" in loc:
                     for i, city_name in enumerate(loc["city_names"], 1):
                         localization_rows.append(EnglishTextNode(
-                            tag=f"{prefix}_CITY_NAME_{i}",
+                            tag=locale(prefix, f"cityNames_{i}"),
                             text=city_name
                         ))
         
@@ -718,7 +718,7 @@ class UnitBuilder(BaseBuilder):
                 path=path,
                 name="icons.xml",
                 content=self._icons,
-                action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+                action_groups=[self.action_group_bundle.shell, self.action_group_bundle.current]
             ),
             XmlFile(
                 path=path,
@@ -1739,7 +1739,7 @@ class UniqueQuarterBuilder(BaseBuilder):
             path=path,
             name="icons.xml",
             content=self._icons,
-            action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+            action_groups=[self.action_group_bundle.always]
         ))
         
         files.append(XmlFile(
@@ -1754,7 +1754,7 @@ class UniqueQuarterBuilder(BaseBuilder):
                 path=path,
                 name="game-effects.xml",
                 content=self._game_effects,
-                action_group=self.action_group_bundle.current
+                action_group=self.action_group_bundle.always
             ))
         
         # Filter out empty files
@@ -1949,7 +1949,8 @@ class ImportFileBuilder(BaseBuilder):
         import_file = ImportFile(
             path=self.target_directory,
             name=self.target_name,
-            content=self.source_path
+            content=self.source_path,
+            action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
         )
         files.append(import_file)
         
