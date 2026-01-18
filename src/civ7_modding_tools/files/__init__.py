@@ -140,6 +140,87 @@ class XmlFile(BaseFile):
         with open(output_file, "w", encoding="UTF-8") as f:
             f.write(xml_content)
 
+    def _build_element_recursive(self, data: dict) -> Optional[Any]:
+        """
+        Recursively build XML elements from jstoxml-format dict.
+        
+        Args:
+            data: Dict with _name, _attrs, and optionally _content
+            
+        Returns:
+            ET.Element or None
+        """
+        import xml.etree.ElementTree as ET
+        
+        if not isinstance(data, dict):
+            return None
+        
+        elem_name = data.get('_name')
+        if not elem_name:
+            return None
+        
+        elem = ET.Element(elem_name)
+        
+        # Add attributes
+        attrs = data.get('_attrs', {})
+        for key, value in attrs.items():
+            elem.set(key, str(value))
+        
+        # Add text content or child elements
+        content = data.get('_content')
+        if content:
+            if isinstance(content, str):
+                elem.text = content
+            elif isinstance(content, list):
+                for child_data in content:
+                    child_elem = self._build_element_recursive(child_data)
+                    if child_elem is not None:
+                        elem.append(child_elem)
+        
+        return elem
+
+    def _element_to_string(self, elem: Any, indent: str = '    ', level: int = 0) -> str:
+        """
+        Convert ET.Element to pretty-printed XML string.
+        
+        Args:
+            elem: Element to convert
+            indent: Indentation string
+            level: Current indentation level
+            
+        Returns:
+            Formatted XML string
+        """
+        # Build opening tag with attributes
+        attrs_str = ""
+        if elem.attrib:
+            attrs_list = [f'{k}="{v}"' for k, v in elem.attrib.items()]
+            attrs_str = " " + " ".join(attrs_list)
+        
+        current_indent = indent * level
+        
+        # Handle self-closing tags (no children, no text)
+        if len(elem) == 0 and not (elem.text and elem.text.strip()):
+            return f"{current_indent}<{elem.tag}{attrs_str}/>"
+        
+        # Has children or text
+        result = f"{current_indent}<{elem.tag}{attrs_str}>"
+        
+        # Add text content if present
+        if elem.text and elem.text.strip():
+            result += elem.text.strip()
+        
+        # Add children
+        if len(elem) > 0:
+            result += "\n"
+            for child in elem:
+                result += self._element_to_string(child, indent, level + 1) + "\n"
+            result += current_indent
+        
+        result += f"</{elem.tag}>"
+        
+        return result
+
     def _serialize_content(self, content: Union["DatabaseNode", list[BaseNode], BaseNode, dict, None]) -> str:
         """
         Serialize content to XML string using attribute-based format matching TypeScript.
@@ -158,6 +239,7 @@ class XmlFile(BaseFile):
         """
         # Import here to avoid circular dependency
         from civ7_modding_tools.nodes.database import DatabaseNode
+        from civ7_modding_tools.nodes.nodes import GameEffectNode, VisualRemapRootNode
         
         # Priority 1: DatabaseNode (proper semantic structure)
         if isinstance(content, DatabaseNode):
@@ -172,6 +254,39 @@ class XmlFile(BaseFile):
                 indent='    ',
                 footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
             )
+            return xml_str
+        
+        # Priority 1.5: Special nodes that generate root-level XML (GameEffects, VisualRemaps)
+        elif isinstance(content, (GameEffectNode, VisualRemapRootNode)):
+            xml_elem = content.to_xml_element()
+            if not xml_elem:
+                return ""
+            
+            # GameEffectNode and VisualRemapRootNode return {_name, _attrs, _content} format
+            # We need to wrap it properly for XmlBuilder
+            # Convert to root-key format: {'GameEffects': _content}
+            root_name = xml_elem['_name']
+            root_attrs = xml_elem.get('_attrs', {})
+            root_content = xml_elem.get('_content', [])
+            
+            # Build XML manually using ElementTree for these special cases
+            import xml.etree.ElementTree as ET
+            root = ET.Element(root_name)
+            for key, value in root_attrs.items():
+                root.set(key, str(value))
+            
+            # Add child elements
+            for child_data in root_content:
+                child_elem = self._build_element_recursive(child_data)
+                if child_elem is not None:
+                    root.append(child_elem)
+            
+            # Convert to string with custom pretty printing
+            xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>']
+            xml_lines.append(self._element_to_string(root, indent='    '))
+            xml_lines.append('<!-- generated with https://github.com/izica/civ7-modding-tools -->')
+            xml_str = '\n'.join(xml_lines)
+            
             return xml_str
         
         # Priority 2: Pre-formatted dict in jstoxml format

@@ -75,13 +75,13 @@ class BaseNode(BaseModel):
             if key.startswith("_"):
                 continue
             
-            # Skip None, empty string, and False values
-            if value is None or value == "" or value is False:
+            # Skip None and empty string values
+            if value is None or value == "":
                 continue
             
-            # Convert boolean True to string "true"
-            if value is True:
-                value = "true"
+            # Convert boolean values to strings
+            if isinstance(value, bool):
+                value = "true" if value else "false"
             
             # Convert property name from snake_case to PascalCase
             # This matches TypeScript lodash.startCase behavior
@@ -104,8 +104,9 @@ class BaseNode(BaseModel):
         
         # Return in jstoxml-compatible format
         # This matches TypeScript: {_name: this._name, _attrs: this.getAttributes()}
+        element_name = "InsertOrIgnore" if self._insert_or_ignore else self._name
         return {
-            '_name': self._name,
+            '_name': element_name,
             '_attrs': attributes
         }
 

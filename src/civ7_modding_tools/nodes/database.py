@@ -85,7 +85,7 @@ class BuildingNode(BaseNode):
     """Represents a Building definition."""
     _name: str = "Row"
     constructible_type: Optional[str] = None
-    movable: Optional[bool] = None
+    movable: Optional[bool] = False
     trait_type: Optional[str] = None
 
 
@@ -390,6 +390,9 @@ class LegacyCivilizationNode(BaseNode):
     _name: str = "Row"
     civilization_type: Optional[str] = None
     age: Optional[str] = None
+    name: Optional[str] = None
+    adjective: Optional[str] = None
+    full_name: Optional[str] = None
 
 
 class LegacyCivilizationTraitNode(BaseNode):
@@ -416,6 +419,19 @@ class IconDefinitionNode(BaseNode):
     _name: str = "Row"
     id: Optional[str] = None
     path: Optional[str] = None
+
+    def to_xml_element(self) -> dict | None:
+        """Generate IconDefinitions row with nested ID/Path elements."""
+        if not self.id or not self.path:
+            return None
+
+        return {
+            '_name': 'Row',
+            '_content': [
+                {'_name': 'ID', '_content': self.id},
+                {'_name': 'Path', '_content': self.path},
+            ]
+        }
 
 
 # ============================================================================
@@ -595,7 +611,7 @@ class DatabaseNode(BaseNode):
             'unit_costs': 'Unit_Costs',
             'unit_stats': 'Unit_Stats',
             'unit_advisories': 'Unit_Advisories',
-            'unit_replaces': 'Unit_Replaces',
+            'unit_replaces': 'UnitReplaces',
             'unit_upgrades': 'Unit_Upgrades',
             'unlock_rewards': 'Unlock_Rewards',
             'unlock_requirements': 'Unlock_Requirements',

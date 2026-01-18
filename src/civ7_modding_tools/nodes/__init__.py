@@ -33,6 +33,9 @@ from civ7_modding_tools.nodes.nodes import (
     LeaderUnlockNode,
     ModifierRequirementNode,
     StringNode,
+    ArgumentNode,
+    VisualRemapRowNode,
+    VisualRemapRootNode,
 )
 from civ7_modding_tools.nodes.database import (
     DatabaseNode,
@@ -124,6 +127,8 @@ __all__ = [
     "CityNameNode",
     "IconDefinitionNode",
     "VisualRemapNode",
+    "VisualRemapRowNode",
+    "VisualRemapRootNode",
     # Progression Trees
     "ProgressionTreeNode",
     "ProgressionTreeNodeNode",

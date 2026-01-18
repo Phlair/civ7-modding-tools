@@ -46,5 +46,4 @@ We will use the "Gondor Civilization" example as the baseline for comparison, as
     *   **Critical Failures**: Missing attributes, wrong casing (`PascalCase` vs `snake_case` in XML), missing tags.
 
 ## Deliverables
-*   `PARITY_REPORT.md`: Detailed breakdown of differences.
-*   Fixes PR for any identified parity gaps.
+*   `PARITY_REPORT.md`: Detailed breakdown of differences incl. detailed plan another developer could go through to make fixes. Should include reference to test changes when making changes to the code.

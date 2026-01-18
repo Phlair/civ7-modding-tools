@@ -132,7 +132,7 @@ class CivilizationBuilder(BaseBuilder):
         self._legacy = DatabaseNode()          # Legacy compatibility (INSERT OR IGNORE)
         self._icons = DatabaseNode()           # Icon definitions
         self._localizations = DatabaseNode()   # Localized text
-        self._game_effects = DatabaseNode()    # Modifiers and effects
+        self._game_effects: Optional['GameEffectNode'] = None  # Modifiers and effects
         
         # Builder configuration
         self.civilization_type: Optional[str] = None
@@ -303,7 +303,10 @@ class CivilizationBuilder(BaseBuilder):
         
         legacy_civ = LegacyCivilizationNode(
             civilization_type=self.civilization_type,
-            age=self.civilization_legacy.get("age", "AGE_ANTIQUITY")
+            age=self.civilization_legacy.get("age", "AGE_ANTIQUITY"),
+            name=locale(self.civilization_type, 'name'),
+            adjective=locale(self.civilization_type, 'adjective'),
+            full_name=locale(self.civilization_type, 'fullName')
         )
         self._legacy.legacy_civilizations = [legacy_civ]
         
@@ -370,29 +373,30 @@ class CivilizationBuilder(BaseBuilder):
                     if hasattr(item, 'migrate'):
                         item.migrate()
                     
-                    if hasattr(item._game_effects, 'modifiers') and item._game_effects.game_modifiers:
-                        if not self._game_effects.game_modifiers:
-                            self._game_effects.game_modifiers = []
-                        for modifier in item._game_effects.game_modifiers:
-                            modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
-                            if modifier_id:
-                                self._game_effects.game_modifiers.append(
-                                    GameModifierNode(modifier_id=modifier_id)
-                                )
+                    # Merge game effects from ModifierBuilder
+                    if item._game_effects and hasattr(item._game_effects, 'modifiers'):
+                        # Add modifiers to civilization's game-effects.xml
+                        if not self._game_effects:
+                            from civ7_modding_tools.nodes import GameEffectNode
+                            self._game_effects = GameEffectNode()
+                            self._game_effects.modifiers = []
                         
+                        # Add the modifier nodes directly
+                        self._game_effects.modifiers.extend(item._game_effects.modifiers)
+                        
+                        # Link modifiers to trait (if not detached)
                         if not getattr(item, 'is_detached', False):
                             if not self._current.trait_modifiers:
                                 self._current.trait_modifiers = []
-                            for modifier in item._game_effects.game_modifiers:
-                                modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
-                                if modifier_id:
-                                    self._current.trait_modifiers.append(
-                                        TraitModifierNode(
-                                            trait_type=trait_ability_type,
-                                            modifier_id=modifier_id
-                                        )
+                            for modifier in item._game_effects.modifiers:
+                                self._current.trait_modifiers.append(
+                                    TraitModifierNode(
+                                        trait_type=trait_ability_type,
+                                        modifier_id=modifier.id
                                     )
+                                )
                     
+                    # Merge localizations
                     if hasattr(item, '_localizations') and item._localizations:
                         if item._localizations.english_text:
                             if not self._localizations.english_text:
@@ -407,6 +411,8 @@ class CivilizationBuilder(BaseBuilder):
                 
                 # Handle ConstructibleBuilder
                 elif hasattr(item, 'constructible_type') and item.constructible_type:
+                    if hasattr(item, 'migrate'):
+                        item.migrate()
                     if hasattr(item, '_always') and item._always:
                         for building in getattr(item._always, 'buildings', []):
                             building.trait_type = trait_type
@@ -415,17 +421,45 @@ class CivilizationBuilder(BaseBuilder):
                 
                 # Handle UniqueQuarterBuilder
                 elif hasattr(item, 'unique_quarter_type') and item.unique_quarter_type:
+                    if hasattr(item, 'migrate'):
+                        item.migrate()
                     if hasattr(item, '_always') and item._always:
                         for unique_quarter in getattr(item._always, 'unique_quarters', []):
                             unique_quarter.trait_type = trait_type
                 
-                # Handle ProgressionTreeBuilder
+                # Handle ProgressionTreeBuilder - add reveal modifier
                 elif hasattr(item, 'progression_tree_type') and item.progression_tree_type:
-                    if hasattr(item, '_game_effects') and item._game_effects:
-                        if item._game_effects.game_modifiers:
-                            if not self._game_effects.game_modifiers:
-                                self._game_effects.game_modifiers = []
-                            self._game_effects.game_modifiers.extend(item._game_effects.game_modifiers)
+                    # Generate culture tree reveal modifier for the civilization
+                    from civ7_modding_tools.nodes import GameEffectNode
+                    from civ7_modding_tools.nodes.nodes import ModifierNode
+                    
+                    reveal_modifier = ModifierNode()
+                    reveal_modifier.id = f'MOD_TREE_{item.progression_tree_type.replace("TREE_", "")}_REVEAL'
+                    reveal_modifier.collection = 'COLLECTION_OWNER'
+                    reveal_modifier.effect = 'EFFECT_PLAYER_REVEAL_CULTURE_TREE'
+                    reveal_modifier.requirements = [{
+                        'type': 'REQUIREMENT_PLAYER_HAS_CIVILIZATION_OR_LEADER_TRAIT',
+                        'arguments': [{'name': 'TraitType', 'value': trait_type}]
+                    }]
+                    reveal_modifier.arguments = [
+                        {'name': 'ProgressionTreeType', 'value': item.progression_tree_type}
+                    ]
+                    
+                    # Add to civilization's game effects
+                    if not self._game_effects:
+                        self._game_effects = GameEffectNode()
+                        self._game_effects.modifiers = []
+                    self._game_effects.modifiers.append(reveal_modifier)
+                    
+                    # Also add to trait modifiers
+                    if not self._current.trait_modifiers:
+                        self._current.trait_modifiers = []
+                    self._current.trait_modifiers.append(
+                        TraitModifierNode(
+                            trait_type=trait_ability_type,
+                            modifier_id=reveal_modifier.id
+                        )
+                    )
         
         return self
 
@@ -645,9 +679,19 @@ class UnitBuilder(BaseBuilder):
         
         # ==== POPULATE _visual_remap DATABASE ====
         if self.visual_remap:
+            from civ7_modding_tools.nodes import VisualRemapRowNode
+            from civ7_modding_tools.utils import locale
+            
+            remap_id = f"REMAP_{self.unit_type}"
+            remap_row = VisualRemapRowNode()
+            remap_row.id = remap_id
+            remap_row.display_name = locale(self.unit_type, 'name')
+            remap_row.kind = 'UNIT'
+            remap_row.from_ = self.unit_type
+            remap_row.to = self.visual_remap.get('to')
+            
             self._visual_remap = DatabaseNode()
-            # TODO: Add VisualRemapNode when available
-            pass
+            self._visual_remap.visual_remaps = [remap_row]
         
         return self
 
@@ -720,7 +764,7 @@ class ConstructibleBuilder(BaseBuilder):
         self.yield_changes: list[Dict[str, Any]] = []
         self.localizations: list[Dict[str, Any]] = []
         self.modifiers: list[Dict[str, Any]] = []
-        self.icon: Dict[str, Any] = {}
+        self.icon: Dict[str, Any] = {'path': 'fs://game/civ_sym_han'}
 
     def fill(self, payload: Dict[str, Any]) -> "ConstructibleBuilder":
         """Fill constructible builder from payload."""
@@ -763,14 +807,30 @@ class ConstructibleBuilder(BaseBuilder):
         
         # Building (if this is a building)
         if self.building is not None:
+            # Preserve existing trait_type if already set (by parent civilization)
+            existing_trait_type = None
+            if self._always.buildings:
+                existing_trait_type = self._always.buildings[0].trait_type
+            
             building_node = BuildingNode(constructible_type=self.constructible_type)
+            if existing_trait_type is not None:
+                building_node.trait_type = existing_trait_type
+            
             for key, value in self.building.items():
                 setattr(building_node, key, value)
             self._always.buildings = [building_node]
         
         # Improvement (if this is an improvement)
         if self.improvement is not None:
+            # Preserve existing trait_type if already set (by parent civilization)
+            existing_trait_type = None
+            if self._always.improvements:
+                existing_trait_type = self._always.improvements[0].trait_type
+            
             improvement_node = ImprovementNode(constructible_type=self.constructible_type)
+            if existing_trait_type is not None:
+                improvement_node.trait_type = existing_trait_type
+            
             for key, value in self.improvement.items():
                 setattr(improvement_node, key, value)
             self._always.improvements = [improvement_node]
@@ -819,11 +879,11 @@ class ConstructibleBuilder(BaseBuilder):
             ]
         
         # ==== POPULATE _icons DATABASE ====
+        icon_node = IconDefinitionNode(id=self.constructible_type)
         if self.icon:
-            icon_node = IconDefinitionNode(id=self.constructible_type)
             for key, value in self.icon.items():
                 setattr(icon_node, key, value)
-            self._icons.icon_definitions = [icon_node]
+        self._icons.icon_definitions = [icon_node]
         
         # ==== POPULATE _localizations DATABASE ====
         localization_rows = []
@@ -910,7 +970,7 @@ class ProgressionTreeBuilder(BaseBuilder):
         """Initialize progression tree builder."""
         super().__init__()
         self._current = DatabaseNode()
-        self._game_effects = DatabaseNode()
+        self._game_effects: Optional['GameEffectNode'] = None
         self._localizations = DatabaseNode()
         
         self.progression_tree_type: Optional[str] = None
@@ -941,9 +1001,11 @@ class ProgressionTreeBuilder(BaseBuilder):
         
         # ==== POPULATE _current DATABASE ====
         # Types
-        self._current.types = [
-            TypeNode(type_=self.progression_tree_type, kind="KIND_TREE"),
-        ]
+        tree_type_node = TypeNode(type_=self.progression_tree_type, kind="KIND_TREE")
+        if self._current.types:
+            self._current.types.append(tree_type_node)
+        else:
+            self._current.types = [tree_type_node]
         
         # Progression tree definition with localization
         tree_node = ProgressionTreeNode(
@@ -985,6 +1047,8 @@ class ProgressionTreeBuilder(BaseBuilder):
         This merges all nodes from the child node builders into this tree.
         """
         for item in items:
+            if hasattr(item, 'migrate'):
+                item.migrate()
             # Fill progression tree reference on all nodes
             if hasattr(item, '_current') and item._current:
                 for node in getattr(item._current, 'progression_tree_nodes', []):
@@ -1018,12 +1082,14 @@ class ProgressionTreeBuilder(BaseBuilder):
                         self._current.progression_tree_prereqs = []
                     self._current.progression_tree_prereqs = self._current.progression_tree_prereqs + item._current.progression_tree_prereqs
             
-            # Merge game_effects game_modifiers
+            # Merge game_effects modifiers
             if hasattr(item, '_game_effects') and item._game_effects:
-                if item._game_effects.game_modifiers:
-                    if not self._game_effects.game_modifiers:
-                        self._game_effects.game_modifiers = []
-                    self._game_effects.game_modifiers = self._game_effects.game_modifiers + item._game_effects.game_modifiers
+                if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
+                    if not self._game_effects:
+                        from civ7_modding_tools.nodes import GameEffectNode
+                        self._game_effects = GameEffectNode()
+                        self._game_effects.modifiers = []
+                    self._game_effects.modifiers.extend(item._game_effects.modifiers)
             
             # Merge localizations
             if hasattr(item, '_localizations') and item._localizations:
@@ -1057,11 +1123,8 @@ class ProgressionTreeBuilder(BaseBuilder):
             action_group=self.action_group_bundle.current
         ))
         
-        # Create game-effects.xml if there are game_modifiers
-        if self._game_effects and (
-            (hasattr(self._game_effects, 'game_modifiers') and self._game_effects.game_modifiers) or
-            (hasattr(self._game_effects, 'modifiers') and self._game_effects.game_modifiers)
-        ):
+        # Create game-effects.xml if there are modifiers
+        if self._game_effects and hasattr(self._game_effects, 'modifiers') and self._game_effects.modifiers:
             files.append(XmlFile(
                 path=path,
                 name="game-effects.xml",
@@ -1090,7 +1153,7 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
         """Initialize progression tree node builder."""
         super().__init__()
         self._current = DatabaseNode()
-        self._game_effects = DatabaseNode()
+        self._game_effects: Optional['GameEffectNode'] = None
         self._localizations = DatabaseNode()
         
         self.progression_tree_node_type: Optional[str] = None
@@ -1170,32 +1233,29 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
             # Check for ModifierBuilder (has 'modifier' dict attribute)
             if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
                 item.migrate()  # Ensure migration is done
-                if hasattr(item._game_effects, 'modifiers') and item._game_effects.game_modifiers:
-                    for modifier in item._game_effects.game_modifiers:
-                        modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
-                        if modifier_id:
-                            if not self._current.progression_tree_node_unlocks:
-                                self._current.progression_tree_node_unlocks = []
-                            self._current.progression_tree_node_unlocks.append(
-                                ProgressionTreeNodeUnlockNode(
-                                    progression_tree_node_type=self.progression_tree_node_type,
-                                    target_kind="KIND_MODIFIER",
-                                    target_type=modifier_id,
-                                    unlock_depth=unlock_depth,
-                                    hidden=hidden
-                                )
+                if item._game_effects and hasattr(item._game_effects, 'modifiers'):
+                    # Initialize game effects if needed
+                    if not self._game_effects:
+                        from civ7_modding_tools.nodes import GameEffectNode
+                        self._game_effects = GameEffectNode()
+                        self._game_effects.modifiers = []
+                    
+                    # Add modifiers directly to game effects
+                    self._game_effects.modifiers.extend(item._game_effects.modifiers)
+                    
+                    # Add unlocks for each modifier
+                    for modifier in item._game_effects.modifiers:
+                        if not self._current.progression_tree_node_unlocks:
+                            self._current.progression_tree_node_unlocks = []
+                        self._current.progression_tree_node_unlocks.append(
+                            ProgressionTreeNodeUnlockNode(
+                                progression_tree_node_type=self.progression_tree_node_type,
+                                target_kind="KIND_MODIFIER",
+                                target_type=modifier.id,
+                                unlock_depth=unlock_depth,
+                                hidden=hidden
                             )
-                    # Merge modifiers to game_effects
-                    if not self._game_effects.game_modifiers:
-                        self._game_effects.game_modifiers = []
-                    # Convert modifiers to game_modifiers (GameModifierNode)
-                    for modifier in item._game_effects.game_modifiers:
-                        modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
-                        if modifier_id:
-                            from civ7_modding_tools.nodes import GameModifierNode
-                            self._game_effects.game_modifiers.append(
-                                GameModifierNode(modifier_id=modifier_id)
-                            )
+                        )
                 
                 # Merge localizations
                 if hasattr(item, '_localizations') and item._localizations:
@@ -1206,6 +1266,8 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
             
             # Check for ConstructibleBuilder
             elif hasattr(item, 'constructible_type') and item.constructible_type:
+                if hasattr(item, 'migrate'):
+                    item.migrate()
                 if hasattr(item, '_always') and item._always:
                     for constructible in getattr(item._always, 'constructibles', []):
                         const_type = getattr(constructible, 'constructible_type', None)
@@ -1224,6 +1286,8 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
             
             # Check for UnitBuilder
             elif hasattr(item, 'unit_type') and item.unit_type:
+                if hasattr(item, 'migrate'):
+                    item.migrate()
                 if hasattr(item, '_current') and item._current:
                     for unit in getattr(item._current, 'units', []):
                         unit_type = getattr(unit, 'unit_type', None)
@@ -1276,7 +1340,7 @@ class ModifierBuilder(BaseBuilder):
     def __init__(self) -> None:
         """Initialize modifier builder."""
         super().__init__()
-        self._game_effects = DatabaseNode()
+        self._game_effects: Optional['GameEffectNode'] = None
         self._localizations = DatabaseNode()
         
         self.modifier: Dict[str, Any] = {}
@@ -1292,29 +1356,48 @@ class ModifierBuilder(BaseBuilder):
 
     def migrate(self) -> "ModifierBuilder":
         """Migrate and populate all database variants."""
+        import uuid
         from civ7_modding_tools.utils import locale
-        from civ7_modding_tools.nodes import ModifierNode, StringNode
+        from civ7_modding_tools.nodes import GameEffectNode, EnglishTextNode
+        from civ7_modding_tools.nodes.nodes import ModifierNode
         
-        modifier_node = ModifierNode(**self.modifier)
+        # Generate unique modifier ID if not provided
+        if 'id' not in self.modifier and 'modifier_id' not in self.modifier:
+            self.modifier['id'] = 'MOD_' + uuid.uuid4().hex.upper()
+        elif 'modifier_id' in self.modifier:
+            self.modifier['id'] = self.modifier.pop('modifier_id')
         
-        # Add localization strings to modifier (if modifier has attribute support)
-        if self.localizations and hasattr(modifier_node, '__dict__'):
-            for loc in self.localizations:
-                if isinstance(loc, dict):
-                    for key in loc.keys():
-                        # Create string node for localization
-                        # Note: strings may not be directly supported in current ModifierNode
-                        # so we skip this for now
-                        pass
+        # Create modifier node with full structure
+        modifier_node = ModifierNode()
+        modifier_node.id = self.modifier.get('id')
+        modifier_node.collection = self.modifier.get('collection')
+        modifier_node.effect = self.modifier.get('effect')
+        modifier_node.permanent = self.modifier.get('permanent')
+        modifier_node.run_once = self.modifier.get('run_once')
+        modifier_node.requirements = self.modifier.get('requirements', [])
+        modifier_node.arguments = self.modifier.get('arguments', [])
+        
+        # Add string localizations if provided
+        strings = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                for key, text in loc.items():
+                    loc_key = locale(modifier_node.id, key)
+                    strings.append({
+                        'context': key.capitalize(),
+                        'value': loc_key
+                    })
+        modifier_node.strings = strings
         
         # Populate game_effects with modifier
-        self._game_effects.game_modifiers = [modifier_node]
+        self._game_effects = GameEffectNode()
+        self._game_effects.modifiers = [modifier_node]
         
         # Populate localizations
         localization_rows = []
         for loc in self.localizations:
             if isinstance(loc, dict):
-                modifier_id = modifier_node.modifier_id if hasattr(modifier_node, 'modifier_id') else modifier_node.id if hasattr(modifier_node, 'id') else 'MODIFIER'
+                modifier_id = modifier_node.id
                 for key, text in loc.items():
                     localization_rows.append(EnglishTextNode(
                         tag=locale(modifier_id, key),
@@ -1489,14 +1572,14 @@ class UniqueQuarterBuilder(BaseBuilder):
         self._always = DatabaseNode()
         self._icons = DatabaseNode()
         self._localizations = DatabaseNode()
-        self._game_effects: Optional[DatabaseNode] = None
+        self._game_effects: Optional['GameEffectNode'] = None
         
         self.unique_quarter_type: Optional[str] = None
         self.unique_quarter: Dict[str, Any] = {}
         self.unique_quarter_modifiers: List[Dict[str, Any]] = []
         self.game_modifiers: List[Dict[str, Any]] = []
         self.localizations: List[Dict[str, Any]] = []
-        self.icon: Dict[str, Any] = {}
+        self.icon: Dict[str, Any] = {'path': 'fs://game/civ_sym_han'}
 
     def fill(self, payload: Dict[str, Any]) -> "UniqueQuarterBuilder":
         """Fill unique quarter builder from payload."""
@@ -1523,15 +1606,23 @@ class UniqueQuarterBuilder(BaseBuilder):
         # ==== POPULATE _always DATABASE ====
         # Types
         self._always.types = [
-            TypeNode(type_=self.unique_quarter_type, kind="KIND_UNIQUE_QUARTER"),
+            TypeNode(type_=self.unique_quarter_type, kind="KIND_QUARTER"),
         ]
         
         # Main unique quarter row with localization
+        # Preserve existing trait_type if already set (by parent civilization)
+        existing_trait_type = None
+        if self._always.unique_quarters:
+            existing_trait_type = self._always.unique_quarters[0].trait_type
+        
         quarter_node = UniqueQuarterNode(
             unique_quarter_type=self.unique_quarter_type,
             name=loc_name,
             description=loc_description,
         )
+        if existing_trait_type is not None:
+            quarter_node.trait_type = existing_trait_type
+        
         for key, value in self.unique_quarter.items():
             setattr(quarter_node, key, value)
         self._always.unique_quarters = [quarter_node]
@@ -1547,11 +1638,11 @@ class UniqueQuarterBuilder(BaseBuilder):
             ]
         
         # ==== POPULATE _icons DATABASE ====
+        icon_node = IconDefinitionNode(id=self.unique_quarter_type)
         if self.icon:
-            icon_node = IconDefinitionNode(id=self.unique_quarter_type)
             for key, value in self.icon.items():
                 setattr(icon_node, key, value)
-            self._icons.icon_definitions = [icon_node]
+        self._icons.icon_definitions = [icon_node]
         
         # ==== POPULATE _localizations DATABASE ====
         localization_rows = []
@@ -1571,22 +1662,11 @@ class UniqueQuarterBuilder(BaseBuilder):
         if localization_rows:
             self._localizations.english_text = localization_rows
         
-        # ==== POPULATE _game_effects DATABASE ====
-        if self.game_modifiers:
-            self._game_effects = DatabaseNode()
-            self._game_effects.game_modifiers = [
-                GameModifierNode(
-                    modifier_id=mod.get('modifier_id'),
-                    target_type=mod.get('target_type', self.unique_quarter_type)
-                )
-                for mod in self.game_modifiers
-            ]
-        
         return self
 
     def bind(self, items: List[BaseBuilder]) -> "UniqueQuarterBuilder":
         """Bind ModifierBuilder items to this unique quarter."""
-        from civ7_modding_tools.nodes import UniqueQuarterModifierNode, GameModifierNode
+        from civ7_modding_tools.nodes import UniqueQuarterModifierNode, GameModifierNode, GameEffectNode
         
         for item in items:
             # Check for ModifierBuilder
@@ -1594,38 +1674,35 @@ class UniqueQuarterBuilder(BaseBuilder):
                 item.migrate()  # Ensure migration is done
                 
                 # Merge modifiers from game_effects
-                if hasattr(item._game_effects, 'modifiers') and item._game_effects.game_modifiers:
+                if item._game_effects and hasattr(item._game_effects, 'modifiers'):
+                    # Initialize game effects if needed
                     if not self._game_effects:
-                        self._game_effects = DatabaseNode()
-                    if not self._game_effects.game_modifiers:
-                        self._game_effects.game_modifiers = []
-                    if not self._game_effects.game_modifiers:
-                        self._game_effects.game_modifiers = []
+                        self._game_effects = GameEffectNode()
+                        self._game_effects.modifiers = []
                     
-                    # Add modifiers for requirements/effects
-                    self._game_effects.game_modifiers.extend(item._game_effects.game_modifiers)
+                    # Add modifier nodes directly to game effects
+                    self._game_effects.modifiers.extend(item._game_effects.modifiers)
                     
-                    # Convert modifiers to game_modifiers (GameModifierNode)
-                    for modifier in item._game_effects.game_modifiers:
-                        modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
-                        if modifier_id:
-                            self._game_effects.game_modifiers.append(
-                                GameModifierNode(modifier_id=modifier_id)
-                            )
-                    
-                    # Add unique quarter modifiers if not detached
+                    # Add unique quarter modifiers and game modifiers if not detached
                     if not getattr(item, 'is_detached', False):
+                        # Add to UniqueQuarterModifiers table
                         if not self._always.unique_quarter_modifiers:
                             self._always.unique_quarter_modifiers = []
-                        for modifier in item._game_effects.game_modifiers:
-                            modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
-                            if modifier_id:
-                                self._always.unique_quarter_modifiers.append(
-                                    UniqueQuarterModifierNode(
-                                        unique_quarter_type=self.unique_quarter_type,
-                                        modifier_id=modifier_id
-                                    )
+                        for modifier in item._game_effects.modifiers:
+                            self._always.unique_quarter_modifiers.append(
+                                UniqueQuarterModifierNode(
+                                    unique_quarter_type=self.unique_quarter_type,
+                                    modifier_id=modifier.id
                                 )
+                            )
+                        
+                        # Add to GameModifiers table
+                        if not hasattr(self._always, 'game_modifiers') or not self._always.game_modifiers:
+                            self._always.game_modifiers = []
+                        for modifier in item._game_effects.modifiers:
+                            self._always.game_modifiers.append(
+                                GameModifierNode(modifier_id=modifier.id)
+                            )
                 
                 # Merge localizations
                 if hasattr(item, '_localizations') and item._localizations:

@@ -7,7 +7,6 @@ Python library for programmatically generating Civilization 7 mods. Uses builder
 - **Version**: 1.3.0
 - **Python**: 3.12+
 - **Package Manager**: uv
-- **Test Coverage**: 94% (324 tests passing)
 
 ## Architecture
 

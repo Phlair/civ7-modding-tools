@@ -69,12 +69,12 @@ class ConstructibleNode(BaseNode):
     """Represents a Building/Improvement database row."""
     _name: str = "Row"
     constructible_type: Optional[str] = None
-    constructible_class: Optional[str] = None
+    constructible_class: Optional[str] = "BUILDING"
     name: Optional[str] = None
     description: Optional[str] = None
     tooltip: Optional[str] = None
-    cost: Optional[int] = None
-    population: Optional[int] = None
+    cost: Optional[int] = 1
+    population: Optional[int] = 1
     construction_cost: Optional[int] = None
     maintenance: Optional[int] = None
 
@@ -107,8 +107,8 @@ class ProgressionTreeNode(BaseNode):
     """Represents a progression tree."""
     _name: str = "Row"
     progression_tree_type: Optional[str] = None
-    age_type: Optional[str] = None
-    system_type: Optional[str] = None
+    age_type: Optional[str] = "AGE_ANTIQUITY"
+    system_type: Optional[str] = "SYSTEM_CULTURE"
     name: Optional[str] = None
 
 
@@ -117,27 +117,174 @@ class ProgressionTreeNodeNode(BaseNode):
     _name: str = "Row"
     progression_tree_node_type: Optional[str] = None
     progression_tree: Optional[str] = None
-    cost: Optional[int] = None
+    cost: Optional[int] = 150
     name: Optional[str] = None
-    icon_string: Optional[str] = None
+    icon_string: Optional[str] = "cult_aksum"
     depth: Optional[int] = None
     index: Optional[int] = None
 
 
 # Modifier/Effect Nodes
+class ArgumentNode(BaseNode):
+    """Represents a modifier argument."""
+    _name: str = "Argument"
+    name: Optional[str] = None
+    value: Optional[str] = None
+    
+    def to_xml_element(self) -> dict | None:
+        """Generate Argument XML with name attribute and text content."""
+        if not self.name:
+            return None
+        return {
+            '_name': 'Argument',
+            '_attrs': {'name': self.name},
+            '_content': str(self.value) if self.value is not None else ''
+        }
+
+
+class StringNode(BaseNode):
+    """Represents a modifier string (for localization)."""
+    _name: str = "String"
+    context: Optional[str] = None
+    value: Optional[str] = None
+    
+    def to_xml_element(self) -> dict | None:
+        """Generate String XML with context attribute and text content."""
+        if not self.context:
+            return None
+        return {
+            '_name': 'String',
+            '_attrs': {'context': self.context},
+            '_content': str(self.value) if self.value is not None else ''
+        }
+
+
+class ModifierRequirementNode(BaseNode):
+    """Represents a requirement for a modifier (in SubjectRequirements)."""
+    _name: str = "Requirement"
+    type_: Optional[str] = None  # Renamed to avoid conflict with builtin
+    arguments: list[dict] = []
+    
+    def to_xml_element(self) -> dict | None:
+        """Generate Requirement XML with nested Arguments."""
+        if not self.type_:
+            return None
+        
+        # Build argument elements
+        arg_elements = []
+        for arg in self.arguments:
+            if isinstance(arg, dict) and 'name' in arg:
+                arg_elements.append({
+                    '_name': 'Argument',
+                    '_attrs': {'name': arg['name']},
+                    '_content': str(arg.get('value', ''))
+                })
+        
+        return {
+            '_name': 'Requirement',
+            '_attrs': {'type': self.type_},
+            '_content': arg_elements if arg_elements else None
+        }
+
+
 class ModifierNode(BaseNode):
-    """Represents a game modifier."""
-    _name: str = "Row"
-    modifier_type: Optional[str] = None
-    modifier_id: Optional[str] = None
+    """Represents a complete game modifier with nested requirements and arguments."""
+    _name: str = "Modifier"
+    id: Optional[str] = None
     collection: Optional[str] = None
+    effect: Optional[str] = None
+    permanent: Optional[bool] = None
+    run_once: Optional[bool] = None
+    requirements: list[dict] = []
+    arguments: list[dict] = []
+    strings: list[dict] = []
+    
+    def to_xml_element(self) -> dict | None:
+        """Generate Modifier XML with all nested elements."""
+        if not self.id:
+            return None
+        
+        # Build attributes
+        attrs = {'id': self.id}
+        if self.collection:
+            attrs['collection'] = self.collection
+        if self.effect:
+            attrs['effect'] = self.effect
+        if self.permanent is not None:
+            attrs['permanent'] = 'true' if self.permanent else 'false'
+        if self.run_once is not None:
+            attrs['run-once'] = 'true' if self.run_once else 'false'
+        
+        # Build content elements
+        content = []
+        
+        # Add SubjectRequirements if present
+        if self.requirements:
+            req_elements = []
+            for req in self.requirements:
+                if isinstance(req, dict) and 'type' in req:
+                    req_node = ModifierRequirementNode()
+                    req_node.type_ = req['type']
+                    req_node.arguments = req.get('arguments', [])
+                    req_elem = req_node.to_xml_element()
+                    if req_elem:
+                        req_elements.append(req_elem)
+            
+            if req_elements:
+                content.append({
+                    '_name': 'SubjectRequirements',
+                    '_content': req_elements
+                })
+        
+        # Add Arguments
+        for arg in self.arguments:
+            if isinstance(arg, dict) and 'name' in arg:
+                content.append({
+                    '_name': 'Argument',
+                    '_attrs': {'name': arg['name']},
+                    '_content': str(arg.get('value', ''))
+                })
+        
+        # Add Strings
+        for string in self.strings:
+            if isinstance(string, dict) and 'context' in string:
+                content.append({
+                    '_name': 'String',
+                    '_attrs': {'context': string['context']},
+                    '_content': str(string.get('value', ''))
+                })
+        
+        return {
+            '_name': 'Modifier',
+            '_attrs': attrs,
+            '_content': content if content else None
+        }
 
 
 class GameEffectNode(BaseNode):
-    """Represents a game effect."""
-    _name: str = "Row"
-    effect_type: Optional[str] = None
-    amount: Optional[int] = None
+    """Represents the GameEffects root element containing modifiers."""
+    _name: str = "GameEffects"
+    modifiers: list[ModifierNode] = []
+    
+    def to_xml_element(self) -> dict | None:
+        """Generate GameEffects XML root element."""
+        if not self.modifiers:
+            return None
+        
+        modifier_elements = []
+        for modifier in self.modifiers:
+            elem = modifier.to_xml_element()
+            if elem:
+                modifier_elements.append(elem)
+        
+        if not modifier_elements:
+            return None
+        
+        return {
+            '_name': 'GameEffects',
+            '_attrs': {'xmlns': 'GameEffects'},
+            '_content': modifier_elements
+        }
 
 
 class RequirementNode(BaseNode):
@@ -161,6 +308,65 @@ class StartBiasTerrainNode(BaseNode):
     civilization_type: Optional[str] = None
     terrain_type: Optional[str] = None
     bias_value: Optional[int] = None
+
+
+# Visual Remap Nodes (special nested structure)
+class VisualRemapRowNode(BaseNode):
+    """Represents a visual remap with nested elements."""
+    _name: str = "Row"
+    id: Optional[str] = None
+    display_name: Optional[str] = None
+    kind: Optional[str] = None
+    from_: Optional[str] = None  # 'from' is a keyword
+    to: Optional[str] = None
+    
+    def to_xml_element(self) -> dict | None:
+        """Generate Row XML with nested child elements (not attributes)."""
+        if not self.id:
+            return None
+        
+        # Build nested elements as children
+        content = []
+        if self.id:
+            content.append({'_name': 'ID', '_content': self.id})
+        if self.display_name:
+            content.append({'_name': 'DisplayName', '_content': self.display_name})
+        if self.kind:
+            content.append({'_name': 'Kind', '_content': self.kind})
+        if self.from_:
+            content.append({'_name': 'From', '_content': self.from_})
+        if self.to:
+            content.append({'_name': 'To', '_content': self.to})
+        
+        return {
+            '_name': 'Row',
+            '_content': content if content else None
+        }
+
+
+class VisualRemapRootNode(BaseNode):
+    """Root node for visual remaps."""
+    _name: str = "VisualRemaps"
+    rows: list[VisualRemapRowNode] = []
+    
+    def to_xml_element(self) -> dict | None:
+        """Generate VisualRemaps XML root."""
+        if not self.rows:
+            return None
+        
+        row_elements = []
+        for row in self.rows:
+            elem = row.to_xml_element()
+            if elem:
+                row_elements.append(elem)
+        
+        if not row_elements:
+            return None
+        
+        return {
+            '_name': 'VisualRemaps',
+            '_content': row_elements
+        }
 
 
 # Import/Visual Nodes
@@ -215,12 +421,7 @@ class LeaderUnlockNode(BaseNode):
     start_bias: Optional[int] = None
 
 
-class ModifierRequirementNode(BaseNode):
-    """Represents a requirement for a modifier."""
-    _name: str = "Row"
-    modifier_type: Optional[str] = None
-    requirement_type: Optional[str] = None
-    requirement_set_type: Optional[str] = None
+# ModifierRequirementNode moved to Modifier/Effect section above
 
 
 class StartBiasAdjacentToCoastNode(BaseNode):
@@ -245,10 +446,7 @@ class StartBiasRiverNode(BaseNode):
     bias: Optional[int] = None
 
 
-class StringNode(BaseNode):
-    """Represents a generic string value."""
-    _name: str = "Row"
-    value: Optional[str] = None
+# StringNode moved to Modifier/Effect section above
 
 
 class UnitReplaceNode(BaseNode):

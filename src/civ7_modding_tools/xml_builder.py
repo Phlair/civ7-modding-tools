@@ -175,6 +175,7 @@ class XmlBuilder:
         # Get element name (_name) and attributes (_attrs)
         elem_name = row_data.get('_name', 'Row')
         attrs = row_data.get('_attrs', {})
+        content = row_data.get('_content')
         
         # Create element
         elem = ET.Element(elem_name)
@@ -182,5 +183,15 @@ class XmlBuilder:
         # Add attributes
         for key, value in attrs.items():
             elem.set(key, str(value))
+        
+        # Add nested content if provided
+        if content:
+            if isinstance(content, str):
+                elem.text = content
+            elif isinstance(content, list):
+                for child in content:
+                    if isinstance(child, dict):
+                        child_elem = XmlBuilder._create_row_element(child)
+                        elem.append(child_elem)
         
         return elem
