@@ -13,6 +13,7 @@ Complete API documentation for the Civ7 Modding Tools library.
   - [UnitBuilder](#unitbuilder)
   - [ConstructibleBuilder](#constructiblebuilder)
   - [Other Builders](#other-builders)
+- [Path Generation & File Naming](#path-generation--file-naming)
 - [Nodes](#nodes)
   - [BaseNode](#basenode)
   - [DatabaseNode](#databasenode)
@@ -410,8 +411,61 @@ Import external files (images, SQL, etc).
 
 ```python
 import_file = ImportFileBuilder({
-    "content": "./assets/custom_icon.png"
+    "source_path": "./assets/custom_icon.png",
+    "target_name": "my_custom_icon"  # Output filename
 })
+```
+
+---
+
+## Path Generation & File Naming
+
+### Path Generation
+
+Builders automatically generate file paths using the `trim()` and `kebab_case()` utilities:
+
+```python
+from civ7_modding_tools.utils import trim, kebab_case
+
+# Automatic path generation in builders:
+# CIVILIZATION_GONDOR → trim → GONDOR → kebab_case → gondor
+# Path result: /civilizations/gondor/
+
+# UNIT_GONDOR_SCOUT → trim → GONDOR_SCOUT → kebab_case → gondor-scout
+# Path result: /units/gondor-scout/
+```
+
+**Path Generation Pattern:**
+1. Remove entity type prefix (`CIVILIZATION_`, `UNIT_`, `BUILDING_`, etc.)
+2. Convert remaining name to kebab-case (lowercase with hyphens for underscores)
+3. Use as path segment in mod structure
+
+### File Naming Convention
+
+All builders generate standardized XML filenames:
+
+- `always.xml` - Core entity data
+- `current.xml` - Main content (tech trees, civilizations)
+- `game-effects.xml` - Game modifiers and effects
+- `icons.xml` - Icon asset definitions
+- `localization.xml` - Localization data
+- `legacy.xml` - Legacy game data (civilizations)
+- `shell.xml` - Shell/framework data (civilizations)
+- `unlocks.xml` - Unlock configurations (civilizations)
+- `visual-remap.xml` - Visual remapping (units)
+
+### ImportFileBuilder Naming
+
+Use `target_name` to control the output filename:
+
+```python
+# Source: ./assets/civ_icon.png → Output: imports/civ_sym_gondor
+import_file = ImportFileBuilder({
+    "source_path": "./assets/civ_icon.png",
+    "target_name": "civ_sym_gondor"
+})
+
+# Without target_name: uses source filename
 ```
 
 ---

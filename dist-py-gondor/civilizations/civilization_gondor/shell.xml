@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Database>
-    <Civilizations>
-        <Row>
-            <CivilizationType>CIVILIZATION_GONDOR</CivilizationType>
-        </Row>
-    </Civilizations>
-</Database>

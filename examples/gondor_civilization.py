@@ -235,24 +235,18 @@ progression_tree.fill({
 # TS: civilization.bind([unit, constructible, constructible2, unique_quarter, progression_tree])
 # Python equivalent: Pass linked entities in civilization builder properties
 
-# Add all builders to mod (matching TS lines 257-266)
+# Add all builders to mod (matching TS lines 260-269)
+# NOTE: progression_tree_node and progression_tree_node2 are NOT added to mod
+# The progressionTree builder handles node creation internally (inline)
 mod.add([
     civilization,
-    # civilizationIcon - added via add_files() below
     unit,
-    # unitIcon - added via add_files() below
     constructible,
     constructible2,
     unique_quarter,
     progression_tree,
-    progression_tree_node,
-    progression_tree_node2,
-])
-
-# Note: In Python, ImportFileBuilder instances are added differently
-mod.add_files([
-    civilization_icon,
-    unit_icon,
+    civilization_icon,  # Add builders, not files
+    unit_icon,  # Add builders, not files
 ])
 
 # Build mod (matching TS line 268)

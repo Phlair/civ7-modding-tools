@@ -298,7 +298,7 @@ class ImportFile(BaseFile):
         # Build output path
         output_dir = Path(dist) / self.path.strip("/")
         output_dir.mkdir(parents=True, exist_ok=True)
-        output_file = output_dir / source.name
+        output_file = output_dir / self.name
         
         # Copy file
         shutil.copy2(source, output_file)

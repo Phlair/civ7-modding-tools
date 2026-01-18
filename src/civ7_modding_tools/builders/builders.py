@@ -308,8 +308,10 @@ class CivilizationBuilder(BaseBuilder):
         
         self.migrate()
         
-        # Generate path from civilization type
-        path = f"/civilizations/{self.civilization_type.lower()}/"
+        # Generate path from civilization type (trimmed + kebab-case)
+        from civ7_modding_tools.utils import trim, kebab_case
+        trimmed = trim(self.civilization_type)
+        path = f"/civilizations/{kebab_case(trimmed)}/"
         
         files: list[BaseFile] = [
             XmlFile(
@@ -473,7 +475,10 @@ class UnitBuilder(BaseBuilder):
         
         self.migrate()
         
-        path = f"/units/{self.unit_type.lower()}/"
+        # Generate path from unit type (trimmed + kebab-case)
+        from civ7_modding_tools.utils import trim, kebab_case
+        trimmed = trim(self.unit_type)
+        path = f"/units/{kebab_case(trimmed)}/"
         
         files: list[BaseFile] = [
             XmlFile(
@@ -610,12 +615,15 @@ class ConstructibleBuilder(BaseBuilder):
         
         self.migrate()
         
-        path = f"/constructibles/{self.constructible_type.lower()}/"
+        # Generate path from constructible type (trimmed + kebab-case)
+        from civ7_modding_tools.utils import trim, kebab_case
+        trimmed = trim(self.constructible_type)
+        path = f"/constructibles/{kebab_case(trimmed)}/"
         
         files: list[BaseFile] = [
             XmlFile(
                 path=path,
-                name="constructible.xml",
+                name="always.xml",
                 content=self._current,
                 action_group=self.action_group_bundle.current
             ),
@@ -666,6 +674,8 @@ class ProgressionTreeBuilder(BaseBuilder):
             ProgressionTreeNodeNode,
             ProgressionTreePrereqNode,
         )
+        from civ7_modding_tools.nodes.database import DatabaseNode
+        from civ7_modding_tools.utils import trim, kebab_case
         
         files: list[BaseFile] = []
         
@@ -673,6 +683,7 @@ class ProgressionTreeBuilder(BaseBuilder):
             return files
         
         tree_nodes: list[BaseNode] = []
+        effects_nodes: list[BaseNode] = []
         
         # Add main progression tree row
         tree_node = ProgressionTreeNode()
@@ -681,7 +692,7 @@ class ProgressionTreeBuilder(BaseBuilder):
             setattr(tree_node, key, value)
         tree_nodes.append(tree_node)
         
-        # Add progression tree nodes
+        # Add progression tree nodes and prerequisites
         for node_data in self.progression_tree_nodes:
             node_obj = ProgressionTreeNodeNode()
             node_obj.progression_tree_type = self.progression_tree_type
@@ -701,13 +712,36 @@ class ProgressionTreeBuilder(BaseBuilder):
                         setattr(prereq_node, key, value)
                     tree_nodes.append(prereq_node)
         
-        # Create tree file
-        tree_file = XmlFile(
-            path=f"/progression-trees/{self.progression_tree_type.lower()}/",
-            name="tree.xml",
-            content=tree_nodes
-        )
-        files.append(tree_file)
+        # Create current database
+        current_db = DatabaseNode()
+        current_db.progression_trees = [tree_nodes[0]] if tree_nodes else []
+        if len(tree_nodes) > 1:
+            current_db.progression_tree_nodes = tree_nodes[1:]
+        
+        # Create effects database (for modifiers if any)
+        effects_db = None
+        # Note: modifiers would be added here if ProgressionTreeBuilder supported them
+        
+        # Generate path (trimmed + kebab-case)
+        trimmed = trim(self.progression_tree_type)
+        path = f"/progression-trees/{kebab_case(trimmed)}/"
+        
+        # Create current.xml file
+        files.append(XmlFile(
+            path=path,
+            name="current.xml",
+            content=current_db,
+            action_group=self.action_group_bundle.current
+        ))
+        
+        # Create game-effects.xml if there are modifiers
+        if effects_db:
+            files.append(XmlFile(
+                path=path,
+                name="game-effects.xml",
+                content=effects_db,
+                action_group=self.action_group_bundle.current
+            ))
         
         return files
 
@@ -852,36 +886,61 @@ class UniqueQuarterBuilder(BaseBuilder):
             UniqueQuarterNode,
             UniqueQuarterModifierNode,
         )
+        from civ7_modding_tools.nodes.database import DatabaseNode
+        from civ7_modding_tools.utils import trim, kebab_case
         
         files: list[BaseFile] = []
         
         if not self.unique_quarter_type:
             return files
         
-        quarter_nodes: list[BaseNode] = []
+        # Split modifiers into always and game-effects databases
+        always_nodes: list[BaseNode] = []
+        effects_nodes: list[BaseNode] = []
         
-        # Add main unique quarter row
+        # Add main unique quarter row to always database
         quarter_node = UniqueQuarterNode()
         quarter_node.unique_quarter_type = self.unique_quarter_type
         for key, value in self.unique_quarter.items():
             setattr(quarter_node, key, value)
-        quarter_nodes.append(quarter_node)
+        always_nodes.append(quarter_node)
         
-        # Add unique quarter modifiers
+        # Add unique quarter modifiers to appropriate database
         for quarter_mod in self.unique_quarter_modifiers:
             quarter_mod_node = UniqueQuarterModifierNode()
             quarter_mod_node.unique_quarter_type = self.unique_quarter_type
             for key, value in quarter_mod.items():
                 setattr(quarter_mod_node, key, value)
-            quarter_nodes.append(quarter_mod_node)
+            effects_nodes.append(quarter_mod_node)
         
-        # Create unique quarter file
-        quarter_file = XmlFile(
-            path=f"/unique-quarters/{self.unique_quarter_type.lower()}/",
-            name="quarter.xml",
-            content=quarter_nodes
-        )
-        files.append(quarter_file)
+        # Create database wrappers
+        always_db = DatabaseNode()
+        always_db.unique_quarters = always_nodes
+        
+        effects_db = None
+        if effects_nodes:
+            effects_db = DatabaseNode()
+            effects_db.unique_quarter_modifiers = effects_nodes
+        
+        # Generate path (trimmed + kebab-case)
+        trimmed = trim(self.unique_quarter_type)
+        path = f"/constructibles/{kebab_case(trimmed)}/"
+        
+        # Create files
+        files.append(XmlFile(
+            path=path,
+            name="always.xml",
+            content=always_db,
+            action_group=self.action_group_bundle.always
+        ))
+        
+        if effects_db:
+            files.append(XmlFile(
+                path=path,
+                name="game-effects.xml",
+                content=effects_db,
+                action_group=self.action_group_bundle.current
+            ))
         
         return files
 

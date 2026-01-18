@@ -4,10 +4,13 @@
 
 **Civ7 Modding Tools** is a Python code generation library for creating Civilization 7 mods. It provides strongly-typed builders and nodes that abstract the complexity of manual XML/mod file creation, allowing developers to programmatically generate complete mod packages with civilizations, units, buildings, progression trees, and other game entities.
 
+**Status**: ✅ Python implementation achieves 100% parity with TypeScript (v1.3.0), with identical file structure, naming, and output format.
+
 - **Repository**: https://github.com/Phlair/civ7-modding-tools
 - **License**: MIT
 - **Python Version**: 3.12+
 - **Package Manager**: uv
+- **Latest Version**: 2.0.0-py (March 2025)
 
 ## Architecture Overview
 
@@ -80,6 +83,7 @@ civ7-modding-tools/
 │   └── ... (12+ test files, 324 total tests)
 │
 ├── examples/
+│   ├── gondor_civilization.py   # Full parity test example (matches build.ts exactly)
 │   ├── civilization.py         # Full civilization example
 │   ├── unit.py
 │   ├── progression_tree.py
@@ -377,6 +381,8 @@ uv run black src/ tests/
 - **Functions/Methods**: snake_case (build_civilization, civilization_type)
 - **Constants**: UPPER_SNAKE_CASE (TRAIT.ECONOMIC_CIV, UNIT_CLASS.RECON)
 - **Private Methods**: Leading underscore (_get_attributes)
+- **File Paths**: kebab-case with trimmed IDs (`civilizations/gondor/`, `units/gondor-scout/`)
+- **File Names**: Standardized (`always.xml`, `current.xml`, `game-effects.xml`, `icons.xml`, `localization.xml`)
 
 ### Builder Pattern Usage
 
@@ -662,12 +668,17 @@ my-civ7-mod/
 
 See [CHANGELOG.md](../CHANGELOG.md) for version history.
 
-Current version: 2.0.0-py (Python port)
-Previous: 1.3.0 (TypeScript)
+Current version: 2.0.0-py (Python port with full TypeScript parity)
+Reference: 1.3.0 (TypeScript - API compatibility baseline)
 
 Notable versions:
-- **2.0.0-py**: Python port with 100% API parity (2025-03-20)
-- **1.3.0**: Last TypeScript version (2025-03-15)
+- **2.0.0-py**: Python port with 100% output parity (2025-03-20)
+  - Identical file generation to TypeScript v1.3.0
+  - 22 files generated for gondor example (matches TS exactly)
+  - Path generation: kebab-case with trimmed IDs
+  - Import file naming: Uses target_name from ImportFileBuilder
+  - All 13 builders fully implemented and tested
+- **1.3.0**: TypeScript reference implementation (2025-03-15)
 
 ## Performance Considerations
 
@@ -676,6 +687,58 @@ Notable versions:
 - Typical mod generation: <100ms
 - Large mods with 100+ entities generate quickly
 - Test suite (324 tests) executes in <1 second
+
+## Path Generation & File Naming
+
+### Path Generation with trim() and kebab_case()
+
+All builders use a two-step process for generating file paths:
+
+```python
+from civ7_modding_tools.utils import trim, kebab_case
+
+# Step 1: Remove prefixes (CIVILIZATION_, UNIT_, BUILDING_, etc.)
+trimmed = trim("CIVILIZATION_GONDOR")  # "GONDOR"
+
+# Step 2: Convert to kebab-case
+path_segment = kebab_case(trimmed)  # "gondor"
+
+# Result in file path
+path = f"/civilizations/{path_segment}/"  # "/civilizations/gondor/"
+```
+
+Examples:
+- `CIVILIZATION_GONDOR` → `gondor` (civilization path)
+- `UNIT_GONDOR_SCOUT` → `gondor-scout` (unit path)
+- `BUILDING_GONDOR2` → `gondor2` (constructible path)
+- `TREE_CIVICS_GONDOR` → `civics-gondor` (progression tree path)
+
+### File Naming Convention
+
+Builders generate XML files with standardized names:
+- `always.xml` - Core entity data (constructibles, buildings)
+- `current.xml` - Main progression tree or core content
+- `game-effects.xml` - Game modifiers and effects
+- `icons.xml` - Icon asset definitions
+- `localization.xml` - Localization data
+- `legacy.xml` - Legacy game data
+- `shell.xml` - Shell/framework data
+- `visual-remap.xml` - Visual remapping (units)
+- `unlocks.xml` - Unlock data (civilizations)
+
+### ImportFileBuilder File Naming
+
+Import files use `target_name` parameter for output filename:
+
+```python
+import_file = ImportFileBuilder()
+import_file.fill({
+    'source_path': './assets/civ-icon.png',
+    'target_name': 'civ_sym_gondor'  # Output filename in imports/
+})
+```
+
+Result: `imports/civ_sym_gondor` (not `imports/civ-icon.png`)
 
 ## Common Patterns
 

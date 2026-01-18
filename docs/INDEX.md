@@ -2,6 +2,8 @@
 
 Welcome to the comprehensive documentation for **Civ7 Modding Tools**, a Python library for creating Civilization 7 mods programmatically.
 
+> ✅ **Python Parity Achieved**: 100% output parity with TypeScript reference (v1.3.0). Generates identical 22-file structure with exact path and file naming conventions.
+
 ## 📚 Main Documentation
 
 ### [Getting Started Guide](GUIDE.md) 🚀

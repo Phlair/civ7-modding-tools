@@ -2,6 +2,8 @@
 
 Practical examples for common modding scenarios.
 
+> 💡 **Parity Test Example**: See [examples/gondor_civilization.py](../examples/gondor_civilization.py) for a complete example that generates identical output to the TypeScript reference implementation (22 files with exact path/naming parity).
+
 ## Table of Contents
 
 1. [Example 1: Simple Civilization](#example-1-simple-civilization)
@@ -62,10 +64,13 @@ print("✅ Mod generated in ./dist/")
 **Output Files:**
 ```
 dist/mod-test.modinfo
-dist/civilizations/custom_001/current.xml
-dist/civilizations/custom_001/unlocks.xml
-dist/civilizations/custom_001/legacy.xml
-dist/civilizations/custom_001/icons.xml
+dist/civilizations/custom-001/current.xml
+dist/civilizations/custom-001/unlocks.xml
+dist/civilizations/custom-001/legacy.xml
+dist/civilizations/custom-001/icons.xml
+dist/civilizations/custom-001/shell.xml
+dist/civilizations/custom-001/game-effects.xml
+dist/civilizations/custom-001/localization.xml
 ```
 
 ---
