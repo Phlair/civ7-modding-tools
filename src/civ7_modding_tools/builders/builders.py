@@ -370,10 +370,10 @@ class CivilizationBuilder(BaseBuilder):
                     if hasattr(item, 'migrate'):
                         item.migrate()
                     
-                    if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
+                    if hasattr(item._game_effects, 'modifiers') and item._game_effects.game_modifiers:
                         if not self._game_effects.game_modifiers:
                             self._game_effects.game_modifiers = []
-                        for modifier in item._game_effects.modifiers:
+                        for modifier in item._game_effects.game_modifiers:
                             modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
                             if modifier_id:
                                 self._game_effects.game_modifiers.append(
@@ -383,7 +383,7 @@ class CivilizationBuilder(BaseBuilder):
                         if not getattr(item, 'is_detached', False):
                             if not self._current.trait_modifiers:
                                 self._current.trait_modifiers = []
-                            for modifier in item._game_effects.modifiers:
+                            for modifier in item._game_effects.game_modifiers:
                                 modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
                                 if modifier_id:
                                     self._current.trait_modifiers.append(
@@ -1060,7 +1060,7 @@ class ProgressionTreeBuilder(BaseBuilder):
         # Create game-effects.xml if there are game_modifiers
         if self._game_effects and (
             (hasattr(self._game_effects, 'game_modifiers') and self._game_effects.game_modifiers) or
-            (hasattr(self._game_effects, 'modifiers') and self._game_effects.modifiers)
+            (hasattr(self._game_effects, 'modifiers') and self._game_effects.game_modifiers)
         ):
             files.append(XmlFile(
                 path=path,
@@ -1170,8 +1170,8 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
             # Check for ModifierBuilder (has 'modifier' dict attribute)
             if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
                 item.migrate()  # Ensure migration is done
-                if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
-                    for modifier in item._game_effects.modifiers:
+                if hasattr(item._game_effects, 'modifiers') and item._game_effects.game_modifiers:
+                    for modifier in item._game_effects.game_modifiers:
                         modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
                         if modifier_id:
                             if not self._current.progression_tree_node_unlocks:
@@ -1189,7 +1189,7 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
                     if not self._game_effects.game_modifiers:
                         self._game_effects.game_modifiers = []
                     # Convert modifiers to game_modifiers (GameModifierNode)
-                    for modifier in item._game_effects.modifiers:
+                    for modifier in item._game_effects.game_modifiers:
                         modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
                         if modifier_id:
                             from civ7_modding_tools.nodes import GameModifierNode
@@ -1308,7 +1308,7 @@ class ModifierBuilder(BaseBuilder):
                         pass
         
         # Populate game_effects with modifier
-        self._game_effects.modifiers = [modifier_node]
+        self._game_effects.game_modifiers = [modifier_node]
         
         # Populate localizations
         localization_rows = []
@@ -1408,16 +1408,16 @@ class TraditionBuilder(BaseBuilder):
             # Check for ModifierBuilder
             if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
                 # Merge modifiers from game_effects
-                if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
-                    if not self._game_effects.modifiers:
-                        self._game_effects.modifiers = []
-                    self._game_effects.modifiers.extend(item._game_effects.modifiers)
+                if hasattr(item._game_effects, 'modifiers') and item._game_effects.game_modifiers:
+                    if not self._game_effects.game_modifiers:
+                        self._game_effects.game_modifiers = []
+                    self._game_effects.game_modifiers.extend(item._game_effects.game_modifiers)
                     
                     # Add tradition modifiers if not detached
                     if not getattr(item, 'is_detached', False):
                         if not self._current.tradition_modifiers:
                             self._current.tradition_modifiers = []
-                        for modifier in item._game_effects.modifiers:
+                        for modifier in item._game_effects.game_modifiers:
                             modifier_id = getattr(modifier, 'id', None)
                             if modifier_id:
                                 self._current.tradition_modifiers.append(
@@ -1459,7 +1459,7 @@ class TraditionBuilder(BaseBuilder):
             action_group=self.action_group_bundle.current
         ))
         
-        if self._game_effects and len(self._game_effects.modifiers) > 0:
+        if self._game_effects and len(self._game_effects.game_modifiers) > 0:
             files.append(XmlFile(
                 path=path,
                 name="game-effects.xml",
@@ -1594,19 +1594,19 @@ class UniqueQuarterBuilder(BaseBuilder):
                 item.migrate()  # Ensure migration is done
                 
                 # Merge modifiers from game_effects
-                if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
+                if hasattr(item._game_effects, 'modifiers') and item._game_effects.game_modifiers:
                     if not self._game_effects:
                         self._game_effects = DatabaseNode()
-                    if not self._game_effects.modifiers:
-                        self._game_effects.modifiers = []
+                    if not self._game_effects.game_modifiers:
+                        self._game_effects.game_modifiers = []
                     if not self._game_effects.game_modifiers:
                         self._game_effects.game_modifiers = []
                     
                     # Add modifiers for requirements/effects
-                    self._game_effects.modifiers.extend(item._game_effects.modifiers)
+                    self._game_effects.game_modifiers.extend(item._game_effects.game_modifiers)
                     
                     # Convert modifiers to game_modifiers (GameModifierNode)
-                    for modifier in item._game_effects.modifiers:
+                    for modifier in item._game_effects.game_modifiers:
                         modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
                         if modifier_id:
                             self._game_effects.game_modifiers.append(
@@ -1617,7 +1617,7 @@ class UniqueQuarterBuilder(BaseBuilder):
                     if not getattr(item, 'is_detached', False):
                         if not self._always.unique_quarter_modifiers:
                             self._always.unique_quarter_modifiers = []
-                        for modifier in item._game_effects.modifiers:
+                        for modifier in item._game_effects.game_modifiers:
                             modifier_id = getattr(modifier, 'id', None) or getattr(modifier, 'modifier_id', None)
                             if modifier_id:
                                 self._always.unique_quarter_modifiers.append(
@@ -1877,3 +1877,4 @@ class ImportFileBuilder(BaseBuilder):
         files.append(import_file)
         
         return files
+

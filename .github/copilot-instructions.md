@@ -191,6 +191,35 @@ uv run mypy src/           # Type checking (optional)
 - **Performance**: Mod generation <100ms, test suite <1s
 - **Dependencies**: pydantic, xmltodict, pytest, pytest-cov
 
+## Rate Limiting & Tool Usage Guidelines
+
+### Tool Call Patterns to Avoid
+
+**❌ DO NOT** parallelize expensive search operations:
+- Never run multiple `semantic_search` calls simultaneously
+- Never run multiple `grep_search` calls in parallel  
+- Never batch multiple search tools together
+
+**✓ DO** run lightweight operations in parallel:
+- Multiple `read_file` calls can be parallelized (they're local)
+- `list_dir` calls are safe to parallelize
+- `copilot_getNotebookSummary` calls can be parallelized
+
+### Rate-Limiting Best Practices
+
+1. **Sequential search operations**: Run one semantic_search or grep_search at a time
+2. **No over-searching**: If initial search doesn't yield results, refine query rather than running additional searches
+3. **Context throttling**: Read large file sections (100+ lines) instead of making multiple small reads
+4. **Backoff strategy**: If a search feels expensive, wait for results before launching next tool call
+5. **Bounds on thoroughness**: "Gather context as needed" has implicit limits—stop after 2-3 searches if not finding target
+
+### When to Stop Searching
+
+- Initial semantic_search found relevant results → use those, don't search again
+- grep_search with specific pattern matched → proceed with next step
+- File found via file_search → read it, don't search for alternatives
+- After 2-3 failed searches → ask user for clarification instead of continuing searches
+
 ## Resources
 
 - **Docs**: `docs/INDEX.md`, `docs/GUIDE.md`, `docs/API.md`, `docs/EXAMPLES.md`

@@ -47,11 +47,6 @@ dist-*/
 node_modules/
 npm-debug.log
 
-# Working documentation (temp files)
-IMPLEMENTATION_COMPLETE.md
-PARITY_FIX_PLAN.md
-REVIEW_PLAN.md
-
 # Keep these files
 !.gitignore
 !README.md

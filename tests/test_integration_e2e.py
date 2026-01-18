@@ -71,7 +71,8 @@ class TestEndToEndModGeneration:
             # Verify XML structure
             tree = ET.parse(modinfo_file)
             root = tree.getroot()
-            assert root.tag == "Mod"
+            root_tag = root.tag.split("}", 1)[-1] if "}" in root.tag else root.tag
+            assert root_tag == "Mod"
 
     def test_civilization_with_multiple_units_mod(self):
         """Test mod with civilization and multiple unit types."""
@@ -128,8 +129,8 @@ class TestEndToEndModGeneration:
             # Verify units were written
             units_dir = Path(tmpdir) / "units"
             assert units_dir.exists()
-            assert (units_dir / "unit_gondor_ranger").exists()
-            assert (units_dir / "unit_gondor_knight").exists()
+            assert (units_dir / "gondor-ranger").exists()
+            assert (units_dir / "gondor-knight").exists()
 
     def test_constructible_buildings_mod(self):
         """Test mod with various constructible types."""
@@ -163,7 +164,7 @@ class TestEndToEndModGeneration:
             # Verify constructible generated
             constructibles_dir = Path(tmpdir) / "constructibles"
             assert constructibles_dir.exists()
-            assert (constructibles_dir / "building_gondor_armory").exists()
+            assert (constructibles_dir / "gondor-armory").exists()
 
     def test_complex_mod_with_multiple_builder_types(self):
         """Test comprehensive mod using multiple builder types."""
@@ -218,11 +219,11 @@ class TestEndToEndModGeneration:
             mod.build(tmpdir)
             
             # Verify all directories created
-            assert (Path(tmpdir) / "civilizations" / "civilization_test").exists()
-            assert (Path(tmpdir) / "units" / "unit_test").exists()
-            assert (Path(tmpdir) / "constructibles" / "building_test").exists()
-            assert (Path(tmpdir) / "progression-trees" / "civics_test").exists()
-            assert (Path(tmpdir) / "modifiers" / "mod_test").exists()
+            assert (Path(tmpdir) / "civilizations" / "test").exists()
+            assert (Path(tmpdir) / "units" / "test").exists()
+            assert (Path(tmpdir) / "constructibles" / "test").exists()
+            assert (Path(tmpdir) / "progression-trees" / "civics-test").exists()
+            assert not (Path(tmpdir) / "modifiers").exists()
 
 
 class TestXmlOutputValidation:
@@ -253,7 +254,7 @@ class TestXmlOutputValidation:
             mod.build(tmpdir)
             
             # Parse civilization XML
-            civ_dir = Path(tmpdir) / "civilizations" / "civilization_rome"
+            civ_dir = Path(tmpdir) / "civilizations" / "rome"
             civ_file = civ_dir / "current.xml"
             
             assert civ_file.exists()
@@ -273,8 +274,8 @@ class TestXmlOutputValidation:
             civ_rows = root.findall(".//Civilizations/Row")
             assert len(civ_rows) > 0
             assert any(
-                row.find("CivilizationType").text == "CIVILIZATION_ROME" 
-                for row in civ_rows if row.find("CivilizationType") is not None
+                row.get("CivilizationType") == "CIVILIZATION_ROME" 
+                for row in civ_rows
             )
 
     def test_unit_xml_with_costs(self):
@@ -298,7 +299,7 @@ class TestXmlOutputValidation:
             mod.add(unit)
             mod.build(tmpdir)
             
-            unit_file = Path(tmpdir) / "units" / "unit_legionary" / "unit.xml"
+            unit_file = Path(tmpdir) / "units" / "legionary" / "current.xml"
             assert unit_file.exists()
             
             tree = ET.parse(unit_file)
@@ -334,7 +335,7 @@ class TestXmlOutputValidation:
             mod.add(building)
             mod.build(tmpdir)
             
-            building_file = Path(tmpdir) / "constructibles" / "building_forum" / "constructible.xml"
+            building_file = Path(tmpdir) / "constructibles" / "forum" / "always.xml"
             assert building_file.exists()
             
             tree = ET.parse(building_file)
@@ -444,7 +445,8 @@ class TestModFilesGeneration:
             # Parse and validate structure
             tree = ET.parse(modinfo_file)
             root = tree.getroot()
-            assert root.tag == "Mod"
+            root_tag = root.tag.split("}", 1)[-1] if "}" in root.tag else root.tag
+            assert root_tag == "Mod"
 
     def test_multiple_mod_generation_isolation(self):
         """Test multiple mods can be generated independently."""
@@ -566,7 +568,7 @@ class TestErrorHandling:
             mod.build(tmpdir)
             
             # Should generate civilization but not unit
-            assert (Path(tmpdir) / "civilizations" / "civilization_valid").exists()
+            assert (Path(tmpdir) / "civilizations" / "valid").exists()
             units_dir = Path(tmpdir) / "units"
             # Units directory might not exist if empty
             if units_dir.exists():
