@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Database>
-    <Table>
-        <Row ConstructibleType="BUILDING_ROMAN_TEMPLE" Maintenance="1" Cost="120" DistrictType="DISTRICT_HOLY_SITE" EraType="ERA_CLASSICAL"></Row>
-        <Row ConstructibleType="BUILDING_ROMAN_TEMPLE" YieldType="YIELD_FAITH" Amount="3"></Row>
-        <Row ConstructibleType="BUILDING_ROMAN_TEMPLE" YieldType="YIELD_CULTURE" Amount="1"></Row>
-    </Table>
-</Database>

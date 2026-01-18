@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Database>
-    <Table>
-        <Row UnitType="UNIT_ROMAN_LEGION" UnitClass="UNIT_CLASS_MELEE" UnitMovementClass="UNIT_MOVEMENT_CLASS_LAND" Combat="28" RangedCombat="0" Range="0" Movement="2" EraType="ERA_CLASSICAL"></Row>
-        <Row UnitType="UNIT_ROMAN_LEGION" YieldType="YIELD_PRODUCTION" Amount="65"></Row>
-    </Table>
-</Database>

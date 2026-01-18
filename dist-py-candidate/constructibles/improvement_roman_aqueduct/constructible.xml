@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Database>
-    <Table>
-        <Row ConstructibleType="IMPROVEMENT_ROMAN_AQUEDUCT" Maintenance="1" Cost="80" Improvement="true" EraType="ERA_CLASSICAL"></Row>
-        <Row ConstructibleType="IMPROVEMENT_ROMAN_AQUEDUCT" YieldType="YIELD_PRODUCTION" Amount="2"></Row>
-    </Table>
-</Database>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Database>
-    <Table>
-        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" BaseTourism="2" LegacyModifier="true" BaseLoyalty="5"></Row>
-        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" TraitType="TRAIT_ECONOMIC"></Row>
-        <Row CivilizationType="CIVILIZATION_ROME_CUSTOM" TraitType="TRAIT_DIPLOMATIC"></Row>
-    </Table>
-</Database>
