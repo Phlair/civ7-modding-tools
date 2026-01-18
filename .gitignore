@@ -37,11 +37,12 @@ Thumbs.db
 .env
 .env.local
 
-# Generated example mods and build outputs
+# Generated example mods, build outputs, copies from base game etc.
 example-generated-mod/
 **/example-generated-mod/
 dist-*/
 **/dist-*/
+carthage-EXAMPLE/
 
 # Node.js (for TypeScript build tooling)
 node_modules/
