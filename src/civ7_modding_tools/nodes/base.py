@@ -17,7 +17,6 @@ class BaseNode(BaseModel):
     
     # Private attributes (not included in model_dump)
     _name: str = PrivateAttr(default="Row")
-    _insert_or_ignore: bool = PrivateAttr(default=False)
 
     def fill(self, payload: Dict[str, Any]) -> "BaseNode":
         """
@@ -35,17 +34,7 @@ class BaseNode(BaseModel):
             setattr(self, key, value)
         return self
 
-    def insert_or_ignore(self) -> "BaseNode":
-        """
-        Mark this node as INSERT OR IGNORE.
-        
-        Used in database operations to skip duplicates.
-        
-        Returns:
-            Self for fluent API chaining
-        """
-        self._insert_or_ignore = True
-        return self
+
 
     def to_xml_element(self) -> Optional[Dict[str, Any]]:
         """
@@ -79,9 +68,13 @@ class BaseNode(BaseModel):
             if value is None or value == "":
                 continue
             
+            # Skip False boolean values (only True is serialized)
+            if isinstance(value, bool) and not value:
+                continue
+            
             # Convert boolean values to strings
             if isinstance(value, bool):
-                value = "true" if value else "false"
+                value = "true"  # We've already filtered out False above
             
             # Convert property name from snake_case to PascalCase
             # This matches TypeScript lodash.startCase behavior
@@ -104,9 +97,8 @@ class BaseNode(BaseModel):
         
         # Return in jstoxml-compatible format
         # This matches TypeScript: {_name: this._name, _attrs: this.getAttributes()}
-        element_name = "InsertOrIgnore" if self._insert_or_ignore else self._name
         return {
-            '_name': element_name,
+            '_name': self._name,
             '_attrs': attributes
         }
 

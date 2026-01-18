@@ -42,7 +42,6 @@ def test_base_node_creation():
     """Test creating a basic node."""
     node = BaseNode()
     assert node._name == "Row"
-    assert node._insert_or_ignore is False
 
 
 def test_base_node_fill():
@@ -121,14 +120,6 @@ def test_base_node_empty_returns_none():
     xml_elem = node.to_xml_element()
     assert xml_elem is None
 
-
-def test_base_node_insert_or_ignore():
-    """Test insert_or_ignore() flag."""
-    node = BaseNode()
-    result = node.insert_or_ignore()
-    
-    assert result is node  # Fluent API
-    assert node._insert_or_ignore is True
 
 
 def test_camel_to_pascal():
@@ -432,10 +423,9 @@ class TestModifierRequirementNode:
         """Test ModifierRequirementNode initializes correctly."""
         node = ModifierRequirementNode()
         assert isinstance(node, BaseNode)
-        assert node._name == "Row"
-        assert node.modifier_type is None
-        assert node.requirement_type is None
-        assert node.requirement_set_type is None
+        assert node._name == "Requirement"  # ModifierRequirementNode uses 'Requirement', not 'Row'
+        assert node.type_ is None
+        assert node.arguments == []
 
     def test_modifier_requirement_node_with_data(self):
         """Test ModifierRequirementNode with data."""
@@ -449,13 +439,13 @@ class TestModifierRequirementNode:
     def test_modifier_requirement_node_to_xml(self):
         """Test ModifierRequirementNode XML serialization."""
         node = ModifierRequirementNode()
-        node.modifier_type = "MOD_GONDOR"
-        node.requirement_set_type = "REQ_SET_1"
+        node.type_ = "REQUIREMENT_UNIT_TAG_MATCHES"
+        node.arguments = [{'name': 'Tag', 'value': 'UNIT_CLASS_RECON'}]
         
         xml = node.to_xml_element()
         assert xml is not None
-        assert "ModifierType" in str(xml)
-        assert "MOD_GONDOR" in str(xml)
+        assert xml['_name'] == 'Requirement'
+        assert xml['_attrs']['type'] == 'REQUIREMENT_UNIT_TAG_MATCHES'
 
 
 class TestStartBiasAdjacentToCoastNode:
@@ -560,7 +550,8 @@ class TestStringNode:
         """Test StringNode initializes correctly."""
         node = StringNode()
         assert isinstance(node, BaseNode)
-        assert node._name == "Row"
+        assert node._name == "String"  # StringNode uses 'String', not 'Row'
+        assert node.context is None
         assert node.value is None
 
     def test_string_node_with_data(self):
@@ -582,11 +573,14 @@ class TestStringNode:
     def test_string_node_to_xml(self):
         """Test StringNode XML serialization."""
         node = StringNode()
+        node.context = "Preview"
         node.value = "my_value"
         
         xml = node.to_xml_element()
         assert xml is not None
-        assert "my_value" in str(xml)
+        assert xml['_name'] == 'String'
+        assert xml['_attrs']['context'] == 'Preview'
+        assert xml['_content'] == 'my_value'
 
 
 class TestUnitReplaceNode:
@@ -891,7 +885,13 @@ class TestNodeIntegration:
             assert callable(node.to_xml_element)
 
     def test_all_phase6_nodes_have_name(self):
-        """Test all Phase 6 nodes have _name set to 'Row'."""
+        """Test all Phase 6 nodes have _name set (either 'Row' or custom)."""
+        # Some nodes have custom _name values
+        custom_names = {
+            ModifierRequirementNode: "Requirement",
+            StringNode: "String",
+        }
+        
         nodes = [
             ModifierRequirementNode(),
             StartBiasAdjacentToCoastNode(),
@@ -904,7 +904,8 @@ class TestNodeIntegration:
         ]
         
         for node in nodes:
-            assert node._name == "Row"
+            expected = custom_names.get(type(node), "Row")
+            assert node._name == expected, f"{type(node).__name__} should have _name='{expected}'"
 
     def test_utilities_work_together(self):
         """Utilities should work together for common patterns."""
@@ -946,11 +947,13 @@ class TestNodeEdgeCases:
     def test_string_node_with_special_characters(self):
         """Test StringNode handles special XML characters."""
         node = StringNode()
+        node.context = "Description"
         node.value = "value_with_&_ampersand"
         
         # Should not raise an error
         xml = node.to_xml_element()
         assert xml is not None
+        assert xml['_content'] == "value_with_&_ampersand"
 
     def test_unit_replace_node_without_era(self):
         """Test UnitReplaceNode works without era."""

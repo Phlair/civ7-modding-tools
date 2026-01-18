@@ -68,9 +68,11 @@ from civ7_modding_tools.nodes.database import (
     RequirementSetRequirementNode,
     ModifierNode,
     GameModifierNode,
+    ModifierStringNode,
     ArgumentNode,
     ProgressionTreeAdvisoryNode,
     ProgressionTreeNodeUnlockNode,
+    ProgressionTreeQuoteNode,
     TraditionModifierNode,
     LeaderCivilizationBiasNode,
     DistrictFreeConstructibleNode,
@@ -81,8 +83,15 @@ from civ7_modding_tools.nodes.database import (
     CivilizationUnlockNode,
     LegacyCivilizationNode,
     LegacyCivilizationTraitNode,
+    LegacyIndependentsUpdateNode,
+    UpdateWhereNode,
+    UpdateSetNode,
     VisualRemapNode,
     IconDefinitionNode,
+    AiListTypeNode,
+    AiListNode,
+    AiFavoredItemNode,
+    LeaderCivPriorityNode,
 )
 
 __all__ = [
@@ -99,6 +108,9 @@ __all__ = [
     "CivilizationUnlockNode",
     "LegacyCivilizationNode",
     "LegacyCivilizationTraitNode",
+    "LegacyIndependentsUpdateNode",
+    "UpdateWhereNode",
+    "UpdateSetNode",
     # Units
     "UnitNode",
     "UnitStatNode",
@@ -135,6 +147,7 @@ __all__ = [
     "ProgressionTreePrereqNode",
     "ProgressionTreeAdvisoryNode",
     "ProgressionTreeNodeUnlockNode",
+    "ProgressionTreeQuoteNode",
     # Types/Tags
     "KindNode",
     "TypeNode",
@@ -147,6 +160,7 @@ __all__ = [
     "ModifierRequirementNode",
     "GameEffectNode",
     "GameModifierNode",
+    "ModifierStringNode",
     "ArgumentNode",
     # Requirements
     "RequirementNode",
@@ -164,6 +178,11 @@ __all__ = [
     # Leaders
     "LeaderUnlockNode",
     "LeaderCivilizationBiasNode",
+    # AI Configuration
+    "AiListTypeNode",
+    "AiListNode",
+    "AiFavoredItemNode",
+    "LeaderCivPriorityNode",
     # Districts
     "DistrictFreeConstructibleNode",
     # Start Biases

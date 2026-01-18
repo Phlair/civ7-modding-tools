@@ -384,7 +384,7 @@ class TestBuilderEdgeCasesRobustness:
         })
         
         files = builder.build()
-        assert len(files) == 6  # All file types generated
+        assert len(files) == 5  # current, legacy, shell, icons, localization
     
     def test_unit_with_all_optional_fields(self):
         """Test unit builder with all optional fields populated."""

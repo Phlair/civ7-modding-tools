@@ -113,14 +113,17 @@ class Mod:
         version: str = "1.0.0",
         name: str = "My Mod",
         description: str = DEFAULT_METADATA_SOURCE,
-        authors: str = DEFAULT_METADATA_SOURCE,
+        authors: str | list[str] = DEFAULT_METADATA_SOURCE,
         affects_saved_games: bool = True,
+        dependencies: Optional[list[dict[str, str]]] = None,
+        id: Optional[str] = None,
     ) -> None:
         """
         Initialize a mod.
         
         Can be called with:
         - Mod(mod_id="my-mod", version="1.0", ...) - keyword arguments
+        - Mod(id="my-mod", version="1.0", ...) - using id parameter
         - Mod({"id": "my-mod", "version": "1.0", ...}) - dictionary
         
         Args:
@@ -128,25 +131,46 @@ class Mod:
             version: Semantic version string
             name: Human-readable mod name
             description: Mod description
-            authors: Comma-separated author list
+            authors: Comma-separated author list or list of author strings
             affects_saved_games: Whether mod affects saved games
+            dependencies: List of dependency dicts with 'id' and 'title' keys
+            id: Alias for mod_id parameter (for convenience)
         """
+        # Support 'id' as alias for 'mod_id'
+        if id is not None and not isinstance(mod_id, dict):
+            mod_id = id
+        
         # Handle dictionary initialization
         if isinstance(mod_id, dict):
             config = mod_id
-            self.mod_id = config.get("id", "my-mod")
+            self.id = config.get("id", "my-mod")
+            self.mod_id = self.id
             self.version = config.get("version", "1.0.0")
             self.name = config.get("name", "My Mod")
             self.description = config.get("description") or DEFAULT_METADATA_SOURCE
-            self.authors = config.get("authors") or DEFAULT_METADATA_SOURCE
+            authors_config = config.get("authors") or DEFAULT_METADATA_SOURCE
+            if isinstance(authors_config, list):
+                self.authors = authors_config
+            else:
+                self.authors = [a.strip() for a in str(authors_config).split(",") if a.strip()]
             self.affects_saved_games = config.get("affects_saved_games", True)
+            self.dependencies = config.get("dependencies") or [
+                {"id": "base-standard", "title": "LOC_MODULE_BASE_STANDARD_NAME"}
+            ]
         else:
+            self.id = mod_id
             self.mod_id = mod_id
             self.version = version
             self.name = name
             self.description = description or DEFAULT_METADATA_SOURCE
-            self.authors = authors or DEFAULT_METADATA_SOURCE
+            if isinstance(authors, list):
+                self.authors = authors
+            else:
+                self.authors = [a.strip() for a in str(authors).split(",") if a.strip()]
             self.affects_saved_games = affects_saved_games
+            self.dependencies = dependencies or [
+                {"id": "base-standard", "title": "LOC_MODULE_BASE_STANDARD_NAME"}
+            ]
         
         self.builders: list["BaseBuilder"] = []
         self.files: list[BaseFile] = []
@@ -184,7 +208,7 @@ class Mod:
             self.files.append(file)
         return self
 
-    def build(self, dist: str = "./dist", clear: bool = True) -> None:
+    def build(self, dist: str = "./dist", clear: bool = True) -> list[BaseFile]:
         """
         Build the mod and write files to disk.
         
@@ -194,6 +218,9 @@ class Mod:
         Args:
             dist: Output directory path
             clear: Whether to clear existing dist directory first
+            
+        Returns:
+            List of all generated files including .modinfo
         """
         dist_path = Path(dist)
         
@@ -223,14 +250,25 @@ class Mod:
         
         # Generate .modinfo
         modinfo_content = self._generate_modinfo(all_files)
-        modinfo_file = dist_path / f"{self.mod_id}.modinfo"
+        modinfo_path = f"{self.id}.modinfo"
+        modinfo_file = dist_path / modinfo_path
         
         with open(modinfo_file, "w", encoding="utf-8") as f:
             f.write(modinfo_content)
         
+        # Create a file object for modinfo to return
+        class ModInfoFile:
+            def __init__(self, name: str, path: str):
+                self.name = name
+                self.path = path
+        
+        modinfo_file_obj = ModInfoFile(modinfo_path, str(modinfo_file))
+        
         # Write all generated files
         for file in all_files:
             file.write(str(dist_path))
+        
+        return [modinfo_file_obj] + all_files
 
     def _generate_modinfo(self, files: list[BaseFile]) -> str:
         """
@@ -253,7 +291,8 @@ class Mod:
         if self.description:
             properties["Description"] = self.description
         if self.authors:
-            properties["Authors"] = self.authors
+            authors_str = ", ".join(self.authors) if isinstance(self.authors, list) else self.authors
+            properties["Authors"] = authors_str
         if self.version:
             properties["Version"] = self.version
         
@@ -402,7 +441,7 @@ class Mod:
         
         # Build mod structure
         mod_dict = {
-            "@id": self.mod_id,
+            "@id": self.id,
             "@version": self.version,
             "@xmlns": "ModInfo",
         }
@@ -410,10 +449,20 @@ class Mod:
         if properties:
             mod_dict["Properties"] = properties
 
-        # Add Dependencies (default base-standard)
-        mod_dict["Dependencies"] = {
-             "Mod": {"@id": "base-standard", "@title": "LOC_MODULE_BASE_STANDARD_NAME"}
-        }
+        # Add Dependencies
+        if self.dependencies:
+            dependency_list = []
+            for dep in self.dependencies:
+                if isinstance(dep, dict):
+                    dependency_list.append({"@id": dep.get("id"), "@title": dep.get("title")})
+                else:
+                    # Handle string dependency IDs (default title)
+                    dependency_list.append({"@id": str(dep), "@title": "LOC_MODULE_NAME"})
+            
+            if len(dependency_list) == 1:
+                mod_dict["Dependencies"] = {"Mod": dependency_list[0]}
+            else:
+                mod_dict["Dependencies"] = {"Mod": dependency_list}
         
         # Add ActionCriteria if we have any files
         if files:
@@ -483,4 +532,4 @@ class Mod:
 
     def __repr__(self) -> str:
         """String representation."""
-        return f"Mod(id={self.mod_id!r}, version={self.version!r})"
+        return f"Mod(id={self.id!r}, version={self.version!r})"

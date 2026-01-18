@@ -8,6 +8,8 @@ from civ7_modding_tools.nodes import (
     BaseNode,
     CivilizationNode,
     CivilizationTraitNode,
+    CivilizationTagNode,
+    CivilizationItemNode,
     UnitNode,
     UnitCostNode,
     UnitStatNode,
@@ -23,8 +25,10 @@ from civ7_modding_tools.nodes import (
     ProgressionTreePrereqNode,
     ProgressionTreeAdvisoryNode,
     ProgressionTreeNodeUnlockNode,
+    ProgressionTreeQuoteNode,
     GameModifierNode,
     ModifierNode,
+    ModifierStringNode,
     StringNode,
     TraditionNode,
     TraditionModifierNode,
@@ -42,6 +46,10 @@ from civ7_modding_tools.nodes import (
     LegacyCivilizationNode,
     LegacyCivilizationTraitNode,
     EnglishTextNode,
+    AiListTypeNode,
+    AiListNode,
+    AiFavoredItemNode,
+    LeaderCivPriorityNode,
 )
 from civ7_modding_tools.localizations import BaseLocalization
 from civ7_modding_tools.utils import locale
@@ -155,6 +163,12 @@ class CivilizationBuilder(BaseBuilder):
         self.trait: Dict[str, str] = {}
         self.trait_ability: Dict[str, str] = {}
         self.civilization_legacy: Dict[str, Any] = {}
+        
+        # AI Configuration
+        self.ai_list_types: List[Dict[str, Any]] = []
+        self.ai_lists: List[Dict[str, Any]] = []
+        self.ai_favored_items: List[Dict[str, Any]] = []
+        self.leader_civ_priorities: List[Dict[str, Any]] = []
         
         # Store bound items for processing during migration
         self._bound_items: List[BaseBuilder] = []
@@ -278,17 +292,74 @@ class CivilizationBuilder(BaseBuilder):
                 )
             self._current.city_names = city_name_nodes
         
+        # AI Configuration - list types
+        ai_list_type_nodes = []
+        for config in self.ai_list_types:
+            node = AiListTypeNode()
+            for key, value in config.items():
+                setattr(node, key, value)
+            ai_list_type_nodes.append(node)
+        self._current.ai_list_types = ai_list_type_nodes
+        
+        # AI Configuration - lists
+        ai_list_nodes = []
+        for config in self.ai_lists:
+            node = AiListNode()
+            for key, value in config.items():
+                setattr(node, key, value)
+            ai_list_nodes.append(node)
+        self._current.ai_lists = ai_list_nodes
+        
+        # AI Configuration - favored items
+        ai_favored_item_nodes = []
+        for config in self.ai_favored_items:
+            node = AiFavoredItemNode()
+            for key, value in config.items():
+                setattr(node, key, value)
+            ai_favored_item_nodes.append(node)
+        self._current.ai_favored_items = ai_favored_item_nodes
+        
+        # AI Configuration - leader civilization priorities
+        leader_civ_priority_nodes = []
+        for config in self.leader_civ_priorities:
+            node = LeaderCivPriorityNode(civilization_type=self.civilization_type)
+            for key, value in config.items():
+                if key != 'civilization_type':
+                    setattr(node, key, value)
+            leader_civ_priority_nodes.append(node)
+        self._current.leader_civ_priorities = leader_civ_priority_nodes
+        
         # ==== POPULATE _shell DATABASE ====
         self._shell.civilizations = [civ_node]
         
+        # Civilization tags for shell
+        civ_tag_nodes = []
+        for tag_type in self.civilization_tags:
+            civ_tag_nodes.append(
+                CivilizationTagNode(
+                    civilization_type=self.civilization_type,
+                    tag_type=tag_type
+                )
+            )
+        self._shell.civilization_tags = civ_tag_nodes
+        
+        # Civilization items for shell
+        civ_item_nodes = []
+        for item in self.civilization_items:
+            node = CivilizationItemNode(
+                civilization_type=self.civilization_type
+            )
+            for key, value in item.items():
+                if key != 'civilization_type':
+                    setattr(node, key, value)
+            civ_item_nodes.append(node)
+        self._shell.civilization_items = civ_item_nodes
+        
         # ==== POPULATE _legacy DATABASE ====
-        # Legacy types use insertOrIgnore
+        # Legacy system uses regular Row elements (game convention)
         legacy_civ_type = TypeNode(type_=self.civilization_type, kind="KIND_CIVILIZATION")
-        legacy_civ_type.insert_or_ignore()
         legacy_trait_type = TypeNode(type_=trait_type, kind="KIND_TRAIT")
-        legacy_trait_type.insert_or_ignore()
         legacy_trait_ability_type = TypeNode(type_=trait_ability_type, kind="KIND_TRAIT")
-        legacy_trait_ability_type.insert_or_ignore()
         
         self._legacy.types = [
             legacy_civ_type,
@@ -296,9 +367,8 @@ class CivilizationBuilder(BaseBuilder):
             legacy_trait_ability_type,
         ]
         
-        # Legacy trait uses insertOrIgnore
+        # Legacy trait
         legacy_trait = TraitNode(trait_type=trait_type, internal_only=True)
-        legacy_trait.insert_or_ignore()
         self._legacy.traits = [legacy_trait]
         
         legacy_civ = LegacyCivilizationNode(
@@ -975,7 +1045,9 @@ class ProgressionTreeBuilder(BaseBuilder):
         
         self.progression_tree_type: Optional[str] = None
         self.progression_tree: Dict[str, Any] = {}
+        self.progression_tree_nodes: list[Dict[str, Any]] = []
         self.progression_tree_prereqs: List[Dict[str, Any]] = []
+        self.progression_tree_quotes: list[Dict[str, Any]] = []
         self.localizations: List[Dict[str, Any]] = []
 
     def fill(self, payload: Dict[str, Any]) -> "ProgressionTreeBuilder":
@@ -1024,6 +1096,17 @@ class ProgressionTreeBuilder(BaseBuilder):
                     prereq_node=prereq.get('prereq_node')
                 )
                 for prereq in self.progression_tree_prereqs
+            ]
+        
+        # Progression tree quotes
+        if self.progression_tree_quotes:
+            self._current.progression_tree_quotes = [
+                ProgressionTreeQuoteNode(
+                    progression_tree_type=self.progression_tree_type,
+                    quote_type=quote.get('quote_type'),
+                    text=quote.get('text')
+                )
+                for quote in self.progression_tree_quotes
             ]
         
         # ==== POPULATE _localizations DATABASE ====
@@ -1340,11 +1423,15 @@ class ModifierBuilder(BaseBuilder):
     def __init__(self) -> None:
         """Initialize modifier builder."""
         super().__init__()
+        self._current = DatabaseNode()
         self._game_effects: Optional['GameEffectNode'] = None
         self._localizations = DatabaseNode()
         
+        self.modifier_type: Optional[str] = None
         self.modifier: Dict[str, Any] = {}
+        self.modifier_strings: list[Dict[str, Any]] = []
         self.localizations: List[Dict[str, Any]] = []
+        self.requirements: list[Dict[str, Any]] = []
         self.is_detached: bool = False  # Detached modifiers not bound to specific entity
 
     def fill(self, payload: Dict[str, Any]) -> "ModifierBuilder":
@@ -1361,11 +1448,18 @@ class ModifierBuilder(BaseBuilder):
         from civ7_modding_tools.nodes import GameEffectNode, EnglishTextNode
         from civ7_modding_tools.nodes.nodes import ModifierNode
         
+        # Use modifier_type if available, otherwise generate from modifier dict
+        modifier_type_or_id = self.modifier_type or self.modifier.get('modifier_type')
+        
         # Generate unique modifier ID if not provided
-        if 'id' not in self.modifier and 'modifier_id' not in self.modifier:
-            self.modifier['id'] = 'MOD_' + uuid.uuid4().hex.upper()
-        elif 'modifier_id' in self.modifier:
-            self.modifier['id'] = self.modifier.pop('modifier_id')
+        if not modifier_type_or_id:
+            if 'id' not in self.modifier and 'modifier_id' not in self.modifier:
+                self.modifier['id'] = 'MOD_' + uuid.uuid4().hex.upper()
+            elif 'modifier_id' in self.modifier:
+                self.modifier['id'] = self.modifier.pop('modifier_id')
+            modifier_type_or_id = self.modifier['id']
+        else:
+            self.modifier['modifier_type'] = modifier_type_or_id
         
         # Create modifier node with full structure
         modifier_node = ModifierNode()
@@ -1393,6 +1487,22 @@ class ModifierBuilder(BaseBuilder):
         self._game_effects = GameEffectNode()
         self._game_effects.modifiers = [modifier_node]
         
+        # ==== POPULATE _current DATABASE ====
+        # Populate modifier_strings if provided
+        if self.modifier_strings:
+            modifier_string_nodes = []
+            for string_info in self.modifier_strings:
+                if isinstance(string_info, dict):
+                    string_node = ModifierStringNode(
+                        modifier_type=modifier_type_or_id,
+                        string_type=string_info.get('string_type'),
+                        text=string_info.get('text')
+                    )
+                    modifier_string_nodes.append(string_node)
+            if modifier_string_nodes:
+                self._current.modifier_strings = modifier_string_nodes
+        
+        # ==== POPULATE _localizations DATABASE ====
         # Populate localizations
         localization_rows = []
         for loc in self.localizations:
@@ -1410,8 +1520,117 @@ class ModifierBuilder(BaseBuilder):
         return self
     
     def build(self) -> list[BaseFile]:
-        """Build modifier files (returns empty as modifiers are bound to other builders)."""
-        return []
+        """Build modifier files with preview strings in current.xml."""
+        files = []
+        
+        # Generate current.xml if we have modifier_strings
+        if self.modifier_strings and hasattr(self, '_current'):
+            xml_file = XmlFile(
+                name="current.xml",
+                action_group=self.action_group_bundle.current,
+                root_element="Database"
+            )
+            xml_file.add_element(self._current)
+            files.append(xml_file)
+        
+        # Generate localizations.xml if we have localizations
+        if self.localizations and hasattr(self, '_localizations'):
+            xml_file = XmlFile(
+                name="localization.xml",
+                action_group=self.action_group_bundle.localizations,
+                root_element="Database"
+            )
+            xml_file.add_element(self._localizations)
+            files.append(xml_file)
+        
+        return files
+
+
+class GameModifierBuilder(BaseBuilder):
+    """Builder for creating game-wide modifiers with preview strings."""
+    
+    def __init__(self) -> None:
+        """Initialize game modifier builder."""
+        super().__init__()
+        self._current = DatabaseNode()
+        self._localizations = DatabaseNode()
+        
+        self.modifier_type: Optional[str] = None
+        self.modifier: Dict[str, Any] = {}
+        self.modifier_strings: list[Dict[str, Any]] = []
+        self.localizations: List[Dict[str, Any]] = []
+
+    def fill(self, payload: Dict[str, Any]) -> "GameModifierBuilder":
+        """Fill game modifier builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "GameModifierBuilder":
+        """Migrate and populate game modifier database variants."""
+        from civ7_modding_tools.utils import locale
+        from civ7_modding_tools.nodes import EnglishTextNode
+        
+        modifier_type = self.modifier_type or self.modifier.get('modifier_type')
+        if not modifier_type:
+            return self
+        
+        # ==== POPULATE _current DATABASE ====
+        # Populate modifier_strings if provided
+        if self.modifier_strings:
+            modifier_string_nodes = []
+            for string_info in self.modifier_strings:
+                if isinstance(string_info, dict):
+                    string_node = ModifierStringNode(
+                        modifier_type=modifier_type,
+                        string_type=string_info.get('string_type'),
+                        text=string_info.get('text')
+                    )
+                    modifier_string_nodes.append(string_node)
+            if modifier_string_nodes:
+                self._current.modifier_strings = modifier_string_nodes
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                for key, text in loc.items():
+                    localization_rows.append(EnglishTextNode(
+                        tag=locale(modifier_type, key),
+                        text=text
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        return self
+    
+    def build(self) -> list[BaseFile]:
+        """Build game modifier files."""
+        files = []
+        
+        # Generate current.xml if we have modifier_strings
+        if self.modifier_strings and hasattr(self, '_current'):
+            xml_file = XmlFile(
+                name="current.xml",
+                action_group=self.action_group_bundle.current,
+                root_element="Database"
+            )
+            xml_file.add_element(self._current)
+            files.append(xml_file)
+        
+        # Generate localizations.xml if we have localizations
+        if self.localizations and hasattr(self, '_localizations'):
+            xml_file = XmlFile(
+                name="localization.xml",
+                action_group=self.action_group_bundle.localizations,
+                root_element="Database"
+            )
+            xml_file.add_element(self._localizations)
+            files.append(xml_file)
+        
+        return files
 
 
 class TraditionBuilder(BaseBuilder):

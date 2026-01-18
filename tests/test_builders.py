@@ -132,11 +132,12 @@ class TestCivilizationBuilder:
         
         files = builder.build()
         
-        # Should have 6 civilization files (current, legacy, shell, icons, localization, game-effects)
-        assert len(files) == 6
+        # Should have 5 civilization files (current, legacy, shell, icons, localization)
+        # game-effects.xml only generated when there are trait modifiers
+        assert len(files) == 5
         assert all(isinstance(f, XmlFile) for f in files)
         assert "rome" in files[0].path  # Path is kebab-case of trimmed type
-        assert files[0].name in ["current.xml", "legacy.xml", "shell.xml", "icons.xml", "localization.xml", "game-effects.xml"]
+        assert files[0].name in ["current.xml", "legacy.xml", "shell.xml", "icons.xml", "localization.xml"]
 
     def test_civilization_builder_build_content(self):
         """Test that built civilization file contains correct nodes."""
@@ -174,8 +175,8 @@ class TestCivilizationBuilder:
         
         files = builder.build()
         
-        # Should have 6 civilization files
-        assert len(files) == 6
+        # Should have 5 civilization files
+        assert len(files) == 5
         current_file = [f for f in files if f.name == "current.xml"][0]
         
         # DatabaseNode should have city names
@@ -193,7 +194,7 @@ class TestCivilizationBuilder:
                 })
                 .build())
         
-        assert len(files) == 6
+        assert len(files) == 5
 
 
 # ============================================================================

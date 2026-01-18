@@ -12,8 +12,11 @@ class CivilizationNode(BaseNode):
     name: Optional[str] = None
     adjective: Optional[str] = None
     full_name: Optional[str] = None
+    description: Optional[str] = None
     capital_name: Optional[str] = None
     starting_civilization_level_type: Optional[str] = None
+    unique_culture_progression_tree: Optional[str] = None
+    random_city_name_depth: Optional[int] = None
     base_tourism: Optional[int] = None
     legacy_modifier: Optional[bool] = None
 
@@ -43,6 +46,11 @@ class UnitNode(BaseNode):
     maintenance: Optional[int] = None
     promotion_class: Optional[str] = None
     cost: Optional[int] = None
+    movement_range: Optional[int] = None
+    power: Optional[int] = None
+    ranged_power: Optional[int] = None
+    ranged_range: Optional[int] = None
+    origin_boost_modulus: Optional[int] = None
 
 
 class UnitStatNode(BaseNode):

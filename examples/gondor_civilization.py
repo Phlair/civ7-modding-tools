@@ -34,10 +34,14 @@ from civ7_modding_tools.builders import (
 )
 
 
-# Create mod (matching TS: new Mod({id: 'mod-test', version: '1'}))
+# Create mod with rich metadata (matching carthage pattern)
 mod = Mod({
-    'id': 'mod-test',
+    'id': 'gondor',
     'version': '1',
+    'name': 'LOC_MODULE_GONDOR_NAME',
+    'description': 'LOC_MODULE_GONDOR_DESCRIPTION',
+    'authors': 'LOC_AUTHORS_GONDOR',
+    'affects_saved_games': True,
 })
 
 # ACTION_GROUP_BUNDLE.AGE_ANTIQUITY equivalent (matching TS constant usage)
@@ -74,10 +78,10 @@ civilization.fill({
     },
     'localizations': [
         {
-            'name': 'Custom civilization',
-            'description': 'test description',
-            'full_name': 'test full name',
-            'adjective': 'test adjective',
+            'name': 'Gondor',
+            'description': 'Guardians of the White City, steadfast and resolute.',
+            'full_name': 'Kingdom of Gondor',
+            'adjective': 'Gondorian',
             'city_names': ['Gondor', 'New Gondor']
         }
     ],
@@ -133,7 +137,7 @@ unit.fill({
     'unit_replace': {'replaces_unit_type': 'UNIT_SCOUT'},
     'visual_remap': {'to': 'UNIT_ARMY_COMMANDER'},
     'localizations': [
-        {'name': 'Custom scout', 'description': 'test description'},
+        {'name': 'Gondor Scout', 'description': 'A swift scout of the White City.'},
     ],
 })
 
@@ -164,9 +168,9 @@ constructible.fill({
     ],
     'localizations': [
         {
-            'name': 'Custom building',
-            'description': 'Custom building test description',
-            'tooltip': 'Custom building test tooltip'
+            'name': 'Gondor Barracks',
+            'description': 'Trains the soldiers of Gondor for the defence of the realm.',
+            'tooltip': 'Increases military readiness.'
         },
     ]
 })
@@ -198,9 +202,9 @@ constructible2.fill({
     ],
     'localizations': [
         {
-            'name': 'Custom building',
-            'description': 'Custom building test description',
-            'tooltip': 'Custom building test tooltip'
+            'name': 'Gondor Archives',
+            'description': 'Preserves the histories and lore of the kingdom.',
+            'tooltip': 'Improves civic scholarship.'
         },
     ]
 })
@@ -216,7 +220,7 @@ unique_quarter.fill({
         'building_type_2': 'BUILDING_GONDOR2',
     },
     'localizations': [
-        {'name': 'Custom unique quarter', 'description': 'Custom unique quarter test description'},
+        {'name': 'White City Quarter', 'description': 'The heart of Gondor’s civic life.'},
     ]
 })
 
@@ -251,7 +255,7 @@ progression_tree_node.fill({
         'progression_tree_node_type': 'NODE_CIVICS_GONDOR1',
     },
     'progression_tree_advisories': ['ADVISORY_CLASS_FOOD'],
-    'localizations': [{'name': 'Civic name'}]
+    'localizations': [{'name': 'Gondor Civics I'}]
 })
 
 # Bind modifiers and unlocks to first node (matching TS lines 190-208)
@@ -267,7 +271,7 @@ node1_modifier.fill({
         ],
     },
     'localizations': [{
-        'description': '+10 Food'
+        'description': 'Grants +10 Food'
     }]
 })
 progression_tree_node.bind([node1_modifier, constructible, constructible2, unit])
@@ -281,7 +285,7 @@ progression_tree_node2.fill({
         'progression_tree_node_type': 'NODE_CIVICS_GONDOR2',
     },
     'progression_tree_advisories': ['ADVISORY_CLASS_FOOD'],
-    'localizations': [{'name': 'Civic name'}]
+    'localizations': [{'name': 'Gondor Civics II'}]
 })
 
 # Bind modifier to second node (matching TS lines 218-230)
@@ -297,7 +301,7 @@ node2_modifier.fill({
         ],
     },
     'localizations': [{
-        'description': '+10 science'
+        'description': 'Grants +10 Science'
     }]
 })
 progression_tree_node2.bind([node2_modifier])
@@ -316,7 +320,7 @@ progression_tree.fill({
         'node': 'NODE_CIVICS_GONDOR2',
         'prereq_node': 'NODE_CIVICS_GONDOR1'
     }],
-    'localizations': [{'name': 'Tree name'}]
+    'localizations': [{'name': 'Gondor Civic Tree'}]
 })
 
 # Bind nodes to tree (matching TS line 245)

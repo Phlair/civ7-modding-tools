@@ -265,6 +265,14 @@ class GameModifierNode(BaseNode):
     modifier_id: Optional[str] = None
 
 
+class ModifierStringNode(BaseNode):
+    """Represents a modifier preview string for UI display."""
+    _name: str = "Row"
+    modifier_type: Optional[str] = None
+    string_type: Optional[str] = None
+    text: Optional[str] = None
+
+
 class ArgumentNode(BaseNode):
     """Represents a modifier/effect argument."""
     _name: str = "Row"
@@ -292,6 +300,14 @@ class ProgressionTreeNodeUnlockNode(BaseNode):
     target_type: Optional[str] = None
     unlock_depth: Optional[int] = None
     hidden: Optional[bool] = None
+
+
+class ProgressionTreeQuoteNode(BaseNode):
+    """Represents a narrative quote in progression tree."""
+    _name: str = "Row"
+    progression_tree_type: Optional[str] = None
+    quote_type: Optional[str] = None
+    text: Optional[str] = None
 
 
 # ============================================================================
@@ -382,6 +398,43 @@ class CivilizationUnlockNode(BaseNode):
 
 
 # ============================================================================
+# AI CONFIGURATION NODES
+# ============================================================================
+
+class AiListTypeNode(BaseNode):
+    """Represents an AI list type definition."""
+    _name: str = "Row"
+    list_type: Optional[str] = None
+
+
+class AiListNode(BaseNode):
+    """Represents an AI list assignment to a leader/trait."""
+    _name: str = "Row"
+    list_type: Optional[str] = None
+    leader_type: Optional[str] = None
+    system: Optional[str] = None
+
+
+class AiFavoredItemNode(BaseNode):
+    """Represents an AI favored item (unit, building, etc)."""
+    _name: str = "Row"
+    list_type: Optional[str] = None
+    item: Optional[str] = None
+    value: Optional[int] = None
+    favored: Optional[bool] = None
+    string_val: Optional[str] = None
+    tooltip_string: Optional[str] = None
+
+
+class LeaderCivPriorityNode(BaseNode):
+    """Represents AI leader civilization priorities."""
+    _name: str = "Row"
+    leader_type: Optional[str] = None
+    civilization_type: Optional[str] = None
+    priority: Optional[int] = None
+
+
+# ============================================================================
 # LEGACY NODES
 # ============================================================================
 
@@ -400,6 +453,41 @@ class LegacyCivilizationTraitNode(BaseNode):
     _name: str = "Row"
     civilization_type: Optional[str] = None
     trait_type: Optional[str] = None
+
+
+class UpdateWhereNode(BaseNode):
+    """Represents a WHERE clause in an Update statement."""
+    _name: str = "Where"
+    independent_type: Optional[str] = None
+
+
+class UpdateSetNode(BaseNode):
+    """Represents a SET clause in an Update statement."""
+    _name: str = "Set"
+    name: Optional[str] = None
+
+
+class LegacyIndependentsUpdateNode(BaseNode):
+    """Represents an Update statement for LegacyIndependents."""
+    _name: str = "Update"
+    where_clause: Optional[UpdateWhereNode] = None
+    set_clause: Optional[UpdateSetNode] = None
+
+    def to_xml_element(self) -> Optional[dict]:
+        """Override to generate nested Update structure."""
+        if not self.where_clause or not self.set_clause:
+            return None
+        
+        where_elem = self.where_clause.to_xml_element()
+        set_elem = self.set_clause.to_xml_element()
+        
+        if not where_elem or not set_elem:
+            return None
+        
+        return {
+            '_name': 'Update',
+            '_content': [where_elem, set_elem]
+        }
 
 
 # ============================================================================
@@ -467,6 +555,7 @@ class DatabaseNode(BaseNode):
     civilization_unlocks: list['CivilizationUnlockNode'] = []
     legacy_civilization_traits: list['LegacyCivilizationTraitNode'] = []
     legacy_civilizations: list['LegacyCivilizationNode'] = []
+    legacy_independents: list['LegacyIndependentsUpdateNode'] = []
     
     # Leaders
     leader_unlocks: list['BaseNode'] = []
@@ -501,6 +590,7 @@ class DatabaseNode(BaseNode):
     progression_tree_nodes: list['BaseNode'] = []
     progression_tree_node_unlocks: list['ProgressionTreeNodeUnlockNode'] = []
     progression_tree_prereqs: list['BaseNode'] = []
+    progression_tree_quotes: list['ProgressionTreeQuoteNode'] = []
     
     # Traditions
     traditions: list['BaseNode'] = []
@@ -536,6 +626,7 @@ class DatabaseNode(BaseNode):
     
     # Modifiers
     game_modifiers: list['GameModifierNode'] = []
+    modifier_strings: list['ModifierStringNode'] = []
     
     # Start Biases
     start_bias_biomes: list['BaseNode'] = []
@@ -548,6 +639,12 @@ class DatabaseNode(BaseNode):
     # Visual Arts
     vis_art_civilization_building_cultures: list['BaseNode'] = []
     vis_art_civilization_unit_cultures: list['BaseNode'] = []
+    
+    # AI Configuration
+    ai_list_types: list['AiListTypeNode'] = []
+    ai_lists: list['AiListNode'] = []
+    ai_favored_items: list['AiFavoredItemNode'] = []
+    leader_civ_priorities: list['LeaderCivPriorityNode'] = []
 
     def __init__(self, payload: dict | None = None) -> None:
         """Initialize DatabaseNode with optional payload."""
@@ -608,6 +705,7 @@ class DatabaseNode(BaseNode):
             'progression_tree_nodes': 'ProgressionTreeNodes',
             'progression_tree_node_unlocks': 'ProgressionTreeNodeUnlocks',
             'progression_tree_prereqs': 'ProgressionTreePrereqs',
+            'progression_tree_quotes': 'ProgressionTreeQuotes',
             'unit_costs': 'Unit_Costs',
             'unit_stats': 'Unit_Stats',
             'unit_advisories': 'Unit_Advisories',
@@ -621,6 +719,7 @@ class DatabaseNode(BaseNode):
             'requirement_set_requirements': 'RequirementSet_Requirements',
             'legacy_civilizations': 'LegacyCivilizations',
             'legacy_civilization_traits': 'LegacyCivilizationTraits',
+            'legacy_independents': 'LegacyIndependents',
             'civilization_items': 'CivilizationItems',
             'civilization_tags': 'CivilizationTags',
             'civilization_traits': 'CivilizationTraits',
@@ -633,6 +732,7 @@ class DatabaseNode(BaseNode):
             'unique_quarters': 'UniqueQuarters',
             'unique_quarter_modifiers': 'UniqueQuarterModifiers',
             'game_modifiers': 'GameModifiers',
+            'modifier_strings': 'ModifierStrings',
             'icon_definitions': 'IconDefinitions',
             'visual_remaps': 'VisualRemaps',
             'english_text': 'EnglishText',
@@ -645,6 +745,10 @@ class DatabaseNode(BaseNode):
             'start_bias_adjacent_to_coasts': 'StartBias_AdjacentToCoasts',
             'vis_art_civilization_building_cultures': 'VisArt_CivilizationBuildingCultures',
             'vis_art_civilization_unit_cultures': 'VisArt_CivilizationUnitCultures',
+            'ai_list_types': 'AiListTypes',
+            'ai_lists': 'AiLists',
+            'ai_favored_items': 'AiFavoredItems',
+            'leader_civ_priorities': 'LeaderCivPriorities',
         }
         
         # Iterate through all properties
