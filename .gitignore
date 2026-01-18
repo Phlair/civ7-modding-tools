@@ -40,6 +40,8 @@ Thumbs.db
 # Generated example mods and build outputs
 example-generated-mod/
 **/example-generated-mod/
+dist-*/
+**/dist-*/
 
 # Node.js (for TypeScript build tooling)
 node_modules/
