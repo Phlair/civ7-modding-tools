@@ -1,50 +1,515 @@
 ---
-description: "Python coding conventions and guidelines"
+description: "Python coding conventions for Civ7 Modding Tools"
 applyTo: "**/*.py"
 ---
 
-# Python Coding Conventions
+# Python Coding Conventions for Civ7 Modding Tools
 
-## Python Instructions
+## Project-Specific Style
 
-- Write clear and concise comments for each function.
-- Ensure functions have descriptive names and include type hints.
-- Provide docstrings following PEP 257 conventions.
-- Use the `typing` module for type annotations (e.g., `List[str]`, `Dict[str, int]`).
-- Break down complex functions into smaller, more manageable functions.
+### Overview
 
-## General Instructions
+Civ7 Modding Tools is a strongly-typed Python library for generating Civilization 7 mod files. All code must follow these conventions to maintain consistency with the builder pattern, pydantic models, and type-safe API.
 
-- Always prioritize readability and clarity.
-- For algorithm-related code, include explanations of the approach used.
-- Write code with good maintainability practices, including comments on why certain design decisions were made.
-- Handle edge cases and write clear exception handling.
-- For libraries or external dependencies, mention their usage and purpose in comments.
-- Use consistent naming conventions and follow language-specific best practices.
-- Write concise, efficient, and idiomatic code that is also easily understandable.
+### Core Principles
 
-## Code Style and Formatting
+1. **Type Safety First**: Use comprehensive type hints throughout all code
+2. **Builder Pattern**: Fluent API with `fill()` method for all builders
+3. **Pydantic Models**: Use pydantic for all data validation and serialization
+4. **Snake Case for Python**: All Python identifiers use snake_case (methods, properties, functions)
+5. **British English**: Use British spelling in docstrings and comments
+6. **100 Character Line Limit**: Respect the 100 character line limit (not 79)
 
-- Follow the **PEP 8** style guide for Python.
-- Maintain proper indentation (use 4 spaces for each level of indentation).
-- Ensure lines do not exceed 79 characters.
-- Place function and class docstrings immediately after the `def` or `class` keyword.
-- Use blank lines to separate functions, classes, and code blocks where appropriate.
+## Type Hints
+
+### Required Type Hints
+
+All functions and methods must have complete type hints:
+
+```python
+from typing import Any, Dict, List, Optional, Union, TypeVar, Callable
+
+T = TypeVar("T")
+
+def fill(obj: T, payload: Dict[str, Any]) -> T:
+    """Populate object properties from a dictionary, preserving type."""
+    ...
+
+def without(lst: List[T], *values: T) -> List[T]:
+    """Return list with specified values removed, preserving type."""
+    ...
+
+def uniq_by(
+    lst: List[T],
+    key_func: Callable[[T], Any] | None = None
+) -> List[T]:
+    """Return unique items by key function, preserving type."""
+    ...
+```
+
+### Use Union Type Syntax
+
+- Modern union syntax: `T | None` instead of `Optional[T]`
+- Explicit union types: `str | int | float` instead of `Union[str, int, float]`
+- Return type annotations always required: `-> None`, `-> dict`, `-> list[BaseFile]`
+
+### TypeVar for Generic Functions
+
+Use TypeVar for functions that preserve type:
+
+```python
+T = TypeVar("T")
+
+def fill(obj: T, payload: Dict[str, Any]) -> T:
+    """T preserved as input/output type."""
+    ...
+```
+
+## Builder Pattern Implementation
+
+### All Builders Must Follow This Structure
+
+```python
+from civ7_modding_tools.builders.builders import BaseBuilder
+from civ7_modding_tools.files import BaseFile, XmlFile
+from typing import Any
+
+class MyBuilder(BaseBuilder):
+    """Builder for MyEntity, following builder pattern."""
+    
+    my_property: str = 'default'
+    another_property: int = 0
+    
+    def fill(self, payload: Dict[str, Any]) -> "MyBuilder":
+        """Set properties from dictionary and return self for chaining."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+    
+    def build(self) -> list[BaseFile]:
+        """Generate output files for this builder."""
+        # Implementation here
+        return [file1, file2]
+```
+
+### The fill() Method
+
+- Must return `self` for method chaining
+- Must accept `Dict[str, Any]` payload
+- Must handle both constructor and fill() method patterns
+- Should be documented with usage examples
+
+```python
+# Usage Pattern 1: Constructor
+builder = MyBuilder({
+    'my_property': 'value',
+    'another_property': 42
+})
+
+# Usage Pattern 2: fill() method
+builder = MyBuilder()
+builder.fill({
+    'my_property': 'value',
+    'another_property': 42
+})
+```
+
+## Pydantic Models
+
+### Localization Classes
+
+All localization classes extend pydantic BaseModel:
+
+```python
+from pydantic import BaseModel, Field
+
+class MyLocalization(BaseModel):
+    """Localization for my entity."""
+    
+    name: str = ''
+    description: str = ''
+    my_field: str = Field(default='', alias='myField')
+    
+    class Config:
+        """Pydantic configuration."""
+        extra = 'forbid'  # Disallow unknown fields
+```
+
+### Node Classes
+
+All nodes inherit from BaseNode and use pydantic validation:
+
+```python
+from civ7_modding_tools.nodes.base import BaseNode
+
+class MyNode(BaseNode):
+    """XML element representation."""
+    
+    _name: str = 'MyElement'
+    my_attribute: str = ''
+    my_number: int = 0
+    optional_value: str | None = None
+    
+    def to_xml_element(self) -> dict | None:
+        """Convert to XML element dictionary."""
+        # Implementation
+        ...
+```
+
+## Naming Conventions
+
+### Classes
+
+- PascalCase: `CivilizationBuilder`, `BaseNode`, `XmlFile`
+- Descriptive names: `UnitStatNode` not `USNode`
+- Append descriptive suffix: `Builder`, `Node`, `File`, `Localization`
+
+### Methods and Properties
+
+- snake_case: `civilization_type`, `build_civilization`, `get_attributes`
+- Descriptive names: `fill()`, `build()`, `to_xml_element()`, `write()`
+- Avoid abbreviations: `unit_cost` not `u_cost`
+
+### Constants and Enums
+
+- UPPER_SNAKE_CASE: `TRAIT.ECONOMIC_CIV`, `UNIT_CLASS.RECON`
+- Group in Enum classes: `TRAIT(str, Enum)`, `UNIT_CLASS(str, Enum)`
+- Export from constants module for type safety
+
+```python
+from enum import Enum
+
+class TRAIT(str, Enum):
+    """Civilization trait types."""
+    ECONOMIC_CIV = 'ECONOMIC_CIV'
+    MILITARY_CIV = 'MILITARY_CIV'
+    CULTURAL_CIV = 'CULTURAL_CIV'
+```
+
+### Private Methods
+
+- Leading underscore: `_get_attributes()`, `_validate_property()`
+- Document purpose clearly in docstring
+
+## Docstrings and Comments
+
+### Docstring Format
+
+Follow PEP 257 with clear description:
+
+```python
+def fill(self, payload: Dict[str, Any]) -> "MyBuilder":
+    """
+    Populate builder properties from a dictionary.
+    
+    Args:
+        payload: Dictionary with property values to set.
+    
+    Returns:
+        Self for method chaining.
+    
+    Example:
+        >>> builder = MyBuilder()
+        >>> builder.fill({'property': 'value'})
+        >>> builder.build()
+    """
+```
+
+### Module-Level Docstrings
+
+```python
+"""Module for builder implementations.
+
+This module contains all builder classes for creating Civ7 mod entities:
+- CivilizationBuilder: Full civilization
+- UnitBuilder: Unit definitions
+- ConstructibleBuilder: Buildings, improvements, quarters
+"""
+```
+
+### Class Docstrings
+
+```python
+class CivilizationBuilder(BaseBuilder):
+    """Builder for Civilization entities.
+    
+    Handles civilization definition, traits, unlocks, and start biases.
+    Uses builder pattern with fluent API for configuration.
+    """
+```
+
+### Inline Comments
+
+- Use sparingly, prioritize clear code over comments
+- Explain *why*, not *what*: code should be self-documenting
+- Use British English spelling
+
+```python
+# Builders are processed in order to respect action group dependencies
+for builder in self.builders:
+    builder.migrate()
+```
+
+## XML Node Serialization
+
+### Property Conversion
+
+Properties automatically convert:
+- snake_case → PascalCase: `civilization_type` → `CivilizationType`
+- `bool` → string: `True` → `"true"`, `False` → `"false"`
+- `None` → omitted from XML: `None` properties excluded
+- All types stringified: `10` → `"10"`, `3.14` → `"3.14"`
+
+### Example
+
+```python
+node = CivilizationNode(
+    civilization_type='CIVILIZATION_ROME',  # snake_case
+    base_tourism=10,                        # int converted to string
+    legacy_modifier=True,                   # bool converted to "true"
+    display_name=None                       # omitted from output
+)
+
+# XML Output:
+# <Row CivilizationType="CIVILIZATION_ROME" BaseTourism="10" LegacyModifier="true"/>
+```
+
+## Code Organization
+
+### Module Structure
+
+```python
+# 1. Imports (stdlib, third-party, local)
+from typing import Any, Dict, List
+from pydantic import BaseModel
+from civ7_modding_tools.nodes import BaseNode
+
+# 2. Module docstring
+"""Module description."""
+
+# 3. Constants
+DEFAULT_ACTION_GROUP = 'ALWAYS'
+
+# 4. Classes (in logical order)
+class MyNode(BaseNode):
+    """First class."""
+    ...
+
+class MyBuilder(BaseBuilder):
+    """Second class."""
+    ...
+
+# 5. Functions (if any)
+def helper_function() -> None:
+    """Helper function."""
+    ...
+```
+
+### Imports Organization
+
+```python
+# Standard library
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Optional, Union, TypeVar, Callable
+from pathlib import Path
+
+# Third-party
+from pydantic import BaseModel, Field
+import xmltodict
+
+# Local
+from civ7_modding_tools.nodes import BaseNode
+from civ7_modding_tools.files import BaseFile
+```
+
+## File I/O
+
+### XML Generation
+
+Use xmltodict for serialization:
+
+```python
+from xmltodict import unparse
+
+xml_str = unparse(
+    content,
+    pretty=True,
+    full_document=True,
+    indent='    '  # 4-space indentation
+)
+```
+
+### File Writing
+
+```python
+from pathlib import Path
+
+def write(self, dist: str) -> None:
+    """Write file to disk."""
+    path = Path(dist) / self.path / self.name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(self.content, encoding='utf-8')
+```
 
 ## Edge Cases and Testing
 
-- Always include test cases for critical paths of the application.
-- Account for common edge cases like empty inputs, invalid data types, and large datasets.
-- Include comments for edge cases and the expected behavior in those cases.
-- Write unit tests for functions and document them with docstrings explaining the test cases.
-
-## Example of Proper Documentation
+### Error Handling
 
 ```python
-def calculate_area(radius: float) -> float:
+def build(self) -> list[BaseFile]:
+    """Generate output files.
+    
+    Raises:
+        ValueError: If required property is missing.
+        FileNotFoundError: If import file not found.
     """
-    Calculate the area of a circle given the radius.
-    """
-    import math
-    return math.pi * radius ** 2
+    if not self.civilization_type:
+        raise ValueError('civilization_type is required')
+    
+    if self.icon_file and not Path(self.icon_file).exists():
+        raise FileNotFoundError(f'Icon file not found: {self.icon_file}')
+    
+    return [...]
 ```
+
+### Test Structure
+
+```python
+import pytest
+from civ7_modding_tools import CivilizationBuilder
+
+def test_civilization_builder_fill():
+    """Builder should populate properties via fill() method."""
+    builder = CivilizationBuilder()
+    builder.fill({
+        'civilization': {'civilization_type': 'CIV_ROME'},
+        'localizations': [{'name': 'Rome'}]
+    })
+    
+    assert builder.civilization['civilization_type'] == 'CIV_ROME'
+    assert builder.localizations[0]['name'] == 'Rome'
+
+def test_civilization_builder_build():
+    """Builder should generate output files."""
+    builder = CivilizationBuilder({...})
+    files = builder.build()
+    
+    assert len(files) > 0
+    assert all(isinstance(f, BaseFile) for f in files)
+```
+
+## Code Style and Formatting
+
+### Line Length
+
+- Maintain 100 character line limit (not 79)
+- Break long lines logically
+
+```python
+# Good: Break at logical point
+builder = CivilizationBuilder({
+    'civilization_type': 'CIV_ROME',
+    'civilization_traits': [TRAIT.ECONOMIC_CIV, TRAIT.MILITARY_CIV]
+})
+
+# Good: Long function calls
+result = modifier_builder.fill({
+    'collection': COLLECTION.PLAYER_UNITS,
+    'effect': EFFECT.UNIT_ADJUST_MOVEMENT
+})
+```
+
+### Blank Lines
+
+- Two blank lines between classes
+- One blank line between methods
+- One blank line before return statements in multi-statement functions
+
+```python
+class CivilizationBuilder(BaseBuilder):
+    """First class."""
+    
+    def build(self) -> list[BaseFile]:
+        """Method one."""
+        ...
+    
+    def _helper_method(self) -> None:
+        """Helper method."""
+        ...
+
+
+class UnitBuilder(BaseBuilder):
+    """Second class."""
+    ...
+```
+
+## Examples
+
+### Complete Builder Implementation
+
+```python
+from typing import Any, Dict, List
+from civ7_modding_tools.builders.builders import BaseBuilder
+from civ7_modding_tools.files import BaseFile, XmlFile
+from civ7_modding_tools.nodes import MyNode
+
+class MyBuilder(BaseBuilder):
+    """Builder for MyEntity with full feature set.
+    
+    Demonstrates builder pattern, type hints, pydantic integration,
+    and XML file generation.
+    """
+    
+    my_property: str = ''
+    another_property: int = 0
+    optional_list: List[Dict[str, Any]] = []
+    
+    def fill(self, payload: Dict[str, Any]) -> "MyBuilder":
+        """
+        Populate properties from dictionary.
+        
+        Args:
+            payload: Dictionary with property values.
+        
+        Returns:
+            Self for method chaining.
+        """
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+    
+    def build(self) -> list[BaseFile]:
+        """
+        Generate output files.
+        
+        Returns:
+            List of BaseFile instances ready to write to disk.
+        """
+        nodes = []
+        for item in self.optional_list:
+            node = MyNode(**item)
+            nodes.append(node)
+        
+        file = XmlFile(
+            path='/my-path/',
+            name='my-file.xml',
+            content={'Nodes': nodes}
+        )
+        
+        return [file]
+```
+
+## Best Practices Summary
+
+1. **Always use type hints** - enables IDE support and catches errors
+2. **Follow builder pattern** - fluent API with `fill()` method
+3. **Use pydantic models** - automatic validation and serialization
+4. **Use constants enums** - type-safe game references
+5. **Write comprehensive docstrings** - PEP 257 format with examples
+6. **Test edge cases** - 90%+ coverage target
+7. **Snake case for Python** - `my_property` not `myProperty`
+8. **British English** - in comments and docstrings
+9. **100 character limit** - split long lines logically
+10. **Validate early** - catch errors in __init__ or fill() methods

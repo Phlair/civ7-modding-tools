@@ -1,20 +1,57 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+Env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# pytest and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Project specific
+.env
+.env.local
+
+# Keep these files
 !.gitignore
-!README.me
-!build.ts
+!README.md
 !LICENSE
-!package.json
-!src
+!pyproject.toml
+!src/
 !src/**
-!dist
-!dist/**
-!tsconfig.json
-!examples
+!tests/
+!tests/**
+!docs/
+!docs/**
+!examples/
 !examples/**
-!assets
+!assets/
 !assets/**
-!previews
-!previews/**
-!example-generated-mod
-!example-generated-mod/**
-!.editorconfig
 !CHANGELOG.md
+!CONTRIBUTING.md
+!.github/
+!.github/**
