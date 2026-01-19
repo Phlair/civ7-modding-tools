@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "DISTRICT_CITY_CENTER"
+    },
+    {
+      "id": "DISTRICT_RURAL"
+    },
+    {
+      "id": "DISTRICT_URBAN"
+    },
+    {
+      "id": "DISTRICT_WONDER"
+    }
+  ]
+}

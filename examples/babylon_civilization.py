@@ -1,20 +1,14 @@
 """
 Babylon Civilization Example - Scientific Focus
 
-This example demonstrates:
-- Civilization with ACTION_GROUP_BUNDLE.AGE_ANTIQUITY
-- Scientific traits (TRAIT_SCIENTIFIC)
-- Custom unit (Sabum Kibittum - unique melee unit)
-- Unique building (Edubba - science/culture focused)
-- Civilization ability modifier for science bonuses
-- Progression tree with unique civic nodes
-- Icon imports for civilization and unit
-- All entities linked together using builder bindings
-- Module-level localization for proper LOC_MODULE_* entries
-
-Babylon is set up as a scientific civilization with bonuses to tech advancement
-and knowledge-based yields, showcasing how to build a specialized civ around a
-single core concept (Science).
+Demonstrates a complete scientific civilization with:
+- ACTION_GROUP_BUNDLE for AGE_ANTIQUITY (Antiquity age)
+- Scientific traits and civilisation abilities
+- Custom unit (Sabum Kibittum) and unique buildings (Edubba, Academy)
+- Progression tree with unique civics
+- Traditions and AI configuration
+- Icon imports and module localizations
+- Full builder bindings connecting all entities
 """
 
 from civ7_modding_tools import Mod, ActionGroupBundle
@@ -27,48 +21,60 @@ from civ7_modding_tools.builders import (
     ModifierBuilder,
     ImportFileBuilder,
     TraditionBuilder,
-    GreatPersonBuilder,
-    NamedPlaceBuilder,
 )
-from civ7_modding_tools.localizations import ModuleLocalization, TraditionLocalization, UnitLocalization, NamedPlaceLocalization
+from civ7_modding_tools.localizations import (
+    ModuleLocalization,
+    TraditionLocalization,
+)
 
-
-# Create module-level localization for mod metadata
-module_loc = ModuleLocalization(
+# Mod metadata and setup
+MODULE_LOC = ModuleLocalization(
     name="Babylon",
     description="The Babylon civilization - ancient centre of science and learning",
     authors="Firaxis Games"
 )
 
-# Create mod with rich metadata
 mod = Mod({
     'id': 'babylon',
     'version': '1',
-    'name': 'Babylon',  # Use plain text instead of LOC key
+    'name': 'Babylon',
     'description': 'The Babylon civilization - ancient centre of science and learning',
     'authors': 'Firaxis Games',
     'affects_saved_games': True,
     'enabled_by_default': True,
     'package': 'Babylon',
-    'module_localizations': module_loc,
+    'module_localizations': MODULE_LOC,
 })
 
-# ACTION_GROUP_BUNDLE.AGE_ANTIQUITY
-AGE_ANTIQUITY_BUNDLE = ActionGroupBundle(
-    action_group_id='AGE_ANTIQUITY'
-)
+# Action group for antiquity age
+AGE_ANTIQUITY = ActionGroupBundle(action_group_id='AGE_ANTIQUITY')
 
-# Import civilization icon
+# Icon imports
 civilization_icon = ImportFileBuilder()
-civilization_icon.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+civilization_icon.action_group_bundle = AGE_ANTIQUITY
 civilization_icon.fill({
     'source_path': './assets/babylon-civ-icon.png',
     'target_name': 'civ_sym_babylon'
 })
 
-# Define Babylon civilization with scientific traits
+unit_icon = ImportFileBuilder()
+unit_icon.action_group_bundle = AGE_ANTIQUITY
+unit_icon.fill({
+    'source_path': './assets/sabum-kibittum-icon.png',
+    'target_name': 'sabum_kibittum.png'
+})
+
+# Shared city names
+BABYLON_CITY_NAMES = [
+    'Babylon', 'Nippur', 'Lagash', 'Uruk', 'Ur', 'Eridu', 'Kish', 'Sippar',
+    'Borsippa', 'Cutha', 'Diwaniya', 'Isin', 'Larsa', 'Adab', 'Assur',
+    'Susa', 'Tyre', 'Sidon', 'Byblos', 'Memphis', 'Thebes', 'Alexandria',
+    'Athens', 'Corinth', 'Sparta', 'Troy', 'Persepolis', 'Ecbatana', 'Sargon', 'Hammurabi'
+]
+
+# Babylon civilization
 civilization = CivilizationBuilder()
-civilization.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+civilization.action_group_bundle = AGE_ANTIQUITY
 civilization.fill({
     'civilization_type': 'CIVILIZATION_BABYLON',
     'civilization': {
@@ -82,34 +88,33 @@ civilization.fill({
         'TRAIT_ATTRIBUTE_SCIENTIFIC',
     ],
     'civilization_tags': ['TAG_TRAIT_SCIENTIFIC'],
-    'icon': {
-        'path': 'icons/civ_sym_babylon'
-    },
-    'civilization_unlocks': [
-        {
-            'age_type': 'AGE_EXPLORATION',
-            'type': 'CIVILIZATION_PERSIA',
-            'kind': 'KIND_CIVILIZATION',
-            'name': 'LOC_CIVILIZATION_PERSIA_NAME',
-            'description': 'LOC_CIVILIZATION_PERSIA_DESCRIPTION',
-            'icon': 'CIVILIZATION_PERSIA'
-        }
+    'icon': {'path': 'icons/civ_sym_babylon'},
+    'civilization_unlocks': [{
+        'age_type': 'AGE_EXPLORATION',
+        'type': 'CIVILIZATION_PERSIA',
+        'kind': 'KIND_CIVILIZATION',
+        'name': 'LOC_CIVILIZATION_PERSIA_NAME',
+        'description': 'LOC_CIVILIZATION_PERSIA_DESCRIPTION',
+        'icon': 'CIVILIZATION_PERSIA'
+    }],
+    'leader_civilization_biases': [{
+        'leader_type': 'LEADER_XERXES',
+        'bias': 2,
+        'reason_type': 'LOC_UNLOCK_PLAY_AS_XERXES_BABYLON_TOOLTIP',
+        'choice_type': 'LOC_CREATE_GAME_GEOGRAPHIC_CHOICE'
+    }],
+    'start_bias_terrains': [
+        {'terrain_type': 'TERRAIN_FLAT', 'score': 15},
+        {'terrain_type': 'TERRAIN_NAVIGABLE_RIVER', 'score': 20},
     ],
-    'leader_civilization_biases': [
-        {'leader_type': 'LEADER_XERXES', 'bias': 2, 'reason_type': 'LOC_UNLOCK_PLAY_AS_XERXES_BABYLON_TOOLTIP', 'choice_type': 'LOC_CREATE_GAME_GEOGRAPHIC_CHOICE'},
-        ],
+    'start_bias_rivers': 5,
     'localizations': [
         {
             'name': 'Babylon',
             'description': 'Keepers of ancient wisdom and masters of the sciences.',
             'full_name': 'The Kingdom of Babylon',
             'adjective': 'Babylonian',
-            'city_names': [
-                'Babylon', 'Nippur', 'Lagash', 'Uruk', 'Ur', 'Eridu', 'Kish', 'Sippar',
-                'Borsippa', 'Cutha', 'Diwaniya', 'Isin', 'Larsa', 'Adab', 'Assur',
-                'Susa', 'Tyre', 'Sidon', 'Byblos', 'Memphis', 'Thebes', 'Alexandria',
-                'Athens', 'Corinth', 'Sparta', 'Troy', 'Persepolis', 'Ecbatana', 'Sargon', 'Hammurabi'
-            ]
+            'city_names': BABYLON_CITY_NAMES
         },
         {
             'entity_id': 'CIVILIZATION_BABYLON_ABILITY',
@@ -122,33 +127,17 @@ civilization.fill({
             'description': 'The great libraries of Babylon hold scientific secrets.'
         }
     ],
-    'loading_info_civilizations': [
-        {
-            'civilization_text': 'LOC_CIVILIZATION_BABYLON_DESCRIPTION',
-            'subtitle': 'LOC_BABYLON_LOADING_NAME',
-            'tip': 'LOC_BABYLON_LOADING_DESCRIPTION',
-            'background_image_high': 'babylon/textures/1080_babylon.png',
-            'background_image_low': 'babylon/textures/720_babylon.png',
-            'foreground_image': 'babylon/textures/720_babylon.png'
-        }
-    ],
+    'loading_info_civilizations': [{
+        'civilization_text': 'LOC_CIVILIZATION_BABYLON_DESCRIPTION',
+        'subtitle': 'LOC_BABYLON_LOADING_NAME',
+        'tip': 'LOC_BABYLON_LOADING_DESCRIPTION',
+        'background_image_high': 'babylon/textures/1080_babylon.png',
+        'background_image_low': 'babylon/textures/720_babylon.png',
+        'foreground_image': 'babylon/textures/720_babylon.png'
+    }],
     'leader_civ_priorities': [
-        {
-            'leader_type': 'LEADER_XERXES',
-            'priority': 8
-        }
+        {'leader_type': 'LEADER_XERXES', 'priority': 8}
     ],
-    'start_bias_terrains': [
-        {
-            'terrain_type': 'TERRAIN_FLAT',
-            'score': 15
-        },
-        {
-            'terrain_type': 'TERRAIN_NAVIGABLE_RIVER',
-            'score': 20
-        }
-    ],
-    'start_bias_rivers': 5,
     'ai_list_types': [
         {'list_type': 'Babylon Unit Biases'},
         {'list_type': 'Babylon Government Bias'},
@@ -184,57 +173,26 @@ civilization.fill({
         }
     ],
     'ai_favored_items': [
-        {
-            'list_type': 'Babylon Unit Biases',
-            'item': 'UNIT_BABYLON_SABUM_KIBITTUM',
-            'value': 50
-        },
-        {
-            'list_type': 'Babylon Government Bias',
-            'item': 'GOVERNMENT_AUTOCRACY',
-            'value': 25
-        },
-        {
-            'list_type': 'Babylon Constructibles Biases',
-            'item': 'BUILDING_BABYLON_EDUBBA',
-            'value': 200
-        },
-        {
-            'list_type': 'Babylon Yield Biases',
-            'item': 'YIELD_SCIENCE',
-            'value': 50
-        },
-        {
-            'list_type': 'Babylon Yield Biases',
-            'item': 'YIELD_CULTURE',
-            'value': 10
-        },
-        {
-            'list_type': 'Babylon Budget Biases',
-            'item': 'AI_BUDGET_CULTURE',
-            'value': 25
-        }
+        {'list_type': 'Babylon Unit Biases', 'item': 'UNIT_BABYLON_SABUM_KIBITTUM', 'value': 50},
+        {'list_type': 'Babylon Government Bias', 'item': 'GOVERNMENT_AUTOCRACY', 'value': 25},
+        {'list_type': 'Babylon Constructibles Biases', 'item': 'BUILDING_BABYLON_EDUBBA', 'value': 200},
+        {'list_type': 'Babylon Yield Biases', 'item': 'YIELD_SCIENCE', 'value': 50},
+        {'list_type': 'Babylon Yield Biases', 'item': 'YIELD_CULTURE', 'value': 10},
+        {'list_type': 'Babylon Budget Biases', 'item': 'AI_BUDGET_CULTURE', 'value': 25}
     ],
-    'vis_art_building_cultures': [
-        'BUILDING_CULTURE_MID',
-        'ANT_MUD',
-        'EXP_MUD',
-        'MOD_MUD'
-    ],
+    'vis_art_building_cultures': ['BUILDING_CULTURE_MID', 'ANT_MUD', 'EXP_MUD', 'MOD_MUD'],
     'vis_art_unit_cultures': ['MidE'],
 })
 
 # Civilization ability modifier - science yield bonus
 civilization_modifier = ModifierBuilder()
-civilization_modifier.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+civilization_modifier.action_group_bundle = AGE_ANTIQUITY
 civilization_modifier.fill({
     'modifier': {
         'collection': 'COLLECTION_ALL_CITIES',
         'effect': 'EFFECT_CITY_ADJUST_YIELD',
         'permanent': True,
-        'requirements': [{
-            'type': 'REQUIREMENT_CITY_IS_CITY'
-        }],
+        'requirements': [{'type': 'REQUIREMENT_CITY_IS_CITY'}],
         'arguments': [
             {'name': 'YieldType', 'value': 'YIELD_SCIENCE'},
             {'name': 'Amount', 'value': 100},
@@ -243,21 +201,9 @@ civilization_modifier.fill({
     }
 })
 
-# Bind modifier to civilization
-civilization.bind([civilization_modifier])
-
-# Import unit icon
-unit_icon = ImportFileBuilder()
-unit_icon.action_group_bundle = AGE_ANTIQUITY_BUNDLE
-unit_icon.fill({
-    'source_path': './assets/sabum-kibittum-icon.png',
-    'target_name': 'sabum_kibittum.png'
-})
-
-# Define Babylon traditions - special bonuses unique to the civilization
-# Tradition 1: Scribal Traditions - bonus to science and culture
+# Traditions
 tradition_scribes = TraditionBuilder()
-tradition_scribes.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+tradition_scribes.action_group_bundle = AGE_ANTIQUITY
 tradition_scribes.fill({
     'tradition_type': 'TRADITION_BABYLON_SCRIBES',
     'tradition': {},
@@ -269,7 +215,6 @@ tradition_scribes.fill({
     ]
 })
 
-# Create modifier for scribal tradition
 scribal_modifier = ModifierBuilder()
 scribal_modifier.fill({
     'modifier_type': 'MODIFIER_TRADITION_BABYLON_SCRIBES',
@@ -288,9 +233,8 @@ scribal_modifier.fill({
 })
 tradition_scribes.bind([scribal_modifier])
 
-# Tradition 2: Library of Babylon - bonus culture and science heritage
 tradition_library = TraditionBuilder()
-tradition_library.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+tradition_library.action_group_bundle = AGE_ANTIQUITY
 tradition_library.fill({
     'tradition_type': 'TRADITION_BABYLON_LIBRARY',
     'tradition': {},
@@ -302,7 +246,6 @@ tradition_library.fill({
     ]
 })
 
-# Create modifier for library tradition
 library_modifier = ModifierBuilder()
 library_modifier.fill({
     'modifier_type': 'MODIFIER_TRADITION_BABYLON_LIBRARY',
@@ -320,9 +263,9 @@ library_modifier.fill({
 })
 tradition_library.bind([library_modifier])
 
-# Define unique unit - Sabum Kibittum (Babylonian warrior)
+# Unique unit - Sabum Kibittum (Babylonian warrior)
 unit = UnitBuilder()
-unit.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+unit.action_group_bundle = AGE_ANTIQUITY
 unit.fill({
     'unit_type': 'UNIT_BABYLON_SABUM_KIBITTUM',
     'type_tags': ['UNIT_CLASS_MELEE'],
@@ -335,24 +278,20 @@ unit.fill({
         'base_moves': 2,
         'base_sight_range': 2,
     },
-    'icon': {
-        'path': f'fs://game/{mod.mod_id}/sabum_kibittum.png'
-    },
+    'icon': {'path': f'fs://game/{mod.mod_id}/sabum_kibittum.png'},
     'unit_cost': {'yield_type': 'YIELD_PRODUCTION', 'cost': 30},
     'unit_stat': {'combat': 15},
     'unit_replace': {'replaces_unit_type': 'UNIT_WARRIOR'},
     'visual_remap': {'to': 'UNIT_WARRIOR'},
-    'localizations': [
-        {
-            'name': 'Sabum Kibittum',
-            'description': 'Elite warrior of Babylon, trained in ancient tactics.'
-        },
-    ],
+    'localizations': [{
+        'name': 'Sabum Kibittum',
+        'description': 'Elite warrior of Babylon, trained in ancient tactics.'
+    }],
 })
 
-# Define unique building - Edubba (House of Tablets - library)
+# Unique building - Edubba (House of Tablets - library)
 edubba = ConstructibleBuilder()
-edubba.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+edubba.action_group_bundle = AGE_ANTIQUITY
 edubba.fill({
     'constructible_type': 'BUILDING_BABYLON_EDUBBA',
     'constructible': {'cost': 1},
@@ -366,28 +305,57 @@ edubba.fill({
     ],
     'icon': {'path': f'fs://game/{mod.mod_id}/edubba.png'},
     'advisories': ['ADVISORY_CLASS_SCIENCE'],
-    'localizations': [
-        {
-            'name': 'Edubba',
-            'description': 'House of Tablets - preserves Babylon\'s vast knowledge.',
-            'tooltip': 'Increases science and culture yields.'
-        }
-    ]
+    'localizations': [{
+        'name': 'Edubba',
+        'description': 'House of Tablets - preserves Babylon\'s vast knowledge.',
+        'tooltip': 'Increases science and culture yields.'
+    }]
 })
 
-# Define first progression tree node
+# Academy with advanced bonuses
+academy = ConstructibleBuilder()
+academy.action_group_bundle = AGE_ANTIQUITY
+academy.fill({
+    'constructible_type': 'BUILDING_BABYLON_ACADEMY',
+    'constructible': {'cost': 150},
+    'building': {'trait_type': 'TRAIT_BABYLON'},
+    'type_tags': ['UNIQUE', 'SCIENCE'],
+    'constructible_valid_districts': ['DISTRICT_URBAN'],
+    'yield_changes': [{'yield_type': 'YIELD_SCIENCE', 'yield_change': 10}],
+    'advisories': ['ADVISORY_CLASS_SCIENCE'],
+    'localizations': [{
+        'name': 'Academy',
+        'description': 'Centre of learning where knowledge is preserved and expanded.'
+    }]
+})
+
+# Ziggurat Quarter (multi-tile structure)
+ziggurat = ConstructibleBuilder()
+ziggurat.action_group_bundle = AGE_ANTIQUITY
+ziggurat.fill({
+    'constructible_type': 'QUARTER_BABYLON_ZIGGURAT',
+    'constructible': {'cost': 400},
+    'building': {'trait_type': 'TRAIT_BABYLON'},
+    'type_tags': ['UNIQUE', 'CULTURE'],
+    'constructible_valid_districts': ['DISTRICT_URBAN'],
+    'yield_changes': [{'yield_type': 'YIELD_CULTURE', 'yield_change': 20}],
+    'advisories': ['ADVISORY_CLASS_CULTURE'],
+    'localizations': [{
+        'name': 'Ziggurat Complex',
+        'description': 'A magnificent stepped temple complex dedicated to the gods of Babylon.'
+    }]
+})
+
+# Progression tree nodes
 progression_tree_node = ProgressionTreeNodeBuilder()
-progression_tree_node.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+progression_tree_node.action_group_bundle = AGE_ANTIQUITY
 progression_tree_node.fill({
     'progression_tree_node_type': 'NODE_CIVICS_BABYLON1',
-    'progression_tree_node': {
-        'progression_tree_node_type': 'NODE_CIVICS_BABYLON1',
-    },
+    'progression_tree_node': {'progression_tree_node_type': 'NODE_CIVICS_BABYLON1'},
     'progression_tree_advisories': ['ADVISORY_CLASS_SCIENCE'],
     'localizations': [{'name': 'Babylonian Learning'}]
 })
 
-# Bind modifier and buildings to first node
 node1_modifier = ModifierBuilder()
 node1_modifier.fill({
     'modifier': {
@@ -403,27 +371,21 @@ node1_modifier.fill({
 })
 progression_tree_node.bind([node1_modifier, edubba, unit])
 
-# Define second progression tree node
 progression_tree_node2 = ProgressionTreeNodeBuilder()
-progression_tree_node2.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+progression_tree_node2.action_group_bundle = AGE_ANTIQUITY
 progression_tree_node2.fill({
     'progression_tree_node_type': 'NODE_CIVICS_BABYLON2',
-    'progression_tree_node': {
-        'progression_tree_node_type': 'NODE_CIVICS_BABYLON2',
-    },
+    'progression_tree_node': {'progression_tree_node_type': 'NODE_CIVICS_BABYLON2'},
     'progression_tree_advisories': ['ADVISORY_CLASS_SCIENCE'],
     'localizations': [{'name': 'Ancient Wisdom'}]
 })
 
-# Bind modifier to second node
 node2_modifier = ModifierBuilder()
 node2_modifier.fill({
     'modifier': {
         'collection': 'COLLECTION_OWNER',
         'effect': 'EFFECT_CITY_ADJUST_WORKER_YIELD',
-        'arguments': [
-            {'name': 'Amount', 'value': 25},
-        ],
+        'arguments': [{'name': 'Amount', 'value': 25}],
     },
     'localizations': [{
         'description': 'Eurekas provide +25% bonus to tech progress'
@@ -431,63 +393,22 @@ node2_modifier.fill({
 })
 progression_tree_node2.bind([node2_modifier])
 
-# Define progression tree
+# Progression tree
 progression_tree = ProgressionTreeBuilder()
-progression_tree.action_group_bundle = AGE_ANTIQUITY_BUNDLE
+progression_tree.action_group_bundle = AGE_ANTIQUITY
 progression_tree.fill({
     'progression_tree_type': 'TREE_CIVICS_BABYLON',
     'progression_tree': {
         'progression_tree_type': 'TREE_CIVICS_BABYLON',
         'age_type': 'AGE_ANTIQUITY'
     },
-    # Node prerequisites
     'progression_tree_prereqs': [{
         'node': 'NODE_CIVICS_BABYLON2',
         'prereq_node': 'NODE_CIVICS_BABYLON1'
     }],
     'localizations': [{'name': 'Babylonian Civic Tree'}]
 })
-
-# Bind nodes to tree
 progression_tree.bind([progression_tree_node, progression_tree_node2])
-
-# Phase 4: Academy with adjacency bonuses
-academy = ConstructibleBuilder()
-academy.action_group_bundle = AGE_ANTIQUITY_BUNDLE
-academy.fill({
-    'constructible_type': 'BUILDING_BABYLON_ACADEMY',
-    'constructible': {'cost': 150},
-    'building': {'trait_type': 'TRAIT_BABYLON'},
-    'type_tags': ['UNIQUE', 'SCIENCE'],
-    'constructible_valid_districts': ['DISTRICT_URBAN'],
-    'yield_changes': [{'yield_type': 'YIELD_SCIENCE', 'yield_change': 10}],
-    'advisories': ['ADVISORY_CLASS_SCIENCE'],
-    'localizations': [
-        {
-            'name': 'Academy',
-            'description': 'Centre of learning where knowledge is preserved and expanded.'
-        }
-    ]
-})
-
-# Phase 4: Ziggurat Quarter (multi-tile structure)
-ziggurat = ConstructibleBuilder()
-ziggurat.action_group_bundle = AGE_ANTIQUITY_BUNDLE
-ziggurat.fill({
-    'constructible_type': 'QUARTER_BABYLON_ZIGGURAT',
-    'constructible': {'cost': 400},
-    'building': {'trait_type': 'TRAIT_BABYLON'},
-    'type_tags': ['UNIQUE', 'CULTURE'],
-    'constructible_valid_districts': ['DISTRICT_URBAN'],
-    'yield_changes': [{'yield_type': 'YIELD_CULTURE', 'yield_change': 20}],
-    'advisories': ['ADVISORY_CLASS_CULTURE'],
-    'localizations': [
-        {
-            'name': 'Ziggurat Complex',
-            'description': 'A magnificent stepped temple complex dedicated to the gods of Babylon.'
-        }
-    ]
-})
 
 # Bind all entities to civilization
 civilization.bind([
@@ -496,6 +417,7 @@ civilization.bind([
     academy,
     ziggurat,
     progression_tree,
+    civilization_modifier
 ])
 
 # Add all builders to mod

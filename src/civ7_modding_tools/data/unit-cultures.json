@@ -1,0 +1,126 @@
+{
+  "values": [
+    {
+      "id": "Afr",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "Asian",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_EGYPT",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_IP_KOREAN",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_KHMER",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_MAURYA",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_MAYA",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_PERSIA",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "Euro",
+      "description": "Unit culture used by: CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_PIRATE_REPUBLIC, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_GREAT_BRITAIN",
+        "CIVILIZATION_ICELAND",
+        "CIVILIZATION_PIRATE_REPUBLIC",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "IND",
+      "description": "Unit culture used by: CIVILIZATION_NEPAL, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_NEPAL",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "Med",
+      "description": "Unit culture used by: CIVILIZATION_CARTHAGE, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_CARTHAGE",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "MidE",
+      "description": "Unit culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_BULGARIA, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
+        "CIVILIZATION_BULGARIA",
+        "CIVILIZATION_OTTOMANS",
+        "CIVILIZATION_QAJAR",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "NAmer",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "PAC",
+      "description": "Unit culture used by: CIVILIZATION_TONGA",
+      "civilizations": [
+        "CIVILIZATION_TONGA"
+      ]
+    },
+    {
+      "id": "SAmer",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "SEA",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    }
+  ]
+}

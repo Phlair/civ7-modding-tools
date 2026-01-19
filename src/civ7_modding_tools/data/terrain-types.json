@@ -1,0 +1,22 @@
+{
+  "values": [
+    {
+      "id": "TERRAIN_COAST"
+    },
+    {
+      "id": "TERRAIN_FLAT"
+    },
+    {
+      "id": "TERRAIN_HILL"
+    },
+    {
+      "id": "TERRAIN_MOUNTAIN"
+    },
+    {
+      "id": "TERRAIN_NAVIGABLE_RIVER"
+    },
+    {
+      "id": "TERRAIN_OCEAN"
+    }
+  ]
+}

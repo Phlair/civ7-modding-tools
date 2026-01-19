@@ -1,0 +1,619 @@
+{
+  "values": [
+    {
+      "id": "EFFECT_ADD_EVENT_FREQUENCY_OVERRIDE"
+    },
+    {
+      "id": "EFFECT_ADD_FREE_COASTAL_RAID_TURNS"
+    },
+    {
+      "id": "EFFECT_ADD_PANTHEON"
+    },
+    {
+      "id": "EFFECT_ADD_RELIGIOUS_BELIEF_YIELD"
+    },
+    {
+      "id": "EFFECT_ADJUST_CITY_AUTO_TREASURE_FLEET"
+    },
+    {
+      "id": "EFFECT_ADJUST_CITY_REPAIR_PURCHASE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_ADJUST_FORBID_UPGRADE_TOWN_TO_CITY"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_ADDITIONAL_ARTIFACTS_IN_TERRITORY"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_AUTO_SPREAD_COASTAL_RAID"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_FORBID_CS_INCORPORATE"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_OR_CITY_BUILDING_PURCHASE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_OR_CITY_UNIT_PURCHASE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_RELIC_FOR_BUILDING_WONDER"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_RELIC_FOR_CIVIC_TREE_MASTERY"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_SUZERAIN_CAPITAL_ROUTES"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_TRADE_UNITS_SAFE_DEEP_WATER"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_UNITS_PILLAGE_BUILDING_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_UNITS_PILLAGE_IMPROVEMENT_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_VALID_UNIT_BUILD"
+    },
+    {
+      "id": "EFFECT_ADJUST_TOWN_CAN_PURCHASE_TAGGED_CONSTRUCTIBLES"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_ADVANCED_PILLAGING"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_ATTACK_CREATES_PLOT_EFFECT"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_BUILDING_PILLAGE_YIELD_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_CIV_UNIQUE_TRADITION_COMBAT_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_COASTAL_RAID_ONLY_DISCOVERIES"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_COASTAL_RAID_YIELD_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_COMBAT_CAPTURE"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_EMBARKED_MOVEMENT"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_EMBARKED_STRENGTH_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_ENTER_FOREIGN_LANDS"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_HIDDEN_VISIBILITY"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_IGNORE_ZOC"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_IMPROVEMENT_PILLAGE_YIELD_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_NEIGHBOR_COMBAT_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_NO_REDUCTION_DAMAGE"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_PERCENT_PILLAGE_BUILDING_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_PERCENT_PILLAGE_IMPROVEMENT_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_PLUNDER_YIELDS"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_POST_COMBAT_HEAL"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_POST_COMBAT_YIELD"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_RESOURCE_DAMAGE"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_ROUGH_COMBAT_IGNORE_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_SEE_THROUGH_FEATURES"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_SEE_THROUGH_TERRAIN"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_SIGHT"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_SPLASH_DAMAGE"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_STRENGTH_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_SUZERAIN_OF_COMBAT_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_UNDER_SETTLEMENT_CAP_COMBAT_MODIFIER"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_VALID_TERRAIN"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_WATER_DAMAGE_PROTECTION"
+    },
+    {
+      "id": "EFFECT_ARMY_ADJUST_EXPERIENCE_RATE"
+    },
+    {
+      "id": "EFFECT_ATTACH_MODIFIERS"
+    },
+    {
+      "id": "EFFECT_CHANGE_INDEPENDENT_AT_LOCATION_INVESTMENT"
+    },
+    {
+      "id": "EFFECT_CITY_ACTIVATE_CONSTRUCTIBLE_ADJACENCY"
+    },
+    {
+      "id": "EFFECT_CITY_ACTIVATE_CONSTRUCTIBLE_WAREHOUSE_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADD_RESOURCE_TO_PLOT"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_AVOID_RANDOM_EVENT"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_BIOME_WONDER_PRODUCTION_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_CONSTRUCTIBLE_PRODUCTION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_CONSTRUCTIBLE_PRODUCTION_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_CONSTRUCTIBLE_PRODUCTION_PER_SUZERAIN_OF"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_CONSTRUCTIBLE_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_CONSTRUCTIBLE_YIELD_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_FAVORED_WONDER_PRODUCTION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_GOLDEN_AGE_OF_CONSTRUCTIBLE_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_GREAT_WORK_SLOTS"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_GROWTH"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_POPULATION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_RANDOM_EVENT_CONSTRUCTIBLE_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_RAZE_RATE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_RESOURCE_CAP"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_SPECIFIC_CONSTRUCTIBLE_MAINTENANCE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_SUZERAIN_OF_CONSTRUCTIBLE_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_TOWN_UPGRADE_DISCOUNT"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_TRADE_ROUTE_RANGE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_TRADE_ROUTE_RANGE_PER_SUZERAIN_OF"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_UNHAPPINESS_EFFECT"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_UNIT_PRODUCTION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_UNIT_PRODUCTION_PER_GREAT_WORK"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_UNIT_PRODUCTION_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_WONDER_PRODUCTION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_WORKER_CAP"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_WORKER_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_CONVERSION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_ACTIVE_TRADITION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_AVAILABLE_RESOURCE_TYPE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_CITY_STATE_TRADE_ROUTE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_COMMANDER_LEVEL"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_CONNECTED_CITY"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_GREAT_WORK"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_NUM_CITIES"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_NUM_TRADE_ROUTES"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_POPULATION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_RESOURCE_CLASS"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_SURPLUS_HAPPINESS"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_SUZERAINED_CITY_STATE_TYPE"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_UNDER_SETTLEMENT_CAP"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELD_PER_UNLOCKED_PROGRESSION_TREE_NODE"
+    },
+    {
+      "id": "EFFECT_CITY_GRANT_GREAT_WORK"
+    },
+    {
+      "id": "EFFECT_CITY_GRANT_NATURAL_YIELDS"
+    },
+    {
+      "id": "EFFECT_CITY_GRANT_UNIT"
+    },
+    {
+      "id": "EFFECT_CITY_GRANT_WAREHOUSE_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_GRANT_YIELD_DISCOVERY"
+    },
+    {
+      "id": "EFFECT_CITY_GRANT_YIELD_PER_POP_DEFENSE_CONSTRUCTED"
+    },
+    {
+      "id": "EFFECT_DAE_COOPERATIVE_ATTACH_MODIFIER"
+    },
+    {
+      "id": "EFFECT_DAE_GRANT_CAPITAL_DISTRICT_VISION"
+    },
+    {
+      "id": "EFFECT_DAE_GRANT_COOPERATIVE_YIELD_SUPPORT_BASE_PER_TURN"
+    },
+    {
+      "id": "EFFECT_DAE_GRANT_YIELD_PER_RELATIONSHIP"
+    },
+    {
+      "id": "EFFECT_DECLARE_WAR"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_ADJUST_CITY_YIELD_PER_PLAYER_RELATIONSHIP"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_ADJUST_DIPLOMATIC_ACTION_TOKEN_BONUS"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_ADJUST_DIPLOMATIC_ACTION_TYPE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_ADJUST_DIPLOMATIC_ACTION_TYPE_EFFICIENCY_PER_SUZERAINED_CITY_STATE_TYPE"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_ADJUST_DIPLOMATIC_RESPONSE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_ADJUST_YIELD_PER_PLAYER_INVOLVED_ACTION"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_GRANT_DIPLOMATIC_ACTION"
+    },
+    {
+      "id": "EFFECT_DISTRICT_ADJUST_FORTIFIED_COMBAT_STRENGTH"
+    },
+    {
+      "id": "EFFECT_DISTRICT_ADJUST_TOTAL_HEALTH"
+    },
+    {
+      "id": "EFFECT_DO_NOTHING"
+    },
+    {
+      "id": "EFFECT_GRANT_ALL_PLAYERS_FAVORS_GRIEVANCES"
+    },
+    {
+      "id": "EFFECT_GRANT_BUILDING_IN_CITY_ADJACENT_TO_TERRAIN"
+    },
+    {
+      "id": "EFFECT_GRANT_CITY_YIELD_BIOME"
+    },
+    {
+      "id": "EFFECT_GRANT_COMBAT_ADJACENCY"
+    },
+    {
+      "id": "EFFECT_GRANT_GREAT_WORK"
+    },
+    {
+      "id": "EFFECT_GRANT_PRODUCTION_IN_CITY"
+    },
+    {
+      "id": "EFFECT_GRANT_SUPPORT_RESPONSE_BONUS"
+    },
+    {
+      "id": "EFFECT_GRANT_UNIT_ABILITY_CHARGE"
+    },
+    {
+      "id": "EFFECT_GRANT_UNIT_EXPERIENCE"
+    },
+    {
+      "id": "EFFECT_GRANT_UNIT_OF_CLASS_AND_APPLY_ABILITY"
+    },
+    {
+      "id": "EFFECT_GRANT_UNIT_PROMOTION"
+    },
+    {
+      "id": "EFFECT_METAPROGRESSION_COMPLETE_CHALLENGE"
+    },
+    {
+      "id": "EFFECT_MODIFY_CITY_YIELD_FOR_X_TURNS"
+    },
+    {
+      "id": "EFFECT_MODIFY_PLAYER_YIELD_FOR_X_TURNS"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADD_YIELD_DEBT_NARRATIVE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_AGE_PROGRESS"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_CONSTRUCTIBLE_YIELD"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_PURCHASE_EFFICIENCY_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_SETTLEMENT_CAP"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_UNIT_CAPTURE_ADDITIONAL_BOOTY"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_UNIT_EXTRA_COPY"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_UNIT_MAINTENANCE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_UNIT_PRODUCTION_PER_OTHER_UNIT_TYPE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_UNIT_PRODUCTION_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_FOR_COMPLETING_NARRATIVE_EVENTS"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_NUM_TRADE_ROUTES"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_NUM_TRADE_ROUTES_AND_SUZERAINED_TYPE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_RESOURCE_TYPE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_SUZERAIN"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_UNIQUE_CIV_CONQUERED_CITY"
+    },
+    {
+      "id": "EFFECT_PLAYER_ATTRIBUTE"
+    },
+    {
+      "id": "EFFECT_PLAYER_BLOCK_GOVERNMENT_SELECTION"
+    },
+    {
+      "id": "EFFECT_PLAYER_CAN_MEET_DISTANT_LAND_CIVS"
+    },
+    {
+      "id": "EFFECT_PLAYER_DEDUCT_TREASURY"
+    },
+    {
+      "id": "EFFECT_PLAYER_DEDUCT_TREASURY_DISCOVERY"
+    },
+    {
+      "id": "EFFECT_PLAYER_DEDUCT_TREASURY_NARRATIVE"
+    },
+    {
+      "id": "EFFECT_PLAYER_DIPLOMACY_ACTION_GROUP_MOD"
+    },
+    {
+      "id": "EFFECT_PLAYER_DISABLE_BUILD_UNIT"
+    },
+    {
+      "id": "EFFECT_PLAYER_FORCE_MILITARY_OPERATION"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_CONSTRUCTIBLE_UNLOCK"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_FAVORS_GRIEVANCES"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_FREE_PURCHASE_CHARGE"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_GOLDEN_AGE"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_NARRATIVE_TAG"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_NAVAL_UNIT_WITH_OCEAN_ACCESS"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_PROGRESSION"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_TRADITION_SLOTS"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_UNIT_AT_PLOT"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_UNLOCK"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_YIELD"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_YIELD_DISCOVERY"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_YIELD_NARRATIVE"
+    },
+    {
+      "id": "EFFECT_PLAYER_PROPERTY"
+    },
+    {
+      "id": "EFFECT_PLAYER_REVEAL_CULTURE_TREE"
+    },
+    {
+      "id": "EFFECT_PLAYER_SET_GOVERNMENT"
+    },
+    {
+      "id": "EFFECT_PLAYER_SPAWN_TRIBE_ARMY"
+    },
+    {
+      "id": "EFFECT_PLAYER_SPAWN_TRIBE_NEAR"
+    },
+    {
+      "id": "EFFECT_PLAYER_UNLOCK_PANTHEON"
+    },
+    {
+      "id": "EFFECT_PLAYER_UNLOCK_TRADITION"
+    },
+    {
+      "id": "EFFECT_PLOT_ADJUST_YIELD"
+    },
+    {
+      "id": "EFFECT_PLOT_PLACE_RESOURCE"
+    },
+    {
+      "id": "EFFECT_RESTORE_UNIT_MOVEMENT"
+    },
+    {
+      "id": "EFFECT_UNITS_IMMUNE_TO_RANDOM_EVENTS"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_ABILITY"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_COMBAT_STRENGTH_PER_RESOURCE"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_COMMAND_AWARD"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_DAMAGE"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_EMBARKATION_TYPE"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_FORTIFICATION_CONSTRUCTION_TIME"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_HEAL_PER_TURN"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_IGNORE_MOVEMENT_OBSTACLE"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_MOVEMENT"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_MOVE_AFTER_ATTACK"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_OPERATION_AWARD"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_PLAYER_YIELD"
+    },
+    {
+      "id": "EFFECT_UNIT_SET_TRADE_ROUTE_PROTECTED"
+    },
+    {
+      "id": "TRIGGER_CITY_GRANT_YIELD_ON_CONSTRUCTIBLE_CREATED"
+    },
+    {
+      "id": "TRIGGER_CITY_GRANT_YIELD_ON_PROGRESSION_TREE_NODE_DEPTH_UNLOCKED"
+    },
+    {
+      "id": "TRIGGER_PLAYER_GRANT_YIELD_ON_FIND_WONDER"
+    },
+    {
+      "id": "TRIGGER_PLAYER_GRANT_YIELD_ON_PROGRESSION_TREE_NODE_DEPTH_UNLOCKED"
+    },
+    {
+      "id": "TRIGGER_PLAYER_GRANT_YIELD_ON_UNIT_CREATED"
+    }
+  ]
+}

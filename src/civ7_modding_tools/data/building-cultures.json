@@ -1,0 +1,179 @@
+{
+  "values": [
+    {
+      "id": "ANT_MUD",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
+        "CIVILIZATION_NEPAL",
+        "CIVILIZATION_OTTOMANS",
+        "CIVILIZATION_QAJAR",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "ANT_STONE",
+      "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_BULGARIA",
+        "CIVILIZATION_CARTHAGE",
+        "CIVILIZATION_GREAT_BRITAIN",
+        "CIVILIZATION_ICELAND",
+        "CIVILIZATION_PIRATE_REPUBLIC",
+        "CIVILIZATION_TONGA",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_EAS",
+      "description": "Building culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_EEU",
+      "description": "Building culture used by: CIVILIZATION_GREAT_BRITAIN",
+      "civilizations": [
+        "CIVILIZATION_GREAT_BRITAIN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_MED",
+      "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_PIRATE_REPUBLIC, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_BULGARIA",
+        "CIVILIZATION_CARTHAGE",
+        "CIVILIZATION_PIRATE_REPUBLIC",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_MID",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
+        "CIVILIZATION_NEPAL",
+        "CIVILIZATION_OTTOMANS",
+        "CIVILIZATION_QAJAR",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_MID_ANT",
+      "description": "Building culture used by: CIVILIZATION_NEPAL",
+      "civilizations": [
+        "CIVILIZATION_NEPAL"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_MID_MOD",
+      "description": "Building culture used by: CIVILIZATION_NEPAL",
+      "civilizations": [
+        "CIVILIZATION_NEPAL"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_NAF",
+      "description": "Building culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_NAM",
+      "description": "Building culture used by: CIVILIZATION_TONGA, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_TONGA",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_NEU",
+      "description": "Building culture used by: CIVILIZATION_ICELAND",
+      "civilizations": [
+        "CIVILIZATION_ICELAND"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_PAC",
+      "description": "Building culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_PAC_EXP",
+      "description": "Building culture used by: CIVILIZATION_NEPAL",
+      "civilizations": [
+        "CIVILIZATION_NEPAL"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_SAM",
+      "description": "Building culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_SEA",
+      "description": "Building culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "EXP_MUD",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
+        "CIVILIZATION_OTTOMANS",
+        "CIVILIZATION_QAJAR",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "EXP_STONE",
+      "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_NEPAL, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_BULGARIA",
+        "CIVILIZATION_CARTHAGE",
+        "CIVILIZATION_GREAT_BRITAIN",
+        "CIVILIZATION_ICELAND",
+        "CIVILIZATION_NEPAL",
+        "CIVILIZATION_PIRATE_REPUBLIC",
+        "CIVILIZATION_TONGA",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "MOD_MUD",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
+        "CIVILIZATION_NEPAL",
+        "CIVILIZATION_OTTOMANS",
+        "CIVILIZATION_QAJAR",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "MOD_STONE",
+      "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
+      "civilizations": [
+        "CIVILIZATION_BULGARIA",
+        "CIVILIZATION_CARTHAGE",
+        "CIVILIZATION_GREAT_BRITAIN",
+        "CIVILIZATION_ICELAND",
+        "CIVILIZATION_PIRATE_REPUBLIC",
+        "CIVILIZATION_TONGA",
+        "UNKNOWN"
+      ]
+    }
+  ]
+}

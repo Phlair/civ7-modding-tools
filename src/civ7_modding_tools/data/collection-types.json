@@ -1,0 +1,91 @@
+{
+  "values": [
+    {
+      "id": "COLLECTION_ALL_CAPITAL_CITIES"
+    },
+    {
+      "id": "COLLECTION_ALL_CITIES"
+    },
+    {
+      "id": "COLLECTION_ALL_PLAYERS"
+    },
+    {
+      "id": "COLLECTION_ALL_UNITS"
+    },
+    {
+      "id": "COLLECTION_CITY_PLOT_YIELDS"
+    },
+    {
+      "id": "COLLECTION_HOMELANDS_INDEPENDENT_NEAREST_STORY"
+    },
+    {
+      "id": "COLLECTION_INDEPENDENT_NEAREST_STORY"
+    },
+    {
+      "id": "COLLECTION_INDEPENDENT_PLAYERS"
+    },
+    {
+      "id": "COLLECTION_MAJOR_PLAYERS"
+    },
+    {
+      "id": "COLLECTION_NARRATIVE_STORY"
+    },
+    {
+      "id": "COLLECTION_OPPONENT_AT_STORY"
+    },
+    {
+      "id": "COLLECTION_OWNER"
+    },
+    {
+      "id": "COLLECTION_OWNER_CITY"
+    },
+    {
+      "id": "COLLECTION_OWNER_CITY_NEAREST_STORY"
+    },
+    {
+      "id": "COLLECTION_OWNER_COMMANDER_HIGHEST_LEVEL"
+    },
+    {
+      "id": "COLLECTION_OWNER_COMMANDER_NEAREST_STORY"
+    },
+    {
+      "id": "COLLECTION_OWNER_UNIT_NEAREST_STORY"
+    },
+    {
+      "id": "COLLECTION_PLAYER_CAPITAL_CITY"
+    },
+    {
+      "id": "COLLECTION_PLAYER_CAPITAL_CITY_DISTRICTS"
+    },
+    {
+      "id": "COLLECTION_PLAYER_CITIES"
+    },
+    {
+      "id": "COLLECTION_PLAYER_COMBAT"
+    },
+    {
+      "id": "COLLECTION_PLAYER_DISTRICTS"
+    },
+    {
+      "id": "COLLECTION_PLAYER_INFECTED_CITIES"
+    },
+    {
+      "id": "COLLECTION_PLAYER_PLOT_YIELDS"
+    },
+    {
+      "id": "COLLECTION_PLAYER_UNITS"
+    },
+    {
+      "id": "COLLECTION_SINGLE_PLOT_YIELDS"
+    },
+    {
+      "id": "COLLECTION_UNIT_COMBAT"
+    },
+    {
+      "id": "COLLECTION_UNIT_NEAREST_OWNER_CITY"
+    },
+    {
+      "id": "COLLECTION_UNIT_OCCUPIED_CITY"
+    }
+  ]
+}

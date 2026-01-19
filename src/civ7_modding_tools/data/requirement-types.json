@@ -1,0 +1,385 @@
+{
+  "values": [
+    {
+      "id": "REQUIREMENT_AGE_CRISIS_STAGE_IS_X"
+    },
+    {
+      "id": "REQUIREMENT_BUILDING_IS_ADJACENT_TO_X"
+    },
+    {
+      "id": "REQUIREMENT_CITY_BUILT_CONSTRUCTIBLE_TYPE"
+    },
+    {
+      "id": "REQUIREMENT_CITY_FOUNDED_BY_UNIT_TYPE"
+    },
+    {
+      "id": "REQUIREMENT_CITY_FOUNDED_WITH_X_BIOME_TILES"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAPPINESS"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_ANY_BUILDING"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_BUILDING"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_BUILD_QUEUE"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_GARRISON_UNIT"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_GREAT_WORK"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_PROJECT"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_RESOURCE_ASSIGNED"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_UNIQUE_QUARTER"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_X_OPEN_RESOURCE_SLOTS"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_X_RESOURCES_ASSIGNED"
+    },
+    {
+      "id": "REQUIREMENT_CITY_IS_CAPITAL"
+    },
+    {
+      "id": "REQUIREMENT_CITY_IS_CITY"
+    },
+    {
+      "id": "REQUIREMENT_CITY_IS_DISTANT_LANDS"
+    },
+    {
+      "id": "REQUIREMENT_CITY_IS_INFECTED"
+    },
+    {
+      "id": "REQUIREMENT_CITY_IS_ORIGINAL_OWNER"
+    },
+    {
+      "id": "REQUIREMENT_CITY_IS_TOWN"
+    },
+    {
+      "id": "REQUIREMENT_CITY_POPULATION"
+    },
+    {
+      "id": "REQUIREMENT_COLLECTION_ANY_MET"
+    },
+    {
+      "id": "REQUIREMENT_COLLECTION_COUNT_ATLEAST"
+    },
+    {
+      "id": "REQUIREMENT_COMMANDER_HAS_X_PROMOTIONS"
+    },
+    {
+      "id": "REQUIREMENT_DEFENDER_IS_PLAYER_OWNED_DISTRICT"
+    },
+    {
+      "id": "REQUIREMENT_GAME_TURN_ATLEAST"
+    },
+    {
+      "id": "REQUIREMENT_GAME_TURN_IS_X_NARRATIVE"
+    },
+    {
+      "id": "REQUIREMENT_LEGACY_PATH_COMPLETED"
+    },
+    {
+      "id": "REQUIREMENT_LEGACY_PATH_MILESTONE_COMPLETED"
+    },
+    {
+      "id": "REQUIREMENT_OPPONENT_IS_DISTRICT"
+    },
+    {
+      "id": "REQUIREMENT_OPPONENT_IS_DISTRICT_WITH_SPECIFIC_CONSTRUCTIBLE"
+    },
+    {
+      "id": "REQUIREMENT_OPPONENT_UNIT_DOMAIN_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_OPPONENT_UNIT_TAG_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_AT_PEACE_X_TURNS_AGO"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_CARD_EFFECTS_COMPLETE"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_CIVILIZATION_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_CONQUERED_SETTLEMENT_WITH_BUILDING"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_ELIGIBLE_CS_BONUS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_FIRST_TIME_SETTLEMENT_OCCUPATION"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_AT_LEAST_NUM_BUILDINGS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_AT_LEAST_NUM_GOSSIPS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_AT_LEAST_NUM_MILITARY_UNITS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_AT_LEAST_NUM_NARRATIVE_TAGS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_AT_LEAST_NUM_UNIT_TYPE"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_CIRCUMNAVIGATED"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_CIVILIZATION_OR_LEADER_TRAIT"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_COMMANDERS_WITH_X_LEVELS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_COMPLETED_PROGRESSION_TREE_NODE"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_COMPLETED_X_PROGRESSION_TREE_NODES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_COMPLETED_X_STORIES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_CONSTRUCTIBLE_FILLED_WITH_GREATWORKS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_CONVERTED_X_SETTLEMENTS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_FEWEST_SETTLEMENTS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_FOUNDED_X_CITIES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_GOVERNMENT"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_IMPROVEMENT_HIT_WITH_FERTILITY"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_NEGATIVE_YIELD_PER_TURN"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_NUM_RESOURCES_ASSIGNED"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_PANTHEON"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_UNHAPPY_CITIES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_ALLIANCES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_CITIES_WITH_BUILDING_SET"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_GREAT_WORKS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_RESOURCES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_RESOURCE_TYPE"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_SETTLEMENTS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_TRADE_ROUTES_WITH_PLAYER"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_WARS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_WONDERS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_IS_ATTACKING"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_IS_AT_PEACE_WITH_ALL_MAJORS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_IS_IN_GOLDEN_AGE"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_IS_MAJOR"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_LEADER_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_LEGACY_PATH_MILESTONE_ACHIEVED"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_MET_IMMEDIATE_GOSSIP"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_MET_NUM_CIVS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_OVERBUILDS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_OVER_SETTLEMENT_CAP"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_PRODUCES_AT_LEAST_X_RESOURCE"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_SPECIFIC_WONDER_BUILT"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_STARTS_TRADE_ROUTE_WITH_MATCHING_BUILDING"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_TOTAL_POPULATION"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_TRADES_FOR_X_RESOURCES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_TRADES_WITH_PLAYERS_AT_WAR"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_UNIT_DESTROYS_DISTRICT_DEFENSES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_UNIT_DESTROYS_DISTRICT_DEFENSES_TRIGGER"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_CONSTRUCTIBLE_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_FEATURE_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_FRIENDLY_UNIT_TAG_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_RESOURCE_CLASS_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_TERRAIN_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_TO_COAST"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_TO_OWNER"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_BIOME_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_DISTRICT_CLASS"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_FEATURE_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_HAS_CONSTRUCTIBLE"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_HAS_NUM_CONSTRUCTIBLES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_IN_COMMAND_RADIUS"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_IS_LAKE"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_IS_OWNER"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_IS_QUARTER"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_IS_RIVER"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_IS_SUZERAIN"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_NEAR_CAPITAL"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_RESOURCE_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_RESOURCE_VISIBLE"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_TERRAIN_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_UNIQUE_QUARTER"
+    },
+    {
+      "id": "REQUIREMENT_REQUIREMENTSET_IS_MET"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_CLASS_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_DOMAIN_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_EMBARKED"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_IN_OWNER_TERRITORY"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_IS_INDEPENDENT"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_IS_IN_HOMELANDS"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_IS_STATIONED_ON_DISTRICT"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_IS_WOUNDED"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_ON_DISTRICT"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_TAG_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_TRADE_ROUTE_ESTABLISHED"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_WONDER_IS_ACTIVE"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "values": [
+    {
+      "id": "YIELD_CULTURE"
+    },
+    {
+      "id": "YIELD_DIPLOMACY"
+    },
+    {
+      "id": "YIELD_FOOD"
+    },
+    {
+      "id": "YIELD_GOLD"
+    },
+    {
+      "id": "YIELD_HAPPINESS"
+    },
+    {
+      "id": "YIELD_PRODUCTION"
+    },
+    {
+      "id": "YIELD_SCIENCE"
+    }
+  ]
+}
