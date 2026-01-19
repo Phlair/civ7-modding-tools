@@ -275,7 +275,7 @@ scribal_modifier.fill({
     'modifier_type': 'MODIFIER_TRADITION_BABYLON_SCRIBES',
     'modifier': {
         'collection': 'COLLECTION_OWNER',
-        'effect': 'EFFECT_PLAYER_ADJUST_YIELD_FROM_BUILDING_TAG',
+        'effect': 'EFFECT_CITY_ADJUST_WORKER_YIELD',
         'arguments': [
             {'name': 'Tag', 'value': 'SCIENCE'},
             {'name': 'YieldType', 'value': 'YIELD_SCIENCE'},
@@ -325,7 +325,7 @@ unit = UnitBuilder()
 unit.action_group_bundle = AGE_ANTIQUITY_BUNDLE
 unit.fill({
     'unit_type': 'UNIT_BABYLON_SABUM_KIBITTUM',
-    'type_tags': ['UNIT_CLASS_MELEE', 'UNIT_CLASS_ANTI_CAVALRY'],
+    'type_tags': ['UNIT_CLASS_MELEE'],
     'unit': {
         'trait_type': 'TRAIT_BABYLON',
         'core_class': 'CORE_CLASS_MILITARY',
@@ -392,7 +392,7 @@ node1_modifier = ModifierBuilder()
 node1_modifier.fill({
     'modifier': {
         'collection': 'COLLECTION_OWNER',
-        'effect': 'EFFECT_PLAYER_ADJUST_YIELD_FROM_BUILDING_TAG',
+        'effect': 'EFFECT_CITY_ADJUST_WORKER_YIELD',
         'arguments': [
             {'name': 'Tag', 'value': 'SCIENCE'},
             {'name': 'YieldType', 'value': 'YIELD_SCIENCE'},
@@ -420,7 +420,7 @@ node2_modifier = ModifierBuilder()
 node2_modifier.fill({
     'modifier': {
         'collection': 'COLLECTION_OWNER',
-        'effect': 'EFFECT_PLAYER_ADJUST_TECH_BOOST_VALUE',
+        'effect': 'EFFECT_CITY_ADJUST_WORKER_YIELD',
         'arguments': [
             {'name': 'Amount', 'value': 25},
         ],
@@ -477,10 +477,10 @@ ziggurat.fill({
     'constructible_type': 'QUARTER_BABYLON_ZIGGURAT',
     'constructible': {'cost': 400},
     'building': {'trait_type': 'TRAIT_BABYLON'},
-    'type_tags': ['UNIQUE', 'FAITH'],
+    'type_tags': ['UNIQUE', 'CULTURE'],
     'constructible_valid_districts': ['DISTRICT_URBAN'],
-    'yield_changes': [{'yield_type': 'YIELD_FAITH', 'yield_change': 20}],
-    'advisories': ['ADVISORY_CLASS_FAITH'],
+    'yield_changes': [{'yield_type': 'YIELD_CULTURE', 'yield_change': 20}],
+    'advisories': ['ADVISORY_CLASS_CULTURE'],
     'localizations': [
         {
             'name': 'Ziggurat Complex',
