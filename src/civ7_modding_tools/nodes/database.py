@@ -503,10 +503,10 @@ class LegacyCivilizationNode(BaseNode):
     """Represents legacy civilization data."""
     _name: str = "Row"
     civilization_type: Optional[str] = None
-    age: Optional[str] = None
     name: Optional[str] = None
-    adjective: Optional[str] = None
     full_name: Optional[str] = None
+    adjective: Optional[str] = None
+    age: Optional[str] = None
 
 
 class LegacyCivilizationTraitNode(BaseNode):
@@ -816,8 +816,81 @@ class DatabaseNode(BaseNode):
             'civilization_favored_wonders': 'CivilizationFavoredWonders',
         }
         
-        # Iterate through all properties
-        for attr_name in self.model_fields:
+        # Preferred table order to match game schema expectations
+        preferred_order = [
+            "kinds",
+            "types",
+            "constructibles",
+            "buildings",
+            "improvements",
+            "unique_quarters",
+            "type_tags",
+            "constructible_valid_districts",
+            "constructible_valid_terrains",
+            "constructible_valid_resources",
+            "constructible_valid_biomes",
+            "constructible_valid_features",
+            "constructible_yield_changes",
+            "constructible_maintenances",
+            "constructible_adjacencies",
+            "adjacency_yield_changes",
+            "constructible_plunders",
+            "constructible_warehouse_yields",
+            "warehouse_yield_changes",
+            "district_free_constructibles",
+            "legacy_civilizations",
+            "legacy_civilization_traits",
+            "legacy_independents",
+            "traits",
+            "trait_modifiers",
+            "civilizations",
+            "civilization_traits",
+            "civilization_tags",
+            "civilization_items",
+            "civilization_unlocks",
+            "leader_unlocks",
+            "leader_civilization_bias",
+            "city_names",
+            "start_bias_biomes",
+            "start_bias_resources",
+            "start_bias_terrains",
+            "start_bias_rivers",
+            "start_bias_feature_classes",
+            "start_bias_adjacent_to_coasts",
+            "vis_art_civilization_building_cultures",
+            "vis_art_civilization_unit_cultures",
+            "ai_list_types",
+            "ai_lists",
+            "ai_favored_items",
+            "leader_civ_priorities",
+            "loading_info_civilizations",
+            "civilization_favored_wonders",
+            "units",
+            "unit_stats",
+            "unit_costs",
+            "unit_replaces",
+            "unit_upgrades",
+            "unit_advisories",
+            "progression_trees",
+            "progression_tree_nodes",
+            "progression_tree_prereqs",
+            "progression_tree_node_unlocks",
+            "progression_tree_advisories",
+            "progression_tree_quotes",
+            "traditions",
+            "tradition_modifiers",
+            "game_modifiers",
+            "modifier_strings",
+            "icon_definitions",
+            "visual_remaps",
+            "english_text",
+        ]
+        ordered_fields = preferred_order + [
+            field for field in self.model_fields if field not in preferred_order
+        ]
+
+        # Iterate through properties in preferred order
+        for attr_name in ordered_fields:
             attr_value = getattr(self, attr_name, None)
             
             # Skip non-list attributes

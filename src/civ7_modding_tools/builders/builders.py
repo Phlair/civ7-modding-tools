@@ -148,6 +148,7 @@ class CivilizationBuilder(BaseBuilder):
         """Initialize civilization builder with all database variants."""
         super().__init__()
         # Database variants for different scopes and ages
+        self._always = DatabaseNode()          # Always/base scope data
         self._current = DatabaseNode()         # Current age data
         self._shell = DatabaseNode()           # UI/shell scope data
         self._legacy = DatabaseNode()          # Legacy compatibility (INSERT OR IGNORE)
@@ -292,14 +293,13 @@ class CivilizationBuilder(BaseBuilder):
         )
         
         # ==== POPULATE _current DATABASE ====
-        # Types section
+        # Types section (ability trait only; base trait is handled in always scope)
         self._current.types = [
-            TypeNode(type_=trait_type, kind="KIND_TRAIT"),
             TypeNode(type_=trait_ability_type, kind="KIND_TRAIT"),
         ]
         
-        # Traits section
-        self._current.traits = [trait_node, trait_ability_node]
+        # Traits section (ability trait only; base trait is handled in legacy scope)
+        self._current.traits = [trait_ability_node]
         
         # Civilizations section
         self._current.civilizations = [civ_node]
@@ -584,21 +584,27 @@ class CivilizationBuilder(BaseBuilder):
             leader_civ_bias_nodes.append(bias_node)
         self._shell.leader_civilization_bias = leader_civ_bias_nodes
         
+        # ==== POPULATE _always DATABASE ====
+        # Always scope: Base trait Type and Traits definitions available from game start
+        # This ensures the base trait is available before age-specific content loads
+        self._always.kinds = [
+            KindNode(kind="KIND_TRAIT"),
+        ]
+        
+        self._always.types = [
+            TypeNode(type_=trait_type, kind="KIND_TRAIT"),
+        ]
+        
+        # Base trait definition (not ability trait)
+        always_trait = TraitNode(trait_type=trait_type, internal_only=True)
+        self._always.traits = [always_trait]
+        
         # ==== POPULATE _legacy DATABASE ====
         # Legacy system uses regular Row elements (game convention)
         legacy_civ_type = TypeNode(type_=self.civilization_type, kind="KIND_CIVILIZATION")
-        legacy_trait_type = TypeNode(type_=trait_type, kind="KIND_TRAIT")
-        legacy_trait_ability_type = TypeNode(type_=trait_ability_type, kind="KIND_TRAIT")
-        
         self._legacy.types = [
             legacy_civ_type,
-            legacy_trait_type,
-            legacy_trait_ability_type,
         ]
-        
-        # Legacy trait
-        legacy_trait = TraitNode(trait_type=trait_type, internal_only=True)
-        self._legacy.traits = [legacy_trait]
         
         legacy_civ = LegacyCivilizationNode(
             civilization_type=self.civilization_type,
@@ -848,6 +854,12 @@ class CivilizationBuilder(BaseBuilder):
         path = f"/civilizations/{kebab_case(trimmed)}/"
         
         files: list[BaseFile] = [
+            XmlFile(
+                path=path,
+                name="always.xml",
+                content=self._always,
+                action_group=self.action_group_bundle.always
+            ),
             XmlFile(
                 path=path,
                 name="current.xml",
@@ -1296,9 +1308,9 @@ class ConstructibleBuilder(BaseBuilder):
         files: list[BaseFile] = [
             XmlFile(
                 path=path,
-                name="always.xml",
+                name="current.xml",
                 content=self._always,
-                action_groups=[self.action_group_bundle.always]
+                action_group=self.action_group_bundle.current
             ),
             XmlFile(
                 path=path,

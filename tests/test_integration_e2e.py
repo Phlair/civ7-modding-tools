@@ -335,7 +335,7 @@ class TestXmlOutputValidation:
             mod.add(building)
             mod.build(tmpdir)
             
-            building_file = Path(tmpdir) / "constructibles" / "forum" / "always.xml"
+            building_file = Path(tmpdir) / "constructibles" / "forum" / "current.xml"
             assert building_file.exists()
             
             tree = ET.parse(building_file)

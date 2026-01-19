@@ -113,7 +113,7 @@ class TestCivilizationAttributesPhase2:
         files = builder.build()
         
         # Should still build successfully
-        assert len(files) == 5
+        assert len(files) == 6
         
         current_file = [f for f in files if f.name == 'current.xml'][0]
         db = current_file.content

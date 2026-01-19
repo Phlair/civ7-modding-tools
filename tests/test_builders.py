@@ -132,12 +132,14 @@ class TestCivilizationBuilder:
         
         files = builder.build()
         
-        # Should have 5 civilization files (current, legacy, shell, icons, localization)
+        # Should have 6 civilization files (always, current, legacy, shell, icons, localization)
         # game-effects.xml only generated when there are trait modifiers
-        assert len(files) == 5
+        assert len(files) == 6
         assert all(isinstance(f, XmlFile) for f in files)
         assert "rome" in files[0].path  # Path is kebab-case of trimmed type
-        assert files[0].name in ["current.xml", "legacy.xml", "shell.xml", "icons.xml", "localization.xml"]
+        file_names = [f.name for f in files]
+        assert "always.xml" in file_names
+        assert "current.xml" in file_names
 
     def test_civilization_builder_build_content(self):
         """Test that built civilization file contains correct nodes."""
@@ -149,18 +151,27 @@ class TestCivilizationBuilder:
         })
         
         files = builder.build()
-        file = files[0]  # current.xml
         
-        # Check content is a DatabaseNode
-        assert isinstance(file.content, DatabaseNode)
+        # Find current.xml (has civilizations table)
+        current_file = [f for f in files if f.name == "current.xml"][0]
+        always_file = [f for f in files if f.name == "always.xml"][0]
         
-        # Should have proper table structure
-        db = file.content
+        # Check content is DatabaseNodes
+        assert isinstance(current_file.content, DatabaseNode)
+        assert isinstance(always_file.content, DatabaseNode)
+        
+        # Always scope should have base trait only
+        always_db = always_file.content
+        assert len(always_db.traits) == 1
+        assert always_db.traits[0].trait_type == "TRAIT_ROME"
+        
+        # Current scope should have ability trait + civilizations
+        db = current_file.content
         assert len(db.civilizations) == 1
         assert db.civilizations[0].civilization_type == "CIVILIZATION_ROME"
         
-        # Should have 2 traits (base trait + ability trait)
-        assert len(db.traits) == 2
+        # Should have ability trait in current scope only
+        assert len(db.traits) == 1
         assert db.civilization_traits  # At least the default trait + TRAIT_ECONOMIC + ability
         assert any(t.trait_type == "TRAIT_ECONOMIC" for t in db.civilization_traits)
 
@@ -175,8 +186,8 @@ class TestCivilizationBuilder:
         
         files = builder.build()
         
-        # Should have 5 civilization files
-        assert len(files) == 5
+        # Should have 6 civilization files (always, current, legacy, shell, icons, localization)
+        assert len(files) == 6
         current_file = [f for f in files if f.name == "current.xml"][0]
         
         # DatabaseNode should have city names
@@ -194,7 +205,7 @@ class TestCivilizationBuilder:
                 })
                 .build())
         
-        assert len(files) == 5
+        assert len(files) == 6
 
 
 # ============================================================================
@@ -321,10 +332,10 @@ class TestConstructibleBuilder:
         
         files = builder.build()
         
-        assert len(files) == 3  # always.xml, icons.xml, localization.xml
+        assert len(files) == 3  # current.xml, icons.xml, localization.xml
         assert all(isinstance(f, XmlFile) for f in files)
         assert "temple" in files[0].path
-        assert files[0].name in ["always.xml", "icons.xml", "localization.xml"]
+        assert files[0].name in ["current.xml", "icons.xml", "localization.xml"]
 
     def test_constructible_builder_with_yield_changes(self):
         """Test constructible builder with yield changes."""
@@ -339,7 +350,7 @@ class TestConstructibleBuilder:
         })
         
         files = builder.build()
-        const_file = files[0]
+        const_file = [f for f in files if f.name == "current.xml"][0]
         
         # Should have DatabaseNode with semantic tables
         assert isinstance(const_file.content, DatabaseNode)
@@ -866,7 +877,7 @@ class TestBuilderFileGeneration:
             for file in files:
                 file.write(tmpdir)
             
-            const_file = Path(tmpdir) / "constructibles" / "temple" / "always.xml"
+            const_file = Path(tmpdir) / "constructibles" / "temple" / "current.xml"
             assert const_file.exists()
             
             content = const_file.read_text()

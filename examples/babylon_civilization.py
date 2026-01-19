@@ -75,8 +75,6 @@ civilization.fill({
         'random_city_name_depth': 10
     },
     'civilization_traits': [
-        'TRAIT_BABYLON',
-        'TRAIT_BABYLON_ABILITY',
         'TRAIT_ANTIQUITY_CIV',
         'TRAIT_ATTRIBUTE_SCIENTIFIC',
     ],
