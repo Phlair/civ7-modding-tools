@@ -119,6 +119,7 @@ class Mod:
         enabled_by_default: bool = True,
         package: str = "",
         id: Optional[str] = None,
+        module_localizations: Optional[Any] = None,
     ) -> None:
         """
         Initialize a mod.
@@ -139,6 +140,7 @@ class Mod:
             enabled_by_default: Whether mod is enabled by default in mod manager
             package: Package name for mod categorisation (e.g., "Gondor", "Carlisle")
             id: Alias for mod_id parameter (for convenience)
+            module_localizations: ModuleLocalization object for LOC_MODULE_* entries
         """
         # Support 'id' as alias for 'mod_id'
         if id is not None and not isinstance(mod_id, dict):
@@ -163,6 +165,7 @@ class Mod:
             self.dependencies = config.get("dependencies") or [
                 {"id": "base-standard", "title": "LOC_MODULE_BASE_STANDARD_NAME"}
             ]
+            self.module_localizations = config.get("module_localizations")
         else:
             self.id = mod_id
             self.mod_id = mod_id
@@ -179,6 +182,7 @@ class Mod:
             self.dependencies = dependencies or [
                 {"id": "base-standard", "title": "LOC_MODULE_BASE_STANDARD_NAME"}
             ]
+            self.module_localizations = module_localizations
         
         self.builders: list["BaseBuilder"] = []
         self.files: list[BaseFile] = []
@@ -250,6 +254,11 @@ class Mod:
                 else:
                     builder_files.append(generated_files)
         
+        # Generate module text file if using LOC keys and module_localizations is provided
+        module_text_file = self._generate_module_text_file()
+        if module_text_file:
+            builder_files.insert(0, module_text_file)
+        
         # Combine all files
         all_files = builder_files + self.files
         
@@ -278,6 +287,116 @@ class Mod:
         
         return [modinfo_file_obj] + all_files
 
+    def _generate_module_text_file(self) -> Optional[BaseFile]:
+        """
+        Generate module-level localization file (text/ModuleText.xml).
+        
+        Creates LOC_MODULE_* entries for the mod name, description, and authors
+        if module_localizations is provided or if LOC keys are being used.
+        
+        Returns:
+            XmlFile with module localization entries, or None if not needed
+        """
+        from civ7_modding_tools.nodes.database import DatabaseNode
+        from civ7_modding_tools.nodes.nodes import EnglishTextNode
+        
+        # Check if we should generate module text
+        should_generate = (
+            self.module_localizations is not None
+            or (isinstance(self.name, str) and self.name.startswith("LOC_MODULE_"))
+        )
+        
+        if not should_generate:
+            return None
+        
+        # Extract LOC key prefix from name
+        loc_prefix = None
+        if isinstance(self.name, str) and self.name.startswith("LOC_MODULE_"):
+            # Extract "LOC_MODULE_BABYLON" from "LOC_MODULE_BABYLON_NAME"
+            loc_prefix = self.name.split("_NAME")[0] if "_NAME" in self.name else self.name
+        elif self.module_localizations:
+            # Build LOC prefix from module_localizations
+            # Try to get it from the object or construct from mod id
+            loc_prefix = f"LOC_MODULE_{self.id.upper().replace('-', '_')}"
+        
+        if not loc_prefix:
+            return None
+        
+        # Build nodes for module localization
+        row_nodes = []
+        
+        # Use module_localizations if provided, otherwise infer from name/description/authors
+        if self.module_localizations:
+            # Get nodes from module_localizations object
+            if hasattr(self.module_localizations, "get_nodes"):
+                node_dicts = self.module_localizations.get_nodes(loc_prefix)
+                for node_dict in node_dicts:
+                    row_nodes.append(EnglishTextNode(
+                        tag=node_dict["tag"],
+                        text=node_dict["text"]
+                    ))
+            elif isinstance(self.module_localizations, dict):
+                # Support dict format for backward compatibility
+                if "name" in self.module_localizations:
+                    row_nodes.append(EnglishTextNode(
+                        tag=f"{loc_prefix}_NAME",
+                        text=self.module_localizations["name"]
+                    ))
+                if "description" in self.module_localizations:
+                    row_nodes.append(EnglishTextNode(
+                        tag=f"{loc_prefix}_DESCRIPTION",
+                        text=self.module_localizations["description"]
+                    ))
+                if "authors" in self.module_localizations:
+                    authors_key = loc_prefix.replace("LOC_MODULE_", "LOC_AUTHORS_")
+                    row_nodes.append(EnglishTextNode(
+                        tag=authors_key,
+                        text=self.module_localizations["authors"]
+                    ))
+        else:
+            # Infer from name/description/authors if they look like plain text (not LOC keys)
+            if isinstance(self.name, str) and not self.name.startswith("LOC_"):
+                row_nodes.append(EnglishTextNode(
+                    tag=f"{loc_prefix}_NAME",
+                    text=self.name
+                ))
+            if isinstance(self.description, str) and not self.description.startswith("LOC_"):
+                row_nodes.append(EnglishTextNode(
+                    tag=f"{loc_prefix}_DESCRIPTION",
+                    text=self.description
+                ))
+            if self.authors:
+                # Get first author or join if list
+                authors_text = self.authors[0] if isinstance(self.authors, list) else self.authors
+                if not authors_text.startswith("LOC_"):
+                    authors_key = loc_prefix.replace("LOC_MODULE_", "LOC_AUTHORS_")
+                    row_nodes.append(EnglishTextNode(
+                        tag=authors_key,
+                        text=authors_text
+                    ))
+        
+        if not row_nodes:
+            return None
+        
+        # Create DatabaseNode with EnglishText table
+        database_node = DatabaseNode()
+        database_node.english_text = row_nodes
+        
+        # Create XmlFile with action groups for shell scope
+        # Shell scope is critical - this is loaded when mod manager reads mod metadata
+        module_file = XmlFile(
+            path="/text/",
+            name="ModuleText.xml",
+            content=database_node,
+            action_groups=[{
+                "id": str(uuid4()),
+                "scope": "shell",
+                "criteria": "always",
+            }]
+        )
+        
+        return module_file
+    
     def _generate_modinfo(self, files: list[BaseFile]) -> str:
         """
         Generate .modinfo XML content.
@@ -527,8 +646,8 @@ class Mod:
             return "icons"
         
         if filename_lower.endswith(".xml"):
-            # Check if it's a localization file (needs UpdateText action)
-            if "localization" in path_lower or "localization" in filename_lower:
+            # Check if it's a localization or module text file (needs UpdateText action)
+            if "localization" in path_lower or "localization" in filename_lower or "moduletext" in filename_lower:
                 return "localization"
             # Default XML files use UpdateDatabase
             return "xml"

@@ -252,7 +252,7 @@ class XmlFile(BaseFile):
                 xml_elem,
                 header=True,
                 indent='    ',
-                footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
+                footer_comment='<!-- generated with https://github.com/Phlair/civ7-modding-tools -->'
             )
             return xml_str
         
@@ -284,7 +284,7 @@ class XmlFile(BaseFile):
             # Convert to string with custom pretty printing
             xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>']
             xml_lines.append(self._element_to_string(root, indent='    '))
-            xml_lines.append('<!-- generated with https://github.com/izica/civ7-modding-tools -->')
+            xml_lines.append('<!-- generated with https://github.com/Phlair/civ7-modding-tools -->')
             xml_str = '\n'.join(xml_lines)
             
             return xml_str
@@ -295,7 +295,7 @@ class XmlFile(BaseFile):
                 content,
                 header=True,
                 indent='    ',
-                footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
+                footer_comment='<!-- generated with https://github.com/Phlair/civ7-modding-tools -->'
             )
             return xml_str
         
@@ -323,7 +323,7 @@ class XmlFile(BaseFile):
                 xml_dict,
                 header=True,
                 indent='    ',
-                footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
+                footer_comment='<!-- generated with https://github.com/Phlair/civ7-modding-tools -->'
             )
             return xml_str
         
@@ -344,7 +344,7 @@ class XmlFile(BaseFile):
                 xml_dict,
                 header=True,
                 indent='    ',
-                footer_comment='<!-- generated with https://github.com/izica/civ7-modding-tools -->'
+                footer_comment='<!-- generated with https://github.com/Phlair/civ7-modding-tools -->'
             )
             return xml_str
         

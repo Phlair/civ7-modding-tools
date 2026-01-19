@@ -227,6 +227,29 @@ class UniqueQuarterLocalization(BaseLocalization):
         return nodes
 
 
+class ModuleLocalization(BaseLocalization):
+    """Localization for mod module metadata."""
+    name: Optional[str] = None
+    description: Optional[str] = None
+    authors: Optional[str] = None
+    
+    def get_nodes(self, entity_id: str) -> list[dict]:
+        """Generate nodes for module localization."""
+        nodes = []
+        
+        # entity_id should be the LOC key prefix, e.g., "LOC_MODULE_BABYLON"
+        if self.name:
+            nodes.append({"tag": f"{entity_id}_NAME", "text": self.name})
+        if self.description:
+            nodes.append({"tag": f"{entity_id}_DESCRIPTION", "text": self.description})
+        if self.authors:
+            # Generate LOC_AUTHORS_[MOD] key
+            authors_key = entity_id.replace("LOC_MODULE_", "LOC_AUTHORS_")
+            nodes.append({"tag": authors_key, "text": self.authors})
+        
+        return nodes
+
+
 __all__ = [
     "BaseLocalization",
     "CivilizationLocalization",
@@ -239,4 +262,5 @@ __all__ = [
     "LeaderUnlockLocalization",
     "CivilizationUnlockLocalization",
     "UniqueQuarterLocalization",
+    "ModuleLocalization",
 ]

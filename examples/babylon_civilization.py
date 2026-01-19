@@ -10,6 +10,7 @@ This example demonstrates:
 - Progression tree with unique civic nodes
 - Icon imports for civilization and unit
 - All entities linked together using builder bindings
+- Module-level localization for proper LOC_MODULE_* entries
 
 Babylon is set up as a scientific civilization with bonuses to tech advancement
 and knowledge-based yields, showcasing how to build a specialized civ around a
@@ -26,7 +27,15 @@ from civ7_modding_tools.builders import (
     ModifierBuilder,
     ImportFileBuilder,
 )
+from civ7_modding_tools.localizations import ModuleLocalization
 
+
+# Create module-level localization for mod metadata
+module_loc = ModuleLocalization(
+    name="Babylon",
+    description="The Babylon civilization - ancient centre of science and learning",
+    authors="Firaxis Games"
+)
 
 # Create mod with rich metadata
 mod = Mod({
@@ -38,6 +47,7 @@ mod = Mod({
     'affects_saved_games': True,
     'enabled_by_default': True,
     'package': 'Babylon',
+    'module_localizations': module_loc,
 })
 
 # ACTION_GROUP_BUNDLE.AGE_ANTIQUITY
