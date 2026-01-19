@@ -193,6 +193,16 @@ def get_handicap_system_types() -> List[Dict[str, str]]:
     return load_reference_data('handicap-system-types.json')['values']
 
 
+def get_leaders() -> List[Dict[str, str]]:
+    """Get all available leader types."""
+    return load_reference_data('leaders.json')['values']
+
+
+def get_leader_attributes() -> List[Dict[str, str]]:
+    """Get all available leader personality attributes."""
+    return load_reference_data('leader-attributes.json')['values']
+
+
 __all__ = [
     'load_reference_data',
     # Original types
@@ -228,4 +238,6 @@ __all__ = [
     'get_great_work_object_types',
     'get_resource_classes',
     'get_handicap_system_types',
+    'get_leaders',
+    'get_leader_attributes',
 ]

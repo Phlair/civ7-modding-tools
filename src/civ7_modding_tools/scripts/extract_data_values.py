@@ -9,6 +9,7 @@ Scans XML files to harvest valid values for:
 - CostProgressionModel, BiomeType, FeatureType, RiverPlacement, Age
 - MilitaryDomain, PromotionClass, GovernmentType, ProjectType
 - BeliefClassType, DifficultyType, ProgressionTree, GreatWorkObjectType
+- Leader, LeaderAttribute
 - And more!
 
 Output: JSON files in src/civ7_modding_tools/data/ with kebab-case naming.
@@ -62,6 +63,8 @@ class CivVIIDataExtractor:
             'great_work_object_types': set(),
             'resource_classes': set(),
             'handicap_system_types': set(),
+            'leaders': set(),
+            'leader_attributes': set(),
         }
         self.civ_cache = defaultdict(dict)
 
@@ -246,6 +249,18 @@ class CivVIIDataExtractor:
             # HandicapSystemType
             if 'HandicapSystemType' in attribs:
                 self.data['handicap_system_types'].add(attribs['HandicapSystemType'])
+
+            # Leader - from LeaderCivPriorities and similar tables
+            if 'Leader' in attribs:
+                leader = attribs['Leader']
+                if leader.startswith('LEADER_'):
+                    self.data['leaders'].add(leader)
+            
+            # LeaderAttribute - extract from trait patterns
+            if tag == 'Row' and 'TraitType' in attribs:
+                trait = attribs['TraitType']
+                if 'TRAIT_LEADER_ATTRIBUTE_' in trait:
+                    self.data['leader_attributes'].add(trait)
 
     def _get_civ_name_from_path(self, file_path: Path) -> str:
         """Extract civilization name from file path."""
@@ -487,6 +502,18 @@ class CivVIIDataExtractor:
             'values': [{'id': hst} for hst in sorted(self.data['handicap_system_types'])]
         }
         self._write_json('handicap-system-types.json', handicap_system_types)
+
+        # Leader
+        leaders = {
+            'values': [{'id': l} for l in sorted(self.data['leaders'])]
+        }
+        self._write_json('leaders.json', leaders)
+
+        # LeaderAttribute
+        leader_attributes = {
+            'values': [{'id': la} for la in sorted(self.data['leader_attributes'])]
+        }
+        self._write_json('leader-attributes.json', leader_attributes)
 
 
 def main() -> None:
