@@ -339,12 +339,30 @@ class TraditionModifierNode(BaseNode):
 # LEADER UNLOCK NODES
 # ============================================================================
 
+class LeaderUnlockNode(BaseNode):
+    """Represents a leader unlock - age transition for leader/civilization."""
+    _name: str = "Row"
+    leader_domain: Optional[str] = None
+    leader_type: Optional[str] = None
+    age_domain: Optional[str] = None
+    age_type: Optional[str] = None
+    type: Optional[str] = None
+    kind: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    icon: Optional[str] = None
+
+
 class LeaderCivilizationBiasNode(BaseNode):
     """Represents leader-civilization bias."""
     _name: str = "Row"
-    leader_type: Optional[str] = None
+    civilization_domain: Optional[str] = None
     civilization_type: Optional[str] = None
+    leader_domain: Optional[str] = None
+    leader_type: Optional[str] = None
     bias: Optional[int] = None
+    reason_type: Optional[str] = None
+    choice_type: Optional[str] = None
 
 
 # ============================================================================
@@ -761,7 +779,7 @@ class DatabaseNode(BaseNode):
             'unlock_configuration_values': 'Unlock_ConfigurationValues',
             'requirement_sets': 'RequirementSets',
             'requirement_arguments': 'RequirementArguments',
-            'requirement_set_requirements': 'RequirementSet_Requirements',
+            'requirement_set_requirements': 'RequirementSetRequirements',
             'legacy_civilizations': 'LegacyCivilizations',
             'legacy_civilization_traits': 'LegacyCivilizationTraits',
             'legacy_independents': 'LegacyIndependents',
@@ -782,12 +800,12 @@ class DatabaseNode(BaseNode):
             'visual_remaps': 'VisualRemaps',
             'english_text': 'EnglishText',
             'city_names': 'CityNames',
-            'start_bias_biomes': 'StartBias_Biomes',
-            'start_bias_resources': 'StartBias_Resources',
-            'start_bias_terrains': 'StartBias_Terrains',
-            'start_bias_rivers': 'StartBias_Rivers',
-            'start_bias_feature_classes': 'StartBias_FeatureClasses',
-            'start_bias_adjacent_to_coasts': 'StartBias_AdjacentToCoasts',
+            'start_bias_biomes': 'StartBiasBiomes',
+            'start_bias_resources': 'StartBiasResources',
+            'start_bias_terrains': 'StartBiasTerrains',
+            'start_bias_rivers': 'StartBiasRivers',
+            'start_bias_feature_classes': 'StartBiasFeatureClasses',
+            'start_bias_adjacent_to_coasts': 'StartBiasAdjacentToCoasts',
             'vis_art_civilization_building_cultures': 'VisArt_CivilizationBuildingCultures',
             'vis_art_civilization_unit_cultures': 'VisArt_CivilizationUnitCultures',
             'ai_list_types': 'AiListTypes',

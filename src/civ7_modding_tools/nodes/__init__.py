@@ -74,6 +74,7 @@ from civ7_modding_tools.nodes.database import (
     ProgressionTreeNodeUnlockNode,
     ProgressionTreeQuoteNode,
     TraditionModifierNode,
+    LeaderUnlockNode,
     LeaderCivilizationBiasNode,
     DistrictFreeConstructibleNode,
     StartBiasResourceNode,

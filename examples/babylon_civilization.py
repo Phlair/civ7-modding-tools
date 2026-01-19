@@ -75,12 +75,14 @@ civilization.fill({
         'random_city_name_depth': 10
     },
     'civilization_traits': [
+        'TRAIT_BABYLON',
+        'TRAIT_BABYLON_ABILITY',
         'TRAIT_ANTIQUITY_CIV',
         'TRAIT_ATTRIBUTE_SCIENTIFIC',
     ],
     'civilization_tags': ['TAG_TRAIT_SCIENTIFIC'],
     'icon': {
-        'path': f'fs://game/{mod.mod_id}/civ_sym_babylon'
+        'path': 'icons/civ_sym_babylon'
     },
     'civilization_unlocks': [
         {
@@ -92,12 +94,32 @@ civilization.fill({
             'icon': 'CIVILIZATION_PERSIA'
         }
     ],
+    'leader_unlocks': [
+        {
+            'leader_type': 'LEADER_XERXES',
+            'age_type': 'AGE_ANTIQUITY',
+            'type': 'CIVILIZATION_BABYLON',
+            'kind': 'KIND_CIVILIZATION',
+            'name': 'LOC_CIVILIZATION_BABYLON_NAME',
+            'description': 'LOC_CIVILIZATION_BABYLON_DESCRIPTION',
+            'icon': 'CIVILIZATION_BABYLON'
+        },
+        {
+            'leader_type': 'LEADER_HAMMURABI',
+            'age_type': 'AGE_ANTIQUITY',
+            'type': 'CIVILIZATION_BABYLON',
+            'kind': 'KIND_CIVILIZATION',
+            'name': 'LOC_CIVILIZATION_BABYLON_NAME',
+            'description': 'LOC_CIVILIZATION_BABYLON_DESCRIPTION',
+            'icon': 'CIVILIZATION_BABYLON'
+        }
+    ],
     'leader_civilization_biases': [
-        {'leader_type': 'LEADER_XERXES', 'bias': 2},
-        {'leader_type': 'LEADER_IBN_BATTUTA', 'bias': 2},
-        {'leader_type': 'LEADER_HAMMURABI', 'bias': 8},
-        {'leader_type': 'LEADER_CLEOPATRA', 'bias': 2},
-        {'leader_type': 'LEADER_DARIUS', 'bias': 2}
+        {'leader_type': 'LEADER_XERXES', 'bias': 2, 'reason_type': 'LOC_UNLOCK_PLAY_AS_XERXES_BABYLON_TOOLTIP', 'choice_type': 'LOC_CREATE_GAME_GEOGRAPHIC_CHOICE'},
+        {'leader_type': 'LEADER_IBN_BATTUTA', 'bias': 2, 'reason_type': 'LOC_UNLOCK_PLAY_AS_IBN_BATTUTA_BABYLON_TOOLTIP', 'choice_type': 'LOC_CREATE_GAME_STRATEGIC_CHOICE'},
+        {'leader_type': 'LEADER_HAMMURABI', 'bias': 8, 'reason_type': 'LOC_UNLOCK_PLAY_AS_HAMMURABI_BABYLON_TOOLTIP', 'choice_type': 'LOC_CREATE_GAME_GEOGRAPHIC_CHOICE'},
+        {'leader_type': 'LEADER_CLEOPATRA', 'bias': 2, 'reason_type': 'LOC_UNLOCK_PLAY_AS_CLEOPATRA_BABYLON_TOOLTIP', 'choice_type': 'LOC_CREATE_GAME_STRATEGIC_CHOICE'},
+        {'leader_type': 'LEADER_DARIUS', 'bias': 2, 'reason_type': 'LOC_UNLOCK_PLAY_AS_DARIUS_BABYLON_TOOLTIP', 'choice_type': 'LOC_CREATE_GAME_GEOGRAPHIC_CHOICE'}
     ],
     'localizations': [
         {
@@ -131,6 +153,20 @@ civilization.fill({
             'background_image_high': 'babylon/textures/1080_babylon.png',
             'background_image_low': 'babylon/textures/720_babylon.png',
             'foreground_image': 'babylon/textures/720_babylon.png'
+        }
+    ],
+    'civilization_favored_wonders': [
+        {
+            'favored_wonder_type': 'WONDER_HANGING_GARDENS',
+            'favored_wonder_name': 'LOC_WONDER_HANGING_GARDENS_NAME'
+        },
+        {
+            'favored_wonder_type': 'WONDER_ORACLE',
+            'favored_wonder_name': 'LOC_WONDER_ORACLE_NAME'
+        },
+        {
+            'favored_wonder_type': 'WONDER_PYRAMIDS',
+            'favored_wonder_name': 'LOC_WONDER_PYRAMIDS_NAME'
         }
     ],
     'civilization_favored_wonders': [

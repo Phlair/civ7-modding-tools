@@ -206,7 +206,7 @@ class TestShellIntegration:
         shell_xml = builder._shell.to_xml_element()
 
         # Current has start biases
-        assert "StartBias_Biomes" in current_xml["Database"]
+        assert "StartBiasBiomes" in current_xml["Database"]
         # Shell has tags and civilizations
         assert "Civilizations" in shell_xml["Database"]
 

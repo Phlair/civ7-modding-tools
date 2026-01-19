@@ -377,8 +377,8 @@ class TestAiConfigurationIntegration:
         xml = builder._current.to_xml_element()
 
         db = xml["Database"]
-        # Start bias biomes are in StartBias_Biomes
-        assert "StartBias_Biomes" in db
+        # Start bias biomes are in StartBiasBiomes
+        assert "StartBiasBiomes" in db
         assert "AiListTypes" in db
 
     def test_civilization_with_traits_and_ai_config(self):

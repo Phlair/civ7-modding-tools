@@ -61,6 +61,7 @@ from civ7_modding_tools.nodes import (
     RequirementSetRequirementNode,
     RequirementNode,
     RequirementArgumentNode,
+    LeaderUnlockNode,
     LeaderCivilizationBiasNode,
 )
 from civ7_modding_tools.localizations import BaseLocalization
@@ -170,8 +171,8 @@ class CivilizationBuilder(BaseBuilder):
         self.icon: Dict[str, Any] = {}
         self.civilization_items: List[Dict[str, Any]] = []
         self.civilization_unlocks: List[Dict[str, Any]] = []
-        self.leader_civilization_biases: List[Dict[str, Any]] = []
         self.leader_unlocks: List[Dict[str, Any]] = []
+        self.leader_civilization_biases: List[Dict[str, Any]] = []
         self.modifiers: List[Dict[str, Any]] = []
         self.trait: Dict[str, str] = {}
         self.trait_ability: Dict[str, str] = {}
@@ -268,8 +269,14 @@ class CivilizationBuilder(BaseBuilder):
             # Don't apply 'domain' to the current node (only for shell)
             if key != 'civilization_type' and key != 'domain' and hasattr(civ_node, key):
                 setattr(civ_node, key, value)
-            if key != 'civilization_type' and hasattr(shell_civ_node, key):
-                setattr(shell_civ_node, key, value)
+        
+        # For shell, only apply shell-specific properties (domain, civ names, icon)
+        shell_domain_override = self.civilization.get('domain')
+        if shell_domain_override:
+            shell_civ_node.domain = shell_domain_override
+        shell_civ_icon_override = self.civilization.get('civilization_icon')
+        if shell_civ_icon_override:
+            shell_civ_node.civilization_icon = shell_civ_icon_override
         
         # Create trait nodes
         trait_node = TraitNode(
@@ -285,11 +292,6 @@ class CivilizationBuilder(BaseBuilder):
         )
         
         # ==== POPULATE _current DATABASE ====
-        # Kinds section (defines the KIND classification used by Types)
-        self._current.kinds = [
-            KindNode(kind="KIND_TRAIT")
-        ]
-        
         # Types section
         self._current.types = [
             TypeNode(type_=trait_type, kind="KIND_TRAIT"),
@@ -550,13 +552,34 @@ class CivilizationBuilder(BaseBuilder):
             civ_unlock_nodes.append(unlock_node)
         self._shell.civilization_unlocks = civ_unlock_nodes
         
+        # Leader unlocks for shell (age transitions for leaders to play this civ)
+        leader_unlock_nodes = []
+        for unlock in self.leader_unlocks:
+            unlock_node = LeaderUnlockNode(
+                leader_domain=unlock.get('leader_domain', 'StandardLeaders'),
+                leader_type=unlock.get('leader_type'),
+                age_domain=unlock.get('age_domain', 'StandardAges'),
+                age_type=unlock.get('age_type'),
+                type=unlock.get('type'),
+                kind=unlock.get('kind', 'KIND_CIVILIZATION'),
+                name=unlock.get('name'),
+                description=unlock.get('description'),
+                icon=unlock.get('icon')
+            )
+            leader_unlock_nodes.append(unlock_node)
+        self._shell.leader_unlocks = leader_unlock_nodes
+        
         # Leader civilization biases for shell (UI leader affinity display)
         leader_civ_bias_nodes = []
         for bias in self.leader_civilization_biases:
             bias_node = LeaderCivilizationBiasNode(
-                leader_type=bias.get('leader_type'),
+                civilization_domain=shell_domain,
                 civilization_type=self.civilization_type,
-                bias=bias.get('bias', 0)
+                leader_domain=bias.get('leader_domain', 'StandardLeaders'),
+                leader_type=bias.get('leader_type'),
+                bias=bias.get('bias', 0),
+                reason_type=bias.get('reason_type'),
+                choice_type=bias.get('choice_type')
             )
             leader_civ_bias_nodes.append(bias_node)
         self._shell.leader_civilization_bias = leader_civ_bias_nodes
