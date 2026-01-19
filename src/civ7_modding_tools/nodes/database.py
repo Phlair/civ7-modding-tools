@@ -10,8 +10,16 @@ from civ7_modding_tools.nodes.base import BaseNode
 
 class KindNode(BaseNode):
     """Represents a Kind definition (category/classification)."""
-    _name: str = "Row"
+    _name: str = "InsertOrIgnore"
     kind: Optional[str] = None
+    
+    def to_xml_element(self) -> dict | None:
+        """Override to use KIND (all caps) instead of Kind."""
+        result = super().to_xml_element()
+        if result and '_attrs' in result and 'Kind' in result['_attrs']:
+            # Rename Kind to KIND (all uppercase)
+            result['_attrs']['KIND'] = result['_attrs'].pop('Kind')
+        return result
 
 
 class TypeNode(BaseNode):
@@ -444,8 +452,8 @@ class AiFavoredItemNode(BaseNode):
 class LeaderCivPriorityNode(BaseNode):
     """Represents AI leader civilization priorities."""
     _name: str = "Row"
-    leader_type: Optional[str] = None
-    civilization_type: Optional[str] = None
+    leader: Optional[str] = None
+    civilization: Optional[str] = None
     priority: Optional[int] = None
 
 
@@ -453,15 +461,20 @@ class LoadingInfoCivilizationNode(BaseNode):
     """Represents loading screen information for a civilization."""
     _name: str = "Row"
     civilization_type: Optional[str] = None
-    loading_image_tag: Optional[str] = None
-    civilization_description: Optional[str] = None
+    civilization_text: Optional[str] = None
+    subtitle: Optional[str] = None
+    tip: Optional[str] = None
+    background_image_high: Optional[str] = None
+    background_image_low: Optional[str] = None
+    foreground_image: Optional[str] = None
 
 
 class CivilizationFavoredWonderNode(BaseNode):
     """Represents wonders favored by a civilization."""
     _name: str = "Row"
     civilization_type: Optional[str] = None
-    wonder_type: Optional[str] = None
+    favored_wonder_type: Optional[str] = None
+    favored_wonder_name: Optional[str] = None
 
 
 # ============================================================================

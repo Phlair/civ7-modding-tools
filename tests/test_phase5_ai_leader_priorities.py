@@ -115,8 +115,8 @@ class TestCivilizationBuilderAiConfiguration:
 
         # Check first priority
         first_priority = xml["Database"]["LeaderCivPriorities"][0]
-        assert first_priority["_attrs"]["CivilizationType"] == "CIVILIZATION_CARTHAGE"
-        assert first_priority["_attrs"]["LeaderType"] == "TRAIT_LEADER_FOCUS_NAVAL"
+        assert first_priority["_attrs"]["Civilization"] == "CIVILIZATION_CARTHAGE"
+        assert first_priority["_attrs"]["Leader"] == "TRAIT_LEADER_FOCUS_NAVAL"
         assert first_priority["_attrs"]["Priority"] == "50"
 
     def test_civilization_builder_complete_ai_configuration(self):
@@ -346,9 +346,9 @@ class TestCarthageAiPatternIntegration:
         priorities = xml["Database"]["LeaderCivPriorities"]
         assert len(priorities) == 3
 
-        # All should have CivilizationType="CIVILIZATION_CARTHAGE"
+        # All should have Civilization="CIVILIZATION_CARTHAGE"
         for priority in priorities:
-            assert priority["_attrs"]["CivilizationType"] == "CIVILIZATION_CARTHAGE"
+            assert priority["_attrs"]["Civilization"] == "CIVILIZATION_CARTHAGE"
 
         # Check priority values
         priority_values = sorted(
@@ -511,7 +511,7 @@ class TestAiConfigurationEdgeCases:
         assert attrs["StringVal"] == "Test String"
 
     def test_leader_civ_priority_inherits_civilization_type(self):
-        """Test LeaderCivPriorityNode properly handles civilization_type."""
+        """Test LeaderCivPriorityNode properly handles civilization attribute."""
         builder = CivilizationBuilder()
         builder.civilization_type = "CIVILIZATION_CARTHAGE"
         builder.civilization = {"civilization_type": "CIVILIZATION_CARTHAGE"}
@@ -525,6 +525,6 @@ class TestAiConfigurationEdgeCases:
 
         builder.migrate()
 
-        # Check that civilization_type was properly set
+        # Check that civilization was properly set
         priority_node = builder._current.leader_civ_priorities[0]
-        assert priority_node.civilization_type == "CIVILIZATION_CARTHAGE"
+        assert priority_node.civilization == "CIVILIZATION_CARTHAGE"

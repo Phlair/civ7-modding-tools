@@ -119,13 +119,14 @@ class TestCivilizationAttributesPhase2:
         db = current_file.content
         civ = db.civilizations[0]
         
-        # New attributes should be None (and thus omitted from XML)
-        assert civ.description is None
+        # Description is now automatically generated from localizations
+        assert civ.description == 'LOC_CIVILIZATION_SIMPLE_DESCRIPTION'
+        # But these should still be None
         assert civ.unique_culture_progression_tree is None
         assert civ.random_city_name_depth is None
         
-        # Verify they don't appear in XML
+        # Verify Description appears in XML but others don't
         xml = civ.to_xml_element()
-        assert 'Description' not in xml['_attrs']
+        assert 'Description' in xml['_attrs']
         assert 'UniqueCultureProgressionTree' not in xml['_attrs']
         assert 'RandomCityNameDepth' not in xml['_attrs']

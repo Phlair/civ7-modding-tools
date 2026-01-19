@@ -70,7 +70,9 @@ civilization.fill({
     'civilization_type': 'CIVILIZATION_BABYLON',
     'civilization': {
         'domain': 'AntiquityAgeCivilizations',
-        'civilization_type': 'CIVILIZATION_BABYLON'
+        'civilization_type': 'CIVILIZATION_BABYLON',
+        'unique_culture_progression_tree': 'TREE_CIVICS_BABYLON',
+        'random_city_name_depth': 10
     },
     'civilization_traits': [
         'TRAIT_ANTIQUITY_CIV',
@@ -90,42 +92,167 @@ civilization.fill({
             'icon': 'CIVILIZATION_PERSIA'
         }
     ],
+    'leader_civilization_biases': [
+        {'leader_type': 'LEADER_XERXES', 'bias': 2},
+        {'leader_type': 'LEADER_IBN_BATTUTA', 'bias': 2},
+        {'leader_type': 'LEADER_HAMMURABI', 'bias': 8},
+        {'leader_type': 'LEADER_CLEOPATRA', 'bias': 2},
+        {'leader_type': 'LEADER_DARIUS', 'bias': 2}
+    ],
     'localizations': [
         {
             'name': 'Babylon',
             'description': 'Keepers of ancient wisdom and masters of the sciences.',
             'full_name': 'The Kingdom of Babylon',
             'adjective': 'Babylonian',
-            'city_names': ['Babylon', 'Nippur', 'Lagash']
+            'city_names': [
+                'Babylon', 'Nippur', 'Lagash', 'Uruk', 'Ur', 'Eridu', 'Kish', 'Sippar',
+                'Borsippa', 'Cutha', 'Diwaniya', 'Isin', 'Larsa', 'Adab', 'Assur',
+                'Susa', 'Tyre', 'Sidon', 'Byblos', 'Memphis', 'Thebes', 'Alexandria',
+                'Athens', 'Corinth', 'Sparta', 'Troy', 'Persepolis', 'Ecbatana', 'Sargon', 'Hammurabi'
+            ]
+        },
+        {
+            'entity_id': 'CIVILIZATION_BABYLON_ABILITY',
+            'name': 'Babylonian Wisdom',
+            'description': 'Receive a Science bonus for every Campus and Holy Site built in Babylon cities.'
+        },
+        {
+            'entity_id': 'BABYLON_LOADING',
+            'name': 'An ancient power awakens',
+            'description': 'The great libraries of Babylon hold scientific secrets.'
         }
     ],
     'loading_info_civilizations': [
         {
-            'loading_image_tag': 'LOADING_BABYLON',
-            'civilization_description': 'LOC_CIVILIZATION_BABYLON_DESCRIPTION'
+            'civilization_text': 'LOC_CIVILIZATION_BABYLON_DESCRIPTION',
+            'subtitle': 'LOC_BABYLON_LOADING_NAME',
+            'tip': 'LOC_BABYLON_LOADING_DESCRIPTION',
+            'background_image_high': 'babylon/textures/1080_babylon.png',
+            'background_image_low': 'babylon/textures/720_babylon.png',
+            'foreground_image': 'babylon/textures/720_babylon.png'
         }
     ],
     'civilization_favored_wonders': [
         {
-            'wonder_type': 'WONDER_HANGING_GARDENS'
+            'favored_wonder_type': 'WONDER_HANGING_GARDENS',
+            'favored_wonder_name': 'LOC_WONDER_HANGING_GARDENS_NAME'
         },
         {
-            'wonder_type': 'WONDER_ORACLE'
+            'favored_wonder_type': 'WONDER_ORACLE',
+            'favored_wonder_name': 'LOC_WONDER_ORACLE_NAME'
         },
         {
-            'wonder_type': 'WONDER_PYRAMIDS'
+            'favored_wonder_type': 'WONDER_PYRAMIDS',
+            'favored_wonder_name': 'LOC_WONDER_PYRAMIDS_NAME'
         }
     ],
     'leader_civ_priorities': [
         {
-            'leader_type': 'LEADER_NEBUCHADNEZZAR_II',
+            'leader_type': 'LEADER_XERXES',
             'priority': 8
         },
         {
-            'leader_type': 'LEADER_HAMMURABI',
+            'leader_type': 'LEADER_IBN_BATTUTA',
             'priority': 6
+        },
+        {
+            'leader_type': 'LEADER_HAMMURABI',
+            'priority': 8
+        },
+        {
+            'leader_type': 'LEADER_CLEOPATRA',
+            'priority': 2
+        },
+        {
+            'leader_type': 'LEADER_DARIUS',
+            'priority': 2
         }
     ],
+    'start_bias_terrains': [
+        {
+            'terrain_type': 'TERRAIN_FLAT',
+            'score': 15
+        },
+        {
+            'terrain_type': 'TERRAIN_NAVIGABLE_RIVER',
+            'score': 20
+        }
+    ],
+    'start_bias_rivers': 5,
+    'ai_list_types': [
+        {'list_type': 'Babylon Unit Biases'},
+        {'list_type': 'Babylon Government Bias'},
+        {'list_type': 'Babylon Constructibles Biases'},
+        {'list_type': 'Babylon Yield Biases'},
+        {'list_type': 'Babylon Budget Biases'}
+    ],
+    'ai_lists': [
+        {
+            'list_type': 'Babylon Unit Biases',
+            'leader_type': 'TRAIT_BABYLON',
+            'system': 'UnitBiases'
+        },
+        {
+            'list_type': 'Babylon Government Bias',
+            'leader_type': 'TRAIT_BABYLON',
+            'system': 'GovernmentBiases'
+        },
+        {
+            'list_type': 'Babylon Constructibles Biases',
+            'leader_type': 'TRAIT_BABYLON',
+            'system': 'ConstructibleBiases'
+        },
+        {
+            'list_type': 'Babylon Yield Biases',
+            'leader_type': 'TRAIT_BABYLON',
+            'system': 'YieldBiases'
+        },
+        {
+            'list_type': 'Babylon Budget Biases',
+            'leader_type': 'TRAIT_BABYLON',
+            'system': 'AiBudgetBiases'
+        }
+    ],
+    'ai_favored_items': [
+        {
+            'list_type': 'Babylon Unit Biases',
+            'item': 'UNIT_BABYLON_SABUM_KIBITTUM',
+            'value': 50
+        },
+        {
+            'list_type': 'Babylon Government Bias',
+            'item': 'GOVERNMENT_AUTOCRACY',
+            'value': 25
+        },
+        {
+            'list_type': 'Babylon Constructibles Biases',
+            'item': 'BUILDING_BABYLON_EDUBBA',
+            'value': 200
+        },
+        {
+            'list_type': 'Babylon Yield Biases',
+            'item': 'YIELD_SCIENCE',
+            'value': 50
+        },
+        {
+            'list_type': 'Babylon Yield Biases',
+            'item': 'YIELD_CULTURE',
+            'value': 10
+        },
+        {
+            'list_type': 'Babylon Budget Biases',
+            'item': 'AI_BUDGET_CULTURE',
+            'value': 25
+        }
+    ],
+    'vis_art_building_cultures': [
+        'BUILDING_CULTURE_MID',
+        'ANT_MUD',
+        'EXP_MUD',
+        'MOD_MUD'
+    ],
+    'vis_art_unit_cultures': ['MidE'],
 })
 
 # Civilization ability modifier - science yield bonus

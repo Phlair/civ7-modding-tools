@@ -160,14 +160,14 @@ class TestDatabaseNode:
 
     def test_database_node_accepts_payload(self):
         """DatabaseNode should accept initialization payload."""
-        kind_node = KindNode(kind_type="KIND_TYPE", kind_string="Kind Type")
+        kind_node = KindNode(kind="KIND_TYPE")
         db = DatabaseNode({"kinds": [kind_node]})
         assert len(db.kinds) == 1
-        assert db.kinds[0].kind_type == "KIND_TYPE"
+        assert db.kinds[0].kind == "KIND_TYPE"
 
     def test_database_node_fill_method(self):
         """DatabaseNode should support fill() method for fluent API."""
-        kind_node = KindNode(kind_type="KIND_A")
+        kind_node = KindNode(kind="KIND_A")
         tag_node = TagNode(tag="TAG_A")
         
         db = DatabaseNode().fill({
@@ -186,7 +186,7 @@ class TestDatabaseNode:
 
     def test_database_node_to_xml_element_with_data(self):
         """DatabaseNode should generate Database XML element."""
-        kind_node = KindNode(kind_type="KIND_TYPE")
+        kind_node = KindNode(kind="KIND_TYPE")
         db = DatabaseNode({"kinds": [kind_node]})
         
         result = db.to_xml_element()
@@ -204,8 +204,8 @@ class TestDatabaseNode:
 
     def test_database_node_multi_table_generation(self):
         """DatabaseNode should generate multiple tables in XML."""
-        kind = KindNode(kind_type="K1")
-        type_node = TypeNode(type_type="T1")
+        kind = KindNode(kind="K1")
+        type_node = TypeNode(type_="T1")
         tag = TagNode(tag="TAG1")
         
         db = DatabaseNode().fill({
@@ -229,11 +229,10 @@ class TestTypeSystemNodes:
     """Tests for type system node classes."""
 
     def test_kind_node_properties(self):
-        """KindNode should have kind_type and kind_string properties."""
-        node = KindNode(kind_type="KIND_UNIT", kind_string="Unit Kind")
-        assert node.kind_type == "KIND_UNIT"
-        assert node.kind_string == "Unit Kind"
-        assert node._name == "Row"
+        """KindNode should have kind property."""
+        node = KindNode(kind="KIND_UNIT")
+        assert node.kind == "KIND_UNIT"
+        assert node._name == "InsertOrIgnore"
 
     def test_type_node_properties(self):
         """TypeNode should have type_type and kind properties."""
@@ -816,8 +815,8 @@ class TestNodeIntegration:
 
     def test_database_with_new_nodes(self):
         """DatabaseNode should work with all new node types."""
-        kind = KindNode(kind_type="KIND_1")
-        type_node = TypeNode(type_type="TYPE_1", kind="KIND_1")
+        kind = KindNode(kind="KIND_1")
+        type_node = TypeNode(type_="TYPE_1", kind="KIND_1")
         tag = TagNode(tag="TAG_1")
         
         db = DatabaseNode().fill({

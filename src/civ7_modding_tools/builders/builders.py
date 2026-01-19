@@ -44,6 +44,7 @@ from civ7_modding_tools.nodes import (
     ImprovementNode,
     StartBiasBiomeNode,
     StartBiasTerrainNode,
+    StartBiasRiverNode,
     IconDefinitionNode,
     LegacyCivilizationNode,
     LegacyCivilizationTraitNode,
@@ -54,6 +55,13 @@ from civ7_modding_tools.nodes import (
     LeaderCivPriorityNode,
     LoadingInfoCivilizationNode,
     CivilizationFavoredWonderNode,
+    VisArtCivilizationBuildingCultureNode,
+    VisArtCivilizationUnitCultureNode,
+    RequirementSetNode,
+    RequirementSetRequirementNode,
+    RequirementNode,
+    RequirementArgumentNode,
+    LeaderCivilizationBiasNode,
 )
 from civ7_modding_tools.localizations import BaseLocalization
 from civ7_modding_tools.utils import locale
@@ -162,6 +170,7 @@ class CivilizationBuilder(BaseBuilder):
         self.icon: Dict[str, Any] = {}
         self.civilization_items: List[Dict[str, Any]] = []
         self.civilization_unlocks: List[Dict[str, Any]] = []
+        self.leader_civilization_biases: List[Dict[str, Any]] = []
         self.leader_unlocks: List[Dict[str, Any]] = []
         self.modifiers: List[Dict[str, Any]] = []
         self.trait: Dict[str, str] = {}
@@ -175,6 +184,10 @@ class CivilizationBuilder(BaseBuilder):
         self.leader_civ_priorities: List[Dict[str, Any]] = []
         self.loading_info_civilizations: List[Dict[str, Any]] = []
         self.civilization_favored_wonders: List[Dict[str, Any]] = []
+        
+        # Visual Art Configuration
+        self.vis_art_building_cultures: List[str] = []
+        self.vis_art_unit_cultures: List[str] = []
         
         # Store bound items for processing during migration
         self._bound_items: List[BaseBuilder] = []
@@ -236,6 +249,7 @@ class CivilizationBuilder(BaseBuilder):
             civilization_type=self.civilization_type,
             adjective=locale(self.civilization_type, 'adjective'),
             capital_name=locale(self.civilization_type, 'cityNames_1'),
+            description=locale(self.civilization_type, 'description'),
             full_name=locale(self.civilization_type, 'fullName'),
             name=locale(self.civilization_type, 'name'),
             starting_civilization_level_type='CIVILIZATION_LEVEL_FULL_CIV',
@@ -251,7 +265,8 @@ class CivilizationBuilder(BaseBuilder):
         )
         # Apply any overrides from self.civilization dict
         for key, value in self.civilization.items():
-            if key != 'civilization_type' and hasattr(civ_node, key):
+            # Don't apply 'domain' to the current node (only for shell)
+            if key != 'civilization_type' and key != 'domain' and hasattr(civ_node, key):
                 setattr(civ_node, key, value)
             if key != 'civilization_type' and hasattr(shell_civ_node, key):
                 setattr(shell_civ_node, key, value)
@@ -326,6 +341,14 @@ class CivilizationBuilder(BaseBuilder):
             start_bias_terrains.append(node)
         self._current.start_bias_terrains = start_bias_terrains
         
+        # Start biases - rivers
+        if self.start_bias_rivers is not None:
+            river_node = StartBiasRiverNode(
+                civilization_type=self.civilization_type,
+                score=self.start_bias_rivers
+            )
+            self._current.start_bias_rivers = [river_node]
+        
         # City names - extract from localizations
         city_name_count = 0
         for loc in self.localizations:
@@ -343,6 +366,40 @@ class CivilizationBuilder(BaseBuilder):
                     )
                 )
             self._current.city_names = city_name_nodes
+        
+        # Requirements & Requirement Sets
+        requirement_set_nodes = [
+            RequirementSetNode(
+                requirement_set_id=f'REQSET_PLAYER_IS_{self.civilization_type.replace("CIVILIZATION_", "")}',
+                requirement_set_type='REQUIREMENTSET_TEST_ALL'
+            )
+        ]
+        self._current.requirement_sets = requirement_set_nodes
+        
+        req_set_req_nodes = [
+            RequirementSetRequirementNode(
+                requirement_set_id=f'REQSET_PLAYER_IS_{self.civilization_type.replace("CIVILIZATION_", "")}',
+                requirement_id=f'REQ_PLAYER_HAS_TRAIT_{self.civilization_type.replace("CIVILIZATION_", "")}'
+            )
+        ]
+        self._current.requirement_set_requirements = req_set_req_nodes
+        
+        req_nodes = [
+            RequirementNode(
+                requirement_id=f'REQ_PLAYER_HAS_TRAIT_{self.civilization_type.replace("CIVILIZATION_", "")}',
+                requirement_type='REQUIREMENT_PLAYER_HAS_CIVILIZATION_OR_LEADER_TRAIT'
+            )
+        ]
+        self._current.requirements = req_nodes
+        
+        req_arg_nodes = [
+            RequirementArgumentNode(
+                requirement_id=f'REQ_PLAYER_HAS_TRAIT_{self.civilization_type.replace("CIVILIZATION_", "")}',
+                name='TraitType',
+                value=trait_type
+            )
+        ]
+        self._current.requirement_arguments = req_arg_nodes
         
         # AI Configuration - list types
         ai_list_type_nodes = []
@@ -374,10 +431,16 @@ class CivilizationBuilder(BaseBuilder):
         # AI Configuration - leader civilization priorities
         leader_civ_priority_nodes = []
         for config in self.leader_civ_priorities:
-            node = LeaderCivPriorityNode(civilization_type=self.civilization_type)
+            node = LeaderCivPriorityNode(civilization=self.civilization_type)
             for key, value in config.items():
                 if key != 'civilization_type':
-                    setattr(node, key, value)
+                    # Map civilization_type to civilization, leader_type to leader
+                    if key == 'civilization_type':
+                        setattr(node, 'civilization', value)
+                    elif key == 'leader_type':
+                        setattr(node, 'leader', value)
+                    else:
+                        setattr(node, key, value)
             leader_civ_priority_nodes.append(node)
         self._current.leader_civ_priorities = leader_civ_priority_nodes
         
@@ -397,9 +460,35 @@ class CivilizationBuilder(BaseBuilder):
             node = CivilizationFavoredWonderNode(civilization_type=self.civilization_type)
             for key, value in config.items():
                 if key != 'civilization_type':
-                    setattr(node, key, value)
+                    # Map wonder_type to favored_wonder_type for backward compatibility
+                    if key == 'wonder_type':
+                        setattr(node, 'favored_wonder_type', value)
+                    else:
+                        setattr(node, key, value)
             favored_wonder_nodes.append(node)
         self._current.civilization_favored_wonders = favored_wonder_nodes
+        
+        # Visual Art Configuration - Building Cultures
+        vis_art_building_culture_nodes = []
+        for building_culture in self.vis_art_building_cultures:
+            vis_art_building_culture_nodes.append(
+                VisArtCivilizationBuildingCultureNode(
+                    civilization_type=self.civilization_type,
+                    building_culture=building_culture
+                )
+            )
+        self._current.vis_art_civilization_building_cultures = vis_art_building_culture_nodes
+        
+        # Visual Art Configuration - Unit Cultures
+        vis_art_unit_culture_nodes = []
+        for unit_culture in self.vis_art_unit_cultures:
+            vis_art_unit_culture_nodes.append(
+                VisArtCivilizationUnitCultureNode(
+                    civilization_type=self.civilization_type,
+                    unit_culture=unit_culture
+                )
+            )
+        self._current.vis_art_civilization_unit_cultures = vis_art_unit_culture_nodes
         
         # ==== POPULATE _shell DATABASE ====
         self._shell.civilizations = [shell_civ_node]
@@ -461,6 +550,17 @@ class CivilizationBuilder(BaseBuilder):
             civ_unlock_nodes.append(unlock_node)
         self._shell.civilization_unlocks = civ_unlock_nodes
         
+        # Leader civilization biases for shell (UI leader affinity display)
+        leader_civ_bias_nodes = []
+        for bias in self.leader_civilization_biases:
+            bias_node = LeaderCivilizationBiasNode(
+                leader_type=bias.get('leader_type'),
+                civilization_type=self.civilization_type,
+                bias=bias.get('bias', 0)
+            )
+            leader_civ_bias_nodes.append(bias_node)
+        self._shell.leader_civilization_bias = leader_civ_bias_nodes
+        
         # ==== POPULATE _legacy DATABASE ====
         # Legacy system uses regular Row elements (game convention)
         legacy_civ_type = TypeNode(type_=self.civilization_type, kind="KIND_CIVILIZATION")
@@ -505,7 +605,8 @@ class CivilizationBuilder(BaseBuilder):
         localization_rows = []
         for loc in self.localizations:
             if isinstance(loc, dict):
-                prefix = self.civilization_type
+                # Use entity_id if provided, otherwise use civilization_type
+                prefix = loc.get("entity_id", self.civilization_type)
                 if "name" in loc:
                     localization_rows.append(EnglishTextNode(
                         tag=locale(prefix, "name"),
