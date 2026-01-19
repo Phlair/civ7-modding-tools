@@ -41,9 +41,9 @@ module_loc = ModuleLocalization(
 mod = Mod({
     'id': 'babylon',
     'version': '1',
-    'name': 'LOC_MODULE_BABYLON_NAME',
-    'description': 'LOC_MODULE_BABYLON_DESCRIPTION',
-    'authors': 'LOC_AUTHORS_BABYLON',
+    'name': 'Babylon',  # Use plain text instead of LOC key
+    'description': 'The Babylon civilization - ancient centre of science and learning',
+    'authors': 'Firaxis Games',
     'affects_saved_games': True,
     'enabled_by_default': True,
     'package': 'Babylon',
@@ -97,6 +97,33 @@ civilization.fill({
             'full_name': 'The Kingdom of Babylon',
             'adjective': 'Babylonian',
             'city_names': ['Babylon', 'Nippur', 'Lagash']
+        }
+    ],
+    'loading_info_civilizations': [
+        {
+            'loading_image_tag': 'LOADING_BABYLON',
+            'civilization_description': 'LOC_CIVILIZATION_BABYLON_DESCRIPTION'
+        }
+    ],
+    'civilization_favored_wonders': [
+        {
+            'wonder_type': 'WONDER_HANGING_GARDENS'
+        },
+        {
+            'wonder_type': 'WONDER_ORACLE'
+        },
+        {
+            'wonder_type': 'WONDER_PYRAMIDS'
+        }
+    ],
+    'leader_civ_priorities': [
+        {
+            'leader_type': 'LEADER_NEBUCHADNEZZAR_II',
+            'priority': 8
+        },
+        {
+            'leader_type': 'LEADER_HAMMURABI',
+            'priority': 6
         }
     ],
 })

@@ -449,6 +449,21 @@ class LeaderCivPriorityNode(BaseNode):
     priority: Optional[int] = None
 
 
+class LoadingInfoCivilizationNode(BaseNode):
+    """Represents loading screen information for a civilization."""
+    _name: str = "Row"
+    civilization_type: Optional[str] = None
+    loading_image_tag: Optional[str] = None
+    civilization_description: Optional[str] = None
+
+
+class CivilizationFavoredWonderNode(BaseNode):
+    """Represents wonders favored by a civilization."""
+    _name: str = "Row"
+    civilization_type: Optional[str] = None
+    wonder_type: Optional[str] = None
+
+
 # ============================================================================
 # LEGACY NODES
 # ============================================================================
@@ -660,6 +675,8 @@ class DatabaseNode(BaseNode):
     ai_lists: list['AiListNode'] = []
     ai_favored_items: list['AiFavoredItemNode'] = []
     leader_civ_priorities: list['LeaderCivPriorityNode'] = []
+    loading_info_civilizations: list['LoadingInfoCivilizationNode'] = []
+    civilization_favored_wonders: list['CivilizationFavoredWonderNode'] = []
 
     def __init__(self, payload: dict | None = None) -> None:
         """Initialize DatabaseNode with optional payload."""
@@ -764,6 +781,8 @@ class DatabaseNode(BaseNode):
             'ai_lists': 'AiLists',
             'ai_favored_items': 'AiFavoredItems',
             'leader_civ_priorities': 'LeaderCivPriorities',
+            'loading_info_civilizations': 'LoadingInfo_Civilizations',
+            'civilization_favored_wonders': 'CivilizationFavoredWonders',
         }
         
         # Iterate through all properties

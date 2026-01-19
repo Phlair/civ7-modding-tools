@@ -292,7 +292,7 @@ class Mod:
         Generate module-level localization file (text/ModuleText.xml).
         
         Creates LOC_MODULE_* entries for the mod name, description, and authors
-        if module_localizations is provided or if LOC keys are being used.
+        if module_localizations is provided. Only generates if we have data to work with.
         
         Returns:
             XmlFile with module localization entries, or None if not needed
@@ -300,80 +300,30 @@ class Mod:
         from civ7_modding_tools.nodes.database import DatabaseNode
         from civ7_modding_tools.nodes.nodes import EnglishTextNode
         
-        # Check if we should generate module text
-        should_generate = (
-            self.module_localizations is not None
-            or (isinstance(self.name, str) and self.name.startswith("LOC_MODULE_"))
-        )
-        
-        if not should_generate:
+        # Only generate if module_localizations is explicitly provided
+        if not self.module_localizations:
             return None
         
-        # Extract LOC key prefix from name
-        loc_prefix = None
-        if isinstance(self.name, str) and self.name.startswith("LOC_MODULE_"):
-            # Extract "LOC_MODULE_BABYLON" from "LOC_MODULE_BABYLON_NAME"
-            loc_prefix = self.name.split("_NAME")[0] if "_NAME" in self.name else self.name
-        elif self.module_localizations:
-            # Build LOC prefix from module_localizations
-            # Try to get it from the object or construct from mod id
-            loc_prefix = f"LOC_MODULE_{self.id.upper().replace('-', '_')}"
-        
-        if not loc_prefix:
+        # Get nodes from module_localizations object
+        if not hasattr(self.module_localizations, "get_nodes"):
             return None
         
-        # Build nodes for module localization
+        # Build LOC prefix from mod id
+        loc_prefix = f"LOC_MODULE_{self.id.upper().replace('-', '_')}"
+        
+        # Get nodes from module_localizations
+        node_dicts = self.module_localizations.get_nodes(loc_prefix)
+        
+        if not node_dicts:
+            return None
+        
+        # Convert to EnglishTextNode objects
         row_nodes = []
-        
-        # Use module_localizations if provided, otherwise infer from name/description/authors
-        if self.module_localizations:
-            # Get nodes from module_localizations object
-            if hasattr(self.module_localizations, "get_nodes"):
-                node_dicts = self.module_localizations.get_nodes(loc_prefix)
-                for node_dict in node_dicts:
-                    row_nodes.append(EnglishTextNode(
-                        tag=node_dict["tag"],
-                        text=node_dict["text"]
-                    ))
-            elif isinstance(self.module_localizations, dict):
-                # Support dict format for backward compatibility
-                if "name" in self.module_localizations:
-                    row_nodes.append(EnglishTextNode(
-                        tag=f"{loc_prefix}_NAME",
-                        text=self.module_localizations["name"]
-                    ))
-                if "description" in self.module_localizations:
-                    row_nodes.append(EnglishTextNode(
-                        tag=f"{loc_prefix}_DESCRIPTION",
-                        text=self.module_localizations["description"]
-                    ))
-                if "authors" in self.module_localizations:
-                    authors_key = loc_prefix.replace("LOC_MODULE_", "LOC_AUTHORS_")
-                    row_nodes.append(EnglishTextNode(
-                        tag=authors_key,
-                        text=self.module_localizations["authors"]
-                    ))
-        else:
-            # Infer from name/description/authors if they look like plain text (not LOC keys)
-            if isinstance(self.name, str) and not self.name.startswith("LOC_"):
-                row_nodes.append(EnglishTextNode(
-                    tag=f"{loc_prefix}_NAME",
-                    text=self.name
-                ))
-            if isinstance(self.description, str) and not self.description.startswith("LOC_"):
-                row_nodes.append(EnglishTextNode(
-                    tag=f"{loc_prefix}_DESCRIPTION",
-                    text=self.description
-                ))
-            if self.authors:
-                # Get first author or join if list
-                authors_text = self.authors[0] if isinstance(self.authors, list) else self.authors
-                if not authors_text.startswith("LOC_"):
-                    authors_key = loc_prefix.replace("LOC_MODULE_", "LOC_AUTHORS_")
-                    row_nodes.append(EnglishTextNode(
-                        tag=authors_key,
-                        text=authors_text
-                    ))
+        for node_dict in node_dicts:
+            row_nodes.append(EnglishTextNode(
+                tag=node_dict["tag"],
+                text=node_dict["text"]
+            ))
         
         if not row_nodes:
             return None
@@ -420,8 +370,7 @@ class Mod:
         if self.authors:
             authors_str = ", ".join(self.authors) if isinstance(self.authors, list) else self.authors
             properties["Authors"] = authors_str
-        if self.version:
-            properties["Version"] = self.version
+        # Note: Version is only in the root Mod element, not in Properties
         
         properties["AffectsSavedGames"] = "1" if self.affects_saved_games else "0"
         
@@ -581,6 +530,9 @@ class Mod:
         
         if properties:
             mod_dict["Properties"] = properties
+
+        # Add References element (empty for now, can be populated later)
+        mod_dict["References"] = {}
 
         # Add Dependencies
         if self.dependencies:

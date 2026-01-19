@@ -35,6 +35,7 @@ from civ7_modding_tools.nodes import (
     TraditionModifierNode,
     CityNameNode,
     DatabaseNode,
+    KindNode,
     TypeNode,
     TraitNode,
     TagNode,
@@ -51,6 +52,8 @@ from civ7_modding_tools.nodes import (
     AiListNode,
     AiFavoredItemNode,
     LeaderCivPriorityNode,
+    LoadingInfoCivilizationNode,
+    CivilizationFavoredWonderNode,
 )
 from civ7_modding_tools.localizations import BaseLocalization
 from civ7_modding_tools.utils import locale
@@ -170,6 +173,8 @@ class CivilizationBuilder(BaseBuilder):
         self.ai_lists: List[Dict[str, Any]] = []
         self.ai_favored_items: List[Dict[str, Any]] = []
         self.leader_civ_priorities: List[Dict[str, Any]] = []
+        self.loading_info_civilizations: List[Dict[str, Any]] = []
+        self.civilization_favored_wonders: List[Dict[str, Any]] = []
         
         # Store bound items for processing during migration
         self._bound_items: List[BaseBuilder] = []
@@ -265,6 +270,11 @@ class CivilizationBuilder(BaseBuilder):
         )
         
         # ==== POPULATE _current DATABASE ====
+        # Kinds section (defines the KIND classification used by Types)
+        self._current.kinds = [
+            KindNode(kind="KIND_TRAIT")
+        ]
+        
         # Types section
         self._current.types = [
             TypeNode(type_=trait_type, kind="KIND_TRAIT"),
@@ -370,6 +380,26 @@ class CivilizationBuilder(BaseBuilder):
                     setattr(node, key, value)
             leader_civ_priority_nodes.append(node)
         self._current.leader_civ_priorities = leader_civ_priority_nodes
+        
+        # Loading Info - Civilizations
+        loading_info_nodes = []
+        for config in self.loading_info_civilizations:
+            node = LoadingInfoCivilizationNode(civilization_type=self.civilization_type)
+            for key, value in config.items():
+                if key != 'civilization_type':
+                    setattr(node, key, value)
+            loading_info_nodes.append(node)
+        self._current.loading_info_civilizations = loading_info_nodes
+        
+        # Civilization Favored Wonders
+        favored_wonder_nodes = []
+        for config in self.civilization_favored_wonders:
+            node = CivilizationFavoredWonderNode(civilization_type=self.civilization_type)
+            for key, value in config.items():
+                if key != 'civilization_type':
+                    setattr(node, key, value)
+            favored_wonder_nodes.append(node)
+        self._current.civilization_favored_wonders = favored_wonder_nodes
         
         # ==== POPULATE _shell DATABASE ====
         self._shell.civilizations = [shell_civ_node]

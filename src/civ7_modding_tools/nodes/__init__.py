@@ -92,6 +92,8 @@ from civ7_modding_tools.nodes.database import (
     AiListNode,
     AiFavoredItemNode,
     LeaderCivPriorityNode,
+    LoadingInfoCivilizationNode,
+    CivilizationFavoredWonderNode,
 )
 
 __all__ = [
@@ -183,6 +185,8 @@ __all__ = [
     "AiListNode",
     "AiFavoredItemNode",
     "LeaderCivPriorityNode",
+    "LoadingInfoCivilizationNode",
+    "CivilizationFavoredWonderNode",
     # Districts
     "DistrictFreeConstructibleNode",
     # Start Biases
