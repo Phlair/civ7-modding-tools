@@ -36,6 +36,7 @@ def load_reference_data(filename: str) -> Dict[str, Any]:
         return json.load(f)
 
 
+# Original requested types
 def get_yield_types() -> List[Dict[str, str]]:
     """Get all available yield types."""
     return load_reference_data('yield-types.json')['values']
@@ -91,8 +92,110 @@ def get_civilization_domains() -> List[Dict[str, str]]:
     return load_reference_data('civilization-domains.json')['values']
 
 
+# Additional high-value types
+def get_constructible_classes() -> List[Dict[str, str]]:
+    """Get all available constructible classes (building, wonder, improvement, etc.)."""
+    return load_reference_data('constructible-classes.json')['values']
+
+
+def get_unit_movement_classes() -> List[Dict[str, str]]:
+    """Get all available unit movement classes (foot, mounted, naval, etc.)."""
+    return load_reference_data('unit-movement-classes.json')['values']
+
+
+def get_core_classes() -> List[Dict[str, str]]:
+    """Get all available core unit classes (military, civilian, support)."""
+    return load_reference_data('core-classes.json')['values']
+
+
+def get_formation_classes() -> List[Dict[str, str]]:
+    """Get all available formation classes for unit grouping."""
+    return load_reference_data('formation-classes.json')['values']
+
+
+def get_domains() -> List[Dict[str, str]]:
+    """Get all available domains (land, sea)."""
+    return load_reference_data('domains.json')['values']
+
+
+def get_cost_progression_models() -> List[Dict[str, str]]:
+    """Get all available cost progression models."""
+    return load_reference_data('cost-progression-models.json')['values']
+
+
+def get_biome_types() -> List[Dict[str, str]]:
+    """Get all available biome types."""
+    return load_reference_data('biome-types.json')['values']
+
+
+def get_feature_types() -> List[Dict[str, str]]:
+    """Get all available map feature types."""
+    return load_reference_data('feature-types.json')['values']
+
+
+def get_river_placements() -> List[Dict[str, str]]:
+    """Get all available river placement options."""
+    return load_reference_data('river-placements.json')['values']
+
+
+def get_ages() -> List[Dict[str, str]]:
+    """Get all available game ages."""
+    return load_reference_data('ages.json')['values']
+
+
+def get_military_domains() -> List[Dict[str, str]]:
+    """Get all available military domain types."""
+    return load_reference_data('military-domains.json')['values']
+
+
+def get_promotion_classes() -> List[Dict[str, str]]:
+    """Get all available unit promotion classes."""
+    return load_reference_data('promotion-classes.json')['values']
+
+
+def get_government_types() -> List[Dict[str, str]]:
+    """Get all available government types."""
+    return load_reference_data('government-types.json')['values']
+
+
+def get_project_types() -> List[Dict[str, str]]:
+    """Get all available city project types."""
+    return load_reference_data('project-types.json')['values']
+
+
+def get_belief_class_types() -> List[Dict[str, str]]:
+    """Get all available belief class types."""
+    return load_reference_data('belief-class-types.json')['values']
+
+
+def get_difficulty_types() -> List[Dict[str, str]]:
+    """Get all available difficulty levels."""
+    return load_reference_data('difficulty-types.json')['values']
+
+
+def get_progression_trees() -> List[Dict[str, str]]:
+    """Get all available progression tree types (civics/tech trees)."""
+    return load_reference_data('progression-trees.json')['values']
+
+
+def get_great_work_object_types() -> List[Dict[str, str]]:
+    """Get all available great work object types."""
+    return load_reference_data('great-work-object-types.json')['values']
+
+
+def get_resource_classes() -> List[Dict[str, str]]:
+    """Get all available resource classes."""
+    return load_reference_data('resource-classes.json')['values']
+
+
+def get_handicap_system_types() -> List[Dict[str, str]]:
+    """Get all available handicap system types."""
+    return load_reference_data('handicap-system-types.json')['values']
+
+
 __all__ = [
     'load_reference_data',
+    # Original types
     'get_yield_types',
     'get_district_types',
     'get_terrain_types',
@@ -104,4 +207,25 @@ __all__ = [
     'get_advisory_class_types',
     'get_tags',
     'get_civilization_domains',
+    # Additional types
+    'get_constructible_classes',
+    'get_unit_movement_classes',
+    'get_core_classes',
+    'get_formation_classes',
+    'get_domains',
+    'get_cost_progression_models',
+    'get_biome_types',
+    'get_feature_types',
+    'get_river_placements',
+    'get_ages',
+    'get_military_domains',
+    'get_promotion_classes',
+    'get_government_types',
+    'get_project_types',
+    'get_belief_class_types',
+    'get_difficulty_types',
+    'get_progression_trees',
+    'get_great_work_object_types',
+    'get_resource_classes',
+    'get_handicap_system_types',
 ]

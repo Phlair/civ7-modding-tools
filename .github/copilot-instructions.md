@@ -145,9 +145,65 @@ Standard names:
 
 ImportFileBuilder uses `target_name` parameter for output filename.
 
+## Reference Data Files
+
+Predefined enumeration values extracted from the game data. These are the valid configuration options available for building mods—use these exact IDs when creating civilizations, units, buildings, modifiers, etc.
+
+**Location:** `src/civ7_modding_tools/data/`  
+**Format:** 31 JSON files (kebab-case naming) with 3,400+ valid game values
+
+### Core Data Types
+- `yield-types.json` - Valid yield resource types (production, science, gold, culture, etc.)
+- `district-types.json` - Valid district categories for constructible placement
+- `terrain-types.json` - Valid terrain types for map features and yield modifiers
+- `ages.json` - Valid game ages for age-gated content
+- `tags.json` - Valid entity tags for categorization and filtering (2,945 tags)
+
+### Unit/Building Systems
+- `unit-movement-classes.json` - Valid unit movement types (foot soldiers, mounted, naval, etc.)
+- `core-classes.json` - Valid unit role categories (military, civilian, support)
+- `formation-classes.json` - Valid unit formation types for grouping and combat
+- `constructible-classes.json` - Valid constructible type categories
+- `domains.json` - Valid operational domains (land, sea)
+
+### Map & Terrain
+- `biome-types.json` - Valid biome types for terrain generation
+- `feature-types.json` - Valid map features (forests, marshes, reefs, etc.)
+- `river-placements.json` - Valid river placement options relative to buildings
+- `building-cultures.json` - Valid visual building style sets (with civilization mappings)
+- `unit-cultures.json` - Valid visual unit style sets (with civilization mappings)
+
+### Game Mechanics
+- `cost-progression-models.json` - Valid cost scaling formulas for buildings/units
+- `government-types.json` - Valid government types
+- `project-types.json` - Valid city project types
+- `difficulty-types.json` - Valid difficulty levels
+- `progression-trees.json` - Valid civics/tech tree IDs
+
+### Effects & Conditions
+- `effects.json` - Valid modifier effect types (205 total)
+- `requirement-types.json` - Valid conditional test types for effect application (127 total)
+- `collection-types.json` - Valid modifier scope types (player, city, plot, unit, etc.)
+
+### Python API
+
+Load and reference valid game values:
+
+```python
+from civ7_modding_tools.data import get_yield_types, get_effects
+
+# Each returns the valid values for that configuration option
+yields = get_yield_types()           # All valid yield types to reference
+effects = get_effects()              # All valid effect types to reference
+# Use these in your builder configurations
+```
+
+**Regenerate:** Run `python src/civ7_modding_tools/scripts/extract_data_values.py` when game data updates.
+
 ## Code Conventions
 
 ### Language & Style
+
 - **British English** in all docs/comments
 - **PEP 8** with 100-character line limit
 - **snake_case** for all Python identifiers

@@ -1,0 +1,76 @@
+{
+  "values": [
+    {
+      "id": "TREE_CIVICS_AQ_AKSUM"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_ASSYRIA"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_CARTHAGE"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_EGYPT"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_GREECE"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_HAN"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_KHMER"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_MAIN"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_MAURYA"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_MAYA"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_MISSISSIPPIAN"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_PERSIA"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_ROME"
+    },
+    {
+      "id": "TREE_CIVICS_AQ_TONGA"
+    },
+    {
+      "id": "TREE_CIVICS_BABYLON"
+    },
+    {
+      "id": "TREE_CIVICS_EX_BULGARIA"
+    },
+    {
+      "id": "TREE_CIVICS_EX_DAI_VIET"
+    },
+    {
+      "id": "TREE_CIVICS_EX_ICELAND"
+    },
+    {
+      "id": "TREE_CIVICS_EX_PIRATE_REPUBLIC"
+    },
+    {
+      "id": "TREE_CIVICS_MO_GREAT_BRITAIN"
+    },
+    {
+      "id": "TREE_CIVICS_MO_NEPAL"
+    },
+    {
+      "id": "TREE_CIVICS_MO_OTTOMANS"
+    },
+    {
+      "id": "TREE_CIVICS_MO_QAJAR"
+    },
+    {
+      "id": "TREE_TECHS_AQ"
+    }
+  ]
+}

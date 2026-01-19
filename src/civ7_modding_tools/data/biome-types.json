@@ -1,0 +1,22 @@
+{
+  "values": [
+    {
+      "id": "BIOME_DESERT"
+    },
+    {
+      "id": "BIOME_GRASSLAND"
+    },
+    {
+      "id": "BIOME_MARINE"
+    },
+    {
+      "id": "BIOME_PLAINS"
+    },
+    {
+      "id": "BIOME_TROPICAL"
+    },
+    {
+      "id": "BIOME_TUNDRA"
+    }
+  ]
+}

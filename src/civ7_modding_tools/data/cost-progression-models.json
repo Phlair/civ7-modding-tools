@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "COST_PROGRESSION_NUM_SETTLEMENTS"
+    },
+    {
+      "id": "COST_PROGRESSION_PREVIOUS_BUILDINGS_CITY"
+    },
+    {
+      "id": "COST_PROGRESSION_PREVIOUS_COPIES"
+    },
+    {
+      "id": "COST_PROGRESSION_PREVIOUS_COPIES_CITY"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "values": [
+    {
+      "id": "BUILDING"
+    },
+    {
+      "id": "IMPROVEMENT"
+    },
+    {
+      "id": "WONDER"
+    }
+  ]
+}

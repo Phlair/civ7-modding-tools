@@ -1,0 +1,13 @@
+{
+  "values": [
+    {
+      "id": "AQ_HANDICAP_CITY_WALLS"
+    },
+    {
+      "id": "AQ_HANDICAP_TOWN_WALLS"
+    },
+    {
+      "id": "HANDICAP_CRISIS_INVASION_UNITS"
+    }
+  ]
+}

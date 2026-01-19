@@ -1,0 +1,22 @@
+{
+  "values": [
+    {
+      "id": "DIFFICULTY_DEITY"
+    },
+    {
+      "id": "DIFFICULTY_EMPEROR"
+    },
+    {
+      "id": "DIFFICULTY_IMMORTAL"
+    },
+    {
+      "id": "DIFFICULTY_KING"
+    },
+    {
+      "id": "DIFFICULTY_PRINCE"
+    },
+    {
+      "id": "DIFFICULTY_SETTLER"
+    }
+  ]
+}

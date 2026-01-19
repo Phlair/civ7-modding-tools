@@ -1,0 +1,73 @@
+{
+  "values": [
+    {
+      "id": "FEATURE_COLD_REEF"
+    },
+    {
+      "id": "FEATURE_DESERT_FLOODPLAIN_MINOR"
+    },
+    {
+      "id": "FEATURE_DESERT_FLOODPLAIN_NAVIGABLE"
+    },
+    {
+      "id": "FEATURE_FOREST"
+    },
+    {
+      "id": "FEATURE_GRASSLAND_FLOODPLAIN_MINOR"
+    },
+    {
+      "id": "FEATURE_GRASSLAND_FLOODPLAIN_NAVIGABLE"
+    },
+    {
+      "id": "FEATURE_LOTUS"
+    },
+    {
+      "id": "FEATURE_MANGROVE"
+    },
+    {
+      "id": "FEATURE_MARSH"
+    },
+    {
+      "id": "FEATURE_OASIS"
+    },
+    {
+      "id": "FEATURE_PLAINS_FLOODPLAIN_MINOR"
+    },
+    {
+      "id": "FEATURE_PLAINS_FLOODPLAIN_NAVIGABLE"
+    },
+    {
+      "id": "FEATURE_RAINFOREST"
+    },
+    {
+      "id": "FEATURE_REEF"
+    },
+    {
+      "id": "FEATURE_SAGEBRUSH_STEPPE"
+    },
+    {
+      "id": "FEATURE_SAVANNA_WOODLAND"
+    },
+    {
+      "id": "FEATURE_TAIGA"
+    },
+    {
+      "id": "FEATURE_TROPICAL_FLOODPLAIN_MINOR"
+    },
+    {
+      "id": "FEATURE_TROPICAL_FLOODPLAIN_NAVIGABLE"
+    },
+    {
+      "id": "FEATURE_TUNDRA_BOG"
+    },
+    {
+      "id": "FEATURE_TUNDRA_FLOODPLAIN_MINOR"
+    },
+    {
+      "id": "FEATURE_TUNDRA_FLOODPLAIN_NAVIGABLE"
+    },
+    {
+      "id": "FEATURE_WATERING_HOLE"
+    }
+  ]
+}

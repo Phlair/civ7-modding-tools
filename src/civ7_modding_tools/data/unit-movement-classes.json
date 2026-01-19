@@ -1,0 +1,19 @@
+{
+  "values": [
+    {
+      "id": "UNIT_MOVEMENT_CLASS_FOOT"
+    },
+    {
+      "id": "UNIT_MOVEMENT_CLASS_MOUNTED"
+    },
+    {
+      "id": "UNIT_MOVEMENT_CLASS_NAVAL"
+    },
+    {
+      "id": "UNIT_MOVEMENT_CLASS_RECON"
+    },
+    {
+      "id": "UNIT_MOVEMENT_CLASS_WHEELED"
+    }
+  ]
+}

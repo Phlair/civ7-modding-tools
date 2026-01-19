@@ -1,0 +1,19 @@
+{
+  "values": [
+    {
+      "id": "AntiquityAgeCivilizations"
+    },
+    {
+      "id": "DOMAIN_LAND"
+    },
+    {
+      "id": "DOMAIN_SEA"
+    },
+    {
+      "id": "ExplorationAgeCivilizations"
+    },
+    {
+      "id": "ModernAgeCivilizations"
+    }
+  ]
+}

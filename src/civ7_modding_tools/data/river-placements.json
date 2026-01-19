@@ -1,0 +1,13 @@
+{
+  "values": [
+    {
+      "id": "ANCHORED"
+    },
+    {
+      "id": "OFF_COAST"
+    },
+    {
+      "id": "RIVER"
+    }
+  ]
+}

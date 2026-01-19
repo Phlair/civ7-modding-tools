@@ -1,0 +1,22 @@
+{
+  "values": [
+    {
+      "id": "PROJECT_CITY_CULTURE_PROJECT"
+    },
+    {
+      "id": "PROJECT_CITY_SCIENCE_PROJECT"
+    },
+    {
+      "id": "PROJECT_TOWN_FISHING"
+    },
+    {
+      "id": "PROJECT_TOWN_GRANARY"
+    },
+    {
+      "id": "PROJECT_TOWN_PRODUCTION"
+    },
+    {
+      "id": "PROJECT_TOWN_TRADE"
+    }
+  ]
+}

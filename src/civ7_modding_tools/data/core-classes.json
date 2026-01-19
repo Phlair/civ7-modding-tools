@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "CORE_CLASS_CIVILIAN"
+    },
+    {
+      "id": "CORE_CLASS_MILITARY"
+    },
+    {
+      "id": "CORE_CLASS_RECON"
+    },
+    {
+      "id": "CORE_CLASS_SUPPORT"
+    }
+  ]
+}

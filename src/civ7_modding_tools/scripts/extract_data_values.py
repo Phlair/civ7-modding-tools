@@ -3,15 +3,13 @@
 Extract all reference values from Civ VII EXAMPLE folders and dist-* outputs.
 
 Scans XML files to harvest valid values for:
-- BuildingCulture
-- TerrainType
-- UnitCulture
-- effect (from GameEffects modifiers)
-- CivilizationDomain
-- Tag
-- DistrictType
-- YieldType
-- AdvisoryClassType
+- BuildingCulture, UnitCulture, TerrainType, DistrictType, YieldType
+- AdvisoryClassType, Tag, CivilizationDomain, effect
+- ConstructibleClass, UnitMovementClass, CoreClass, FormationClass, Domain
+- CostProgressionModel, BiomeType, FeatureType, RiverPlacement, Age
+- MilitaryDomain, PromotionClass, GovernmentType, ProjectType
+- BeliefClassType, DifficultyType, ProgressionTree, GreatWorkObjectType
+- And more!
 
 Output: JSON files in src/civ7_modding_tools/data/ with kebab-case naming.
 """
@@ -30,19 +28,42 @@ class CivVIIDataExtractor:
     def __init__(self, root_dir: Path):
         self.root = root_dir
         self.data = {
-            'building_cultures': defaultdict(set),  # BuildingCulture -> {civs}
+            # Original requested types
+            'building_cultures': defaultdict(set),
             'terrain_types': set(),
-            'unit_cultures': defaultdict(set),  # UnitCulture -> {civs}
+            'unit_cultures': defaultdict(set),
             'effects': set(),
             'civilization_domains': set(),
-            'tags': defaultdict(str),  # Tag -> Category
+            'tags': defaultdict(str),
             'district_types': set(),
             'yield_types': set(),
             'advisory_class_types': set(),
             'requirement_types': set(),
             'collection_types': set(),
+            
+            # Additional high-value types
+            'constructible_classes': set(),
+            'unit_movement_classes': set(),
+            'core_classes': set(),
+            'formation_classes': set(),
+            'domains': set(),
+            'cost_progression_models': set(),
+            'biome_types': set(),
+            'feature_types': set(),
+            'river_placements': set(),
+            'ages': set(),
+            'military_domains': set(),
+            'promotion_classes': set(),
+            'government_types': set(),
+            'project_types': set(),
+            'belief_class_types': set(),
+            'difficulty_types': set(),
+            'progression_trees': set(),
+            'great_work_object_types': set(),
+            'resource_classes': set(),
+            'handicap_system_types': set(),
         }
-        self.civ_cache = defaultdict(dict)  # {folder: {BuildingCulture -> civ}}
+        self.civ_cache = defaultdict(dict)
 
     def scan_files(self) -> None:
         """Recursively scan all XML files in EXAMPLE and dist folders."""
@@ -134,6 +155,97 @@ class CivVIIDataExtractor:
             # CivilizationDomain (often in shell-scoped files with domain attribute)
             if 'domain' in attribs and 'Civilization' in attribs:
                 self.data['civilization_domains'].add(attribs['domain'])
+
+            # Additional types from constructibles, units, etc.
+            
+            # ConstructibleClass
+            if 'ConstructibleClass' in attribs:
+                self.data['constructible_classes'].add(attribs['ConstructibleClass'])
+            
+            # UnitMovementClass
+            if 'UnitMovementClass' in attribs:
+                self.data['unit_movement_classes'].add(attribs['UnitMovementClass'])
+            
+            # CoreClass
+            if 'CoreClass' in attribs:
+                self.data['core_classes'].add(attribs['CoreClass'])
+            
+            # FormationClass
+            if 'FormationClass' in attribs:
+                self.data['formation_classes'].add(attribs['FormationClass'])
+            
+            # Domain
+            if 'Domain' in attribs:
+                self.data['domains'].add(attribs['Domain'])
+            
+            # MilitaryDomain
+            if 'MilitaryDomain' in attribs:
+                self.data['military_domains'].add(attribs['MilitaryDomain'])
+            
+            # CostProgressionModel
+            if 'CostProgressionModel' in attribs:
+                self.data['cost_progression_models'].add(attribs['CostProgressionModel'])
+            
+            # BiomeType
+            if 'BiomeType' in attribs:
+                self.data['biome_types'].add(attribs['BiomeType'])
+            
+            # FeatureType
+            if 'FeatureType' in attribs:
+                self.data['feature_types'].add(attribs['FeatureType'])
+            
+            # RiverPlacement
+            if 'RiverPlacement' in attribs:
+                self.data['river_placements'].add(attribs['RiverPlacement'])
+            
+            # Age
+            if 'Age' in attribs:
+                self.data['ages'].add(attribs['Age'])
+            
+            # PromotionClass
+            if 'PromotionClass' in attribs:
+                self.data['promotion_classes'].add(attribs['PromotionClass'])
+            
+            # GovernmentType
+            if 'GovernmentType' in attribs:
+                self.data['government_types'].add(attribs['GovernmentType'])
+            
+            # ProjectType
+            if 'ProjectType' in attribs:
+                self.data['project_types'].add(attribs['ProjectType'])
+            
+            # BeliefClassType
+            if 'BeliefClassType' in attribs:
+                self.data['belief_class_types'].add(attribs['BeliefClassType'])
+            
+            # DifficultyType
+            if 'DifficultyType' in attribs:
+                self.data['difficulty_types'].add(attribs['DifficultyType'])
+            
+            # ProgressionTree
+            if 'ProgressionTree' in attribs:
+                self.data['progression_trees'].add(attribs['ProgressionTree'])
+            
+            # GreatWorkObjectType - from Type Kind
+            if tag == 'Row' and 'Type' in attribs and 'Kind' in attribs:
+                if attribs['Kind'] == 'KIND_GREATWORKOBJECT':
+                    self.data['great_work_object_types'].add(attribs['Type'])
+            
+            # ResourceClass - infer from resource type patterns
+            if tag == 'Row' and 'Type' in attribs and 'Kind' in attribs:
+                if attribs['Kind'] == 'KIND_RESOURCE':
+                    resource_type = attribs['Type']
+                    # Try to infer class from naming patterns
+                    if 'STRATEGIC' in resource_type:
+                        self.data['resource_classes'].add('RESOURCE_CLASS_STRATEGIC')
+                    elif 'LUXURY' in resource_type:
+                        self.data['resource_classes'].add('RESOURCE_CLASS_LUXURY')
+                    elif 'BONUS' in resource_type:
+                        self.data['resource_classes'].add('RESOURCE_CLASS_BONUS')
+            
+            # HandicapSystemType
+            if 'HandicapSystemType' in attribs:
+                self.data['handicap_system_types'].add(attribs['HandicapSystemType'])
 
     def _get_civ_name_from_path(self, file_path: Path) -> str:
         """Extract civilization name from file path."""
@@ -256,10 +368,131 @@ class CivVIIDataExtractor:
         }
         self._write_json('civilization-domains.json', domains)
 
+        # ConstructibleClass
+        constructible_classes = {
+            'values': [{'id': cc} for cc in sorted(self.data['constructible_classes'])]
+        }
+        self._write_json('constructible-classes.json', constructible_classes)
+
+        # UnitMovementClass
+        unit_movement_classes = {
+            'values': [{'id': umc} for umc in sorted(self.data['unit_movement_classes'])]
+        }
+        self._write_json('unit-movement-classes.json', unit_movement_classes)
+
+        # CoreClass
+        core_classes = {
+            'values': [{'id': cc} for cc in sorted(self.data['core_classes'])]
+        }
+        self._write_json('core-classes.json', core_classes)
+
+        # FormationClass
+        formation_classes = {
+            'values': [{'id': fc} for fc in sorted(self.data['formation_classes'])]
+        }
+        self._write_json('formation-classes.json', formation_classes)
+
+        # Domain
+        domains_list = {
+            'values': [{'id': d} for d in sorted(self.data['domains'])]
+        }
+        self._write_json('domains.json', domains_list)
+
+        # CostProgressionModel
+        cost_progression_models = {
+            'values': [{'id': cpm} for cpm in sorted(self.data['cost_progression_models'])]
+        }
+        self._write_json('cost-progression-models.json', cost_progression_models)
+
+        # BiomeType
+        biome_types = {
+            'values': [{'id': bt} for bt in sorted(self.data['biome_types'])]
+        }
+        self._write_json('biome-types.json', biome_types)
+
+        # FeatureType
+        feature_types = {
+            'values': [{'id': ft} for ft in sorted(self.data['feature_types'])]
+        }
+        self._write_json('feature-types.json', feature_types)
+
+        # RiverPlacement
+        river_placements = {
+            'values': [{'id': rp} for rp in sorted(self.data['river_placements'])]
+        }
+        self._write_json('river-placements.json', river_placements)
+
+        # Age
+        ages = {
+            'values': [{'id': a} for a in sorted(self.data['ages'])]
+        }
+        self._write_json('ages.json', ages)
+
+        # MilitaryDomain
+        military_domains = {
+            'values': [{'id': md} for md in sorted(self.data['military_domains'])]
+        }
+        self._write_json('military-domains.json', military_domains)
+
+        # PromotionClass
+        promotion_classes = {
+            'values': [{'id': pc} for pc in sorted(self.data['promotion_classes'])]
+        }
+        self._write_json('promotion-classes.json', promotion_classes)
+
+        # GovernmentType
+        government_types = {
+            'values': [{'id': gt} for gt in sorted(self.data['government_types'])]
+        }
+        self._write_json('government-types.json', government_types)
+
+        # ProjectType
+        project_types = {
+            'values': [{'id': pt} for pt in sorted(self.data['project_types'])]
+        }
+        self._write_json('project-types.json', project_types)
+
+        # BeliefClassType
+        belief_class_types = {
+            'values': [{'id': bct} for bct in sorted(self.data['belief_class_types'])]
+        }
+        self._write_json('belief-class-types.json', belief_class_types)
+
+        # DifficultyType
+        difficulty_types = {
+            'values': [{'id': dt} for dt in sorted(self.data['difficulty_types'])]
+        }
+        self._write_json('difficulty-types.json', difficulty_types)
+
+        # ProgressionTree
+        progression_trees = {
+            'values': [{'id': pt} for pt in sorted(self.data['progression_trees'])]
+        }
+        self._write_json('progression-trees.json', progression_trees)
+
+        # GreatWorkObjectType
+        great_work_object_types = {
+            'values': [{'id': gwot} for gwot in sorted(self.data['great_work_object_types'])]
+        }
+        self._write_json('great-work-object-types.json', great_work_object_types)
+
+        # ResourceClass
+        resource_classes = {
+            'values': [{'id': rc} for rc in sorted(self.data['resource_classes'])]
+        }
+        self._write_json('resource-classes.json', resource_classes)
+
+        # HandicapSystemType
+        handicap_system_types = {
+            'values': [{'id': hst} for hst in sorted(self.data['handicap_system_types'])]
+        }
+        self._write_json('handicap-system-types.json', handicap_system_types)
+
 
 def main() -> None:
     """Run the extractor."""
-    root_dir = Path(__file__).parent
+    # Use the repository root, not the script directory
+    root_dir = Path(__file__).parent.parent.parent.parent
     print(f"Scanning Civ VII data files in {root_dir}...")
     print()
 

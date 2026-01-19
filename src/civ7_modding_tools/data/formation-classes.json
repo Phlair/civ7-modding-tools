@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "FORMATION_CLASS_CIVILIAN"
+    },
+    {
+      "id": "FORMATION_CLASS_COMMAND"
+    },
+    {
+      "id": "FORMATION_CLASS_LAND_COMBAT"
+    },
+    {
+      "id": "FORMATION_CLASS_NAVAL"
+    }
+  ]
+}
