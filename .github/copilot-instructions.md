@@ -385,15 +385,155 @@ src/civ7_modding_tools/
 - **pydantic** (≥2.0.0) - Data validation
 - **xmltodict** (≥0.13.0) - XML generation
 
+## Web Editor (Optional)
+
+### Overview
+
+Visual web interface for editing YAML civilization mod configurations using FastAPI, HTMX, and Tailwind CSS. Not required for programmatic mod generation, but provides intuitive UI for YAML-based editing.
+
+### Architecture
+
+```
+Browser (Client) ←→ FastAPI REST API ←→ File System + Reference Data
+  - Tailwind CSS     - 8 endpoints        - YAML load/save
+  - Vanilla JS       - Pydantic validation - 33 JSON data files
+  - HTMX structure   - Caching system     - civ7_modding_tools/data
+```
+
+### Key Files
+
+| Path | Purpose |
+|------|---------|
+| `web/app.py` | FastAPI backend, 8 REST endpoints, validation, caching |
+| `web/run.py` | Development server launcher |
+| `web/templates/index.html` | Main UI, 13 color-coded sections, sticky header |
+| `web/templates/components.html` | 10 reusable form component templates |
+| `web/static/js/editor.js` | Form management, YAML load/save, state tracking |
+| `web/static/css/styles.css` | Tailwind extensions, animations, dark theme |
+
+### REST API Endpoints
+
+**File Operations:**
+- `POST /api/civilization/load` - Load YAML, returns parsed data
+- `POST /api/civilization/save` - Persist edited YAML to disk
+- `POST /api/civilization/validate` - Validate configuration structure
+
+**Reference Data:**
+- `GET /api/data/{type}` - Get specific data (yield-types, effects, tags, etc.) with caching
+- `GET /api/data/list` - List all 33 available data types
+- `POST /api/field/validate` - Validate field value against reference data
+
+**Utility:**
+- `GET /api/health` - Health check
+- `GET /docs` - Swagger UI (auto-generated)
+
+### Running the Editor
+
+```bash
+# Install dependencies
+uv sync --extra web
+
+# Start server
+python web/run.py
+# Server runs at http://127.0.0.1:8000
+# Auto-reloads on file changes
+```
+
+### Features
+
+- **13 Collapsible Sections**: Metadata, civilization, units, buildings, modifiers, traditions, progressions, etc.
+- **Color-Coded Navigation**: 13 unique colors for quick section identification
+- **Dirty State Tracking** (Option C): Hybrid auto-detect + explicit save, prevents accidental loss
+- **Real-Time Validation**: Against required fields, types, and reference data enums
+- **Reference Data Integration**: Autocomplete dropdowns fetching from `/api/data/*`
+- **Form Components**: Text, number, boolean, autocomplete selects, string arrays, nested objects
+- **Dark Theme UI**: Optimized for modding workflows with Tailwind CSS
+- **Single File Mode**: One YAML file at a time (multi-file tabs planned for future)
+- **Export**: Download edited YAML to browser
+
+### Form Field Types
+
+| Type | Validation | Source |
+|------|-----------|--------|
+| Text Input | String type | User input |
+| Number Input | Integer/float type | User input |
+| Boolean Toggle | True/false | User input |
+| Autocomplete Select | Enum validation | `/api/data/{type}` |
+| String Array | Type validation per item | User input |
+| Nested Objects | Type validation per property | User input |
+
+### Validation Architecture
+
+1. **Client-Side** (editor.js)
+   - Real-time field type checking
+   - Visual error display on blur/change
+   - Dirty state management
+
+2. **Server-Side** (app.py)
+   - Pydantic model validation
+   - Required field checks
+   - Structure validation
+   - Error/warning severity levels
+
+3. **Reference Data** (JSON files)
+   - Enum validation against game constants
+   - Consistency checking
+   - Autocomplete suggestions
+
+### State Management
+
+**Global State:**
+```javascript
+currentData = {}           // Parsed YAML object
+currentFilePath = ""       // Current file path
+isDirty = false            // Unsaved changes flag
+dataCache = {}             // Reference data cache
+```
+
+**Dirty State (Option C):**
+- Automatically set on any field change
+- Visible in header as amber "Unsaved changes" indicator
+- Save button only enabled when dirty
+- Reset after successful save
+- Prevents accidental saves
+
+### Dependencies
+
+**Web optional-dependencies** (installed with `uv sync --extra web`):
+- `fastapi>=0.109.0` - Async web framework
+- `uvicorn[standard]>=0.27.0` - ASGI server
+- `pyyaml>=6.0` - YAML parsing/generation
+- `python-multipart>=0.0.6` - Form data parsing
+
+### Development
+
+**Adding a new section:**
+1. Add to sidebar in `index.html`
+2. Create renderer function in `editor.js`
+3. Form fields auto-update `currentData` on change
+
+**Adding new form field type:**
+1. Create component template in `components.html`
+2. Add case in `createFormField()` in `editor.js`
+3. Add styling to `styles.css` if needed
+
+**Adding API endpoint:**
+1. Create route in `app.py`
+2. Use Pydantic models for requests/responses
+3. Auto-documented at `/docs`
+
+**Testing endpoints:**
+```bash
+curl http://127.0.0.1:8000/api/health
+curl http://127.0.0.1:8000/api/data/list
+curl http://127.0.0.1:8000/api/data/yield-types
+```
+
 ## Examples Reference
 
 All in `examples/`:
 - `babylon_civilization.py` - Scientific civ (full features)
-- `unit.py` - Simple unit
-- `progression_tree.py` - Civics tree
-- `unique_quarter.py` - Unique district
-- `import_custom_icon.py` - Asset import
-- `import_sql_file.py` - SQL integration
+- `babylon_civilization.yml` - YAML config (editable via web editor)
 - `unlock_builder.py` - Unlock config
 
 

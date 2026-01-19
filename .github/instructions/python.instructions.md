@@ -501,11 +501,155 @@ class MyBuilder(BaseBuilder):
         return [file]
 ```
 
+## Web Backend Development (web/app.py)
+
+### FastAPI Endpoint Structure
+
+Define endpoints with explicit type annotations and use Pydantic models for request/response serialization:
+
+```python
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+from typing import Any
+
+class YAMLLoadResponse(BaseModel):
+    """Response structure for YAML load operations."""
+    data: dict[str, Any]
+    file_path: str
+    success: bool
+
+@app.post("/api/civilization/load", response_model=YAMLLoadResponse)
+async def load_civilization_yaml(
+    file_path: str
+) -> YAMLLoadResponse:
+    """
+    Load and parse YAML civilization configuration.
+    
+    Args:
+        file_path: Absolute path to YAML file
+        
+    Returns:
+        YAMLLoadResponse with parsed data and metadata
+        
+    Raises:
+        HTTPException: If file not found or YAML invalid
+    """
+    try:
+        # Implementation
+        pass
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+```
+
+### YAML Processing (Safe)
+
+Always use `yaml.safe_load()` and `yaml.dump()` with safe serialization:
+
+```python
+import yaml
+from pathlib import Path
+
+def load_yaml_safely(file_path: str) -> dict[str, Any]:
+    """Load YAML with safety checks."""
+    path = Path(file_path)
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {file_path}")
+    
+    with open(path, 'r', encoding='utf-8') as f:
+        data = yaml.safe_load(f)
+    
+    return data if data else {}
+
+def save_yaml_safely(file_path: str, data: dict[str, Any]) -> None:
+    """Save YAML with formatting."""
+    path = Path(file_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with open(path, 'w', encoding='utf-8') as f:
+        yaml.dump(data, f, default_flow_style=False, sort_keys=False)
+```
+
+### Validation Models (Pydantic)
+
+Use Pydantic models for input validation and response serialisation:
+
+```python
+from pydantic import BaseModel, field_validator
+
+class ValidationErrorDetail(BaseModel):
+    """Individual validation error with severity."""
+    field: str
+    message: str
+    severity: str = Field(..., pattern="^(error|warning)$")
+
+class ValidationResult(BaseModel):
+    """Result of multi-level validation."""
+    is_valid: bool
+    errors: list[ValidationErrorDetail] = []
+    warnings: list[ValidationErrorDetail] = []
+    
+    def add_error(self, field: str, message: str) -> None:
+        """Add validation error."""
+        self.errors.append(
+            ValidationErrorDetail(field=field, message=message, 
+                                  severity="error")
+        )
+```
+
+### Reference Data Caching
+
+Cache loaded JSON reference files to avoid repeated I/O operations:
+
+```python
+from functools import lru_cache
+from pathlib import Path
+
+_reference_data_cache: dict[str, Any] = {}
+data_dir = Path(__file__).parent.parent / "data"
+
+def load_reference_data(data_type: str) -> list[str]:
+    """Load and cache reference data JSON file."""
+    if data_type in _reference_data_cache:
+        return _reference_data_cache[data_type]
+    
+    file_path = data_dir / f"{data_type}.json"
+    if not file_path.exists():
+        raise FileNotFoundError(f"Reference data not found: {data_type}")
+    
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    _reference_data_cache[data_type] = data
+    return data
+```
+
+### Type-Safe Responses
+
+Always return Pydantic models with explicit response_model parameter:
+
+```python
+from typing import Any
+
+@app.get("/api/data/list", response_model=dict[str, list[str]])
+async def list_reference_data() -> dict[str, list[str]]:
+    """List all available reference data files."""
+    files = sorted([f.stem for f in data_dir.glob("*.json")])
+    return {"data_types": files}
+
+@app.get("/api/data/{data_type}")
+async def get_reference_data(
+    data_type: str
+) -> dict[str, Any]:
+    """Get reference data with validation."""
+    data = load_reference_data(data_type)
+    return {"data": data}
+```
+
 ## Best Practices Summary
 
 1. **Always use type hints** - enables IDE support and catches errors
 2. **Follow builder pattern** - fluent API with `fill()` method
-3. **Use pydantic models** - automatic validation and serialization
+3. **Use pydantic models** - automatic validation and serialisation
 4. **Use constants enums** - type-safe game references
 5. **Write comprehensive docstrings** - PEP 257 format with examples
 6. **Test edge cases** - 90%+ coverage target
@@ -513,3 +657,7 @@ class MyBuilder(BaseBuilder):
 8. **British English** - in comments and docstrings
 9. **100 character limit** - split long lines logically
 10. **Validate early** - catch errors in __init__ or fill() methods
+11. **Use FastAPI response_model** - enables auto-generated documentation
+12. **Cache reference data** - avoid repeated I/O from JSON files
+13. **Implement multi-level validation** - client-side, server-side, enum checks
+14. **Handle file operations safely** - use context managers, check paths

@@ -1,6 +1,6 @@
 # Phlair's Civ VII Modding Tools
 
-A Python library for programmatically generating Civilization VII mods using type-safe builders and automatic XML generation.
+A Python library for programmatically generating Civilization VII mods using type-safe builders and automatic XML generation. **Plus**: A beautiful web editor for editing mod configurations via intuitive UI.
 
 > **Attribution**: This project is a complete rework of the original codebase. Original fork from [izica](https://github.com/izica).
 
@@ -18,6 +18,7 @@ Build complete Civilization VII mods using Python instead of handwriting XML. Th
 - **Automatic XML generation** with proper formatting and structure
 - **Action group management** for age-specific content loading
 - **Asset imports** for custom icons, SQL files, and other resources
+- **✨ Web Editor** - HTMX + Tailwind CSS UI for visual YAML editing with real-time validation
 
 ## Quick Start
 
@@ -72,6 +73,31 @@ mod.build('./dist')
 ```
 
 **Output**: Generates `.modinfo` file and properly structured XML files in `./dist/`
+
+## 🌐 Web Editor
+
+Prefer a visual interface? Launch the web-based YAML editor:
+
+```bash
+# Install web dependencies
+uv sync --extra web
+
+# Start the editor
+python web/run.py
+
+# Open http://127.0.0.1:8000 in your browser
+```
+
+**Features:**
+- 📝 Edit YAML files with intuitive form-based UI
+- ✅ Real-time validation against 33 JSON reference data files
+- 🎨 Auto-complete dropdowns for game constants (yields, effects, units, traits, etc.)
+- 🔄 Dirty state tracking with hybrid save mode
+- 📊 Collapsible sections for all 13 YAML configuration areas
+- 💾 Save/load/export functionality
+- 🎯 Responsive dark-mode design optimized for modding
+
+See [web/README.md](web/README.md) for complete documentation.
 
 ## Features
 
