@@ -25,6 +25,7 @@ class ActionGroupBundle:
         self,
         action_group_id: Optional[str] = None,
         criteria_id: Optional[str] = None,
+        mod_id: Optional[str] = None,
     ) -> None:
         """
         Initialize action group bundle.
@@ -32,23 +33,28 @@ class ActionGroupBundle:
         Args:
             action_group_id: The action group identifier (e.g., "AGE_ANTIQUITY")
             criteria_id: The criteria for loading (optional)
+            mod_id: The mod identifier for generating descriptive IDs (optional)
         """
-        from uuid import uuid4
-        
         self.action_group_id = action_group_id or "ALWAYS"
-        self.criteria_id = criteria_id or str(uuid4())
+        self.criteria_id = criteria_id
+        self.mod_id = mod_id
 
         # Create action group metadata dictionaries (not ActionGroupNode instances)
         # These are used to tag files with their action group
         if self.action_group_id.startswith("AGE_"):
             age_name = self.action_group_id.replace("AGE_", "").lower().replace("_", "-")
+            
+            # Generate descriptive shell ID if mod_id is provided
+            shell_id = f"{self.mod_id}-shell-always" if self.mod_id else str(uuid4())
+            always_id = f"{self.mod_id}-game-always" if self.mod_id else str(uuid4())
+            
             self.shell = {
-                "id": str(uuid4()),
+                "id": shell_id,
                 "scope": "shell",
                 "criteria": "always",
             }
             self.always = {
-                "id": str(uuid4()),
+                "id": always_id,
                 "scope": "game",
                 "criteria": "always",
             }
@@ -72,13 +78,18 @@ class ActionGroupBundle:
         else:
             default_criteria = criteria_id or "always"
             group_id = self.action_group_id.lower().replace("_", "-")
+            
+            # Generate descriptive IDs if mod_id is provided
+            shell_id = f"{self.mod_id}-shell-always" if self.mod_id else str(uuid4())
+            always_id = f"{self.mod_id}-game-always" if self.mod_id else str(uuid4())
+            
             self.shell = {
-                "id": str(uuid4()),
+                "id": shell_id,
                 "scope": "shell",
                 "criteria": "always",
             }
             self.always = {
-                "id": str(uuid4()),
+                "id": always_id,
                 "scope": "game",
                 "criteria": "always",
             }
@@ -97,6 +108,27 @@ class ActionGroupBundle:
     def __repr__(self) -> str:
         """String representation."""
         return f"ActionGroupBundle(action_group_id={self.action_group_id!r})"
+    
+    def regenerate_with_mod_id(self, mod_id: str) -> None:
+        """
+        Regenerate shell and always group IDs using a descriptive pattern.
+        
+        Called after mod_id is set to ensure descriptive IDs instead of UUIDs.
+        
+        Args:
+            mod_id: The mod identifier to use in generated IDs
+        """
+        if self.mod_id == mod_id:
+            return  # Already set
+        
+        self.mod_id = mod_id
+        
+        # Regenerate shell and always IDs with descriptive pattern
+        shell_id = f"{mod_id}-shell-always"
+        always_id = f"{mod_id}-game-always"
+        
+        self.shell["id"] = shell_id
+        self.always["id"] = always_id
 
 
 class Mod:
@@ -186,11 +218,15 @@ class Mod:
         
         self.builders: list["BaseBuilder"] = []
         self.files: list[BaseFile] = []
+        self.import_file_builders: list["ImportFileBuilder"] = []  # Track for modinfo generation
         self.action_groups: dict[str, dict] = {}
 
     def add(self, builder: "BaseBuilder | list[BaseBuilder]") -> "Mod":
         """
         Add one or more builders to the mod.
+        
+        Automatically injects mod_id into builder's action_group_bundle
+        for generating descriptive action group IDs.
         
         Args:
             builder: Single builder or list of builders
@@ -198,10 +234,21 @@ class Mod:
         Returns:
             Self for fluent API chaining
         """
-        if isinstance(builder, list):
-            self.builders.extend(builder)
-        else:
-            self.builders.append(builder)
+        from civ7_modding_tools.builders import ImportFileBuilder
+        
+        builders_to_add = builder if isinstance(builder, list) else [builder]
+        
+        for b in builders_to_add:
+            # Inject mod_id into action group bundle if not already set
+            if hasattr(b, 'action_group_bundle'):
+                b.action_group_bundle.regenerate_with_mod_id(self.mod_id)
+            
+            # Track ImportFileBuilder instances for modinfo generation
+            if isinstance(b, ImportFileBuilder):
+                self.import_file_builders.append(b)
+            
+            self.builders.append(b)
+        
         return self
 
     def add_files(self, file: BaseFile | list[BaseFile]) -> "Mod":
@@ -334,18 +381,49 @@ class Mod:
         
         # Create XmlFile with action groups for shell scope
         # Shell scope is critical - this is loaded when mod manager reads mod metadata
+        # Use descriptive ID based on mod_id
+        shell_module_id = f"{self.mod_id}-shell-module"
         module_file = XmlFile(
             path="/text/",
             name="ModuleText.xml",
             content=database_node,
             action_groups=[{
-                "id": str(uuid4()),
+                "id": shell_module_id,
                 "scope": "shell",
                 "criteria": "always",
             }]
         )
         
         return module_file
+    
+    def _generate_import_files_entries(self) -> dict[str, list[str]]:
+        """
+        Generate ImportFiles entries from tracked ImportFileBuilder instances.
+        
+        Groups import entries by scope (shell, game, always).
+        
+        Returns:
+            Dictionary mapping scope to list of import paths
+        """
+        import_entries_by_scope: dict[str, list[str]] = {
+            "shell": [],
+            "game": [],
+            "always": [],
+        }
+        
+        for import_builder in self.import_file_builders:
+            entries = import_builder.get_import_entries()
+            scope = import_builder.scope
+            
+            if scope in import_entries_by_scope:
+                import_entries_by_scope[scope].extend(entries)
+        
+        # Return only non-empty scopes
+        return {
+            scope: entries
+            for scope, entries in import_entries_by_scope.items()
+            if entries
+        }
     
     def _generate_modinfo(self, files: list[BaseFile]) -> str:
         """
@@ -464,6 +542,75 @@ class Mod:
                 criteria_entry["AlwaysMet"] = None
             
             action_criteria_list.append(criteria_entry)
+        
+        # Add ImportFiles entries from ImportFileBuilders
+        import_entries_by_scope = self._generate_import_files_entries()
+        for scope, entries in import_entries_by_scope.items():
+            # Determine which action group to add imports to
+            if scope == "shell":
+                # Add to shell action group
+                shell_group_id = f"{self.mod_id}-shell-always"
+                if shell_group_id not in action_groups_map:
+                    action_groups_map[shell_group_id] = {
+                        "id": shell_group_id,
+                        "scope": "shell",
+                        "criteria": "always",
+                        "files_by_type": {}
+                    }
+                
+                if "import" not in action_groups_map[shell_group_id]["files_by_type"]:
+                    action_groups_map[shell_group_id]["files_by_type"]["import"] = []
+                
+                action_groups_map[shell_group_id]["files_by_type"]["import"].extend(entries)
+            
+            elif scope == "always":
+                # Add to always action group
+                always_group_id = f"{self.mod_id}-game-always"
+                if always_group_id not in action_groups_map:
+                    action_groups_map[always_group_id] = {
+                        "id": always_group_id,
+                        "scope": "game",
+                        "criteria": "always",
+                        "files_by_type": {}
+                    }
+                
+                if "import" not in action_groups_map[always_group_id]["files_by_type"]:
+                    action_groups_map[always_group_id]["files_by_type"]["import"] = []
+                
+                action_groups_map[always_group_id]["files_by_type"]["import"].extend(entries)
+            
+            else:  # "game" default
+                # Add to both shell and always action groups
+                shell_group_id = f"{self.mod_id}-shell-always"
+                always_group_id = f"{self.mod_id}-game-always"
+                
+                # Shell
+                if shell_group_id not in action_groups_map:
+                    action_groups_map[shell_group_id] = {
+                        "id": shell_group_id,
+                        "scope": "shell",
+                        "criteria": "always",
+                        "files_by_type": {}
+                    }
+                
+                if "import" not in action_groups_map[shell_group_id]["files_by_type"]:
+                    action_groups_map[shell_group_id]["files_by_type"]["import"] = []
+                
+                action_groups_map[shell_group_id]["files_by_type"]["import"].extend(entries)
+                
+                # Always
+                if always_group_id not in action_groups_map:
+                    action_groups_map[always_group_id] = {
+                        "id": always_group_id,
+                        "scope": "game",
+                        "criteria": "always",
+                        "files_by_type": {}
+                    }
+                
+                if "import" not in action_groups_map[always_group_id]["files_by_type"]:
+                    action_groups_map[always_group_id]["files_by_type"]["import"] = []
+                
+                action_groups_map[always_group_id]["files_by_type"]["import"].extend(entries)
         
         # Create ActionGroups from categorized files
         action_groups_list = []

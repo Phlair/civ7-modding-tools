@@ -19,6 +19,7 @@ from civ7_modding_tools.nodes import (
     ConstructibleYieldChangeNode,
     ConstructibleValidDistrictNode,
     ConstructibleMaintenanceNode,
+    ConstructibleAdvisoryNode,
     UniqueQuarterNode,
     UniqueQuarterModifierNode,
     ProgressionTreeNode,
@@ -33,6 +34,9 @@ from civ7_modding_tools.nodes import (
     StringNode,
     TraditionNode,
     TraditionModifierNode,
+    GreatPersonNode,
+    NamedPlaceNode,
+    NamedPlaceYieldChangeNode,
     CityNameNode,
     DatabaseNode,
     KindNode,
@@ -924,6 +928,7 @@ class UnitBuilder(BaseBuilder):
         self.unit_replace: Optional[Dict[str, Any]] = None
         self.unit_upgrade: Optional[Dict[str, Any]] = None
         self.unit_advisories: list[Dict[str, Any]] = []
+        self.tier_variants: list[Dict[str, Any]] = []  # Phase 5: Unit tier variants
         self.visual_remap: Optional[Dict[str, Any]] = None
         self.icon: Dict[str, Any] = {}
         self.localizations: list[Dict[str, Any]] = []
@@ -1136,10 +1141,14 @@ class ConstructibleBuilder(BaseBuilder):
         self.constructible: Dict[str, Any] = {}
         self.building: Optional[Dict[str, Any]] = None
         self.improvement: Optional[Dict[str, Any]] = None
+        self.building_attributes: Dict[str, Any] = {}
         self.type_tags: list[str] = []
         self.constructible_valid_districts: list[str] = []
         self.constructible_maintenances: list[Dict[str, Any]] = []
         self.yield_changes: list[Dict[str, Any]] = []
+        self.advisories: list[Dict[str, Any]] = []
+        self.adjacency_bonuses: list[Dict[str, Any]] = []  # Phase 5: Custom adjacency bonuses
+        self.building_suite: Optional[Dict[str, Any]] = None  # Phase 5: Multi-tile buildings
         self.localizations: list[Dict[str, Any]] = []
         self.modifiers: list[Dict[str, Any]] = []
         self.icon: Dict[str, Any] = {'path': 'fs://game/civ_sym_han'}
@@ -1191,8 +1200,15 @@ class ConstructibleBuilder(BaseBuilder):
                 existing_trait_type = self._always.buildings[0].trait_type
             
             building_node = BuildingNode(constructible_type=self.constructible_type)
+            # Set movable to False by default for all buildings
+            building_node.movable = False
+            
             if existing_trait_type is not None:
                 building_node.trait_type = existing_trait_type
+            
+            # Apply custom building attributes (can override defaults)
+            for key, value in self.building_attributes.items():
+                setattr(building_node, key, value)
             
             for key, value in self.building.items():
                 setattr(building_node, key, value)
@@ -1254,6 +1270,16 @@ class ConstructibleBuilder(BaseBuilder):
                     yield_change=yc.get('yield_change')
                 )
                 for yc in self.yield_changes
+            ]
+        
+        # Advisories
+        if self.advisories:
+            self._always.constructible_advisories = [
+                ConstructibleAdvisoryNode(
+                    constructible_type=self.constructible_type,
+                    advisory_class_type=adv if isinstance(adv, str) else adv.get('advisory_class_type')
+                )
+                for adv in self.advisories
             ]
         
         # ==== POPULATE _icons DATABASE ====
@@ -2462,6 +2488,36 @@ class ImportFileBuilder(BaseBuilder):
         self.source_path: Optional[str] = None
         self.target_name: Optional[str] = None
         self.target_directory: str = "/imports/"
+        self.scope: str = "game"  # "shell" or "game" - determines ActionGroup placement
+    
+    def get_import_entries(self) -> list[str]:
+        """
+        Get import entries for modinfo ImportFiles block.
+        
+        Returns both folder and individual file entries for the imported asset.
+        
+        Returns:
+            List of import paths (folder and file)
+        """
+        if not self.source_path or not self.target_name:
+            return []
+        
+        from pathlib import Path
+        source = Path(self.source_path)
+        
+        entries = []
+        
+        # Add folder entry (e.g., "icons")
+        folder = self.target_directory.strip("/")
+        if folder:
+            entries.append(folder)
+        
+        # Add file entry (e.g., "icons/civ_sym_babylon.png")
+        if source.exists():
+            file_entry = f"{folder}/{self.target_name}" if folder else self.target_name
+            entries.append(file_entry)
+        
+        return entries
     
     def build(self) -> list[BaseFile]:
         """Build import files."""
@@ -2472,14 +2528,303 @@ class ImportFileBuilder(BaseBuilder):
         if not self.source_path or not self.target_name:
             return files
         
+        # Use scope to determine which action groups to assign
+        action_groups_to_use = []
+        if self.scope == "shell":
+            action_groups_to_use = [self.action_group_bundle.shell]
+        elif self.scope == "always":
+            action_groups_to_use = [self.action_group_bundle.always]
+        else:  # "game" (default)
+            action_groups_to_use = [self.action_group_bundle.shell, self.action_group_bundle.always]
+        
         # Create import file
         import_file = ImportFile(
             path=self.target_directory,
             name=self.target_name,
             content=self.source_path,
-            action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
+            action_groups=action_groups_to_use
         )
         files.append(import_file)
         
         return files
 
+class GreatPersonBuilder(UnitBuilder):
+    """Builder for creating great people units."""
+    
+    def __init__(self) -> None:
+        """Initialize great person builder."""
+        super().__init__()
+        self.great_person_type: Optional[str] = None
+        self.great_person_class: Optional[str] = None
+        self.base_unit: Optional[str] = None
+    
+    def fill(self, payload: Dict[str, Any]) -> "GreatPersonBuilder":
+        """Fill great person builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+    
+    def migrate(self) -> "GreatPersonBuilder":
+        """Migrate great person properties."""
+        from civ7_modding_tools.utils import locale
+        
+        if not self.unit_type or not self.great_person_type:
+            return self
+        
+        # Call parent class migrate to handle unit properties
+        super().migrate()
+        
+        # Add great person specific nodes to _current database
+        if self.great_person_class and self.base_unit:
+            # Create KindNode for great person
+            self._current.kinds = [KindNode(
+                kind='KIND_UNIT_GREAT_PERSON',
+                sort_index=1
+            )]
+            
+            # Create GreatPersonNode to link type and class
+            gp_node = GreatPersonNode(
+                great_person_type=self.great_person_type,
+                great_person_class=self.great_person_class,
+                base_unit_type=self.base_unit
+            )
+            self._current.great_persons = [gp_node]
+        
+        return self
+    
+    def bind(self, items: list[BaseBuilder]) -> "GreatPersonBuilder":
+        """Bind ModifierBuilder items to this great person."""
+        for item in items:
+            # Check for ModifierBuilder
+            if hasattr(item, '_game_effects'):
+                # Merge modifiers
+                if hasattr(item._game_effects, 'game_modifiers') and item._game_effects.game_modifiers:
+                    if not self._current.modifiers:
+                        self._current.modifiers = []
+                    self._current.modifiers.extend(item._game_effects.game_modifiers)
+        
+        return self
+    
+    def build(self) -> list[BaseFile]:
+        """Build great person files."""
+        if not self.unit_type or not self.great_person_type:
+            return []
+        
+        # Call parent migrate if not already done
+        self.migrate()
+        
+        files: list[BaseFile] = []
+        
+        # Determine action groups based on bundle scope
+        action_groups_to_use: list[ActionGroupNode] = []
+        if self.action_group_bundle.action_group_id == 'ALWAYS':
+            action_groups_to_use = [self.action_group_bundle.always]
+        else:
+            # Use descriptive ID with current/persist scopes
+            action_groups_to_use = [
+                self.action_group_bundle.current,
+                self.action_group_bundle.persist,
+            ]
+        
+        # Generate current.xml for great person unit definition
+        current_file = XmlFile(
+            path=f'/units/{self._kebab_case_path()}/',
+            name='current.xml',
+            content=self._current,
+            action_groups=action_groups_to_use
+        )
+        files.append(current_file)
+        
+        # Generate icons.xml if icon definitions exist
+        if self._icons.icon_definitions:
+            icons_file = XmlFile(
+                path=f'/units/{self._kebab_case_path()}/',
+                name='icons.xml',
+                content=self._icons,
+                action_groups=action_groups_to_use
+            )
+            files.append(icons_file)
+        
+        # Generate localization.xml
+        localization_file = XmlFile(
+            path=f'/units/{self._kebab_case_path()}/',
+            name='localization.xml',
+            content=self._localizations,
+            action_groups=[self.action_group_bundle.shell]
+        )
+        files.append(localization_file)
+        
+        # Generate visual-remap.xml if needed
+        if self._visual_remap and self._visual_remap.visual_remaps:
+            visual_file = XmlFile(
+                path=f'/units/{self._kebab_case_path()}/',
+                name='visual-remap.xml',
+                content=self._visual_remap,
+                action_groups=action_groups_to_use
+            )
+            files.append(visual_file)
+        
+        return files
+    
+    def _kebab_case_path(self) -> str:
+        """Generate kebab-case path from unit type."""
+        from civ7_modding_tools.utils import trim, kebab_case
+        
+        trimmed = trim(self.unit_type)
+        return kebab_case(trimmed)
+
+
+class NamedPlaceBuilder(BaseBuilder):
+    """Builder for creating named places (geographic locations with game effects)."""
+    
+    def __init__(self) -> None:
+        """Initialize named place builder with database variants."""
+        super().__init__()
+        self._current = DatabaseNode()
+        self._localizations = DatabaseNode()
+        
+        self.named_place_type: Optional[str] = None
+        self.placement: Optional[str] = None
+        self.yield_changes: list[Dict[str, Any]] = []
+        self.icon: Dict[str, Any] = {}
+        self.localizations: list[Dict[str, Any]] = []
+    
+    def fill(self, payload: Dict[str, Any]) -> "NamedPlaceBuilder":
+        """Fill named place builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+    
+    def migrate(self) -> "NamedPlaceBuilder":
+        """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
+        
+        if not self.named_place_type:
+            return self
+        
+        # Generate localization keys
+        loc_name = locale(self.named_place_type, 'name')
+        loc_description = locale(self.named_place_type, 'description')
+        
+        # ==== POPULATE _current DATABASE ====
+        # Types
+        self._current.types = [
+            TypeNode(type_=self.named_place_type, kind="KIND_NAMED_PLACE"),
+        ]
+        
+        # Tags
+        named_place_tag = self.named_place_type.replace('NAMED_PLACE_', 'NAMED_PLACE_CLASS_')
+        self._current.tags = [
+            TagNode(tag=named_place_tag, category='NAMED_PLACE_CLASS')
+        ]
+        
+        # TypeTags
+        self._current.type_tags = [
+            TypeTagNode(type_=self.named_place_type, tag=named_place_tag)
+        ]
+        
+        # Named place definition
+        from civ7_modding_tools.nodes import NamedPlaceNode
+        place_node = NamedPlaceNode(
+            named_place_type=self.named_place_type,
+            placement=self.placement,
+            name=loc_name,
+            description=loc_description
+        )
+        self._current.named_places = [place_node]
+        
+        # Yield changes
+        if self.yield_changes:
+            from civ7_modding_tools.nodes import NamedPlaceYieldChangeNode
+            yield_nodes = []
+            for change in self.yield_changes:
+                yield_node = NamedPlaceYieldChangeNode(
+                    named_place_type=self.named_place_type
+                )
+                for key, value in change.items():
+                    setattr(yield_node, key, value)
+                yield_nodes.append(yield_node)
+            self._current.named_place_yields = yield_nodes
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                if "name" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_name,
+                        text=loc["name"]
+                    ))
+                if "description" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_description,
+                        text=loc["description"]
+                    ))
+        
+        if localization_rows:
+            self._localizations.english_texts = localization_rows
+        
+        return self
+    
+    def bind(self, items: list[BaseBuilder]) -> "NamedPlaceBuilder":
+        """Bind ModifierBuilder items to this named place."""
+        for item in items:
+            # Check for ModifierBuilder
+            if hasattr(item, '_game_effects'):
+                # Merge modifiers
+                if hasattr(item._game_effects, 'game_modifiers') and item._game_effects.game_modifiers:
+                    if not self._current.modifiers:
+                        self._current.modifiers = []
+                    self._current.modifiers.extend(item._game_effects.game_modifiers)
+        
+        return self
+    
+    def build(self) -> list[BaseFile]:
+        """Build named place files."""
+        if not self.named_place_type:
+            return []
+        
+        # Call migrate if not already done
+        self.migrate()
+        
+        files: list[BaseFile] = []
+        
+        # Determine action groups based on bundle scope
+        action_groups_to_use: list[ActionGroupNode] = []
+        if self.action_group_bundle.action_group_id == 'ALWAYS':
+            action_groups_to_use = [self.action_group_bundle.always]
+        else:
+            # Use descriptive ID with current/persist scopes
+            action_groups_to_use = [
+                self.action_group_bundle.current,
+                self.action_group_bundle.persist,
+            ]
+        
+        # Generate current.xml for named place definition
+        current_file = XmlFile(
+            path=f'/named-places/{self._kebab_case_path()}/',
+            name='current.xml',
+            content=self._current,
+            action_groups=action_groups_to_use
+        )
+        files.append(current_file)
+        
+        # Generate localization.xml
+        localization_file = XmlFile(
+            path=f'/named-places/{self._kebab_case_path()}/',
+            name='localization.xml',
+            content=self._localizations,
+            action_groups=[self.action_group_bundle.shell]
+        )
+        files.append(localization_file)
+        
+        return files
+    
+    def _kebab_case_path(self) -> str:
+        """Generate kebab-case path from named place type."""
+        from civ7_modding_tools.utils import trim, kebab_case
+        
+        trimmed = trim(self.named_place_type)
+        return kebab_case(trimmed)

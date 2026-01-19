@@ -99,8 +99,11 @@ class BuildingNode(BaseNode):
     """Represents a Building definition."""
     _name: str = "Row"
     constructible_type: Optional[str] = None
-    movable: Optional[bool] = False
+    movable: Optional[bool] = None
     trait_type: Optional[str] = None
+    town: Optional[bool] = None
+    purchasable: Optional[bool] = None
+    multiple_per_city: Optional[bool] = None
 
 
 class ImprovementNode(BaseNode):
@@ -164,6 +167,13 @@ class ConstructiblePlunderNode(BaseNode):
     constructible_type: Optional[str] = None
     plunder_type: Optional[str] = None
     amount: Optional[int] = None
+
+
+class ConstructibleAdvisoryNode(BaseNode):
+    """Represents constructible advisory classification."""
+    _name: str = "Row"
+    constructible_type: Optional[str] = None
+    advisory_class_type: Optional[str] = None
 
 
 # ============================================================================
@@ -564,23 +574,39 @@ class VisualRemapNode(BaseNode):
 
 
 class IconDefinitionNode(BaseNode):
-    """Represents icon definition."""
+    """
+    Represents icon definition with support for multiple resolutions and contexts.
+    
+    Supports multi-resolution icons through Context and IconSize attributes,
+    allowing different icon files for different UI contexts and sizes.
+    """
     _name: str = "Row"
-    id: Optional[str] = None
-    path: Optional[str] = None
+    id: Optional[str] = None  # e.g., "CIVILIZATION_BABYLON"
+    path: Optional[str] = None  # e.g., "icons/civ_sym_babylon.png"
+    context: Optional[str] = None  # e.g., "DEFAULT", "BACKGROUND", "PORTRAIT"
+    icon_size: Optional[str] = None  # e.g., "256", "128", "80", "1080"
 
     def to_xml_element(self) -> dict | None:
-        """Generate IconDefinitions row with nested ID/Path elements."""
+        """Generate IconDefinitions row with ID, Path, Context, and IconSize."""
         if not self.id or not self.path:
             return None
 
+        content = [
+            {'_name': 'ID', '_content': self.id},
+            {'_name': 'Path', '_content': self.path},
+        ]
+        
+        # Add optional context and icon_size
+        if self.context:
+            content.append({'_name': 'Context', '_content': self.context})
+        if self.icon_size:
+            content.append({'_name': 'IconSize', '_content': self.icon_size})
+
         return {
             '_name': 'Row',
-            '_content': [
-                {'_name': 'ID', '_content': self.id},
-                {'_name': 'Path', '_content': self.path},
-            ]
+            '_content': content
         }
+
 
 
 # ============================================================================
@@ -638,6 +664,7 @@ class DatabaseNode(BaseNode):
     warehouse_yield_changes: list['WarehouseYieldChangeNode'] = []
     constructible_warehouse_yields: list['ConstructibleWarehouseYieldNode'] = []
     constructible_plunders: list['ConstructiblePlunderNode'] = []
+    constructible_advisories: list['ConstructibleAdvisoryNode'] = []
     
     # Cities
     city_names: list['BaseNode'] = []
@@ -656,6 +683,18 @@ class DatabaseNode(BaseNode):
     # Traditions
     traditions: list['BaseNode'] = []
     tradition_modifiers: list['TraditionModifierNode'] = []
+    
+    # Great People
+    great_persons: list['BaseNode'] = []
+    
+    # Named Places
+    named_places: list['BaseNode'] = []
+    named_place_yields: list['BaseNode'] = []
+    
+    # Advanced Unit & Building Features (Phase 5)
+    unit_tier_variants: list['BaseNode'] = []
+    adjacency_bonuses: list['BaseNode'] = []
+    multi_tile_buildings: list['BaseNode'] = []
     
     # Units
     units: list['BaseNode'] = []
@@ -760,6 +799,7 @@ class DatabaseNode(BaseNode):
             'constructible_yield_changes': 'Constructible_YieldChanges',
             'constructible_adjacencies': 'Constructible_Adjacencies',
             'constructible_plunders': 'Constructible_Plunders',
+            'constructible_advisories': 'Constructible_Advisories',
             'constructible_warehouse_yields': 'Constructible_WarehouseYields',
             'district_free_constructibles': 'District_FreeConstructibles',
             'adjacency_yield_changes': 'Adjacency_YieldChanges',
@@ -814,6 +854,7 @@ class DatabaseNode(BaseNode):
             'leader_civ_priorities': 'LeaderCivPriorities',
             'loading_info_civilizations': 'LoadingInfo_Civilizations',
             'civilization_favored_wonders': 'CivilizationFavoredWonders',
+            'named_place_yields': 'NamedPlace_Yields',
         }
         
         # Preferred table order to match game schema expectations
@@ -833,6 +874,7 @@ class DatabaseNode(BaseNode):
             "constructible_yield_changes",
             "constructible_maintenances",
             "constructible_adjacencies",
+            "constructible_advisories",
             "adjacency_yield_changes",
             "constructible_plunders",
             "constructible_warehouse_yields",

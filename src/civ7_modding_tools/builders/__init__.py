@@ -15,6 +15,8 @@ from civ7_modding_tools.builders.builders import (
     ProgressionTreeNodeBuilder,
     UnlockBuilder,
     ImportFileBuilder,
+    GreatPersonBuilder,
+    NamedPlaceBuilder,
 )
 
 __all__ = [
@@ -32,4 +34,6 @@ __all__ = [
     "ProgressionTreeNodeBuilder",
     "UnlockBuilder",
     "ImportFileBuilder",
+    "GreatPersonBuilder",
+    "NamedPlaceBuilder",
 ]

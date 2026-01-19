@@ -250,6 +250,24 @@ class ModuleLocalization(BaseLocalization):
         return nodes
 
 
+class NamedPlaceLocalization(BaseLocalization):
+    """Localization for named places."""
+    name: Optional[str] = None
+    description: Optional[str] = None
+    
+    def get_nodes(self, entity_id: str) -> list[dict]:
+        """Generate nodes for named place localization."""
+        from civ7_modding_tools.utils import locale
+        nodes = []
+        prefix = entity_id.upper()
+        
+        if self.name:
+            nodes.append({"tag": locale(prefix, "name"), "text": self.name})
+        if self.description:
+            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
+        return nodes
+
+
 __all__ = [
     "BaseLocalization",
     "CivilizationLocalization",
@@ -263,4 +281,5 @@ __all__ = [
     "CivilizationUnlockLocalization",
     "UniqueQuarterLocalization",
     "ModuleLocalization",
+    "NamedPlaceLocalization",
 ]

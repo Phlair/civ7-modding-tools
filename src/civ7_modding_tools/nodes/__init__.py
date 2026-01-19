@@ -29,6 +29,12 @@ from civ7_modding_tools.nodes.nodes import (
     VisArtCivilizationBuildingCultureNode,
     VisArtCivilizationUnitCultureNode,
     TraditionNode,
+    GreatPersonNode,
+    NamedPlaceNode,
+    NamedPlaceYieldChangeNode,
+    UnitTierVariantNode,
+    AdjacencyBonusNode,
+    MultiTileBuildingNode,
     UniqueQuarterNode,
     LeaderUnlockNode,
     ModifierRequirementNode,
@@ -56,6 +62,7 @@ from civ7_modding_tools.nodes.database import (
     ConstructibleValidResourceNode,
     ConstructibleMaintenanceNode,
     ConstructiblePlunderNode,
+    ConstructibleAdvisoryNode,
     ConstructibleAdjacencyNode,
     WarehouseYieldChangeNode,
     ConstructibleWarehouseYieldNode,
@@ -133,6 +140,7 @@ __all__ = [
     "ConstructibleValidResourceNode",
     "ConstructibleMaintenanceNode",
     "ConstructiblePlunderNode",
+    "ConstructibleAdvisoryNode",
     "ConstructibleAdjacencyNode",
     "ConstructibleWarehouseYieldNode",
     # Adjacency
@@ -178,6 +186,15 @@ __all__ = [
     # Traditions
     "TraditionNode",
     "TraditionModifierNode",
+    # Great People
+    "GreatPersonNode",
+    # Named Places
+    "NamedPlaceNode",
+    "NamedPlaceYieldChangeNode",
+    # Advanced Unit & Building Features (Phase 5)
+    "UnitTierVariantNode",
+    "AdjacencyBonusNode",
+    "MultiTileBuildingNode",
     # Leaders
     "LeaderUnlockNode",
     "LeaderCivilizationBiasNode",

@@ -102,6 +102,14 @@ class ConstructibleYieldChangeNode(BaseNode):
     yield_change: Optional[int] = None
 
 
+class NamedPlaceYieldChangeNode(BaseNode):
+    """Represents yield changes from named places."""
+    _name: str = "Row"
+    named_place_type: Optional[str] = None
+    yield_type: Optional[str] = None
+    yield_change: Optional[int] = None
+
+
 # Localization Nodes
 class EnglishTextNode(BaseNode):
     """Represents English text localization."""
@@ -434,6 +442,51 @@ class TraditionNode(BaseNode):
     name: Optional[str] = None
     description: Optional[str] = None
     loyalty_per_turn: Optional[int] = None
+
+
+class GreatPersonNode(BaseNode):
+    """Represents a great person unit definition."""
+    _name: str = "Row"
+    great_person_type: Optional[str] = None
+    great_person_class: Optional[str] = None
+    base_unit_type: Optional[str] = None
+
+
+class NamedPlaceNode(BaseNode):
+    """Represents a named place location with regional effects."""
+    _name: str = "Row"
+    named_place_type: Optional[str] = None
+    placement: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+
+
+class UnitTierVariantNode(BaseNode):
+    """Represents a unit tier variant (e.g., Veteran, Elite)."""
+    _name: str = "Row"
+    unit_type: Optional[str] = None
+    tier: Optional[int] = None
+    combat_bonus: Optional[int] = None
+    name_suffix: Optional[str] = None
+
+
+class AdjacencyBonusNode(BaseNode):
+    """Represents a custom adjacency bonus for buildings."""
+    _name: str = "Row"
+    constructible_type: Optional[str] = None
+    adjacency_type: Optional[str] = None
+    yield_type: Optional[str] = None
+    amount: Optional[int] = None
+    description: Optional[str] = None
+
+
+class MultiTileBuildingNode(BaseNode):
+    """Represents a multi-tile building/quarter component."""
+    _name: str = "Row"
+    constructible_type: Optional[str] = None
+    component_building_type: Optional[str] = None
+    layout: Optional[str] = None
+    tile_index: Optional[int] = None
 
 
 class UniqueQuarterNode(BaseNode):

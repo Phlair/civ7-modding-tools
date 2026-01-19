@@ -68,13 +68,9 @@ class BaseNode(BaseModel):
             if value is None or value == "":
                 continue
             
-            # Skip False boolean values (only True is serialized)
-            if isinstance(value, bool) and not value:
-                continue
-            
-            # Convert boolean values to strings
+            # Convert boolean values to strings ("true" or "false")
             if isinstance(value, bool):
-                value = "true"  # We've already filtered out False above
+                value = "true" if value else "false"
             
             # Convert property name from snake_case to PascalCase
             # This matches TypeScript lodash.startCase behavior
