@@ -392,6 +392,276 @@ async def health_check() -> dict[str, str]:
     return {"status": "healthy"}
 
 
+@app.get("/api/templates/{template_name}")
+async def get_template(template_name: str) -> dict[str, Any]:
+    """
+    Load a pre-built civilization template.
+
+    Args:
+        template_name: Name of the template (blank, scientific, military, cultural, economic)
+
+    Returns:
+        Template YAML data as dictionary
+    """
+    # Define templates directory
+    templates_dir = Path(__file__).parent / "templates" / "civilizations"
+    
+    # Template definitions (can be moved to separate YAML files later)
+    templates = {
+        "blank": {
+            "metadata": {
+                "id": "my-civilization",
+                "version": "1.0.0",
+                "name": "My Civilization",
+                "description": "A new custom civilization",
+                "authors": "Your Name",
+            },
+            "module_localization": {
+                "name": "My Civilization",
+                "description": "A new custom civilization for Civilization VII",
+            },
+            "action_group": "AGE_ANTIQUITY",
+            "civilization": {
+                "civilization_type": "CIVILIZATION_MY_CIV",
+                "civilization_traits": ["TRAIT_SCIENTIFIC"],
+                "localizations": [
+                    {
+                        "name": "My Civilization",
+                        "adjective": "My",
+                        "description": "A civilization focused on...",
+                        "city_names": ["Capital City", "Second City", "Third City"],
+                    }
+                ],
+                "start_bias_terrains": [],
+                "start_bias_rivers": 0,
+                "vis_art_building_cultures": [],
+                "vis_art_unit_cultures": [],
+                "civilization_unlocks": [],
+            },
+            "units": [],
+            "constructibles": [],
+            "modifiers": [],
+            "traditions": [],
+            "progression_tree_nodes": [],
+            "progression_trees": [],
+            "constants": {},
+            "imports": [],
+            "build": {
+                "output_dir": "./dist",
+                "builders": [],
+            },
+        },
+        "scientific": {
+            "metadata": {
+                "id": "scientific-civilization",
+                "version": "1.0.0",
+                "name": "Scientific Civilization Template",
+                "description": "A science-focused civilization with research bonuses",
+                "authors": "Your Name",
+            },
+            "module_localization": {
+                "name": "Scientific Civilization",
+                "description": "A civilization focused on scientific advancement and discovery",
+            },
+            "action_group": "AGE_ANTIQUITY",
+            "civilization": {
+                "civilization_type": "CIVILIZATION_SCIENTIFIC",
+                "civilization_traits": ["TRAIT_SCIENTIFIC", "TRAIT_CULTURAL"],
+                "localizations": [
+                    {
+                        "name": "Scientific Civilization",
+                        "adjective": "Scientific",
+                        "description": "A civilization renowned for its scholars, libraries, and pursuit of knowledge",
+                        "city_names": [
+                            "Academy",
+                            "Observatory",
+                            "Library",
+                            "Institute",
+                            "Research Center",
+                            "University",
+                        ],
+                    }
+                ],
+                "start_bias_terrains": [{"terrain_type": "TERRAIN_FLAT", "score": 10}],
+                "start_bias_rivers": 3,
+                "vis_art_building_cultures": [],
+                "vis_art_unit_cultures": [],
+                "civilization_unlocks": [],
+            },
+            "units": [],
+            "constructibles": [],
+            "modifiers": [],
+            "traditions": [],
+            "progression_tree_nodes": [],
+            "progression_trees": [],
+            "constants": {},
+            "imports": [],
+            "build": {
+                "output_dir": "./dist",
+                "builders": [],
+            },
+        },
+        "military": {
+            "metadata": {
+                "id": "military-civilization",
+                "version": "1.0.0",
+                "name": "Military Civilization Template",
+                "description": "A combat-focused civilization with unit bonuses",
+                "authors": "Your Name",
+            },
+            "module_localization": {
+                "name": "Military Civilization",
+                "description": "A civilization focused on conquest and military might",
+            },
+            "action_group": "AGE_ANTIQUITY",
+            "civilization": {
+                "civilization_type": "CIVILIZATION_MILITARY",
+                "civilization_traits": ["TRAIT_MILITARY"],
+                "localizations": [
+                    {
+                        "name": "Military Civilization",
+                        "adjective": "Militant",
+                        "description": "A civilization built on strength, discipline, and martial prowess",
+                        "city_names": [
+                            "Fortress",
+                            "Stronghold",
+                            "Citadel",
+                            "Garrison",
+                            "Barracks",
+                            "Arsenal",
+                        ],
+                    }
+                ],
+                "start_bias_terrains": [{"terrain_type": "TERRAIN_HILL", "score": 15}],
+                "start_bias_rivers": 0,
+                "vis_art_building_cultures": [],
+                "vis_art_unit_cultures": [],
+                "civilization_unlocks": [],
+            },
+            "units": [],
+            "constructibles": [],
+            "modifiers": [],
+            "traditions": [],
+            "progression_tree_nodes": [],
+            "progression_trees": [],
+            "constants": {},
+            "imports": [],
+            "build": {
+                "output_dir": "./dist",
+                "builders": [],
+            },
+        },
+        "cultural": {
+            "metadata": {
+                "id": "cultural-civilization",
+                "version": "1.0.0",
+                "name": "Cultural Civilization Template",
+                "description": "A culture-focused civilization with tradition bonuses",
+                "authors": "Your Name",
+            },
+            "module_localization": {
+                "name": "Cultural Civilization",
+                "description": "A civilization focused on culture, art, and traditions",
+            },
+            "action_group": "AGE_ANTIQUITY",
+            "civilization": {
+                "civilization_type": "CIVILIZATION_CULTURAL",
+                "civilization_traits": ["TRAIT_CULTURAL", "TRAIT_DIPLOMATIC"],
+                "localizations": [
+                    {
+                        "name": "Cultural Civilization",
+                        "adjective": "Cultural",
+                        "description": "A civilization celebrated for its rich heritage, arts, and cultural influence",
+                        "city_names": [
+                            "Arts District",
+                            "Cultural Center",
+                            "Museum Quarter",
+                            "Heritage City",
+                            "Festival Town",
+                            "Gallery",
+                        ],
+                    }
+                ],
+                "start_bias_terrains": [],
+                "start_bias_rivers": 2,
+                "vis_art_building_cultures": [],
+                "vis_art_unit_cultures": [],
+                "civilization_unlocks": [],
+            },
+            "units": [],
+            "constructibles": [],
+            "modifiers": [],
+            "traditions": [],
+            "progression_tree_nodes": [],
+            "progression_trees": [],
+            "constants": {},
+            "imports": [],
+            "build": {
+                "output_dir": "./dist",
+                "builders": [],
+            },
+        },
+        "economic": {
+            "metadata": {
+                "id": "economic-civilization",
+                "version": "1.0.0",
+                "name": "Economic Civilization Template",
+                "description": "A gold and production focused civilization",
+                "authors": "Your Name",
+            },
+            "module_localization": {
+                "name": "Economic Civilization",
+                "description": "A civilization focused on trade, wealth, and economic prosperity",
+            },
+            "action_group": "AGE_ANTIQUITY",
+            "civilization": {
+                "civilization_type": "CIVILIZATION_ECONOMIC",
+                "civilization_traits": ["TRAIT_ECONOMIC"],
+                "localizations": [
+                    {
+                        "name": "Economic Civilization",
+                        "adjective": "Mercantile",
+                        "description": "A civilization built on commerce, trade routes, and economic power",
+                        "city_names": [
+                            "Trade Hub",
+                            "Market City",
+                            "Port Town",
+                            "Commerce Center",
+                            "Treasury",
+                            "Bazaar",
+                        ],
+                    }
+                ],
+                "start_bias_terrains": [{"terrain_type": "TERRAIN_NAVIGABLE_RIVER", "score": 20}],
+                "start_bias_rivers": 5,
+                "vis_art_building_cultures": [],
+                "vis_art_unit_cultures": [],
+                "civilization_unlocks": [],
+            },
+            "units": [],
+            "constructibles": [],
+            "modifiers": [],
+            "traditions": [],
+            "progression_tree_nodes": [],
+            "progression_trees": [],
+            "constants": {},
+            "imports": [],
+            "build": {
+                "output_dir": "./dist",
+                "builders": [],
+            },
+        },
+    }
+    
+    if template_name not in templates:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Template '{template_name}' not found. Available: {', '.join(templates.keys())}",
+        )
+    
+    return templates[template_name]
+
+
 if __name__ == "__main__":
     import uvicorn
 

@@ -2,6 +2,7 @@
   "values": [
     {
       "id": "Afr",
+      "name": "African",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -9,6 +10,7 @@
     },
     {
       "id": "Asian",
+      "name": "Asian",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -16,6 +18,7 @@
     },
     {
       "id": "CIVILIZATION_EGYPT",
+      "name": "Egypt",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -23,6 +26,7 @@
     },
     {
       "id": "CIVILIZATION_IP_KOREAN",
+      "name": "Independent Power Korean",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -30,6 +34,7 @@
     },
     {
       "id": "CIVILIZATION_KHMER",
+      "name": "Khmer",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -37,6 +42,7 @@
     },
     {
       "id": "CIVILIZATION_MAURYA",
+      "name": "Maurya",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -44,6 +50,7 @@
     },
     {
       "id": "CIVILIZATION_MAYA",
+      "name": "Maya",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -51,6 +58,7 @@
     },
     {
       "id": "CIVILIZATION_PERSIA",
+      "name": "Persia",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -58,6 +66,7 @@
     },
     {
       "id": "Euro",
+      "name": "European",
       "description": "Unit culture used by: CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_PIRATE_REPUBLIC, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_GREAT_BRITAIN",
@@ -68,6 +77,7 @@
     },
     {
       "id": "IND",
+      "name": "Indian",
       "description": "Unit culture used by: CIVILIZATION_NEPAL, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_NEPAL",
@@ -76,6 +86,7 @@
     },
     {
       "id": "Med",
+      "name": "Mediterranean",
       "description": "Unit culture used by: CIVILIZATION_CARTHAGE, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_CARTHAGE",
@@ -84,10 +95,10 @@
     },
     {
       "id": "MidE",
-      "description": "Unit culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_BULGARIA, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "name": "Middle Eastern",
+      "description": "Unit culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BULGARIA, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
-        "CIVILIZATION_BABYLON",
         "CIVILIZATION_BULGARIA",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
@@ -96,6 +107,7 @@
     },
     {
       "id": "NAmer",
+      "name": "North American",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -103,6 +115,7 @@
     },
     {
       "id": "PAC",
+      "name": "Pacific",
       "description": "Unit culture used by: CIVILIZATION_TONGA",
       "civilizations": [
         "CIVILIZATION_TONGA"
@@ -110,6 +123,7 @@
     },
     {
       "id": "SAmer",
+      "name": "South American",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -117,6 +131,7 @@
     },
     {
       "id": "SEA",
+      "name": "Southeast Asian",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"

@@ -2,10 +2,10 @@
   "values": [
     {
       "id": "ANT_MUD",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "name": "Antiquity - Mud/Brick",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
-        "CIVILIZATION_BABYLON",
         "CIVILIZATION_NEPAL",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
@@ -14,6 +14,7 @@
     },
     {
       "id": "ANT_STONE",
+      "name": "Antiquity - Stone",
       "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_BULGARIA",
@@ -27,6 +28,7 @@
     },
     {
       "id": "BUILDING_CULTURE_EAS",
+      "name": "East Asian",
       "description": "Building culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -34,6 +36,7 @@
     },
     {
       "id": "BUILDING_CULTURE_EEU",
+      "name": "Eastern European",
       "description": "Building culture used by: CIVILIZATION_GREAT_BRITAIN",
       "civilizations": [
         "CIVILIZATION_GREAT_BRITAIN"
@@ -41,6 +44,7 @@
     },
     {
       "id": "BUILDING_CULTURE_MED",
+      "name": "Mediterranean",
       "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_PIRATE_REPUBLIC, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_BULGARIA",
@@ -51,10 +55,10 @@
     },
     {
       "id": "BUILDING_CULTURE_MID",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "name": "Middle Eastern",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
-        "CIVILIZATION_BABYLON",
         "CIVILIZATION_NEPAL",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
@@ -63,6 +67,7 @@
     },
     {
       "id": "BUILDING_CULTURE_MID_ANT",
+      "name": "Middle Eastern (Antiquity)",
       "description": "Building culture used by: CIVILIZATION_NEPAL",
       "civilizations": [
         "CIVILIZATION_NEPAL"
@@ -70,6 +75,7 @@
     },
     {
       "id": "BUILDING_CULTURE_MID_MOD",
+      "name": "Middle Eastern (Modern)",
       "description": "Building culture used by: CIVILIZATION_NEPAL",
       "civilizations": [
         "CIVILIZATION_NEPAL"
@@ -77,6 +83,7 @@
     },
     {
       "id": "BUILDING_CULTURE_NAF",
+      "name": "North African",
       "description": "Building culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -84,6 +91,7 @@
     },
     {
       "id": "BUILDING_CULTURE_NAM",
+      "name": "North American",
       "description": "Building culture used by: CIVILIZATION_TONGA, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_TONGA",
@@ -92,6 +100,7 @@
     },
     {
       "id": "BUILDING_CULTURE_NEU",
+      "name": "Northern European",
       "description": "Building culture used by: CIVILIZATION_ICELAND",
       "civilizations": [
         "CIVILIZATION_ICELAND"
@@ -99,6 +108,7 @@
     },
     {
       "id": "BUILDING_CULTURE_PAC",
+      "name": "Pacific",
       "description": "Building culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -106,6 +116,7 @@
     },
     {
       "id": "BUILDING_CULTURE_PAC_EXP",
+      "name": "Pacific (Exploration)",
       "description": "Building culture used by: CIVILIZATION_NEPAL",
       "civilizations": [
         "CIVILIZATION_NEPAL"
@@ -113,6 +124,7 @@
     },
     {
       "id": "BUILDING_CULTURE_SAM",
+      "name": "South American",
       "description": "Building culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -120,6 +132,7 @@
     },
     {
       "id": "BUILDING_CULTURE_SEA",
+      "name": "Southeast Asian",
       "description": "Building culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -127,10 +140,10 @@
     },
     {
       "id": "EXP_MUD",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "name": "Exploration - Mud/Brick",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
-        "CIVILIZATION_BABYLON",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
         "UNKNOWN"
@@ -138,6 +151,7 @@
     },
     {
       "id": "EXP_STONE",
+      "name": "Exploration - Stone",
       "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_NEPAL, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_BULGARIA",
@@ -152,10 +166,10 @@
     },
     {
       "id": "MOD_MUD",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "name": "Modern - Mud/Brick",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
-        "CIVILIZATION_BABYLON",
         "CIVILIZATION_NEPAL",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
@@ -164,6 +178,7 @@
     },
     {
       "id": "MOD_STONE",
+      "name": "Modern - Stone",
       "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_BULGARIA",

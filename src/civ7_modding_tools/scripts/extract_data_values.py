@@ -293,6 +293,54 @@ class CivVIIDataExtractor:
             json.dump(data, f, indent=2)
         print(f"✓ Written {output_file}")
 
+    def _guess_name(self, id_str: str) -> str:
+        """Guess a human-readable name from the ID."""
+        mappings = {
+            # Building Cultures
+            'ANT_MUD': 'Antiquity - Mud/Brick',
+            'ANT_STONE': 'Antiquity - Stone',
+            'BUILDING_CULTURE_EAS': 'East Asian',
+            'BUILDING_CULTURE_EEU': 'Eastern European',
+            'BUILDING_CULTURE_MED': 'Mediterranean',
+            'BUILDING_CULTURE_MID': 'Middle Eastern',
+            'BUILDING_CULTURE_MID_ANT': 'Middle Eastern (Antiquity)',
+            'BUILDING_CULTURE_MID_MOD': 'Middle Eastern (Modern)',
+            'BUILDING_CULTURE_NAF': 'North African',
+            'BUILDING_CULTURE_NAM': 'North American',
+            'BUILDING_CULTURE_NEU': 'Northern European',
+            'BUILDING_CULTURE_PAC': 'Pacific',
+            'BUILDING_CULTURE_PAC_EXP': 'Pacific (Exploration)',
+            'BUILDING_CULTURE_SAM': 'South American',
+            'BUILDING_CULTURE_SEA': 'Southeast Asian',
+            'EXP_MUD': 'Exploration - Mud/Brick',
+            'EXP_STONE': 'Exploration - Stone',
+            'MOD_MUD': 'Modern - Mud/Brick',
+            'MOD_STONE': 'Modern - Stone',
+
+            # Unit Cultures
+            'Afr': 'African',
+            'Asian': 'Asian',
+            'Euro': 'European',
+            'IND': 'Indian',
+            'Med': 'Mediterranean',
+            'MidE': 'Middle Eastern',
+            'NAmer': 'North American',
+            'PAC': 'Pacific',
+            'SAmer': 'South American',
+            'SEA': 'Southeast Asian',
+        }
+        
+        if id_str in mappings:
+            return mappings[id_str]
+
+        # Dynamic guessing
+        if id_str.startswith('CIVILIZATION_'):
+            name = id_str.replace('CIVILIZATION_', '').replace('_', ' ').lower().title()
+            name = name.replace('Ip ', 'Independent Power ')
+            return name
+            
+        return ""
+
     def export_json_files(self) -> None:
         """Export all extracted data to JSON files."""
         # BuildingCulture with civ context
@@ -300,6 +348,7 @@ class CivVIIDataExtractor:
             'values': [
                 {
                     'id': bc,
+                    'name': self._guess_name(bc),
                     'description': f"Building culture used by: {', '.join(sorted(civs))}",
                     'civilizations': sorted(civs)
                 }
@@ -314,6 +363,7 @@ class CivVIIDataExtractor:
             'values': [
                 {
                     'id': uc,
+                    'name': self._guess_name(uc),
                     'description': f"Unit culture used by: {', '.join(sorted(civs))}",
                     'civilizations': sorted(civs)
                 }
