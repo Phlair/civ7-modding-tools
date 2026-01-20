@@ -67,6 +67,7 @@ const FIELD_HELP_TEXT = {
     
     // Mod Metadata
     mod_id: "Unique identifier for your mod. Use lowercase letters, numbers, and hyphens only. Once set, this should not change as it affects save compatibility. Example: 'babylon-scientific-civ'",
+    package: "Package name used for mod categorization in the game (automatically generated from Mod ID in PascalCase). Example: 'BabylonScientificCiv'",
     
     // Tags
     tag: "Tags categorize and identify entities. Examples: AGELESS (no age requirement), CULTURE (cultural focus), UNIT_CLASS_MELEE (melee unit type). Over 2,900 tags available.",
@@ -639,6 +640,21 @@ function renderWizardStep1(container) {
                                 placeholder="Your Name"
                                 class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
                             />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-1">
+                                Package <span class="text-red-400">*</span>
+                                <button onclick="showFieldHelp('package')" class="ml-1 text-blue-400 hover:text-blue-300">ⓘ</button>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="wizard-metadata-package" 
+                                value="${wizardData.metadata?.package || ''}"
+                                onchange="updateWizardField('metadata', 'package', this.value)"
+                                placeholder="Auto-generated from Mod ID"
+                                class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
+                            />
+                            <p class="text-xs text-slate-500 mt-1">Used for mod categorization (auto-generated from Mod ID)</p>
                         </div>
                     </div>
                 </div>
@@ -1869,6 +1885,17 @@ function renderWizardStep5(container) {
 function updateWizardField(section, field, value) {
     if (!wizardData[section]) wizardData[section] = {};
     wizardData[section][field] = value;
+    
+    // Auto-populate package from mod ID (PascalCase conversion)
+    if (section === 'metadata' && field === 'id' && value) {
+        // Convert kebab-case to PascalCase (e.g., 'my-civ' -> 'MyCiv')
+        const pascalCase = value
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join('');
+        wizardData.metadata.package = pascalCase || value;
+    }
+    
     markDirty();
 }
 
@@ -1948,7 +1975,7 @@ function generateDefaultProgressionTree() {
     
     const civType = currentData.civilization?.civilization_type || 'CIVILIZATION_CUSTOM';
     const civName = currentData.civilization?.localizations?.[0]?.name || 'Custom';
-    const ageType = currentData.action_group || 'AGE_ANTIQUITY';
+    const ageType = currentData.action_group?.action_group_id || 'AGE_ANTIQUITY';
     const modId = currentData.metadata?.id || 'custom';
     
     // Create base tree ID
@@ -2827,6 +2854,7 @@ function validateWizardData() {
     
     if (!wizardData.metadata?.id) errors.push('Mod ID is required');
     if (!wizardData.metadata?.name) errors.push('Mod Name is required');
+    if (!wizardData.metadata?.package) errors.push('Package is required');
     if (!wizardData.action_group?.action_group_id) errors.push('Starting Age is required');
     if (!wizardData.civilization?.civilization_type) errors.push('Civilization Type is required');
     if (!wizardData.civilization?.localizations?.[0]?.name) errors.push('Civilization Display Name is required');
@@ -3021,7 +3049,7 @@ function renderMetadataSection(container, data) {
     container.appendChild(createTextField("metadata.authors", "Authors", meta.authors));
     container.appendChild(createBooleanField("metadata.affects_saved_games", "Affects Saved Games", meta.affects_saved_games));
     container.appendChild(createBooleanField("metadata.enabled_by_default", "Enabled by Default", meta.enabled_by_default));
-    container.appendChild(createTextField("metadata.package", "Package", meta.package));
+    container.appendChild(createTextField("metadata.package", "Package", meta.package, true));
 }
 
 function renderModuleLocalizationSection(container, data) {

@@ -3,6 +3,7 @@ metadata:
   name: Phlair's Iceni
   authors: Phlair
   description: Adds the Iceni Civilization
+  package: Iceni
 module_localization:
   name: Iceni
   description: Adds the Iceni Civilization
@@ -69,8 +70,7 @@ progression_trees:
   progression_tree_type: TREE_CIVICS_ICENI
   progression_tree:
     progression_tree_type: TREE_CIVICS_ICENI
-    age_type:
-      action_group_id: AGE_ANTIQUITY
+    age_type: AGE_ANTIQUITY
   progression_tree_prereqs:
   - node: NODE_CIVICS_ICENI_2
     prereq_node: NODE_CIVICS_ICENI_1

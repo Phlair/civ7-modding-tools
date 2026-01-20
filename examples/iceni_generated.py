@@ -32,6 +32,7 @@ mod = Mod({
     'name': 'Phlair\'s Iceni',
     'authors': 'Phlair',
     'description': 'Adds the Iceni Civilization',
+    'package': 'Iceni',
     'module_localizations': MODULE_LOC,
 })
 
@@ -76,9 +77,7 @@ progression_tree_iceni.fill({
     'progression_tree_type': 'TREE_CIVICS_ICENI',
     'progression_tree': {
         'progression_tree_type': 'TREE_CIVICS_ICENI',
-        'age_type': {
-            'action_group_id': 'AGE_ANTIQUITY',
-        },
+        'age_type': 'AGE_ANTIQUITY',
     },
     'progression_tree_prereqs': [
         {
