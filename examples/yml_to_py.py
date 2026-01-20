@@ -180,13 +180,15 @@ class YamlToPyConverter:
     def generate_mod_creation(self) -> None:
         """Generate Mod instance creation."""
         metadata = self.data.get('metadata', {})
+        mod_loc = self.data.get('module_localization', {})
         
         self.add_line('# Mod metadata and setup')
         self.add_line('mod = Mod({')
         self.indent_level += 1
         for key, value in metadata.items():
             self.add_line(f"'{key}': {self.format_value(value)},")
-        self.add_line("'module_localizations': MODULE_LOC,")
+        if mod_loc:
+            self.add_line("'module_localizations': MODULE_LOC,")
         self.indent_level -= 1
         self.add_line('})')
         self.add_line()
@@ -431,7 +433,7 @@ class YamlToPyConverter:
         self.add_line(f'{builder_id} = CivilizationBuilder()')
         self.add_line(f'{builder_id}.action_group_bundle = {action_group}')
         
-        # Build fill dict
+        # Build fill dict (exclude bindings - they're auto-generated)
         fill_dict = {k: v for k, v in civ_data.items() if k not in ['id', 'bindings']}
         
         self.add_line(f'{builder_id}.fill({{')
@@ -442,28 +444,114 @@ class YamlToPyConverter:
         self.indent_level -= 1
         self.add_line('})')
         
-        # Handle bindings
-        if 'bindings' in civ_data:
-            self.add_line()
-            self.add_line('# Bind all entities to civilization')
-            bindings = civ_data['bindings']
-            binding_list = ', '.join(bindings)
-            self.add_line(f'{builder_id}.bind([{binding_list}])')
-        
         self.add_line()
     
-    def generate_mod_add(self) -> None:
-        """Generate mod.add() calls."""
-        build = self.data.get('build', {})
-        builders = build.get('builders', [])
+    def collect_all_builders(self) -> list[str]:
+        """Collect all builder IDs from YAML data."""
+        builders = []
         
-        if not builders:
+        # Import file builders
+        for imp in self.data.get('imports', []):
+            builders.append(imp['id'])
+        
+        # Modifier builders
+        for modifier in self.data.get('modifiers', []):
+            builders.append(modifier['id'])
+        
+        # Tradition builders
+        for tradition in self.data.get('traditions', []):
+            builders.append(tradition['id'])
+        
+        # Unit builders
+        for unit in self.data.get('units', []):
+            builders.append(unit['id'])
+        
+        # Constructible builders
+        for constructible in self.data.get('constructibles', []):
+            builders.append(constructible['id'])
+        
+        # Progression tree node builders
+        for node in self.data.get('progression_tree_nodes', []):
+            builders.append(node['id'])
+        
+        # Progression tree builders
+        for tree in self.data.get('progression_trees', []):
+            builders.append(tree['id'])
+        
+        return builders
+    
+    def collect_bound_modifiers(self) -> set[str]:
+        """Collect modifier IDs that are already bound to other entities."""
+        bound = set()
+        
+        # Modifiers bound to progression tree nodes
+        for node in self.data.get('progression_tree_nodes', []):
+            if 'bindings' in node:
+                for binding in node['bindings']:
+                    bound.add(binding)
+        
+        # Modifiers bound to traditions
+        for tradition in self.data.get('traditions', []):
+            if 'bindings' in tradition:
+                for binding in tradition['bindings']:
+                    bound.add(binding)
+        
+        return bound
+    
+    def generate_bindings(self) -> None:
+        """Generate automatic bindings for civilization builder."""
+        civilization = self.data.get('civilization', {})
+        if not civilization:
+            return
+        
+        # Collect modifiers that are already bound elsewhere
+        already_bound_modifiers = self.collect_bound_modifiers()
+        
+        # Collect only the top-level entities that should be bound to civilization
+        to_bind = []
+        
+        # Units
+        for unit in self.data.get('units', []):
+            to_bind.append(unit['id'])
+        
+        # Constructibles
+        for constructible in self.data.get('constructibles', []):
+            to_bind.append(constructible['id'])
+        
+        # Progression trees
+        for tree in self.data.get('progression_trees', []):
+            to_bind.append(tree['id'])
+        
+        # Top-level modifiers (not bound to other entities)
+        for modifier in self.data.get('modifiers', []):
+            modifier_id = modifier['id']
+            if modifier_id not in already_bound_modifiers:
+                to_bind.append(modifier_id)
+        
+        if to_bind:
+            self.add_line('# Bind all entities to civilization')
+            civ_id = civilization.get('id', 'civilization')
+            binding_list = ', '.join(to_bind)
+            self.add_line(f'{civ_id}.bind([{binding_list}])')
+            self.add_line()
+    
+    def generate_mod_add(self) -> None:
+        """Generate mod.add() calls with all builders."""
+        # Collect all builders dynamically
+        all_builders = self.collect_all_builders()
+        
+        # Add civilization at the beginning
+        civilization = self.data.get('civilization', {})
+        civ_id = civilization.get('id', 'civilization')
+        final_builders = [civ_id] + all_builders
+        
+        if not final_builders:
             return
         
         self.add_line('# Add all builders to mod')
         self.add_line('mod.add([')
         self.indent_level += 1
-        for builder in builders:
+        for builder in final_builders:
             self.add_line(f'{builder},')
         self.indent_level -= 1
         self.add_line('])')
@@ -496,6 +584,7 @@ class YamlToPyConverter:
         self.generate_progression_tree_nodes()
         self.generate_progression_trees()
         self.generate_civilization()
+        self.generate_bindings()
         self.generate_mod_add()
         self.generate_build_call()
         

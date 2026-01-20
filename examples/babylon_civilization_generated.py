@@ -605,15 +605,22 @@ civilization.bind([unit, edubba, academy, ziggurat, progression_tree, civilizati
 # Add all builders to mod
 mod.add([
     civilization,
+    civilization_icon,
+    unit_icon,
+    civilization_modifier,
+    scribal_modifier,
+    library_modifier,
+    node1_modifier,
+    node2_modifier,
+    tradition_scribes,
+    tradition_library,
     unit,
     edubba,
     academy,
     ziggurat,
+    progression_tree_node,
+    progression_tree_node2,
     progression_tree,
-    tradition_scribes,
-    tradition_library,
-    civilization_icon,
-    unit_icon,
 ])
 
 # Build mod

@@ -419,14 +419,3 @@ progression_trees:
 
 build:
   output_dir: ./dist-babylon
-  builders:
-    - civilization
-    - unit
-    - edubba
-    - academy
-    - ziggurat
-    - progression_tree
-    - tradition_scribes
-    - tradition_library
-    - civilization_icon
-    - unit_icon

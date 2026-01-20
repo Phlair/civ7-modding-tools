@@ -1861,20 +1861,18 @@ class ModifierBuilder(BaseBuilder):
         if self.modifier_strings and hasattr(self, '_current'):
             xml_file = XmlFile(
                 name="current.xml",
-                action_group=self.action_group_bundle.current,
-                root_element="Database"
+                content=self._current,
+                action_group=self.action_group_bundle.current
             )
-            xml_file.add_element(self._current)
             files.append(xml_file)
         
         # Generate localizations.xml if we have localizations
         if self.localizations and hasattr(self, '_localizations'):
             xml_file = XmlFile(
                 name="localization.xml",
-                action_group=self.action_group_bundle.localizations,
-                root_element="Database"
+                content=self._localizations,
+                action_group=self.action_group_bundle.always
             )
-            xml_file.add_element(self._localizations)
             files.append(xml_file)
         
         return files
@@ -1958,7 +1956,7 @@ class GameModifierBuilder(BaseBuilder):
         if self.localizations and hasattr(self, '_localizations'):
             xml_file = XmlFile(
                 name="localization.xml",
-                action_group=self.action_group_bundle.localizations,
+                action_group=self.action_group_bundle.always,
                 root_element="Database"
             )
             xml_file.add_element(self._localizations)
@@ -2019,16 +2017,19 @@ class TraditionBuilder(BaseBuilder):
         # ==== POPULATE _localizations DATABASE ====
         localization_rows = []
         for loc in self.localizations:
-            if isinstance(loc, dict):
-                if "name" in loc:
+            # Handle both dict and TraditionLocalization objects
+            loc_dict = loc.model_dump() if hasattr(loc, 'model_dump') else loc
+            
+            if isinstance(loc_dict, dict):
+                if "name" in loc_dict:
                     localization_rows.append(EnglishTextNode(
                         tag=loc_name,
-                        text=loc["name"]
+                        text=loc_dict["name"]
                     ))
-                if "description" in loc:
+                if "description" in loc_dict:
                     localization_rows.append(EnglishTextNode(
                         tag=loc_description,
-                        text=loc["description"]
+                        text=loc_dict["description"]
                     ))
         
         if localization_rows:
