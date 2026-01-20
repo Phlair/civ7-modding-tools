@@ -15,6 +15,10 @@
    Base Styles
    ============================================================================ */
 
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(148, 163, 184, 0.5) transparent;

@@ -32,6 +32,12 @@
                         class="px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
                     />
                     <button 
+                        onclick="createNew()" 
+                        class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg font-medium transition-colors"
+                    >
+                        New
+                    </button>
+                    <button 
                         onclick="loadFile()" 
                         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
                     >
@@ -55,61 +61,61 @@
         </header>
 
         <!-- Main Content -->
-        <div class="flex-1 flex overflow-hidden">
+        <div class="flex-1 flex overflow-visible">
             <!-- Sidebar Navigation -->
-            <aside class="w-64 bg-slate-900 border-r border-slate-700 overflow-y-auto">
-                <nav class="p-4 space-y-1">
+            <aside class="w-64 bg-slate-900 border-r border-slate-700 sticky top-20 max-h-[calc(100vh-5rem)] flex flex-col">
+                <nav class="p-4 space-y-1 overflow-y-auto flex-1">
                     <div class="text-xs font-semibold text-slate-400 uppercase px-3 py-2">Sections</div>
                     
-                    <a href="#metadata" onclick="switchSection('metadata', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors active">
+                    <a href="#section-metadata" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
                         Metadata
                     </a>
-                    <a href="#module-localization" onclick="switchSection('module-localization', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-module_localization" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
                         Module Localization
                     </a>
-                    <a href="#action-group" onclick="switchSection('action-group', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-action_group" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-purple-500 mr-2"></span>
                         Action Group
                     </a>
-                    <a href="#constants" onclick="switchSection('constants', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-constants" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-2"></span>
                         Constants
                     </a>
-                    <a href="#imports" onclick="switchSection('imports', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-imports" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-cyan-500 mr-2"></span>
                         Imports
                     </a>
-                    <a href="#civilization" onclick="switchSection('civilization', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-civilization" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-2"></span>
                         Civilization
                     </a>
-                    <a href="#modifiers" onclick="switchSection('modifiers', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-modifiers" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                         Modifiers
                     </a>
-                    <a href="#traditions" onclick="switchSection('traditions', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-traditions" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-pink-500 mr-2"></span>
                         Traditions
                     </a>
-                    <a href="#units" onclick="switchSection('units', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-units" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
                         Units
                     </a>
-                    <a href="#constructibles" onclick="switchSection('constructibles', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-constructibles" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
                         Constructibles
                     </a>
-                    <a href="#progression-tree-nodes" onclick="switchSection('progression-tree-nodes', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-progression_tree_nodes" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-indigo-500 mr-2"></span>
                         Tree Nodes
                     </a>
-                    <a href="#progression-trees" onclick="switchSection('progression-trees', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-progression_trees" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-violet-500 mr-2"></span>
                         Progression Trees
                     </a>
-                    <a href="#build" onclick="switchSection('build', event)" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">
+                    <a href="#section-build" class="section-nav block px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-300">
                         <span class="inline-block w-2 h-2 rounded-full bg-fuchsia-500 mr-2"></span>
                         Build Config
                     </a>

@@ -13,6 +13,7 @@ from typing import Any
 
 import yaml
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -202,6 +203,38 @@ async def save_yaml(request: YAMLSaveRequest) -> dict[str, str]:
         raise HTTPException(
             status_code=500,
             detail=f"Failed to save file: {str(e)}",
+        )
+
+
+@app.post("/api/civilization/export")
+async def export_yaml(data: dict[str, Any]) -> Response:
+    """
+    Export data as a proper YAML file for download.
+
+    Args:
+        data: Dictionary to export as YAML
+
+    Returns:
+        YAML file as downloadable response
+    """
+    try:
+        yaml_content = yaml.dump(
+            data,
+            default_flow_style=False,
+            sort_keys=False,
+            allow_unicode=True,
+        )
+        return Response(
+            content=yaml_content,
+            media_type="application/yaml",
+            headers={
+                "Content-Disposition": f"attachment; filename={data.get('metadata', {}).get('id', 'mod')}.yml"
+            },
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to export YAML: {str(e)}",
         )
 
 
