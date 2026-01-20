@@ -58,7 +58,7 @@ CITY_NAMES = [
 MODULE_LOC = ModuleLocalization(
     name="Babylon",
     description="The Babylon civilization - ancient centre of science and learning",
-    authors="Firaxis Games",
+    authors="Phlair",
 )
 
 # Mod metadata and setup
@@ -67,7 +67,7 @@ mod = Mod({
     'version': '1',
     'name': 'Babylon',
     'description': 'The Babylon civilization - ancient centre of science and learning',
-    'authors': 'Firaxis Games',
+    'authors': 'Phlair',
     'affects_saved_games': True,
     'enabled_by_default': True,
     'package': 'Babylon',

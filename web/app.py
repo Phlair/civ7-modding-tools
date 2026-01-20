@@ -432,14 +432,40 @@ async def get_template(template_name: str) -> dict[str, Any]:
                         "city_names": ["Capital City", "Second City", "Third City"],
                     }
                 ],
-                "start_bias_terrains": [],
-                "start_bias_rivers": 0,
-                "vis_art_building_cultures": [],
-                "vis_art_unit_cultures": [],
-                "civilization_unlocks": [],
+                "start_bias_terrains": [{"terrain_type": "TERRAIN_FLAT", "score": 5}],
+                "start_bias_rivers": 1,
+                "vis_art_building_cultures": ["VIS_ART_BUILDING_CULTURE_CLASSICAL"],
+                "vis_art_unit_cultures": ["VIS_ART_UNIT_CULTURE_CLASSICAL"],
+                "civilization_unlocks": [
+                    {"unlock_age": "AGE_EXPLORATION", "unlock_civilization_type": "CIVILIZATION_MY_CIV_EXPLORATION"}
+                ],
             },
-            "units": [],
-            "constructibles": [],
+            "units": [
+                {
+                    "unit_type": "UNIT_MY_CIV_WARRIOR",
+                    "unit_class": "CLASS_MELEE",
+                    "localizations": [
+                        {
+                            "name": "My Warrior",
+                            "description": "A basic melee unit",
+                        }
+                    ],
+                    "unit_stat": {"combat": 25, "movement": 2},
+                }
+            ],
+            "constructibles": [
+                {
+                    "constructible_type": "BUILDING_MY_CIV_MONUMENT",
+                    "constructible_class": "CLASS_BUILDING",
+                    "localizations": [
+                        {
+                            "name": "My Monument",
+                            "description": "A cultural building",
+                        }
+                    ],
+                    "yield_changes": [{"yield_type": "YIELD_CULTURE", "amount": 2}],
+                }
+            ],
             "modifiers": [],
             "traditions": [],
             "progression_tree_nodes": [],
@@ -484,13 +510,55 @@ async def get_template(template_name: str) -> dict[str, Any]:
                 ],
                 "start_bias_terrains": [{"terrain_type": "TERRAIN_FLAT", "score": 10}],
                 "start_bias_rivers": 3,
-                "vis_art_building_cultures": [],
-                "vis_art_unit_cultures": [],
-                "civilization_unlocks": [],
+                "vis_art_building_cultures": ["VIS_ART_BUILDING_CULTURE_CLASSICAL", "VIS_ART_BUILDING_CULTURE_ASIAN"],
+                "vis_art_unit_cultures": ["VIS_ART_UNIT_CULTURE_CLASSICAL"],
+                "civilization_unlocks": [
+                    {"unlock_age": "AGE_EXPLORATION", "unlock_civilization_type": "CIVILIZATION_SCIENTIFIC_EXPLORATION"},
+                    {"unlock_age": "AGE_MODERN", "unlock_civilization_type": "CIVILIZATION_SCIENTIFIC_MODERN"},
+                ],
             },
-            "units": [],
-            "constructibles": [],
-            "modifiers": [],
+            "units": [
+                {
+                    "unit_type": "UNIT_SCIENTIFIC_SCHOLAR",
+                    "unit_class": "CLASS_CIVILIAN",
+                    "localizations": [
+                        {
+                            "name": "Scholar",
+                            "description": "A learned researcher who provides science bonuses to nearby cities",
+                        }
+                    ],
+                    "unit_stat": {"movement": 2},
+                }
+            ],
+            "constructibles": [
+                {
+                    "constructible_type": "BUILDING_SCIENTIFIC_LIBRARY",
+                    "constructible_class": "CLASS_BUILDING",
+                    "localizations": [
+                        {
+                            "name": "Great Library",
+                            "description": "A repository of knowledge that provides science and culture",
+                        }
+                    ],
+                    "yield_changes": [
+                        {"yield_type": "YIELD_SCIENCE", "amount": 3},
+                        {"yield_type": "YIELD_CULTURE", "amount": 1},
+                    ],
+                }
+            ],
+            "modifiers": [
+                {
+                    "modifier_type": "MODIFIER_SCIENTIFIC_BONUS",
+                    "effect_type": "EFFECT_ADJUST_PLAYER_YIELD_MODIFIER",
+                    "arguments": {"YieldType": "YIELD_SCIENCE", "Amount": 10},
+                    "localizations": [
+                        {
+                            "name": "Scientific Excellence",
+                            "description": "+10% Science in all cities",
+                        }
+                    ],
+                }
+            ],
             "traditions": [],
             "progression_tree_nodes": [],
             "progression_trees": [],
@@ -534,13 +602,63 @@ async def get_template(template_name: str) -> dict[str, Any]:
                 ],
                 "start_bias_terrains": [{"terrain_type": "TERRAIN_HILL", "score": 15}],
                 "start_bias_rivers": 0,
-                "vis_art_building_cultures": [],
-                "vis_art_unit_cultures": [],
-                "civilization_unlocks": [],
+                "vis_art_building_cultures": ["VIS_ART_BUILDING_CULTURE_EUROPEAN"],
+                "vis_art_unit_cultures": ["VIS_ART_UNIT_CULTURE_EUROPEAN"],
+                "civilization_unlocks": [
+                    {"unlock_age": "AGE_EXPLORATION", "unlock_civilization_type": "CIVILIZATION_MILITARY_EXPLORATION"},
+                ],
             },
-            "units": [],
-            "constructibles": [],
-            "modifiers": [],
+            "units": [
+                {
+                    "unit_type": "UNIT_MILITARY_ELITE_WARRIOR",
+                    "unit_class": "CLASS_MELEE",
+                    "localizations": [
+                        {
+                            "name": "Elite Warrior",
+                            "description": "A powerful melee unit with superior combat strength",
+                        }
+                    ],
+                    "unit_stat": {"combat": 30, "movement": 2},
+                    "unit_replace": {"replaces_unit_type": "UNIT_WARRIOR"},
+                },
+                {
+                    "unit_type": "UNIT_MILITARY_ARCHER",
+                    "unit_class": "CLASS_RANGED",
+                    "localizations": [
+                        {
+                            "name": "Composite Archer",
+                            "description": "A ranged unit with enhanced range",
+                        }
+                    ],
+                    "unit_stat": {"ranged_combat": 28, "range": 3, "movement": 2},
+                },
+            ],
+            "constructibles": [
+                {
+                    "constructible_type": "BUILDING_MILITARY_BARRACKS",
+                    "constructible_class": "CLASS_BUILDING",
+                    "localizations": [
+                        {
+                            "name": "War Academy",
+                            "description": "A military training facility that provides production for unit construction",
+                        }
+                    ],
+                    "yield_changes": [{"yield_type": "YIELD_PRODUCTION", "amount": 2}],
+                }
+            ],
+            "modifiers": [
+                {
+                    "modifier_type": "MODIFIER_MILITARY_BONUS",
+                    "effect_type": "EFFECT_ADJUST_UNIT_COMBAT_STRENGTH",
+                    "arguments": {"Amount": 5},
+                    "localizations": [
+                        {
+                            "name": "Martial Tradition",
+                            "description": "+5 Combat Strength for all units",
+                        }
+                    ],
+                }
+            ],
             "traditions": [],
             "progression_tree_nodes": [],
             "progression_trees": [],
@@ -584,14 +702,76 @@ async def get_template(template_name: str) -> dict[str, Any]:
                 ],
                 "start_bias_terrains": [],
                 "start_bias_rivers": 2,
-                "vis_art_building_cultures": [],
-                "vis_art_unit_cultures": [],
-                "civilization_unlocks": [],
+                "vis_art_building_cultures": ["VIS_ART_BUILDING_CULTURE_ASIAN", "VIS_ART_BUILDING_CULTURE_AFRICAN"],
+                "vis_art_unit_cultures": ["VIS_ART_UNIT_CULTURE_ASIAN"],
+                "civilization_unlocks": [
+                    {"unlock_age": "AGE_EXPLORATION", "unlock_civilization_type": "CIVILIZATION_CULTURAL_EXPLORATION"},
+                ],
             },
-            "units": [],
-            "constructibles": [],
-            "modifiers": [],
-            "traditions": [],
+            "units": [
+                {
+                    "unit_type": "UNIT_CULTURAL_ARTIST",
+                    "unit_class": "CLASS_CIVILIAN",
+                    "localizations": [
+                        {
+                            "name": "Master Artist",
+                            "description": "A cultural specialist who creates great works and spreads influence",
+                        }
+                    ],
+                    "unit_stat": {"movement": 2},
+                }
+            ],
+            "constructibles": [
+                {
+                    "constructible_type": "BUILDING_CULTURAL_THEATER",
+                    "constructible_class": "CLASS_BUILDING",
+                    "localizations": [
+                        {
+                            "name": "Grand Theater",
+                            "description": "A center of performing arts that generates culture and influence",
+                        }
+                    ],
+                    "yield_changes": [
+                        {"yield_type": "YIELD_CULTURE", "amount": 4},
+                        {"yield_type": "YIELD_INFLUENCE", "amount": 2},
+                    ],
+                },
+                {
+                    "constructible_type": "BUILDING_CULTURAL_MONUMENT",
+                    "constructible_class": "CLASS_BUILDING",
+                    "localizations": [
+                        {
+                            "name": "Cultural Monument",
+                            "description": "A monument to cultural achievements",
+                        }
+                    ],
+                    "yield_changes": [{"yield_type": "YIELD_CULTURE", "amount": 2}],
+                },
+            ],
+            "modifiers": [
+                {
+                    "modifier_type": "MODIFIER_CULTURAL_BONUS",
+                    "effect_type": "EFFECT_ADJUST_PLAYER_YIELD_MODIFIER",
+                    "arguments": {"YieldType": "YIELD_CULTURE", "Amount": 15},
+                    "localizations": [
+                        {
+                            "name": "Cultural Heritage",
+                            "description": "+15% Culture in all cities",
+                        }
+                    ],
+                }
+            ],
+            "traditions": [
+                {
+                    "tradition_type": "TRADITION_CULTURAL_PATRONAGE",
+                    "localizations": [
+                        {
+                            "name": "Cultural Patronage",
+                            "description": "Invest in the arts and culture, enhancing cultural output",
+                        }
+                    ],
+                }
+            ],
             "progression_tree_nodes": [],
             "progression_trees": [],
             "constants": {},
@@ -634,13 +814,65 @@ async def get_template(template_name: str) -> dict[str, Any]:
                 ],
                 "start_bias_terrains": [{"terrain_type": "TERRAIN_NAVIGABLE_RIVER", "score": 20}],
                 "start_bias_rivers": 5,
-                "vis_art_building_cultures": [],
-                "vis_art_unit_cultures": [],
-                "civilization_unlocks": [],
+                "vis_art_building_cultures": ["VIS_ART_BUILDING_CULTURE_MEDITERRANEAN"],
+                "vis_art_unit_cultures": ["VIS_ART_UNIT_CULTURE_MEDITERRANEAN"],
+                "civilization_unlocks": [
+                    {"unlock_age": "AGE_EXPLORATION", "unlock_civilization_type": "CIVILIZATION_ECONOMIC_EXPLORATION"},
+                ],
             },
-            "units": [],
-            "constructibles": [],
-            "modifiers": [],
+            "units": [
+                {
+                    "unit_type": "UNIT_ECONOMIC_MERCHANT",
+                    "unit_class": "CLASS_CIVILIAN",
+                    "localizations": [
+                        {
+                            "name": "Great Merchant",
+                            "description": "A wealthy trader who establishes profitable trade routes",
+                        }
+                    ],
+                    "unit_stat": {"movement": 3},
+                }
+            ],
+            "constructibles": [
+                {
+                    "constructible_type": "BUILDING_ECONOMIC_MARKET",
+                    "constructible_class": "CLASS_BUILDING",
+                    "localizations": [
+                        {
+                            "name": "Grand Bazaar",
+                            "description": "A bustling marketplace that generates gold and commerce",
+                        }
+                    ],
+                    "yield_changes": [
+                        {"yield_type": "YIELD_GOLD", "amount": 5},
+                        {"yield_type": "YIELD_PRODUCTION", "amount": 1},
+                    ],
+                },
+                {
+                    "constructible_type": "BUILDING_ECONOMIC_BANK",
+                    "constructible_class": "CLASS_BUILDING",
+                    "localizations": [
+                        {
+                            "name": "Treasury House",
+                            "description": "A financial institution that multiplies wealth",
+                        }
+                    ],
+                    "yield_changes": [{"yield_type": "YIELD_GOLD", "amount": 3}],
+                },
+            ],
+            "modifiers": [
+                {
+                    "modifier_type": "MODIFIER_ECONOMIC_BONUS",
+                    "effect_type": "EFFECT_ADJUST_PLAYER_YIELD_MODIFIER",
+                    "arguments": {"YieldType": "YIELD_GOLD", "Amount": 20},
+                    "localizations": [
+                        {
+                            "name": "Economic Prosperity",
+                            "description": "+20% Gold in all cities",
+                        }
+                    ],
+                }
+            ],
             "traditions": [],
             "progression_tree_nodes": [],
             "progression_trees": [],
