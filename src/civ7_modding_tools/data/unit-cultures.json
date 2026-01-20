@@ -17,8 +17,40 @@
       ]
     },
     {
+      "id": "CIVILIZATION_ABBASID",
+      "name": "Abbasid",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_CHOLA",
+      "name": "Chola",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
       "id": "CIVILIZATION_EGYPT",
       "name": "Egypt",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_HAWAII",
+      "name": "Hawaii",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_IP_GUJRANWALA",
+      "name": "Independent Power Gujranwala",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -41,6 +73,14 @@
       ]
     },
     {
+      "id": "CIVILIZATION_MAJAPAHIT",
+      "name": "Majapahit",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
       "id": "CIVILIZATION_MAURYA",
       "name": "Maurya",
       "description": "Unit culture used by: UNKNOWN",
@@ -57,8 +97,40 @@
       ]
     },
     {
+      "id": "CIVILIZATION_MONGOLIA",
+      "name": "Mongolia",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_MUGHAL",
+      "name": "Mughal",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
       "id": "CIVILIZATION_PERSIA",
       "name": "Persia",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_SIAM",
+      "name": "Siam",
+      "description": "Unit culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "CIVILIZATION_SPAIN",
+      "name": "Spain",
       "description": "Unit culture used by: UNKNOWN",
       "civilizations": [
         "UNKNOWN"
@@ -96,9 +168,10 @@
     {
       "id": "MidE",
       "name": "Middle Eastern",
-      "description": "Unit culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BULGARIA, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "description": "Unit culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_BULGARIA, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
         "CIVILIZATION_BULGARIA",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
@@ -116,9 +189,10 @@
     {
       "id": "PAC",
       "name": "Pacific",
-      "description": "Unit culture used by: CIVILIZATION_TONGA",
+      "description": "Unit culture used by: CIVILIZATION_TONGA, UNKNOWN",
       "civilizations": [
-        "CIVILIZATION_TONGA"
+        "CIVILIZATION_TONGA",
+        "UNKNOWN"
       ]
     },
     {

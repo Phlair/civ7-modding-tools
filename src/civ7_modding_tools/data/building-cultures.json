@@ -3,9 +3,10 @@
     {
       "id": "ANT_MUD",
       "name": "Antiquity - Mud/Brick",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
         "CIVILIZATION_NEPAL",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
@@ -37,9 +38,18 @@
     {
       "id": "BUILDING_CULTURE_EEU",
       "name": "Eastern European",
-      "description": "Building culture used by: CIVILIZATION_GREAT_BRITAIN",
+      "description": "Building culture used by: CIVILIZATION_GREAT_BRITAIN, UNKNOWN",
       "civilizations": [
-        "CIVILIZATION_GREAT_BRITAIN"
+        "CIVILIZATION_GREAT_BRITAIN",
+        "UNKNOWN"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_IND",
+      "name": "",
+      "description": "Building culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
       ]
     },
     {
@@ -56,9 +66,10 @@
     {
       "id": "BUILDING_CULTURE_MID",
       "name": "Middle Eastern",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
         "CIVILIZATION_NEPAL",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
@@ -101,9 +112,10 @@
     {
       "id": "BUILDING_CULTURE_NEU",
       "name": "Northern European",
-      "description": "Building culture used by: CIVILIZATION_ICELAND",
+      "description": "Building culture used by: CIVILIZATION_ICELAND, UNKNOWN",
       "civilizations": [
-        "CIVILIZATION_ICELAND"
+        "CIVILIZATION_ICELAND",
+        "UNKNOWN"
       ]
     },
     {
@@ -120,6 +132,14 @@
       "description": "Building culture used by: CIVILIZATION_NEPAL",
       "civilizations": [
         "CIVILIZATION_NEPAL"
+      ]
+    },
+    {
+      "id": "BUILDING_CULTURE_SAF",
+      "name": "",
+      "description": "Building culture used by: UNKNOWN",
+      "civilizations": [
+        "UNKNOWN"
       ]
     },
     {
@@ -141,9 +161,10 @@
     {
       "id": "EXP_MUD",
       "name": "Exploration - Mud/Brick",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",
         "UNKNOWN"
@@ -167,9 +188,10 @@
     {
       "id": "MOD_MUD",
       "name": "Modern - Mud/Brick",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
+      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
       "civilizations": [
         "CIVILIZATION_ASSYRIA",
+        "CIVILIZATION_BABYLON",
         "CIVILIZATION_NEPAL",
         "CIVILIZATION_OTTOMANS",
         "CIVILIZATION_QAJAR",

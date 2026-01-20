@@ -24,6 +24,7 @@ class YamlToPyConverter:
         self.data = yaml_data
         self.lines: list[str] = []
         self.indent_level = 0
+        self.action_group_var_name: str = 'ALWAYS'  # Default action group variable
         
     def indent(self) -> str:
         """Return current indentation string."""
@@ -195,13 +196,23 @@ class YamlToPyConverter:
     
     def generate_action_group(self) -> None:
         """Generate action group bundle."""
-        action_group = self.data.get('action_group')
+        action_group_data = self.data.get('action_group')
+        if not action_group_data:
+            return
+        
+        # Handle both dict and string formats
+        if isinstance(action_group_data, dict):
+            action_group = action_group_data.get('action_group_id')
+        else:
+            action_group = action_group_data
+        
         if not action_group:
             return
         
         self.add_line('# Action group')
         var_name = action_group.replace('AGE_', '').title()
-        self.add_line(f'{action_group} = ActionGroupBundle(action_group_id=\'{action_group}\')')
+        self.action_group_var_name = var_name  # Store for builder methods
+        self.add_line(f'{var_name} = ActionGroupBundle(action_group_id=\'{action_group}\')')
         self.add_line()
     
     def generate_imports_builders(self) -> None:
@@ -211,12 +222,11 @@ class YamlToPyConverter:
             return
         
         self.add_line('# Icon imports')
-        action_group = self.data.get('action_group', 'ALWAYS')
         
         for imp in imports:
             builder_id = imp['id']
             self.add_line(f'{builder_id} = ImportFileBuilder()')
-            self.add_line(f'{builder_id}.action_group_bundle = {action_group}')
+            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             self.add_line(f'{builder_id}.fill({{')
             self.indent_level += 1
             self.add_line(f"'source_path': '{imp['source_path']}',")
@@ -235,6 +245,7 @@ class YamlToPyConverter:
         for modifier_data in modifiers:
             builder_id = modifier_data['id']
             self.add_line(f'{builder_id} = ModifierBuilder()')
+            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             
             # Build fill dict
             fill_dict = {}
@@ -262,12 +273,11 @@ class YamlToPyConverter:
             return
         
         self.add_line('# Traditions')
-        action_group = self.data.get('action_group', 'ALWAYS')
         
         for tradition_data in traditions:
             builder_id = tradition_data['id']
             self.add_line(f'{builder_id} = TraditionBuilder()')
-            self.add_line(f'{builder_id}.action_group_bundle = {action_group}')
+            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             
             # Build fill dict
             fill_dict = {k: v for k, v in tradition_data.items() if k not in ['id', 'bindings']}
@@ -309,12 +319,11 @@ class YamlToPyConverter:
             return
         
         self.add_line('# Units')
-        action_group = self.data.get('action_group', 'ALWAYS')
         
         for unit_data in units:
             builder_id = unit_data['id']
             self.add_line(f'{builder_id} = UnitBuilder()')
-            self.add_line(f'{builder_id}.action_group_bundle = {action_group}')
+            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             
             # Build fill dict
             fill_dict = {k: v for k, v in unit_data.items() if k not in ['id', 'bindings']}
@@ -335,12 +344,11 @@ class YamlToPyConverter:
             return
         
         self.add_line('# Constructibles')
-        action_group = self.data.get('action_group', 'ALWAYS')
         
         for constructible_data in constructibles:
             builder_id = constructible_data['id']
             self.add_line(f'{builder_id} = ConstructibleBuilder()')
-            self.add_line(f'{builder_id}.action_group_bundle = {action_group}')
+            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             
             # Build fill dict
             fill_dict = {k: v for k, v in constructible_data.items() if k not in ['id', 'bindings']}
@@ -361,12 +369,11 @@ class YamlToPyConverter:
             return
         
         self.add_line('# Progression tree nodes')
-        action_group = self.data.get('action_group', 'ALWAYS')
         
         for node_data in nodes:
             builder_id = node_data['id']
             self.add_line(f'{builder_id} = ProgressionTreeNodeBuilder()')
-            self.add_line(f'{builder_id}.action_group_bundle = {action_group}')
+            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             
             # Build fill dict
             fill_dict = {k: v for k, v in node_data.items() if k not in ['id', 'bindings']}
@@ -394,12 +401,11 @@ class YamlToPyConverter:
             return
         
         self.add_line('# Progression trees')
-        action_group = self.data.get('action_group', 'ALWAYS')
         
         for tree_data in trees:
             builder_id = tree_data['id']
             self.add_line(f'{builder_id} = ProgressionTreeBuilder()')
-            self.add_line(f'{builder_id}.action_group_bundle = {action_group}')
+            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             
             # Build fill dict
             fill_dict = {k: v for k, v in tree_data.items() if k not in ['id', 'bindings']}
@@ -427,11 +433,10 @@ class YamlToPyConverter:
             return
         
         self.add_line('# Civilization')
-        action_group = self.data.get('action_group', 'ALWAYS')
         builder_id = civ_data.get('id', 'civilization')
         
         self.add_line(f'{builder_id} = CivilizationBuilder()')
-        self.add_line(f'{builder_id}.action_group_bundle = {action_group}')
+        self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
         
         # Build fill dict (exclude bindings - they're auto-generated)
         fill_dict = {k: v for k, v in civ_data.items() if k not in ['id', 'bindings']}
@@ -560,12 +565,17 @@ class YamlToPyConverter:
     def generate_build_call(self) -> None:
         """Generate mod.build() call."""
         build = self.data.get('build', {})
-        output_dir = build.get('output_dir', './dist')
+        output_dir = build.get('output_dir', None)
         
         self.add_line('# Build mod')
         self.add_line("if __name__ == '__main__':")
         self.indent_level += 1
-        self.add_line(f"mod.build('{output_dir}')")
+        if output_dir:
+            # Use explicit output directory if specified
+            self.add_line(f"mod.build('{output_dir}')")
+        else:
+            # Use dynamic directory based on mod ID
+            self.add_line("mod.build(f'./dist-{mod.mod_id}')")
         self.indent_level -= 1
     
     def convert(self) -> str:

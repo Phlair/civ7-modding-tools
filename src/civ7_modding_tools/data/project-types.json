@@ -1,10 +1,28 @@
 {
   "values": [
     {
+      "id": "PROJECT_BREAK_SOUND_BARRIER"
+    },
+    {
       "id": "PROJECT_CITY_CULTURE_PROJECT"
     },
     {
       "id": "PROJECT_CITY_SCIENCE_PROJECT"
+    },
+    {
+      "id": "PROJECT_LAUNCH_ROCKET"
+    },
+    {
+      "id": "PROJECT_LAUNCH_SATELLITE"
+    },
+    {
+      "id": "PROJECT_OPERATION_IVY"
+    },
+    {
+      "id": "PROJECT_PRODUCE_WMD"
+    },
+    {
+      "id": "PROJECT_TOWN_FACTORY"
     },
     {
       "id": "PROJECT_TOWN_FISHING"
@@ -13,10 +31,19 @@
       "id": "PROJECT_TOWN_GRANARY"
     },
     {
+      "id": "PROJECT_TOWN_INN"
+    },
+    {
       "id": "PROJECT_TOWN_PRODUCTION"
     },
     {
+      "id": "PROJECT_TOWN_TEMPLE"
+    },
+    {
       "id": "PROJECT_TOWN_TRADE"
+    },
+    {
+      "id": "PROJECT_TRANS_OCEANIC_FLIGHT"
     }
   ]
 }

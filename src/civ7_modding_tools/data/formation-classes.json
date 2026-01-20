@@ -1,6 +1,9 @@
 {
   "values": [
     {
+      "id": "FORMATION_CLASS_AIR"
+    },
+    {
       "id": "FORMATION_CLASS_CIVILIAN"
     },
     {
@@ -11,6 +14,9 @@
     },
     {
       "id": "FORMATION_CLASS_NAVAL"
+    },
+    {
+      "id": "FORMATION_CLASS_SUPPORT"
     }
   ]
 }

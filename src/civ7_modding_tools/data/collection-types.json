@@ -7,13 +7,22 @@
       "id": "COLLECTION_ALL_CITIES"
     },
     {
+      "id": "COLLECTION_ALL_DISTRICTS"
+    },
+    {
       "id": "COLLECTION_ALL_PLAYERS"
     },
     {
       "id": "COLLECTION_ALL_UNITS"
     },
     {
+      "id": "COLLECTION_CITIES_FOLLOWING_OWNER_RELIGION"
+    },
+    {
       "id": "COLLECTION_CITY_PLOT_YIELDS"
+    },
+    {
+      "id": "COLLECTION_CITY_TRAINED_UNITS"
     },
     {
       "id": "COLLECTION_HOMELANDS_INDEPENDENT_NEAREST_STORY"

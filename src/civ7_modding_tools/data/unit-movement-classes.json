@@ -1,6 +1,9 @@
 {
   "values": [
     {
+      "id": "UNIT_MOVEMENT_CLASS_AIR"
+    },
+    {
       "id": "UNIT_MOVEMENT_CLASS_FOOT"
     },
     {
@@ -11,6 +14,9 @@
     },
     {
       "id": "UNIT_MOVEMENT_CLASS_RECON"
+    },
+    {
+      "id": "UNIT_MOVEMENT_CLASS_TRACKED"
     },
     {
       "id": "UNIT_MOVEMENT_CLASS_WHEELED"

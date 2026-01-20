@@ -1,13 +1,43 @@
 {
   "values": [
     {
+      "id": "GOVERNMENT_AUTHORITARIANISM"
+    },
+    {
+      "id": "GOVERNMENT_BUREAUCRATIC_MONARCHY"
+    },
+    {
       "id": "GOVERNMENT_CLASSICAL_REPUBLIC"
+    },
+    {
+      "id": "GOVERNMENT_CONSTITUTIONAL_MONARCHY"
     },
     {
       "id": "GOVERNMENT_DESPOTISM"
     },
     {
+      "id": "GOVERNMENT_ELECTIVE_REPUBLIC"
+    },
+    {
+      "id": "GOVERNMENT_FEUDAL_MONARCHY"
+    },
+    {
       "id": "GOVERNMENT_OLIGARCHY"
+    },
+    {
+      "id": "GOVERNMENT_PLUTOCRACY"
+    },
+    {
+      "id": "GOVERNMENT_REVOLUCION"
+    },
+    {
+      "id": "GOVERNMENT_REVOLUTIONARY_AUTHORITARIANISM"
+    },
+    {
+      "id": "GOVERNMENT_REVOLUTIONARY_REPUBLIC"
+    },
+    {
+      "id": "GOVERNMENT_THEOCRACY"
     }
   ]
 }

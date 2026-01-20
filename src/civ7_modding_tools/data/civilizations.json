@@ -1,0 +1,172 @@
+{
+  "values": [
+    {
+      "id": "CIVILIZATION_ABBASID",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_AKSUM",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_AMERICA",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_ASSYRIA",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_BABYLON",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_BUGANDA",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_BULGARIA",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_CARTHAGE",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_CHOLA",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_DAI_VIET",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_EGYPT",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_FRENCH_EMPIRE",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_GREAT_BRITAIN",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_GREECE",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_HAN",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_HAWAII",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_ICELAND",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_INCA",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_KHMER",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_MAJAPAHIT",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_MAURYA",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_MAYA",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_MEIJI",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_MEXICO",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_MING",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_MISSISSIPPIAN",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_MONGOLIA",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_MUGHAL",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_NEPAL",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_NORMAN",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_OTTOMANS",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_PERSIA",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_PIRATE_REPUBLIC",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_PRUSSIA",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_QAJAR",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_QING",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_ROME",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "CIVILIZATION_RUSSIA",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_SIAM",
+      "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_SONGHAI",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_SPAIN",
+      "age": "AGE_EXPLORATION"
+    },
+    {
+      "id": "CIVILIZATION_TONGA",
+      "age": "AGE_ANTIQUITY"
+    }
+  ]
+}

@@ -7,7 +7,19 @@
       "id": "AQ_HANDICAP_TOWN_WALLS"
     },
     {
+      "id": "EX_HANDICAP_CITY_WALLS"
+    },
+    {
+      "id": "EX_HANDICAP_TOWN_WALLS"
+    },
+    {
       "id": "HANDICAP_CRISIS_INVASION_UNITS"
+    },
+    {
+      "id": "MO_HANDICAP_CITY_WALLS"
+    },
+    {
+      "id": "MO_HANDICAP_TOWN_WALLS"
     }
   ]
 }

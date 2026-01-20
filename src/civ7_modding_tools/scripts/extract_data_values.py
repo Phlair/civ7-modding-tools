@@ -65,8 +65,10 @@ class CivVIIDataExtractor:
             'handicap_system_types': set(),
             'leaders': set(),
             'leader_attributes': set(),
+            'civilizations': set(),
         }
         self.civ_cache = defaultdict(dict)
+        self.civilization_ages = {}  # {civ_id: age_id}
 
     def scan_files(self) -> None:
         """Recursively scan all XML files in EXAMPLE and dist folders."""
@@ -262,6 +264,26 @@ class CivVIIDataExtractor:
                 if 'TRAIT_LEADER_ATTRIBUTE_' in trait:
                     self.data['leader_attributes'].add(trait)
 
+            # Civilization - ONLY from Civilizations table with UniqueCultureProgressionTree
+            # This filters out unlock references to DLC/unreleased content
+            if tag == 'Row' and 'CivilizationType' in attribs and 'UniqueCultureProgressionTree' in attribs:
+                civ_type = attribs['CivilizationType']
+                if civ_type.startswith('CIVILIZATION_'):
+                    self.data['civilizations'].add(civ_type)
+                    # Capture UniqueCultureProgressionTree to map age
+                    tree_id = attribs['UniqueCultureProgressionTree']
+                    self.civilization_ages[civ_type] = tree_id
+            
+            # ProgressionTree age mapping
+            if tag == 'Row' and 'ProgressionTreeType' in attribs and 'AgeType' in attribs:
+                tree_id = attribs['ProgressionTreeType']
+                age_id = attribs['AgeType']
+                # Store mapping for later lookup
+                if hasattr(self, '_tree_ages'):
+                    self._tree_ages[tree_id] = age_id
+                else:
+                    self._tree_ages = {tree_id: age_id}
+
     def _get_civ_name_from_path(self, file_path: Path) -> str:
         """Extract civilization name from file path."""
         parts = file_path.parts
@@ -275,6 +297,27 @@ class CivVIIDataExtractor:
                 if potential_civ in part.lower():
                     return f"CIVILIZATION_{potential_civ.upper().replace('-', '_')}"
         return 'UNKNOWN'
+
+    def _resolve_civ_age(self, civ_id: str) -> str:
+        """Resolve civilization age from progression tree."""
+        if civ_id not in self.civilization_ages:
+            return None
+        
+        tree_id = self.civilization_ages[civ_id]
+        
+        # Try to look up age from tree mappings
+        if hasattr(self, '_tree_ages') and tree_id in self._tree_ages:
+            return self._tree_ages[tree_id]
+        
+        # Fallback: infer age from tree ID pattern
+        if 'AQ' in tree_id or '_ANTIQUITY' in tree_id:
+            return 'AGE_ANTIQUITY'
+        elif 'EX' in tree_id or '_EXPLORATION' in tree_id:
+            return 'AGE_EXPLORATION'
+        elif 'MO' in tree_id or '_MODERN' in tree_id:
+            return 'AGE_MODERN'
+        
+        return None
 
     def _write_json(self, filename: str, data: Dict | List | Set) -> None:
         """Write data to JSON file in kebab-case naming."""
@@ -564,6 +607,19 @@ class CivVIIDataExtractor:
             'values': [{'id': la} for la in sorted(self.data['leader_attributes'])]
         }
         self._write_json('leader-attributes.json', leader_attributes)
+
+        # Civilization
+        civilizations = {
+            'values': [
+                {
+                    'id': c,
+                    'age': self._resolve_civ_age(c)
+                }
+                for c in sorted(self.data['civilizations'])
+                if not c.startswith('CIVILIZATION_NONE')  # Exclude placeholder civs
+            ]
+        }
+        self._write_json('civilizations.json', civilizations)
 
 
 def main() -> None:

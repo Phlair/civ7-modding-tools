@@ -29,11 +29,19 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "FISHING_BOAT",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "FOOD",
       "category": "UNCATEGORIZED"
     },
     {
       "id": "FORTIFICATION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "FULL_TILE",
       "category": "UNCATEGORIZED"
     },
     {
@@ -4237,6 +4245,38 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "LOC_AUTHORS_BABYLON",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_BABYLON_LOADING_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_BABYLON_LOADING_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_BUILDING_BABYLON_ACADEMY_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_BUILDING_BABYLON_ACADEMY_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_BUILDING_BABYLON_EDUBBA_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_BUILDING_BABYLON_EDUBBA_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_BUILDING_BABYLON_EDUBBA_TOOLTIP",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "LOC_BUILDING_CAMII_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -7085,6 +7125,150 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "LOC_CIVILIZATION_BABYLON_ABILITY_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_ABILITY_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_ADJECTIVE",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_1",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_10",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_11",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_12",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_13",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_14",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_15",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_16",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_17",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_18",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_19",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_2",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_20",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_21",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_22",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_23",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_24",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_25",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_26",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_27",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_28",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_29",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_3",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_30",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_4",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_5",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_6",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_7",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_8",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_9",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_FULL_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_BABYLON_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "LOC_CIVILIZATION_BULGARIA_ADJECTIVE",
       "category": "UNCATEGORIZED"
     },
@@ -7238,6 +7422,18 @@
     },
     {
       "id": "LOC_CIVILIZATION_TEST2_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_TEST_ADJECTIVE",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_TEST_CITY_NAMES_1",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_TEST_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
     {
@@ -7929,6 +8125,14 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "LOC_MODULE_BABYLON_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_MODULE_BABYLON_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "LOC_MODULE_BULGARIA_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -8006,6 +8210,10 @@
     },
     {
       "id": "LOC_MODULE_TONGA_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_MOD_94266F29757148E3B39B18D48052EC23_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
     {
@@ -9385,6 +9593,14 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "LOC_QUARTER_BABYLON_ZIGGURAT_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_QUARTER_BABYLON_ZIGGURAT_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "LOC_QUARTER_BAQ_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -9774,6 +9990,22 @@
     },
     {
       "id": "LOC_TANZIMAT_MOD_MUSEUM_PRODUCTION_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_TRADITION_BABYLON_LIBRARY_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_TRADITION_BABYLON_LIBRARY_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_TRADITION_BABYLON_SCRIBES_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_TRADITION_BABYLON_SCRIBES_NAME",
       "category": "UNCATEGORIZED"
     },
     {
@@ -10169,6 +10401,10 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "LOC_TREE_CIVICS_BABYLON_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "LOC_TREE_CIVICS_EX_BULGARIA_NAME",
       "category": "UNCATEGORIZED"
     },
@@ -10314,6 +10550,14 @@
     },
     {
       "id": "LOC_UNIT_ANTIQUARIAN_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_UNIT_BABYLON_SABUM_KIBITTUM_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_UNIT_BABYLON_SABUM_KIBITTUM_NAME",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11217,11 +11461,27 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "MILL",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "OCEAN_TILES_ELIGIBLE",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "PERSISTENT",
       "category": "UNCATEGORIZED"
     },
     {
       "id": "PRODUCTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "RAIL_CONNECTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "RELIGIOUS",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11241,6 +11501,26 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_ABAMBOWA",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_AIRCRAFT",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_AIR_FIGHTER",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_AIR_LAND_ATTACK_SPECIALIST",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_ALIM",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_ALTERNATE_SETTLE",
       "category": "UNCATEGORIZED"
     },
@@ -11257,11 +11537,19 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_BABYLON_SABUM_KIBITTUM",
+      "category": "UNIT_CLASS"
+    },
+    {
       "id": "UNIT_CLASS_BALIK",
       "category": "UNCATEGORIZED"
     },
     {
       "id": "UNIT_CLASS_BARBARY_CORSAIR",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_BOMBER",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11281,6 +11569,22 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_CETBANG",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_CHANG_BEUN",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_CHASQUI",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_CHEVALER",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_COLONIST",
       "category": "UNCATEGORIZED"
     },
@@ -11293,6 +11597,18 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_CONQUISTADOR",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_CORSAIR",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_COSSACK",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_CREATE_TOWN",
       "category": "UNCATEGORIZED"
     },
@@ -11302,6 +11618,14 @@
     },
     {
       "id": "UNIT_CLASS_DHOW",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_ELITE_AIR_ATTACK",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_ELITE_AIR_SIEGE",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11329,6 +11653,10 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_ELITE_SIEGE",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_EXPLORER",
       "category": "UNCATEGORIZED"
     },
@@ -11341,7 +11669,15 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_GARDE_IMPERIALE",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_GHILMAN",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_GOLD_BANGLES",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11349,7 +11685,19 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_GROUND_ATTACKER",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_GURKHA",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_GUSA",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_HANGSHANG",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11369,7 +11717,15 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_HUSSAR",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_IGNORES_BORDERS",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_IGNORE_DISTRICT_COMBAT",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11385,6 +11741,14 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_INTERCEPTOR",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_JACOBIN",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_JAGUAR_SLAYER",
       "category": "UNCATEGORIZED"
     },
@@ -11393,7 +11757,23 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_KAHUNA",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_KALAM",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_KALIA",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_KATYUSHA",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_KESHIG",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11402,6 +11782,10 @@
     },
     {
       "id": "UNIT_CLASS_LEGION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_LEIOMANO",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11421,6 +11805,18 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_MAMLUK",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_MANDARIN",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_MARINE",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_MEDJAY",
       "category": "UNCATEGORIZED"
     },
@@ -11429,7 +11825,15 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_MIKASA",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_MOUNTED",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_MWAMI",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11441,7 +11845,19 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_NAVAL_STEALTH",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_NAVAL_TREASURE",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_NON_COMBAT",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_NOYAN",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11453,7 +11869,23 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_OTTRU",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_PARTISAN",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_PEDANDA",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_PET_THE_DOG",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_PHYSICIAN",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11462,6 +11894,10 @@
     },
     {
       "id": "UNIT_CLASS_PRIVATEER",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_PROSPECTOR",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11481,7 +11917,15 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_RELIGIOUS",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_REVENGE",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_REVOLUCIONARIO",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11494,6 +11938,10 @@
     },
     {
       "id": "UNIT_CLASS_SEE_HIDDEN",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_SEPOY",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11517,7 +11965,23 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_SOLDADERAS",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_SOLTAN",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_STEALTH",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_STUKA",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_TAJIRO",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11529,11 +11993,23 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_TERCIO",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_TJATY",
       "category": "UNCATEGORIZED"
     },
     {
       "id": "UNIT_CLASS_TURTANU",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_UNIQUE_GREATPERSON",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_UPARAT",
       "category": "UNCATEGORIZED"
     },
     {
@@ -11553,11 +12029,27 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "UNIT_CLASS_WARAKAQ",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "UNIT_CLASS_WATONATHI",
       "category": "UNCATEGORIZED"
     },
     {
       "id": "UNIT_CLASS_WHEELED",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_XUNLEICHONG",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_ZAMINDAR",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_ZERO",
       "category": "UNCATEGORIZED"
     },
     {

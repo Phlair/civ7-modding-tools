@@ -1,6 +1,9 @@
 {
   "values": [
     {
+      "id": "FEATURE_ATOLL"
+    },
+    {
       "id": "FEATURE_COLD_REEF"
     },
     {

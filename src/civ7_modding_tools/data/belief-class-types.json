@@ -1,7 +1,16 @@
 {
   "values": [
     {
+      "id": "BELIEF_CLASS_ENHANCER"
+    },
+    {
+      "id": "BELIEF_CLASS_FOUNDER"
+    },
+    {
       "id": "BELIEF_CLASS_PANTHEON"
+    },
+    {
+      "id": "BELIEF_CLASS_RELIQUARY"
     }
   ]
 }

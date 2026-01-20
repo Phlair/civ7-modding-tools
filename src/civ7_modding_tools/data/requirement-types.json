@@ -4,10 +4,19 @@
       "id": "REQUIREMENT_AGE_CRISIS_STAGE_IS_X"
     },
     {
+      "id": "REQUIREMENT_ATTACKER_PLOT_ADJACENT_TO_COAST"
+    },
+    {
       "id": "REQUIREMENT_BUILDING_IS_ADJACENT_TO_X"
     },
     {
       "id": "REQUIREMENT_CITY_BUILT_CONSTRUCTIBLE_TYPE"
+    },
+    {
+      "id": "REQUIREMENT_CITY_CONVERTED"
+    },
+    {
+      "id": "REQUIREMENT_CITY_FOLLOWS_RELIGION"
     },
     {
       "id": "REQUIREMENT_CITY_FOUNDED_BY_UNIT_TYPE"
@@ -34,10 +43,19 @@
       "id": "REQUIREMENT_CITY_HAS_GREAT_WORK"
     },
     {
+      "id": "REQUIREMENT_CITY_HAS_ONLY_BUILDINGS_FROM_THIS_AGE"
+    },
+    {
       "id": "REQUIREMENT_CITY_HAS_PROJECT"
     },
     {
+      "id": "REQUIREMENT_CITY_HAS_RESOURCE"
+    },
+    {
       "id": "REQUIREMENT_CITY_HAS_RESOURCE_ASSIGNED"
+    },
+    {
+      "id": "REQUIREMENT_CITY_HAS_TERRAIN"
     },
     {
       "id": "REQUIREMENT_CITY_HAS_UNIQUE_QUARTER"
@@ -58,6 +76,9 @@
       "id": "REQUIREMENT_CITY_IS_DISTANT_LANDS"
     },
     {
+      "id": "REQUIREMENT_CITY_IS_HOLY_CITY"
+    },
+    {
       "id": "REQUIREMENT_CITY_IS_INFECTED"
     },
     {
@@ -76,28 +97,52 @@
       "id": "REQUIREMENT_COLLECTION_COUNT_ATLEAST"
     },
     {
+      "id": "REQUIREMENT_COMBAT_TYPE_MATCHES"
+    },
+    {
       "id": "REQUIREMENT_COMMANDER_HAS_X_PROMOTIONS"
     },
     {
       "id": "REQUIREMENT_DEFENDER_IS_PLAYER_OWNED_DISTRICT"
     },
     {
+      "id": "REQUIREMENT_GAME_IS_STARTED"
+    },
+    {
       "id": "REQUIREMENT_GAME_TURN_ATLEAST"
+    },
+    {
+      "id": "REQUIREMENT_GAME_TURN_IS_LESS_THAN_X"
     },
     {
       "id": "REQUIREMENT_GAME_TURN_IS_X_NARRATIVE"
     },
     {
+      "id": "REQUIREMENT_IS_AGE_COUNT"
+    },
+    {
       "id": "REQUIREMENT_LEGACY_PATH_COMPLETED"
     },
     {
+      "id": "REQUIREMENT_LEGACY_PATH_ENABLED"
+    },
+    {
       "id": "REQUIREMENT_LEGACY_PATH_MILESTONE_COMPLETED"
+    },
+    {
+      "id": "REQUIREMENT_NEAR_RELIGIOUS_CITY"
     },
     {
       "id": "REQUIREMENT_OPPONENT_IS_DISTRICT"
     },
     {
       "id": "REQUIREMENT_OPPONENT_IS_DISTRICT_WITH_SPECIFIC_CONSTRUCTIBLE"
+    },
+    {
+      "id": "REQUIREMENT_OPPONENT_IS_OTHER_IDEOLOGY"
+    },
+    {
+      "id": "REQUIREMENT_OPPONENT_IS_SLOWER"
     },
     {
       "id": "REQUIREMENT_OPPONENT_UNIT_DOMAIN_MATCHES"
@@ -115,13 +160,28 @@
       "id": "REQUIREMENT_PLAYER_CIVILIZATION_TYPE_MATCHES"
     },
     {
+      "id": "REQUIREMENT_PLAYER_CONQUERED_RELIGIOUS_CITY"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_CONQUERED_SETTLEMENT_WITH_BUILDING"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_CONQUERED_WONDER"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_CONVERTS_OPPONENTS_TO_FOUNDED_RELIGION"
     },
     {
       "id": "REQUIREMENT_PLAYER_ELIGIBLE_CS_BONUS"
     },
     {
+      "id": "REQUIREMENT_PLAYER_EXTRACTS_ARTIFACT"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_FIRST_TIME_SETTLEMENT_OCCUPATION"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_FOUNDED_RELIGION"
     },
     {
       "id": "REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION"
@@ -152,6 +212,12 @@
     },
     {
       "id": "REQUIREMENT_PLAYER_HAS_COMPLETED_PROGRESSION_TREE_NODE"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_COMPLETED_PROJECT"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_COMPLETED_X_DIPLOMACY_ACTIONS"
     },
     {
       "id": "REQUIREMENT_PLAYER_HAS_COMPLETED_X_PROGRESSION_TREE_NODES"
@@ -187,7 +253,13 @@
       "id": "REQUIREMENT_PLAYER_HAS_PANTHEON"
     },
     {
+      "id": "REQUIREMENT_PLAYER_HAS_RESOURCE"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_HAS_UNHAPPY_CITIES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_VICTORY_POINTS_FOR_TYPE"
     },
     {
       "id": "REQUIREMENT_PLAYER_HAS_X_ALLIANCES"
@@ -196,10 +268,25 @@
       "id": "REQUIREMENT_PLAYER_HAS_X_CITIES_WITH_BUILDING_SET"
     },
     {
+      "id": "REQUIREMENT_PLAYER_HAS_X_DISTINCTIVE_BUILDINGS_FROM_CURRENT_AGE"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_HAS_X_GREAT_WORKS"
     },
     {
+      "id": "REQUIREMENT_PLAYER_HAS_X_IMPORTED_RESOURCES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_RELATIONSHIPS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_RELIGIONS"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_HAS_X_RESOURCES"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_RESOURCES_IN_ONE_CITY"
     },
     {
       "id": "REQUIREMENT_PLAYER_HAS_X_RESOURCE_TYPE"
@@ -208,13 +295,34 @@
       "id": "REQUIREMENT_PLAYER_HAS_X_SETTLEMENTS"
     },
     {
+      "id": "REQUIREMENT_PLAYER_HAS_X_SETTLEMENTS_FOREIGN_HEMISPHERE"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_SETTLEMENTS_IN_BIOME"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_STARTING_YIELD"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_TOWNS_PRODUCING_PROJECT"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_HAS_X_TRADE_ROUTES_WITH_PLAYER"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_URBAN_DISTRICTS_WITH_YIELD"
     },
     {
       "id": "REQUIREMENT_PLAYER_HAS_X_WARS"
     },
     {
+      "id": "REQUIREMENT_PLAYER_HAS_X_WAR_SUPPORT"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_HAS_X_WONDERS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_HAS_X_WORKERS"
     },
     {
       "id": "REQUIREMENT_PLAYER_IS_ATTACKING"
@@ -223,10 +331,19 @@
       "id": "REQUIREMENT_PLAYER_IS_AT_PEACE_WITH_ALL_MAJORS"
     },
     {
+      "id": "REQUIREMENT_PLAYER_IS_AT_WAR_WITH_OPPOSING_IDEOLOGY"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_IS_HUMAN"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_IS_IN_GOLDEN_AGE"
     },
     {
       "id": "REQUIREMENT_PLAYER_IS_MAJOR"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_IS_RELIGION_FOUNDER"
     },
     {
       "id": "REQUIREMENT_PLAYER_LEADER_TYPE_MATCHES"
@@ -247,6 +364,9 @@
       "id": "REQUIREMENT_PLAYER_OVER_SETTLEMENT_CAP"
     },
     {
+      "id": "REQUIREMENT_PLAYER_OWNS_OBJECT"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_PRODUCES_AT_LEAST_X_RESOURCE"
     },
     {
@@ -256,6 +376,9 @@
       "id": "REQUIREMENT_PLAYER_STARTS_TRADE_ROUTE_WITH_MATCHING_BUILDING"
     },
     {
+      "id": "REQUIREMENT_PLAYER_TOTAL_IMPROVED_RESOURCES"
+    },
+    {
       "id": "REQUIREMENT_PLAYER_TOTAL_POPULATION"
     },
     {
@@ -263,6 +386,12 @@
     },
     {
       "id": "REQUIREMENT_PLAYER_TRADES_WITH_PLAYERS_AT_WAR"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_TRADES_WITH_X_PLAYERS"
+    },
+    {
+      "id": "REQUIREMENT_PLAYER_TRADES_X_RESOURCES"
     },
     {
       "id": "REQUIREMENT_PLAYER_UNIT_DESTROYS_DISTRICT_DEFENSES"
@@ -280,6 +409,9 @@
       "id": "REQUIREMENT_PLOT_ADJACENT_FRIENDLY_UNIT_TAG_MATCHES"
     },
     {
+      "id": "REQUIREMENT_PLOT_ADJACENT_NUM_ENEMY_UNITS"
+    },
+    {
       "id": "REQUIREMENT_PLOT_ADJACENT_RESOURCE_CLASS_TYPE_MATCHES"
     },
     {
@@ -289,7 +421,16 @@
       "id": "REQUIREMENT_PLOT_ADJACENT_TO_COAST"
     },
     {
+      "id": "REQUIREMENT_PLOT_ADJACENT_TO_LAKE"
+    },
+    {
       "id": "REQUIREMENT_PLOT_ADJACENT_TO_OWNER"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_TO_RIVER"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_ADJACENT_UNIT_TAG_MATCHES"
     },
     {
       "id": "REQUIREMENT_PLOT_BIOME_TYPE_MATCHES"
@@ -301,13 +442,28 @@
       "id": "REQUIREMENT_PLOT_FEATURE_TYPE_MATCHES"
     },
     {
+      "id": "REQUIREMENT_PLOT_HAS_ANY_FEATURE"
+    },
+    {
       "id": "REQUIREMENT_PLOT_HAS_CONSTRUCTIBLE"
     },
     {
       "id": "REQUIREMENT_PLOT_HAS_NUM_CONSTRUCTIBLES"
     },
     {
+      "id": "REQUIREMENT_PLOT_HAS_ROUTE_TYPE"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_HAS_YIELD"
+    },
+    {
       "id": "REQUIREMENT_PLOT_IN_COMMAND_RADIUS"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_IS_COASTAL_LAND"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_IS_HOMELANDS"
     },
     {
       "id": "REQUIREMENT_PLOT_IS_LAKE"
@@ -328,6 +484,12 @@
       "id": "REQUIREMENT_PLOT_NEAR_CAPITAL"
     },
     {
+      "id": "REQUIREMENT_PLOT_RESOURCE_CLASS_TYPE_MATCHES"
+    },
+    {
+      "id": "REQUIREMENT_PLOT_RESOURCE_TAG_MATCHES"
+    },
+    {
       "id": "REQUIREMENT_PLOT_RESOURCE_TYPE_MATCHES"
     },
     {
@@ -346,13 +508,28 @@
       "id": "REQUIREMENT_UNIT_CLASS_MATCHES"
     },
     {
+      "id": "REQUIREMENT_UNIT_CORE_CLASS_MATCHES"
+    },
+    {
       "id": "REQUIREMENT_UNIT_DOMAIN_MATCHES"
     },
     {
       "id": "REQUIREMENT_UNIT_EMBARKED"
     },
     {
+      "id": "REQUIREMENT_UNIT_FORMATION_CLASS_MATCHES"
+    },
+    {
       "id": "REQUIREMENT_UNIT_IN_OWNER_TERRITORY"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_IS_COMBAT"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_IS_ENEMY_OF_OWNER"
+    },
+    {
+      "id": "REQUIREMENT_UNIT_IS_FORTIFIED"
     },
     {
       "id": "REQUIREMENT_UNIT_IS_INDEPENDENT"
