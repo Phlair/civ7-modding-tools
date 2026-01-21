@@ -46,6 +46,8 @@ civilization:
     unique_culture_progression_tree: TREE_CIVICS_ICENI
   bindings:
   - progression_tree_iceni
+  icon:
+    path: icons/civ_sym_iceni
 units: []
 constructibles: []
 modifiers: []

@@ -44,6 +44,9 @@ dist-*/
 **/dist-*/
 *-EXAMPLE/
 
+# js stuff
+coverage/
+
 # Node.js (for TypeScript build tooling)
 node_modules/
 npm-debug.log

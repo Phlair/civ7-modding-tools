@@ -120,6 +120,9 @@ civilization.fill({
     'civilization': {
         'unique_culture_progression_tree': 'TREE_CIVICS_ICENI',
     },
+    'icon': {
+        'path': 'icons/civ_sym_iceni',
+    },
 })
 
 # Bind all entities to civilization

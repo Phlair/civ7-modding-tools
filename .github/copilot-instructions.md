@@ -391,31 +391,80 @@ src/civ7_modding_tools/
 
 Visual web interface for editing YAML civilization mod configurations using FastAPI, HTMX, and Tailwind CSS. Not required for programmatic mod generation, but provides intuitive UI for YAML-based editing.
 
+Notes:
+- `web/templates/index.html` loads Tailwind via CDN and includes the HTMX script (HTMX components are optional).
+- Core UI rendering is handled by ES6 modules in `web/static/js/`.
+
 ### Architecture
 
 ```
 Browser (Client) ←→ FastAPI REST API ←→ File System + Reference Data
-  - Tailwind CSS     - 8 endpoints        - YAML load/save
-  - Vanilla JS       - Pydantic validation - 33 JSON data files
-  - HTMX structure   - Caching system     - civ7_modding_tools/data
+    - ES6 Modules      - 9 endpoints        - YAML load/save + templates
+  - Tailwind CSS     - Pydantic validation - 33 JSON data files
+  - Vanilla JS       - Caching system     - civ7_modding_tools/data
 ```
 
-### Key Files
+### File Organization (Modular)
+
+**Frontend Structure (ES6 Modules - no build step required):**
+
+```
+web/static/js/
+├── main.js              # Entry point, exposes functions to window for inline handlers
+├── state.js             # Global state (currentData, wizardData, dataCache), config objects
+├── api.js               # Backend communication (loadFile, saveFile, exportYAML, etc.)
+├── ui.js                # Toast notifications, loading states, dirty indicator updates
+├── templates.js         # Template loading and selection via modal
+├── data/
+│   └── loader.js        # Reference data loader and caching
+├── wizard/
+│   ├── wizard.js        # Wizard flow engine: switchMode(), wizardNextStep(), wizardPrevStep()
+│   ├── step1.js         # Metadata, module localization, age section
+│   ├── step2.js         # Civilization core properties, traits, tags, icon
+│   ├── step3.js         # Units & buildings: renderWizardStep3() with inline handlers
+│   ├── step4.js         # Modifiers & traditions: renderWizardStep4() with inline handlers
+│   └── step5.js         # Review & finish: validation summary, content counts
+├── expert/
+│   ├── sections.js      # renderAllSections() dispatches to 13 section renderers
+│   ├── civilization.js  # 9 civilization sub-renderers (terrains, unlocks, biases, localizations, etc.)
+│   └── navigation.js    # getAvailableSections() returns 13 sections with metadata
+└── form/
+    ├── fields.js        # Field creators: createTextField(), createStringArrayField(), etc.
+    └── arrays.js        # Array helpers exposed to window: arrayAddItem(), arrayRemoveItem()
+```
+
+**Testing Structure (Vitest with browser APIs):**
+
+```
+web/tests/
+├── test_ui.js                      # UI module tests (toast, loading, dirty indicator)
+├── test_templates.js               # Template loading and selection tests
+├── test_state.js                   # State management tests (dirty tracking, data updates)
+├── test_api.js                     # API layer tests (load, save, export, validate)
+├── test_wizard.js                  # Wizard flow engine tests (step navigation, mode switching)
+├── test_wizard_steps_3_4_5.js      # Units, Buildings, Modifiers, Traditions, Review tests (47 tests)
+├── test_expert_navigation.js       # Navigation tests (scroll spy, section switching)
+├── test_form_fields.js             # Field creator tests (all field types)
+└── test_form_arrays.js             # Array helper tests (add, remove, rerender)
+```
+
+**Backend Files:**
 
 | Path | Purpose |
 |------|---------|
-| `web/app.py` | FastAPI backend, 8 REST endpoints, validation, caching |
-| `web/run.py` | Development server launcher |
-| `web/templates/index.html` | Main UI, 13 color-coded sections, sticky header |
-| `web/templates/components.html` | 10 reusable form component templates |
-| `web/static/js/editor.js` | Form management, YAML load/save, state tracking |
-| `web/static/css/styles.css` | Tailwind extensions, animations, dark theme |
+| `web/app.py` | FastAPI backend with Pydantic validation, YAML parsing, reference data endpoints |
+| `web/run.py` | Development server launcher (auto-reload, uvicorn wrapper) |
+| `web/templates/index.html` | HTML entry point, module imports, navbar, containers for wizard/expert |
+| `web/templates/components.html` | Reusable HTMX form components (optional) |
+| `web/static/css/styles.css` | Tailwind CSS, custom animations, dark theme overrides |
+| `web/__init__.py` | FastAPI app initialization |
 
 ### REST API Endpoints
 
 **File Operations:**
 - `POST /api/civilization/load` - Load YAML, returns parsed data
 - `POST /api/civilization/save` - Persist edited YAML to disk
+- `POST /api/civilization/export` - Export YAML as downloadable file
 - `POST /api/civilization/validate` - Validate configuration structure
 
 **Reference Data:**
@@ -426,6 +475,9 @@ Browser (Client) ←→ FastAPI REST API ←→ File System + Reference Data
 **Utility:**
 - `GET /api/health` - Health check
 - `GET /docs` - Swagger UI (auto-generated)
+
+**Templates:**
+- `GET /api/templates/{template_name}` - Load a pre-built template (blank, scientific, military, cultural, economic)
 
 ### Running the Editor
 
@@ -439,63 +491,203 @@ python web/run.py
 # Auto-reloads on file changes
 ```
 
+### Module Architecture & Patterns
+
+**Event Handling Pattern (Critical):**
+Due to frequent DOM re-renders in wizard/expert modes, event handlers cannot use `addEventListener` (listeners are lost when DOM is replaced). Instead:
+- All interactive functions are exposed to `window` object synchronously via `Object.defineProperty()` or direct assignment
+- Event handlers use inline `onclick="window.functionName()"` attributes
+- This ensures handlers persist through DOM mutations
+- Example: `<button onclick="window.wizardNextStep()">Next</button>`
+
+**1. Main Entry Point (main.js)**
+- Imports and exposes wizard functions to `window`: `switchMode`, `skipWizard`, `wizardPrevStep`, `wizardNextStep`, `createNewMod`
+- Uses `Object.defineProperty()` for read-only window assignments (security)
+- Initializes reference data loader on `DOMContentLoaded`
+- Sets up event delegation for navbar and container clicks
+
+**2. State Management (state.js)**
+- Exports: `currentData`, `wizardData`, `isDirty`, `dataCache` (mutable globals)
+- Mutation functions: `markDirty()`, `setCurrentData()`, `getCurrentData()`, `resetWizardData()`
+- Config objects: `AUTOCOMPLETE_MAPPINGS`, `FIELD_HELP_TEXT`, `REQUIRED_FIELDS`
+- All state mutations go through exported functions for traceability
+
+**3. API Layer (api.js)**
+- Async functions: `loadFile(path)`, `saveFile(path, data)`, `exportYAML()`, `validateModData(data)`, `healthCheck()`
+- Reference data: `fetchReferenceData(type)`, caching via state.js
+- Error handling with console prefixes: `[LOAD_ERROR]`, `[SAVE_ERROR]`, `[VALIDATION_ERROR]`
+- All communication via fetch to FastAPI backend
+
+**4. UI Module (ui.js)**
+- Pure functions: `showToast(message, type)`, `showLoading(element)`, `updateDirtyIndicator(isDirty)`
+- No state dependencies, direct DOM manipulation
+- Uses Tailwind classes: `bg-green-600`, `text-red-400`, `opacity-50`, etc.
+- Synchronous (no async operations)
+
+**5. Templates Module (templates.js)**
+- `showTemplateModal()` / `hideTemplateModal()` control the template modal
+- `loadTemplate(templateName)` fetches template data (currently calls `/api/template/{name}`; backend route is `/api/templates/{template_name}`)
+- `getAvailableTemplates()` returns template metadata used by the UI
+
+**6. Data Loader (data/loader.js)**
+- `loadReferenceData()` - Fetches `/api/data/list`, logs available types
+- Caches reference data in state for form field use
+- Called on app initialization
+
+**7. Wizard Flow (wizard/wizard.js)**
+- Functions: `initializeMode()`, `switchMode(mode)`, `wizardNextStep()`, `wizardPrevStep()`, `skipWizard()`, `initializeWizard()`
+- `renderWizardStep()` - Main renderer, dynamically imports step modules
+- `validateWizardData()` - Validates current step before advancing
+- `saveWizardStepData()` - Merges step data into `wizardData`
+- Exposes step renderers: `renderWizardStep1()` through `renderWizardStep5()`
+- LocalStorage: Saves user's mode preference ("wizard" or "expert")
+
+**8. Wizard Steps (wizard/step1-5.js)**
+- Each exports: `renderWizardStepN(container)` - Renders UI for that step
+- Internal functions exposed to `window` inside render: handlers for form interactions
+- Steps 3 & 4: Use inline `onclick="window.wizardSaveUnit()"`, `onclick="window.wizardSaveModifier()"`, etc.
+- Step data synchronized via `state.wizardData` mutations
+- Step 5: Displays validation errors, content counts, next steps
+
+**9. Expert Sections (expert/sections.js)**
+- `renderAllSections(container, data)` - Main entry point, creates 13 collapsible sections
+- `renderSectionContent(container, sectionId, data)` - Switch dispatcher to 13 renderers
+- `updateFieldValue(fieldPath, value)` - Dot-notation path updater (e.g., "civilization.traits")
+- Each section has collapsible header with arrow toggle
+- Sections import sub-renderers asynchronously (civilization.js for civ-specific renderers)
+
+**10. Civilization Sub-renderers (expert/civilization.js)**
+- Exports: 9 renderer functions for civ-specific nested structures
+  - `renderStartBiasTerrains()`, `renderCivilizationUnlocks()`, `renderLeaderCivilizationBiases()`
+  - `renderLocalizations()`, `renderLoadingInfoCivilizations()`, `renderLeaderCivPriorities()`
+  - `renderAIListTypes()`, `renderAILists()`, `renderAIFavoredItems()`
+- Pattern: Each maintains local `rerenderItems()` function to handle CRUD with inline `onclick` handlers
+- Uses `getCurrentData()` to read current state, `markDirty()` on mutations
+
+**11. Expert Navigation (expert/navigation.js)**
+- `getAvailableSections()` - Returns array of 13 section metadata: `{id, title, color}`
+- `setupScrollSpy()` - Highlights active section on scroll (optional)
+- `switchToSection(sectionId)` - Smooth scrolls to section
+- Color mapping for visual distinction
+
+**12. Form Fields (form/fields.js)**
+- Exports: `createTextField()`, `createNumberField()`, `createBooleanField()`, `createAutocompleteField()`, `createStringArrayField()`
+- Each returns DOM element (not string HTML)
+- Autocomplete: Fuzzy search against reference data, usage tracking in localStorage
+- String arrays: Creates items with inline `onclick` handlers calling `window.arrayAddItem()` / `window.arrayRemoveItem()`
+- **Imports `form/arrays.js`** at top for side-effect of exposing functions to window
+
+**13. Form Arrays (form/arrays.js)**
+- Exports: `addArrayItem(fieldName)`, `removeArrayItem(fieldName, idx)`, `updateArrayItem(fieldName, idx, value)`
+- Getter: `getArrayFieldValues(fieldName)` - Returns current array values
+- Re-render: `rerenderArrayField(fieldName, items)` - Clears and rebuilds all items
+- Container id pattern: `array-container-${fieldName}` (used by `createStringArrayField`)
+- **Exposes to window**: `arrayAddItem`, `arrayRemoveItem`, `arrayUpdateItem` via side-effect
+- All operations call `markDirty()` after mutation
+
 ### Features
 
-- **13 Collapsible Sections**: Metadata, civilization, units, buildings, modifiers, traditions, progressions, etc.
+- **Two Modes**: Guided wizard (5 steps) + Expert mode (13 collapsible sections)
 - **Color-Coded Navigation**: 13 unique colors for quick section identification
-- **Dirty State Tracking** (Option C): Hybrid auto-detect + explicit save, prevents accidental loss
-- **Real-Time Validation**: Against required fields, types, and reference data enums
-- **Reference Data Integration**: Autocomplete dropdowns fetching from `/api/data/*`
+- **Dirty State Tracking**: Automatically set on any field change, saved to UI indicator
+- **Real-Time Validation**: Field blur validation against reference data
+- **Reference Data Integration**: Autocomplete dropdowns with fuzzy search and usage tracking
 - **Form Components**: Text, number, boolean, autocomplete selects, string arrays, nested objects
 - **Dark Theme UI**: Optimized for modding workflows with Tailwind CSS
-- **Single File Mode**: One YAML file at a time (multi-file tabs planned for future)
-- **Export**: Download edited YAML to browser
+- **No Build Step**: ES6 modules load directly in browser (Chrome 61+, Firefox 60+, Safari 11+)
 
-### Form Field Types
+### Development Workflow
 
-| Type | Validation | Source |
-|------|-----------|--------|
-| Text Input | String type | User input |
-| Number Input | Integer/float type | User input |
-| Boolean Toggle | True/false | User input |
-| Autocomplete Select | Enum validation | `/api/data/{type}` |
-| String Array | Type validation per item | User input |
-| Nested Objects | Type validation per property | User input |
+**Adding a new section to expert mode:**
+1. Add section metadata to `getAvailableSections()` in `expert/navigation.js` (id, title, color)
+2. Create `renderXyzSection(container, data)` in `expert/sections.js`
+3. Add `case 'xyz'` in `renderSectionContent()` dispatcher
+4. If section is complex, export renderer from `expert/civilization.js` or create new sub-renderer file
+5. Use inline `onclick` handlers; expose functions to `window` if needed
+6. Add tests in `web/tests/test_*.js` (create new test file if complex)
 
-### Validation Architecture
+**Adding new form field type:**
+1. Create export in `form/fields.js`: `createCustomField(name, label, value, options)`
+2. Add HTML template with appropriate input type
+3. Call `updateFieldValue()` on change to sync with `currentData`
+4. Add tests in `web/tests/test_form_fields.js`
 
-1. **Client-Side** (editor.js)
-   - Real-time field type checking
-   - Visual error display on blur/change
-   - Dirty state management
+**Adding a new wizard step:**
+1. Create `web/static/js/wizard/stepN.js` with `renderWizardStepN(container)` export
+2. Expose step handler functions to `window` inside render function (see step3.js, step4.js as patterns)
+3. Use inline `onclick="window.functionName()"` for all interactive elements
+4. Call state mutations or form field handlers for updates
+5. Add tests in `web/tests/test_wizard_steps_3_4_5.js` (consolidated test file)
 
-2. **Server-Side** (app.py)
-   - Pydantic model validation
-   - Required field checks
-   - Structure validation
-   - Error/warning severity levels
+**Adding API endpoint:**
+1. Create route in `app.py` with Pydantic validation
+2. Create async wrapper in `api.js` (error handling with console prefix like `[LOAD_ERROR]`)
+3. Call from component: `import('./api.js').then(m => m.newFunction())`
+4. Add tests in `web/tests/test_api.js`
 
-3. **Reference Data** (JSON files)
-   - Enum validation against game constants
-   - Consistency checking
-   - Autocomplete suggestions
+### Testing
 
-### State Management
-
-**Global State:**
-```javascript
-currentData = {}           // Parsed YAML object
-currentFilePath = ""       // Current file path
-isDirty = false            // Unsaved changes flag
-dataCache = {}             // Reference data cache
+**Run tests:**
+```bash
+npx vitest                  # Watch mode
+npx vitest run              # Single run with coverage
+npx vitest web/tests/test_wizard_steps_3_4_5.js  # Specific file
 ```
 
-**Dirty State (Option C):**
-- Automatically set on any field change
-- Visible in header as amber "Unsaved changes" indicator
-- Save button only enabled when dirty
-- Reset after successful save
-- Prevents accidental saves
+**Test structure:**
+- 9 test files in `web/tests/`: one per major module
+- Use Vitest + jsdom for DOM testing
+- Mock external dependencies: `vi.mock()` for modules, `vi.fn()` for functions
+- Mock fetch calls: `global.fetch = vi.fn().mockResolvedValue(...)`
+- Test exports (functions, not implementation)
+- Use `beforeEach()` to reset DOM, mocks, state
+
+**Test file mapping:**
+| Test File | Covers | Test Count |
+|-----------|--------|------------|
+| `test_state.js` | State management, dirty tracking | 33 tests |
+| `test_ui.js` | Toast, loading, dirty indicator | 23 tests |
+| `test_api.js` | Load, save, export, validate | 17 tests |
+| `test_templates.js` | Template loading, selection | 16 tests |
+| `test_form_fields.js` | All field creators | 15 tests |
+| `test_form_arrays.js` | Array add, remove, rerender | 11 tests |
+| `test_wizard.js` | Wizard flow, mode switching | 16 tests |
+| `test_expert_navigation.js` | Section navigation | 6 tests |
+| `test_wizard_steps_3_4_5.js` | Steps 3, 4, 5 rendering & CRUD | 47 tests |
+| **Total** | | **184 tests** |
+
+**Test patterns:**
+1. **Mocking modules:** Use `vi.mock()` to mock entire module; override specific exports if needed
+2. **DOM testing:** Create elements with `document.createElement()`, append to body in `beforeEach()`, clean up in `afterEach()`
+3. **Async testing:** Use `async/await`, mock `fetch()` or dynamic imports
+4. **State isolation:** Call `state.resetXyz()` in `beforeEach()` to isolate tests
+5. **Inline handlers:** Test via direct function call (handlers exposed to window are tested via DOM simulation)
+6. **String array testing:** Create container with id `array-container-${fieldName}` to test array operations
+
+**Example test:**
+```javascript
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import * as arrays from '../form/arrays.js';
+
+describe('Form Arrays Module', () => {
+    beforeEach(() => {
+        document.body.innerHTML = '';
+        vi.clearAllMocks();
+    });
+
+    it('should add new item to array', () => {
+        const container = document.createElement('div');
+        container.id = 'array-container-cities';  // Pattern: array-container-${fieldName}
+        document.body.appendChild(container);
+
+        arrays.addArrayItem('cities');
+
+        expect(container.children).toHaveLength(1);
+        expect(container.querySelector('input')).toBeTruthy();
+        expect(container.querySelector('button')).toBeTruthy();  // Remove button
+    });
+});
+```
 
 ### Dependencies
 
@@ -504,30 +696,6 @@ dataCache = {}             // Reference data cache
 - `uvicorn[standard]>=0.27.0` - ASGI server
 - `pyyaml>=6.0` - YAML parsing/generation
 - `python-multipart>=0.0.6` - Form data parsing
-
-### Development
-
-**Adding a new section:**
-1. Add to sidebar in `index.html`
-2. Create renderer function in `editor.js`
-3. Form fields auto-update `currentData` on change
-
-**Adding new form field type:**
-1. Create component template in `components.html`
-2. Add case in `createFormField()` in `editor.js`
-3. Add styling to `styles.css` if needed
-
-**Adding API endpoint:**
-1. Create route in `app.py`
-2. Use Pydantic models for requests/responses
-3. Auto-documented at `/docs`
-
-**Testing endpoints:**
-```bash
-curl http://127.0.0.1:8000/api/health
-curl http://127.0.0.1:8000/api/data/list
-curl http://127.0.0.1:8000/api/data/yield-types
-```
 
 ## Examples Reference
 
