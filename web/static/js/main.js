@@ -58,6 +58,9 @@ Object.defineProperty(window, 'loadFile', {
                 if (result && result.data) {
                     state.setCurrentData(result.data);
                     state.setCurrentFilePath(result.path || filePathInput.value);
+                    // Switch to expert mode to display loaded data
+                    const { switchMode } = await import('./wizard/wizard.js');
+                    switchMode('expert', true);
                     showToast('File loaded successfully', 'success');
                 }
             } catch (error) {

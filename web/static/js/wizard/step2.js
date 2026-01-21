@@ -316,7 +316,7 @@ export function renderWizardStep2(container) {
     `;
 
     selectedTraits.forEach((trait, idx) => {
-        createWizardDropdown(`wizard-trait-${idx}`, 'traits', trait, 'Select trait...');
+        createWizardDropdown(`wizard-trait-${idx}`, 'civilization-traits', trait, 'Select trait...');
     });
 
     createWizardDropdown(

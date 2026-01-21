@@ -66,6 +66,7 @@ class CivVIIDataExtractor:
             'leaders': set(),
             'leader_attributes': set(),
             'civilizations': set(),
+            'civilization_traits': set(),
         }
         self.civ_cache = defaultdict(dict)
         self.civilization_ages = {}  # {civ_id: age_id}
@@ -258,9 +259,15 @@ class CivVIIDataExtractor:
                 if leader.startswith('LEADER_'):
                     self.data['leaders'].add(leader)
             
-            # LeaderAttribute - extract from trait patterns
+            # TraitType - extract civilization traits (TRAIT_ATTRIBUTE_* and *_CIV variants)
             if tag == 'Row' and 'TraitType' in attribs:
                 trait = attribs['TraitType']
+                # Include civilization attribute traits and age-specific civ traits
+                if (trait.startswith('TRAIT_ATTRIBUTE_') or 
+                    trait.endswith('_CIV') or
+                    'ABILITY' in trait):
+                    self.data['civilization_traits'].add(trait)
+                # Separate leader attributes for dedicated collection
                 if 'TRAIT_LEADER_ATTRIBUTE_' in trait:
                     self.data['leader_attributes'].add(trait)
 
@@ -332,9 +339,9 @@ class CivVIIDataExtractor:
             data = sorted(list(data))
 
         output_file = output_dir / filename
-        with open(output_file, 'w') as f:
+        with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2)
-        print(f"✓ Written {output_file}")
+        print(f"[OK] Written {output_file}")
 
     def _guess_name(self, id_str: str) -> str:
         """Guess a human-readable name from the ID."""
@@ -607,6 +614,12 @@ class CivVIIDataExtractor:
             'values': [{'id': la} for la in sorted(self.data['leader_attributes'])]
         }
         self._write_json('leader-attributes.json', leader_attributes)
+
+        # Civilization Traits (TRAIT_ATTRIBUTE_* and civilization variants)
+        civilization_traits = {
+            'values': [{'id': t} for t in sorted(self.data['civilization_traits'])]
+        }
+        self._write_json('civilization-traits.json', civilization_traits)
 
         # Civilization
         civilizations = {

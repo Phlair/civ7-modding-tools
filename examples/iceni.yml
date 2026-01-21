@@ -30,9 +30,9 @@ civilization:
     - Wilton
     - Camvorritum
   civilization_traits:
-  - TRAIT_ECONOMIC
-  - TRAIT_MILITARY
   - TRAIT_ANTIQUITY_CIV
+  - TRAIT_ATTRIBUTE_ECONOMIC
+  - TRAIT_ATTRIBUTE_MILITARISTIC
   vis_art_building_cultures:
   - ANT_MUD
   vis_art_unit_cultures:

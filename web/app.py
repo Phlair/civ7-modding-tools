@@ -66,6 +66,12 @@ def load_reference_data(data_type: str) -> dict[str, Any]:
         raise ValueError(f"Failed to parse {filename}: {str(e)}")
 
 
+class YAMLLoadRequest(BaseModel):
+    """Request to load a YAML file."""
+
+    file_path: str
+
+
 class YAMLLoadResponse(BaseModel):
     """Response for loading a YAML file."""
 
@@ -142,20 +148,20 @@ async def get_reference_data(data_type: str) -> dict[str, Any]:
 
 
 @app.post("/api/civilization/load")
-async def load_yaml(file_path: str = Form(...)) -> YAMLLoadResponse:
+async def load_yaml(request: YAMLLoadRequest) -> YAMLLoadResponse:
     """
     Load a YAML civilization file.
 
     Args:
-        file_path: Absolute or relative path to the YAML file
+        request: Contains file path to load
 
     Returns:
         Parsed YAML data
     """
-    path = Path(file_path)
+    path = Path(request.file_path)
 
     if not path.exists():
-        raise HTTPException(status_code=404, detail=f"File not found: {file_path}")
+        raise HTTPException(status_code=404, detail=f"File not found: {request.file_path}")
 
     if path.suffix not in {".yml", ".yaml"}:
         raise HTTPException(

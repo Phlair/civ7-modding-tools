@@ -1,0 +1,181 @@
+{
+  "values": [
+    {
+      "id": "TRAIT_ABBASID_ABILITY"
+    },
+    {
+      "id": "TRAIT_AKSUM_ABILITY"
+    },
+    {
+      "id": "TRAIT_AMERICA_ABILITY"
+    },
+    {
+      "id": "TRAIT_ANTIQUITY_CIV"
+    },
+    {
+      "id": "TRAIT_ASSYRIA_ABILITY"
+    },
+    {
+      "id": "TRAIT_ATTRIBUTE_CULTURAL"
+    },
+    {
+      "id": "TRAIT_ATTRIBUTE_ECONOMIC"
+    },
+    {
+      "id": "TRAIT_ATTRIBUTE_EXPANSIONIST"
+    },
+    {
+      "id": "TRAIT_ATTRIBUTE_MILITARISTIC"
+    },
+    {
+      "id": "TRAIT_ATTRIBUTE_POLITICAL"
+    },
+    {
+      "id": "TRAIT_ATTRIBUTE_SCIENTIFIC"
+    },
+    {
+      "id": "TRAIT_BABYLON_ABILITY"
+    },
+    {
+      "id": "TRAIT_BUGANDA_ABILITY"
+    },
+    {
+      "id": "TRAIT_BULGARIA_ABILITY"
+    },
+    {
+      "id": "TRAIT_CARTHAGE_ABILITY"
+    },
+    {
+      "id": "TRAIT_CHOLA_ABILITY"
+    },
+    {
+      "id": "TRAIT_CIV_COMPREHENSIVE_ABILITY"
+    },
+    {
+      "id": "TRAIT_DAI_VIET_ABILITY"
+    },
+    {
+      "id": "TRAIT_EGYPT_ABILITY"
+    },
+    {
+      "id": "TRAIT_EXPLORATION_CIV"
+    },
+    {
+      "id": "TRAIT_FRENCH_EMPIRE_ABILITY"
+    },
+    {
+      "id": "TRAIT_GREAT_BRITAIN_ABILITY"
+    },
+    {
+      "id": "TRAIT_GREECE_ABILITY"
+    },
+    {
+      "id": "TRAIT_HAN_ABILITY"
+    },
+    {
+      "id": "TRAIT_HAWAII_ABILITY"
+    },
+    {
+      "id": "TRAIT_ICELAND_ABILITY"
+    },
+    {
+      "id": "TRAIT_ICENI_ABILITY"
+    },
+    {
+      "id": "TRAIT_INCA_ABILITY"
+    },
+    {
+      "id": "TRAIT_KHMER_ABILITY"
+    },
+    {
+      "id": "TRAIT_LEADER_MAJOR_CIV"
+    },
+    {
+      "id": "TRAIT_LEADER_MINOR_CIV"
+    },
+    {
+      "id": "TRAIT_MAJAPAHIT_ABILITY"
+    },
+    {
+      "id": "TRAIT_MAURYA_ABILITY"
+    },
+    {
+      "id": "TRAIT_MAYA_ABILITY"
+    },
+    {
+      "id": "TRAIT_MEIJI_ABILITY"
+    },
+    {
+      "id": "TRAIT_MEXICO_ABILITY"
+    },
+    {
+      "id": "TRAIT_MING_ABILITY"
+    },
+    {
+      "id": "TRAIT_MISSISSIPPIAN_ABILITY"
+    },
+    {
+      "id": "TRAIT_MODERN_CIV"
+    },
+    {
+      "id": "TRAIT_MONGOLIA_ABILITY"
+    },
+    {
+      "id": "TRAIT_MUGHAL_ABILITY"
+    },
+    {
+      "id": "TRAIT_NEPAL_ABILITY"
+    },
+    {
+      "id": "TRAIT_NORMAN_ABILITY"
+    },
+    {
+      "id": "TRAIT_OTTOMANS_ABILITY"
+    },
+    {
+      "id": "TRAIT_PERSIA_ABILITY"
+    },
+    {
+      "id": "TRAIT_PIRATE_REPUBLIC_ABILITY"
+    },
+    {
+      "id": "TRAIT_PRUSSIA_ABILITY"
+    },
+    {
+      "id": "TRAIT_QAJAR_ABILITY"
+    },
+    {
+      "id": "TRAIT_QING_ABILITY"
+    },
+    {
+      "id": "TRAIT_ROME_ABILITY"
+    },
+    {
+      "id": "TRAIT_RUSSIA_ABILITY"
+    },
+    {
+      "id": "TRAIT_SIAM_ABILITY"
+    },
+    {
+      "id": "TRAIT_SONGHAI_ABILITY"
+    },
+    {
+      "id": "TRAIT_SPAIN_ABILITY"
+    },
+    {
+      "id": "TRAIT_TEST0_ABILITY"
+    },
+    {
+      "id": "TRAIT_TEST1_ABILITY"
+    },
+    {
+      "id": "TRAIT_TEST2_ABILITY"
+    },
+    {
+      "id": "TRAIT_TEST_ABILITY"
+    },
+    {
+      "id": "TRAIT_TONGA_ABILITY"
+    }
+  ]
+}

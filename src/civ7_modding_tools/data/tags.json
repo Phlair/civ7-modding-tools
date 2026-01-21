@@ -7349,6 +7349,58 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "LOC_CIVILIZATION_ICENI_ADJECTIVE",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_1",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_10",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_2",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_3",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_4",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_5",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_6",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_7",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_8",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_9",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_CIVILIZATION_ICENI_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "LOC_CIVILIZATION_NEPAL_ADJECTIVE",
       "category": "UNCATEGORIZED"
     },
@@ -8173,6 +8225,14 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "LOC_MODULE_ICENI_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_MODULE_ICENI_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "LOC_MODULE_NEPAL_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -8210,10 +8270,6 @@
     },
     {
       "id": "LOC_MODULE_TONGA_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_MOD_94266F29757148E3B39B18D48052EC23_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
     {
@@ -8298,6 +8354,10 @@
     },
     {
       "id": "LOC_MOD_ESI_MAKA_FAAKINANGA_COMBAT_STRENGTH_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_MOD_F0D77151C3B7454580E5DBAFC50D1F77_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
     {
@@ -10418,6 +10478,10 @@
     },
     {
       "id": "LOC_TREE_CIVICS_EX_PIRATE_REPUBLIC_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_TREE_CIVICS_ICENI_NAME",
       "category": "UNCATEGORIZED"
     },
     {
