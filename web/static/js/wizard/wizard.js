@@ -368,7 +368,7 @@ export async function createWizardDropdown(
             const option = document.createElement('option');
             option.value = item.id;
 
-            if (dataType === 'building-cultures' || dataType === 'unit-cultures') {
+            if (dataType === 'building-cultures' || dataType === 'building-cultures-palace' || dataType === 'building-cultures-ages' || dataType === 'unit-cultures') {
                 const displayName = item.name || item.id;
                 option.textContent = `${displayName} (${item.id})`;
             } else {

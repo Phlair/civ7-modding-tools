@@ -34,6 +34,7 @@ civilization:
   - TRAIT_ATTRIBUTE_ECONOMIC
   - TRAIT_ATTRIBUTE_MILITARISTIC
   vis_art_building_cultures:
+  - BUILDING_CULTURE_EEU
   - ANT_MUD
   vis_art_unit_cultures:
   - Euro

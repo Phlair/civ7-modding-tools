@@ -69,6 +69,10 @@
       "age": "AGE_EXPLORATION"
     },
     {
+      "id": "CIVILIZATION_ICENI",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
       "id": "CIVILIZATION_INCA",
       "age": "AGE_EXPLORATION"
     },

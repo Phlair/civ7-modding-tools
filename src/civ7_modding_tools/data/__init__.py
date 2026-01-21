@@ -57,6 +57,26 @@ def get_building_cultures() -> List[Dict[str, Any]]:
     return load_reference_data('building-cultures.json')['values']
 
 
+def get_building_cultures_palace() -> List[Dict[str, Any]]:
+    """
+    Get all palace/premium building cultures (BUILDING_CULTURE_XXX).
+
+    These are used for civilisations' capital/palace buildings to give
+    them a distinctive cultural appearance.
+    """
+    return load_reference_data('building-cultures-palace.json')['values']
+
+
+def get_building_cultures_ages() -> List[Dict[str, Any]]:
+    """
+    Get all age-specific building cultures (ANT_*, EXP_*, MOD_*).
+
+    These are used for regular buildings and scale across different
+    historical ages.
+    """
+    return load_reference_data('building-cultures-ages.json')['values']
+
+
 def get_unit_cultures() -> List[Dict[str, Any]]:
     """Get all available unit cultures with civilization context."""
     return load_reference_data('unit-cultures.json')['values']
@@ -215,6 +235,8 @@ __all__ = [
     'get_district_types',
     'get_terrain_types',
     'get_building_cultures',
+    'get_building_cultures_palace',
+    'get_building_cultures_ages',
     'get_unit_cultures',
     'get_effects',
     'get_requirements',

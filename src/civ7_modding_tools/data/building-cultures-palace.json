@@ -1,33 +1,6 @@
 {
   "values": [
     {
-      "id": "ANT_MUD",
-      "name": "Antiquity - Mud/Brick",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
-      "civilizations": [
-        "CIVILIZATION_ASSYRIA",
-        "CIVILIZATION_BABYLON",
-        "CIVILIZATION_NEPAL",
-        "CIVILIZATION_OTTOMANS",
-        "CIVILIZATION_QAJAR",
-        "UNKNOWN"
-      ]
-    },
-    {
-      "id": "ANT_STONE",
-      "name": "Antiquity - Stone",
-      "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
-      "civilizations": [
-        "CIVILIZATION_BULGARIA",
-        "CIVILIZATION_CARTHAGE",
-        "CIVILIZATION_GREAT_BRITAIN",
-        "CIVILIZATION_ICELAND",
-        "CIVILIZATION_PIRATE_REPUBLIC",
-        "CIVILIZATION_TONGA",
-        "UNKNOWN"
-      ]
-    },
-    {
       "id": "BUILDING_CULTURE_EAS",
       "name": "East Asian",
       "description": "Building culture used by: UNKNOWN",
@@ -155,60 +128,6 @@
       "name": "Southeast Asian",
       "description": "Building culture used by: UNKNOWN",
       "civilizations": [
-        "UNKNOWN"
-      ]
-    },
-    {
-      "id": "EXP_MUD",
-      "name": "Exploration - Mud/Brick",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
-      "civilizations": [
-        "CIVILIZATION_ASSYRIA",
-        "CIVILIZATION_BABYLON",
-        "CIVILIZATION_OTTOMANS",
-        "CIVILIZATION_QAJAR",
-        "UNKNOWN"
-      ]
-    },
-    {
-      "id": "EXP_STONE",
-      "name": "Exploration - Stone",
-      "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_NEPAL, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
-      "civilizations": [
-        "CIVILIZATION_BULGARIA",
-        "CIVILIZATION_CARTHAGE",
-        "CIVILIZATION_GREAT_BRITAIN",
-        "CIVILIZATION_ICELAND",
-        "CIVILIZATION_NEPAL",
-        "CIVILIZATION_PIRATE_REPUBLIC",
-        "CIVILIZATION_TONGA",
-        "UNKNOWN"
-      ]
-    },
-    {
-      "id": "MOD_MUD",
-      "name": "Modern - Mud/Brick",
-      "description": "Building culture used by: CIVILIZATION_ASSYRIA, CIVILIZATION_BABYLON, CIVILIZATION_NEPAL, CIVILIZATION_OTTOMANS, CIVILIZATION_QAJAR, UNKNOWN",
-      "civilizations": [
-        "CIVILIZATION_ASSYRIA",
-        "CIVILIZATION_BABYLON",
-        "CIVILIZATION_NEPAL",
-        "CIVILIZATION_OTTOMANS",
-        "CIVILIZATION_QAJAR",
-        "UNKNOWN"
-      ]
-    },
-    {
-      "id": "MOD_STONE",
-      "name": "Modern - Stone",
-      "description": "Building culture used by: CIVILIZATION_BULGARIA, CIVILIZATION_CARTHAGE, CIVILIZATION_GREAT_BRITAIN, CIVILIZATION_ICELAND, CIVILIZATION_PIRATE_REPUBLIC, CIVILIZATION_TONGA, UNKNOWN",
-      "civilizations": [
-        "CIVILIZATION_BULGARIA",
-        "CIVILIZATION_CARTHAGE",
-        "CIVILIZATION_GREAT_BRITAIN",
-        "CIVILIZATION_ICELAND",
-        "CIVILIZATION_PIRATE_REPUBLIC",
-        "CIVILIZATION_TONGA",
         "UNKNOWN"
       ]
     }

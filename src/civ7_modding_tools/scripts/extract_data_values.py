@@ -393,20 +393,37 @@ class CivVIIDataExtractor:
 
     def export_json_files(self) -> None:
         """Export all extracted data to JSON files."""
-        # BuildingCulture with civ context
-        building_cultures = {
-            'values': [
-                {
-                    'id': bc,
-                    'name': self._guess_name(bc),
-                    'description': f"Building culture used by: {', '.join(sorted(civs))}",
-                    'civilizations': sorted(civs)
-                }
-                for bc, civs in sorted(self.data['building_cultures'].items())
-                if civs
-            ]
-        }
-        self._write_json('building-cultures.json', building_cultures)
+        # BuildingCulture split into two categories:
+        # 1. Palace/Premium styles (BUILDING_CULTURE_XXX)
+        # 2. Age-specific variants (ANT_*, EXP_*, MOD_*)
+        palace_cultures = []
+        age_cultures = []
+        
+        for bc, civs in sorted(self.data['building_cultures'].items()):
+            if not civs:
+                continue
+            
+            culture_entry = {
+                'id': bc,
+                'name': self._guess_name(bc),
+                'description': f"Building culture used by: {', '.join(sorted(civs))}",
+                'civilizations': sorted(civs)
+            }
+            
+            # Categorise: palace styles start with BUILDING_CULTURE_
+            # Age variants start with ANT_, EXP_, or MOD_
+            if bc.startswith('BUILDING_CULTURE_'):
+                palace_cultures.append(culture_entry)
+            else:  # ANT_, EXP_, MOD_, or other age prefix
+                age_cultures.append(culture_entry)
+        
+        # Export palace/premium building cultures
+        building_cultures_palace = {'values': palace_cultures}
+        self._write_json('building-cultures-palace.json', building_cultures_palace)
+        
+        # Export age-specific building cultures
+        building_cultures_ages = {'values': age_cultures}
+        self._write_json('building-cultures-ages.json', building_cultures_ages)
 
         # UnitCulture with civ context
         unit_cultures = {

@@ -161,15 +161,26 @@ export function renderWizardStep2(container) {
                     <h4 class="font-semibold text-slate-200 mb-4">Visual Styles</h4>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Building Culture Set</label>
+                            <label class="block text-sm font-medium text-slate-300 mb-1">🏰 Palace/Capital Building Style</label>
                             <select 
-                                id="wizard-building-culture" 
-                                onchange="window.updateWizardBuildingCulture(this.value)"
+                                id="wizard-building-culture-palace" 
+                                onchange="window.updateWizardBuildingCulturePalace(this.value)"
                                 class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
                             >
-                                <option value="">Select building style...</option>
+                                <option value="">Select palace style...</option>
                             </select>
-                            <p class="text-xs text-slate-500 mt-1">Visual style for your civilization's buildings</p>
+                            <p class="text-xs text-slate-500 mt-1">Distinctive visual theme for your capital and palace buildings</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-1">🏘️ Regular Buildings by Age</label>
+                            <select 
+                                id="wizard-building-culture-ages" 
+                                onchange="window.updateWizardBuildingCultureAges(this.value)"
+                                class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
+                            >
+                                <option value="">Select age-specific style...</option>
+                            </select>
+                            <p class="text-xs text-slate-500 mt-1">Visual style for settlements across Antiquity, Exploration, and Modern eras</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Unit Culture Set</label>
@@ -320,10 +331,16 @@ export function renderWizardStep2(container) {
     });
 
     createWizardDropdown(
-        'wizard-building-culture',
-        'building-cultures',
+        'wizard-building-culture-palace',
+        'building-cultures-palace',
         wizardData.civilization?.vis_art_building_cultures?.[0] || '',
-        'Select building style...'
+        'Select palace style...'
+    );
+    createWizardDropdown(
+        'wizard-building-culture-ages',
+        'building-cultures-ages',
+        wizardData.civilization?.vis_art_building_cultures?.[1] || '',
+        'Select age-specific style...'
     );
     createWizardDropdown(
         'wizard-unit-culture',
@@ -410,9 +427,21 @@ export function removeWizardCity(idx) {
     }
 }
 
-export function updateWizardBuildingCulture(value) {
+export function updateWizardBuildingCulturePalace(value) {
     if (!wizardData.civilization) wizardData.civilization = {};
-    wizardData.civilization.vis_art_building_cultures = value ? [value] : [];
+    if (!wizardData.civilization.vis_art_building_cultures) {
+        wizardData.civilization.vis_art_building_cultures = [];
+    }
+    wizardData.civilization.vis_art_building_cultures[0] = value || '';
+    markDirty();
+}
+
+export function updateWizardBuildingCultureAges(value) {
+    if (!wizardData.civilization) wizardData.civilization = {};
+    if (!wizardData.civilization.vis_art_building_cultures) {
+        wizardData.civilization.vis_art_building_cultures = [];
+    }
+    wizardData.civilization.vis_art_building_cultures[1] = value || '';
     markDirty();
 }
 
@@ -487,7 +516,8 @@ if (typeof window !== 'undefined') {
     window.updateCivilization = updateCivilization;
     window.updateWizardCivLocalization = updateWizardCivLocalization;
     window.updateWizardIconPath = updateWizardIconPath;
-    window.updateWizardBuildingCulture = updateWizardBuildingCulture;
+    window.updateWizardBuildingCulturePalace = updateWizardBuildingCulturePalace;
+    window.updateWizardBuildingCultureAges = updateWizardBuildingCultureAges;
     window.updateWizardUnitCulture = updateWizardUnitCulture;
     window.addWizardTrait = addWizardTrait;
     window.updateWizardTraitAt = updateWizardTraitAt;
