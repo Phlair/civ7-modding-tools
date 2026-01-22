@@ -100,7 +100,8 @@ Object.defineProperty(window, 'exportYAML', {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'mod.yml';
+            const modId = state.currentData?.metadata?.id || 'mod';
+            a.download = `${modId}.yml`;
             a.click();
             URL.revokeObjectURL(url);
             showToast('Export successful', 'success');
