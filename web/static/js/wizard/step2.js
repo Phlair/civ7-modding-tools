@@ -13,6 +13,25 @@ import { createWizardDropdown } from './wizard.js';
 export function renderWizardStep2(container) {
     const selectedTraits = wizardData.civilization?.civilization_traits || [];
 
+    // Ensure all functions are available on window object immediately
+    if (typeof window !== 'undefined') {
+        window.addWizardTerrainBias = addWizardTerrainBias;
+        window.addWizardCivUnlock = addWizardCivUnlock;
+    }
+
+    // Check for open details to preserve state during re-renders (before innerHTML wipe)
+    const startingLocationElem = container.querySelector('#wizard-details-starting-location');
+    const ageTransitionsElem = container.querySelector('#wizard-details-age-transitions');
+    const isStartingLocationOpen = startingLocationElem?.hasAttribute('open') ?? false;
+    const isAgeTransitionsOpen = ageTransitionsElem?.hasAttribute('open') ?? false;
+    
+    console.log('[STEP2_RENDER] Found starting location elem:', !!startingLocationElem, 'open attr:', startingLocationElem?.getAttribute('open'), 'isOpen:', isStartingLocationOpen);
+    console.log('[STEP2_RENDER] Found age transitions elem:', !!ageTransitionsElem, 'open attr:', ageTransitionsElem?.getAttribute('open'), 'isOpen:', isAgeTransitionsOpen);
+
+    const startLocTemplate = isStartingLocationOpen ? 'open' : '';
+    const ageTransTemplate = isAgeTransitionsOpen ? 'open' : '';
+    console.log('[STEP2_RENDER] Template will include: starting-loc open attr="' + startLocTemplate + '", age-trans open attr="' + ageTransTemplate + '"');
+
     container.innerHTML = `
         <div class="space-y-6">
             <div>
@@ -196,7 +215,7 @@ export function renderWizardStep2(container) {
                     </div>
                 </div>
                 
-                <details class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                <details id="wizard-details-starting-location" class="bg-slate-900/50 p-4 rounded-lg border border-slate-700" ${startLocTemplate}>
                     <summary class="font-semibold text-slate-200 cursor-pointer hover:text-slate-100">
                         ⚙️ Starting Location (Optional)
                     </summary>
@@ -254,7 +273,7 @@ export function renderWizardStep2(container) {
                     </div>
                 </details>
                 
-                <details class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                <details id="wizard-details-age-transitions" class="bg-slate-900/50 p-4 rounded-lg border border-slate-700" ${ageTransTemplate}>
                     <summary class="font-semibold text-slate-200 cursor-pointer hover:text-slate-100">
                         🔄 Age Transitions (Optional)
                     </summary>
@@ -455,7 +474,48 @@ export function addWizardTerrainBias() {
     if (!wizardData.civilization) wizardData.civilization = {};
     if (!wizardData.civilization.start_bias_terrains) wizardData.civilization.start_bias_terrains = [];
     wizardData.civilization.start_bias_terrains.push({ terrain_type: '', score: 0 });
-    rerenderStep2();
+    
+    // Instead of full re-render, just add the new item to the DOM
+    const container = document.getElementById('wizard-terrain-biases');
+    if (container) {
+        const newIdx = wizardData.civilization.start_bias_terrains.length - 1;
+        const newItem = document.createElement('div');
+        newItem.className = 'flex gap-2 items-center';
+        newItem.innerHTML = `
+            <select 
+                id="wizard-terrain-type-${newIdx}"
+                onchange="window.updateWizardTerrainBiasAt(${newIdx}, 'terrain_type', this.value)"
+                class="flex-1 px-2 py-1 bg-slate-800 border border-slate-600 rounded text-sm"
+            >
+                <option value="">Loading...</option>
+            </select>
+            <input 
+                type="number" 
+                value=""
+                onchange="window.updateWizardTerrainBiasAt(${newIdx}, 'score', parseInt(this.value) || 0)"
+                placeholder="Score"
+                class="w-20 px-2 py-1 bg-slate-800 border border-slate-600 rounded text-sm"
+            />
+            <button 
+                onclick="window.removeWizardTerrainBias(${newIdx})"
+                class="px-2 py-1 bg-red-600/20 hover:bg-red-600/30 border border-red-600 rounded text-red-400 text-xs"
+            >
+                ×
+            </button>
+        `;
+        container.appendChild(newItem);
+        
+        // Load terrain types for the new dropdown
+        import('../form/fields.js').then(m => {
+            m.getAutocompleteOptions('terrain_type').then(options => {
+                const select = newItem.querySelector(`#wizard-terrain-type-${newIdx}`);
+                if (select) {
+                    select.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+                }
+            });
+        });
+    }
+    
     markDirty();
 }
 
@@ -478,15 +538,127 @@ export function addWizardCivUnlock() {
     if (!wizardData.civilization) wizardData.civilization = {};
     if (!wizardData.civilization.civilization_unlocks) wizardData.civilization.civilization_unlocks = [];
     wizardData.civilization.civilization_unlocks.push({
-        age_type: '',
+        age_type: 'AGE_ANTIQUITY',
         type: '',
         kind: 'KIND_CIVILIZATION',
         name: '',
         description: '',
         icon: '',
     });
-    rerenderStep2();
+    
+    // Instead of full re-render, just add the new item to the DOM
+    const container = document.getElementById('wizard-civ-unlocks');
+    if (container) {
+        const newIdx = wizardData.civilization.civilization_unlocks.length - 1;
+        const unlock = wizardData.civilization.civilization_unlocks[newIdx];
+        
+        const newItem = document.createElement('div');
+        newItem.className = 'p-3 bg-slate-800/50 rounded border border-slate-600 space-y-2';
+        newItem.innerHTML = `
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Age</label>
+                    <select 
+                        id="wizard-unlock-age-${newIdx}"
+                        onchange="window.updateWizardCivUnlockAt(${newIdx}, 'age_type', this.value); window.updateCivUnlockTargetOptions(${newIdx})"
+                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
+                    >
+                        <option value="">Loading...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Target Civilization</label>
+                    <select 
+                        id="wizard-unlock-target-${newIdx}"
+                        onchange="window.updateWizardCivUnlockAt(${newIdx}, 'type', this.value)"
+                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
+                    >
+                        <option value="">Loading civilizations...</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">Display Name</label>
+                <input 
+                    type="text" 
+                    value=""
+                    onchange="window.updateWizardCivUnlockAt(${newIdx}, 'name', this.value)"
+                    placeholder="Display Name"
+                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
+                />
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">Description</label>
+                <textarea 
+                    onchange="window.updateWizardCivUnlockAt(${newIdx}, 'description', this.value)"
+                    placeholder="Describes the unlock"
+                    rows="2"
+                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
+                ></textarea>
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">Icon</label>
+                <input 
+                    type="text" 
+                    value=""
+                    onchange="window.updateWizardCivUnlockAt(${newIdx}, 'icon', this.value)"
+                    placeholder="Icon Path"
+                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
+                />
+            </div>
+            <button 
+                onclick="window.removeWizardCivUnlock(${newIdx})"
+                class="w-full px-2 py-1 bg-red-600/20 hover:bg-red-600/30 border border-red-600 rounded text-red-400 text-xs"
+            >
+                Remove
+            </button>
+        `;
+        container.appendChild(newItem);
+        
+        // Load age types for the new age dropdown
+        import('../form/fields.js').then(m => {
+            m.getAutocompleteOptions('age_type').then(options => {
+                const select = newItem.querySelector(`#wizard-unlock-age-${newIdx}`);
+                if (select) {
+                    select.innerHTML = options.map(opt => `<option value="${opt}" ${opt === 'AGE_ANTIQUITY' ? 'selected' : ''}>${opt}</option>`).join('');
+                    // Now that age is set, load civilizations for that age
+                    window.updateCivUnlockTargetOptions(newIdx);
+                }
+            });
+        });
+        
+        // Expose function to update target civilization options
+        window.updateCivUnlockTargetOptions = updateCivUnlockTargetOptions;
+    }
+    
     markDirty();
+}
+
+function updateCivUnlockTargetOptions(idx) {
+    const ageSelect = document.getElementById(`wizard-unlock-age-${idx}`);
+    const targetSelect = document.getElementById(`wizard-unlock-target-${idx}`);
+    
+    if (!ageSelect || !targetSelect) return;
+    
+    const selectedAge = ageSelect.value;
+    
+    // Fetch all civilizations and filter by age
+    fetch('/api/data/civilizations')
+        .then(res => res.json())
+        .then(data => {
+            const civs = data.values || [];
+            const filteredCivs = selectedAge 
+                ? civs.filter(civ => civ.age === selectedAge)
+                : civs;
+            
+            targetSelect.innerHTML = filteredCivs
+                .map(civ => `<option value="${civ.id}">${civ.id}</option>`)
+                .join('');
+        })
+        .catch(err => {
+            console.error('Failed to load civilizations:', err);
+            targetSelect.innerHTML = '<option value="">Error loading civilizations</option>';
+        });
 }
 
 export function updateWizardCivUnlockAt(idx, field, value) {
