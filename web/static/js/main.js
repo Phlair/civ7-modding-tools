@@ -13,7 +13,6 @@ import {
 } from './wizard/wizard.js';
 import { healthCheck, loadFile, saveFile, exportYAML } from './api.js';
 import { showToast } from './ui.js';
-import { showTemplateModal, hideTemplateModal, loadTemplate } from './templates.js';
 import { loadReferenceData } from './data/loader.js';
 import * as state from './state.js';
 
@@ -107,39 +106,6 @@ Object.defineProperty(window, 'exportYAML', {
             showToast('Export successful', 'success');
         } catch (error) {
             showToast('Error exporting file', 'error');
-        }
-    },
-    writable: false,
-    configurable: false
-});
-
-Object.defineProperty(window, 'showTemplateModal', {
-    value: showTemplateModal,
-    writable: false,
-    configurable: false
-});
-
-Object.defineProperty(window, 'hideTemplateModal', {
-    value: hideTemplateModal,
-    writable: false,
-    configurable: false
-});
-
-Object.defineProperty(window, 'loadTemplate', {
-    value: async (templateName) => {
-        try {
-            const data = await loadTemplate(templateName);
-            if (data) {
-                state.setCurrentData(data);
-                // Populate wizard with template data
-                state.populateWizardFromData(data);
-                // Switch to guided mode to use the wizard with template
-                const { switchMode } = await import('./wizard/wizard.js');
-                switchMode('guided', true);
-                showToast(`Template "${templateName}" loaded! Use the wizard to customize it.`, 'success');
-            }
-        } catch (error) {
-            showToast('Error loading template', 'error');
         }
     },
     writable: false,

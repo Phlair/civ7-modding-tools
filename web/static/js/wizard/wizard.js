@@ -18,11 +18,11 @@ import { showToast } from '../ui.js';
 
 /**
  * Initialize wizard mode
- * Checks localStorage for saved mode preference or defaults to 'guided'
+ * Always defaults to 'guided' (wizard is primary)
  */
 export function initializeMode() {
-    const savedMode = localStorage.getItem('editorMode') || 'guided';
-    switchMode(savedMode, false);
+    // Always start in guided mode - wizard is the primary interface
+    switchMode('guided', false);
 }
 
 /**
@@ -44,22 +44,22 @@ export function switchMode(mode, savePreference = true) {
     const wizardContainer = document.getElementById('wizard-container');
     const editorContainer = document.getElementById('editor-container');
     const sidebar = document.querySelector('aside');
-    const guidedBtn = document.getElementById('mode-guided');
-    const expertBtn = document.getElementById('mode-expert');
+    const expertToggle = document.getElementById('expert-mode-toggle');
+    const wizardToggle = document.getElementById('wizard-mode-toggle');
 
     if (mode === 'guided') {
         if (wizardContainer) wizardContainer.classList.remove('hidden');
         if (editorContainer) editorContainer.classList.add('hidden');
         if (sidebar) sidebar.classList.add('hidden');
-        if (guidedBtn) guidedBtn.classList.add('border-blue-400', 'bg-blue-600/20');
-        if (expertBtn) expertBtn.classList.remove('border-blue-400', 'bg-blue-600/20');
+        if (expertToggle) expertToggle.classList.remove('hidden');
+        if (wizardToggle) wizardToggle.classList.add('hidden');
         renderWizardStep();
     } else {
         if (wizardContainer) wizardContainer.classList.add('hidden');
         if (editorContainer) editorContainer.classList.remove('hidden');
         if (sidebar) sidebar.classList.remove('hidden');
-        if (guidedBtn) guidedBtn.classList.remove('border-blue-400', 'bg-blue-600/20');
-        if (expertBtn) expertBtn.classList.add('border-blue-400', 'bg-blue-600/20');
+        if (expertToggle) expertToggle.classList.add('hidden');
+        if (wizardToggle) wizardToggle.classList.remove('hidden');
         if (Object.keys(wizardData || {}).length > 0) {
             syncWizardToCurrentData();
         }
