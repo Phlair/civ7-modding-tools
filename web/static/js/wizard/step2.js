@@ -169,18 +169,18 @@ export function renderWizardStep2(container) {
                             >
                                 <option value="">Select palace style...</option>
                             </select>
-                            <p class="text-xs text-slate-500 mt-1">Distinctive visual theme for your capital and palace buildings</p>
+                            <p class="text-xs text-slate-500 mt-1">Distinctive visual theme for your capital and palace buildings. <strong>Must match your civilization's era or it will render as default Greek style.</strong></p>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">🏘️ Regular Buildings by Age</label>
+                            <label class="block text-sm font-medium text-slate-300 mb-1">🏘️ Building Material</label>
                             <select 
                                 id="wizard-building-culture-ages" 
                                 onchange="window.updateWizardBuildingCultureAges(this.value)"
                                 class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
                             >
-                                <option value="">Select age-specific style...</option>
+                                <option value="">Select building material...</option>
                             </select>
-                            <p class="text-xs text-slate-500 mt-1">Visual style for settlements across Antiquity, Exploration, and Modern eras</p>
+                            <p class="text-xs text-slate-500 mt-1">Base material (Stone, Mud, etc.) scaled across all eras</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Unit Culture Set</label>
@@ -330,17 +330,20 @@ export function renderWizardStep2(container) {
         createWizardDropdown(`wizard-trait-${idx}`, 'civilization-traits', trait, 'Select trait...');
     });
 
+    // Filter palace cultures by the selected era
+    const selectedEra = wizardData.action_group?.action_group_id;
     createWizardDropdown(
         'wizard-building-culture-palace',
         'building-cultures-palace',
         wizardData.civilization?.vis_art_building_cultures?.[0] || '',
-        'Select palace style...'
+        'Select palace style...',
+        selectedEra  // Pass era filter
     );
     createWizardDropdown(
         'wizard-building-culture-ages',
-        'building-cultures-ages',
-        wizardData.civilization?.vis_art_building_cultures?.[1] || '',
-        'Select age-specific style...'
+        'building-culture-bases',
+        wizardData.civilization?.building_culture_base || '',
+        'Select building material...'
     );
     createWizardDropdown(
         'wizard-unit-culture',
@@ -438,10 +441,7 @@ export function updateWizardBuildingCulturePalace(value) {
 
 export function updateWizardBuildingCultureAges(value) {
     if (!wizardData.civilization) wizardData.civilization = {};
-    if (!wizardData.civilization.vis_art_building_cultures) {
-        wizardData.civilization.vis_art_building_cultures = [];
-    }
-    wizardData.civilization.vis_art_building_cultures[1] = value || '';
+    wizardData.civilization.building_culture_base = value || '';
     markDirty();
 }
 

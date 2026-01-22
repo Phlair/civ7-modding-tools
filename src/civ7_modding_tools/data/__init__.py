@@ -77,6 +77,40 @@ def get_building_cultures_ages() -> List[Dict[str, Any]]:
     return load_reference_data('building-cultures-ages.json')['values']
 
 
+def get_building_culture_bases() -> List[Dict[str, str]]:
+    """
+    Get unique building material/base types extracted from age cultures.
+
+    Extracts suffixes from age-specific building cultures (e.g., 'STONE'
+    from 'ANT_STONE', 'MUD' from 'ANT_MUD') and returns them with friendly
+    names for UI selection. Each base can be expanded into all 3 ages.
+
+    Returns:
+        List of dicts with 'id' (e.g., 'STONE') and 'name' (e.g., 'Stone')
+    """
+    age_cultures = get_building_cultures_ages()
+    bases_seen: Dict[str, str] = {}
+
+    for culture in age_cultures:
+        # Extract suffix from patterns like ANT_STONE, EXP_MUD
+        culture_id = culture.get('id', '')
+        if '_' in culture_id:
+            parts = culture_id.split('_', 1)
+            if len(parts) == 2:
+                base = parts[1]
+                if base not in bases_seen:
+                    # Extract friendly name from the full name
+                    # e.g., "Antiquity - Mud/Brick" -> "Mud/Brick"
+                    full_name = culture.get('name', base)
+                    friendly_name = full_name.split(' - ', 1)[-1]
+                    bases_seen[base] = friendly_name
+
+    return [
+        {'id': base_id, 'name': friendly_name}
+        for base_id, friendly_name in sorted(bases_seen.items())
+    ]
+
+
 def get_unit_cultures() -> List[Dict[str, Any]]:
     """Get all available unit cultures with civilization context."""
     return load_reference_data('unit-cultures.json')['values']
@@ -237,6 +271,7 @@ __all__ = [
     'get_building_cultures',
     'get_building_cultures_palace',
     'get_building_cultures_ages',
+    'get_building_culture_bases',
     'get_unit_cultures',
     'get_effects',
     'get_requirements',

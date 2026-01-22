@@ -31,6 +31,7 @@ class CivVIIDataExtractor:
         self.data = {
             # Original requested types
             'building_cultures': defaultdict(set),
+            'building_cultures_by_era': defaultdict(lambda: defaultdict(set)),
             'terrain_types': set(),
             'unit_cultures': defaultdict(set),
             'effects': set(),
@@ -70,6 +71,7 @@ class CivVIIDataExtractor:
         }
         self.civ_cache = defaultdict(dict)
         self.civilization_ages = {}  # {civ_id: age_id}
+        self.civ_era_mapping = {}  # {civ_name: era_id} - maps civs to eras from filenames
 
     def scan_files(self) -> None:
         """Recursively scan all XML files in EXAMPLE and dist folders."""
@@ -99,6 +101,28 @@ class CivVIIDataExtractor:
 
         # Get civilization name from folder structure if available
         civ_name = self._get_civ_name_from_path(file_path)
+        
+        # Extract era from filename (e.g., 'civilizations-antiquity.xml' -> 'ANTIQUITY')
+        file_stem = file_path.stem.lower()
+        era_id = None
+        if '-antiquity' in file_stem:
+            era_id = 'AGE_ANTIQUITY'
+        elif '-exploration' in file_stem:
+            era_id = 'AGE_EXPLORATION'
+        elif '-modern' in file_stem:
+            era_id = 'AGE_MODERN'
+        
+        # Also check folder path for era hints (e.g., 'data-EXPL-EXAMPLE', 'data-MODERN-EXAMPLE')
+        # This helps us capture eras from central data files in era-specific folders
+        if not era_id:
+            path_str = str(file_path).lower()
+            if 'data-expl-example' in path_str or 'data-exploration' in path_str:
+                era_id = 'AGE_EXPLORATION'
+            elif 'data-modern-example' in path_str or 'data-mod-example' in path_str:
+                era_id = 'AGE_MODERN'
+            elif 'data-example' in path_str and 'expl' not in path_str and 'modern' not in path_str and 'mod-example' not in path_str:
+                # Generic 'data-EXAMPLE' folder implies Antiquity
+                era_id = 'AGE_ANTIQUITY'
 
         # Handle XML namespaces
         namespaces = {}
@@ -115,10 +139,13 @@ class CivVIIDataExtractor:
             
             attribs = element.attrib
 
-            # BuildingCulture
+            # BuildingCulture - track by era
             if 'BuildingCulture' in attribs:
                 bc = attribs['BuildingCulture']
                 self.data['building_cultures'][bc].add(civ_name)
+                # Also track with era if available
+                if era_id:
+                    self.data['building_cultures_by_era'][bc][era_id].add(civ_name)
 
             # UnitCulture
             if 'UnitCulture' in attribs:
@@ -280,6 +307,10 @@ class CivVIIDataExtractor:
                     # Capture UniqueCultureProgressionTree to map age
                     tree_id = attribs['UniqueCultureProgressionTree']
                     self.civilization_ages[civ_type] = tree_id
+                    
+                    # Also track era if we're in an era-specific file
+                    if era_id and civ_type not in self.civ_era_mapping:
+                        self.civ_era_mapping[civ_type] = era_id
             
             # ProgressionTree age mapping
             if tag == 'Row' and 'ProgressionTreeType' in attribs and 'AgeType' in attribs:
@@ -403,12 +434,34 @@ class CivVIIDataExtractor:
             if not civs:
                 continue
             
+            # Determine which eras this building culture is used in
+            eras = []
+            if bc in self.data['building_cultures_by_era']:
+                eras = sorted(self.data['building_cultures_by_era'][bc].keys())
+            else:
+                # Backfill: for each civ using this culture, look up its era
+                eras_set = set()
+                for civ_name in civs:
+                    # Try to find the civilization in our era mapping
+                    if civ_name in self.civ_era_mapping:
+                        eras_set.add(self.civ_era_mapping[civ_name])
+                    else:
+                        # Try converting civ folder name to civ type and check again
+                        civ_type = f"CIVILIZATION_{civ_name.upper().replace('-', '_')}"
+                        if civ_type in self.civ_era_mapping:
+                            eras_set.add(self.civ_era_mapping[civ_type])
+                eras = sorted(eras_set)
+            
             culture_entry = {
                 'id': bc,
                 'name': self._guess_name(bc),
                 'description': f"Building culture used by: {', '.join(sorted(civs))}",
                 'civilizations': sorted(civs)
             }
+            
+            # Add eras field for palace cultures only
+            if bc.startswith('BUILDING_CULTURE_'):
+                culture_entry['eras'] = eras
             
             # Categorise: palace styles start with BUILDING_CULTURE_
             # Age variants start with ANT_, EXP_, or MOD_
@@ -424,6 +477,24 @@ class CivVIIDataExtractor:
         # Export age-specific building cultures
         building_cultures_ages = {'values': age_cultures}
         self._write_json('building-cultures-ages.json', building_cultures_ages)
+
+        # Export building material bases derived from age variants
+        base_map: dict[str, str] = {}
+        for culture in age_cultures:
+            culture_id = culture['id']
+            if '_' in culture_id:
+                suffix = culture_id.split('_', 1)[1]
+                if suffix not in base_map:
+                    friendly_name = culture.get('name', suffix).split(' - ', 1)[-1]
+                    base_map[suffix] = friendly_name
+
+        building_culture_bases = {
+            'values': [
+                {'id': base_id, 'name': base_name}
+                for base_id, base_name in sorted(base_map.items())
+            ]
+        }
+        self._write_json('building-culture-bases.json', building_culture_bases)
 
         # UnitCulture with civ context
         unit_cultures = {

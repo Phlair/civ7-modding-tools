@@ -107,7 +107,8 @@ civilization.fill({
         },
     ],
     'civilization_traits': ['TRAIT_ANTIQUITY_CIV', 'TRAIT_ATTRIBUTE_ECONOMIC', 'TRAIT_ATTRIBUTE_MILITARISTIC'],
-    'vis_art_building_cultures': ['BUILDING_CULTURE_EEU', 'ANT_MUD'],
+    'vis_art_building_cultures': ['BUILDING_CULTURE_NAM'],
+    'building_culture_base': 'MUD',
     'vis_art_unit_cultures': ['Euro'],
     'start_bias_rivers': 7,
     'start_bias_terrains': [

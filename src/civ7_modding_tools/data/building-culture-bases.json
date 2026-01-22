@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "MUD",
+      "name": "Mud/Brick"
+    },
+    {
+      "id": "STONE",
+      "name": "Stone"
+    }
+  ]
+}

@@ -194,6 +194,7 @@ class CivilizationBuilder(BaseBuilder):
         # Visual Art Configuration
         self.vis_art_building_cultures: List[str] = []
         self.vis_art_unit_cultures: List[str] = []
+        self.building_culture_base: Optional[str] = None
         
         # Store bound items for processing during migration
         self._bound_items: List[BaseBuilder] = []
@@ -475,8 +476,26 @@ class CivilizationBuilder(BaseBuilder):
         self._current.civilization_favored_wonders = favored_wonder_nodes
         
         # Visual Art Configuration - Building Cultures
+        # Expand building_culture_base into all 3 ages if provided
+        building_cultures_to_use = [
+            culture for culture in self.vis_art_building_cultures if culture
+        ]
+        if self.building_culture_base:
+            building_cultures_to_use.extend([
+                f'ANT_{self.building_culture_base}',
+                f'EXP_{self.building_culture_base}',
+                f'MOD_{self.building_culture_base}',
+            ])
+        
+        seen_cultures: set[str] = set()
+        building_cultures_to_use = [
+            culture
+            for culture in building_cultures_to_use
+            if not (culture in seen_cultures or seen_cultures.add(culture))
+        ]
+        
         vis_art_building_culture_nodes = []
-        for building_culture in self.vis_art_building_cultures:
+        for building_culture in building_cultures_to_use:
             vis_art_building_culture_nodes.append(
                 VisArtCivilizationBuildingCultureNode(
                     civilization_type=self.civilization_type,

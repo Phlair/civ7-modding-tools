@@ -310,7 +310,8 @@ export async function createWizardDropdown(
     elementId,
     dataType,
     currentValue = '',
-    placeholder = 'Select...'
+    placeholder = 'Select...',
+    filterByEra = null
 ) {
     const selectElement = document.getElementById(elementId);
     if (!selectElement) return;
@@ -355,7 +356,14 @@ export async function createWizardDropdown(
         }
 
         const data = await response.json();
-        const values = data.values || [];
+        let values = data.values || [];
+
+        // Filter palace cultures by era if specified
+        if (dataType === 'building-cultures-palace' && filterByEra) {
+            values = values.filter(item => 
+                item.eras && item.eras.length > 0 && item.eras.includes(filterByEra)
+            );
+        }
 
         selectElement.innerHTML = '';
 
@@ -368,9 +376,17 @@ export async function createWizardDropdown(
             const option = document.createElement('option');
             option.value = item.id;
 
-            if (dataType === 'building-cultures' || dataType === 'building-cultures-palace' || dataType === 'building-cultures-ages' || dataType === 'unit-cultures') {
+            if (dataType === 'building-cultures' || dataType === 'building-cultures-palace' || dataType === 'building-cultures-ages' || dataType === 'building-culture-bases' || dataType === 'unit-cultures') {
                 const displayName = item.name || item.id;
-                option.textContent = `${displayName} (${item.id})`;
+                let optionText = `${displayName} (${item.id})`;
+                
+                // Add era info for palace cultures
+                if (dataType === 'building-cultures-palace' && item.eras && item.eras.length > 0) {
+                    const eraLabels = item.eras.map(era => era.replace('AGE_', '').toLowerCase()).join(', ');
+                    optionText += ` [${eraLabels}]`;
+                }
+                
+                option.textContent = optionText;
             } else {
                 const label = idToLabel(item.id);
                 option.textContent = `${label} (${item.id})`;
