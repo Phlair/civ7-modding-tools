@@ -79,6 +79,30 @@ export async function exportYAML(data) {
 }
 
 /**
+ * Export data as a fully built mod (zipped)
+ * @param {Object} data - Data to export and build
+ * @returns {Promise<Blob>} Built mod zip blob
+ */
+export async function exportBuiltMod(data) {
+    try {
+        const response = await fetch('/api/civilization/export-built', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Build export failed: ${response.statusText}`);
+        }
+
+        return await response.blob();
+    } catch (error) {
+        console.error('[BUILD_EXPORT_ERROR]', error);
+        throw error;
+    }
+}
+
+/**
  * Validate mod data on server
  * @param {Object} data - Data to validate
  * @returns {Promise<Object>} Validation result

@@ -8,12 +8,18 @@ Provides REST API for:
 """
 
 import json
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import zipfile
 from pathlib import Path
 from typing import Any
 
 import yaml
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
-from fastapi.responses import Response
+from fastapi.responses import Response, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -242,6 +248,139 @@ async def export_yaml(data: dict[str, Any]) -> Response:
             status_code=500,
             detail=f"Failed to export YAML: {str(e)}",
         )
+
+
+@app.post("/api/civilization/export-built")
+async def export_built_mod(data: dict[str, Any]) -> StreamingResponse:
+    """
+    Export data as a fully built mod (zipped).
+
+    Processes the configuration through the mod building pipeline:
+    1. Convert YAML to Python using YamlToPyConverter
+    2. Execute the generated Python to build the mod
+    3. Zip the generated mod folder
+    4. Return zip file
+
+    Args:
+        data: Dictionary containing mod configuration
+
+    Returns:
+        Zip file as downloadable response
+    """
+    temp_dir = None
+    try:
+        from civ7_modding_tools.yml_to_py import YamlToPyConverter
+
+        # Create temp directories
+        temp_dir = tempfile.mkdtemp()
+        temp_path = Path(temp_dir)
+        yaml_file = temp_path / "config.yml"
+        python_file = temp_path / "build_mod.py"
+        build_dir = temp_path / "dist"
+
+        # Save YAML to temp location
+        with open(yaml_file, "w", encoding="utf-8") as f:
+            yaml.dump(data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+
+        # Convert YAML to Python
+        converter = YamlToPyConverter(data)
+        python_code = converter.convert()
+
+        # Modify the generated code to use our temp build directory
+        mod_id = data.get("metadata", {}).get("id", "mod")
+        new_call = f"mod.build(r'{str(build_dir)}')"
+        
+        # Try to replace both literal string and f-string variants
+        patterns = [
+            # Literal string: mod.build('./dist-babylon')
+            f"mod.build('./dist-{mod_id}')",
+            # F-string: mod.build(f'./dist-{{mod.mod_id}}')
+            "mod.build(f'./dist-{mod.mod_id}')",
+        ]
+        
+        replaced = False
+        for pattern in patterns:
+            if pattern in python_code:
+                python_code = python_code.replace(pattern, new_call)
+                replaced = True
+                break
+        
+        if not replaced:
+            # Fallback: use regex to find any mod.build call
+            python_code = re.sub(
+                r"mod\.build\(['\"]\.?/?dist-[^'\"]*['\"]\)",
+                new_call,
+                python_code
+            )
+            # Also try f-string variant
+            python_code = re.sub(
+                r"mod\.build\(f['\"]\.?/?dist-\{[^}]*\}['\"]\)",
+                new_call,
+                python_code
+            )
+
+        # Save generated Python
+        with open(python_file, "w", encoding="utf-8") as f:
+            f.write(python_code)
+
+        # Execute the generated Python to build the mod
+        result = subprocess.run(
+            [sys.executable, str(python_file)],
+            cwd=str(temp_path),
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+
+        if result.returncode != 0:
+            error_msg = result.stderr or result.stdout or "Unknown error during build"
+            print(f"[BUILD_ERROR] Build process failed:")
+            print(f"[BUILD_ERROR] Return code: {result.returncode}")
+            print(f"[BUILD_ERROR] STDERR: {result.stderr}")
+            print(f"[BUILD_ERROR] STDOUT: {result.stdout}")
+            raise RuntimeError(f"Build failed: {error_msg}")
+
+        # Check if build directory was created
+        if not build_dir.exists():
+            raise RuntimeError(f"Build directory not created at {build_dir}")
+
+        # Create zip file in memory
+        zip_path = temp_path / f"{mod_id}.zip"
+
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+            for file_path in build_dir.rglob("*"):
+                if file_path.is_file():
+                    arcname = file_path.relative_to(build_dir)
+                    zipf.write(file_path, arcname)
+
+        # Read zip file into memory
+        with open(zip_path, "rb") as f:
+            zip_content = f.read()
+
+        # Return zip file as response
+        return StreamingResponse(
+            iter([zip_content]),
+            media_type="application/zip",
+            headers={"Content-Disposition": f"attachment; filename={mod_id}.zip"},
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"civ7_modding_tools not available in backend environment: {str(e)}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to build and export mod: {str(e)}",
+        )
+    finally:
+        # Cleanup temp directory
+        if temp_dir:
+            try:
+                shutil.rmtree(temp_dir)
+            except Exception as cleanup_error:
+                print(f"Warning: Failed to cleanup temp directory: {cleanup_error}")
 
 
 @app.post("/api/civilization/validate")

@@ -11,7 +11,7 @@ import {
     wizardNextStep,
     createNewMod
 } from './wizard/wizard.js';
-import { healthCheck, loadFile, saveFile, exportYAML } from './api.js';
+import { healthCheck, loadFile, saveFile, exportYAML, exportBuiltMod } from './api.js';
 import { showToast } from './ui.js';
 import { loadReferenceData } from './data/loader.js';
 import * as state from './state.js';
@@ -104,9 +104,42 @@ Object.defineProperty(window, 'exportYAML', {
             a.download = `${modId}.yml`;
             a.click();
             URL.revokeObjectURL(url);
-            showToast('Export successful', 'success');
+            showToast('YAML exported successfully', 'success');
         } catch (error) {
-            showToast('Error exporting file', 'error');
+            showToast('Error exporting YAML', 'error');
+        }
+    },
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'exportBuiltMod', {
+    value: async () => {
+        try {
+            showToast('Building mod... please wait', 'info');
+            const modId = state.currentData?.metadata?.id || 'mod';
+            
+            // First, download the built mod zip
+            const blob = await exportBuiltMod(state.currentData);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${modId}.zip`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            // Then, download the YAML config
+            const yamlBlob = await exportYAML(state.currentData);
+            const yamlUrl = URL.createObjectURL(yamlBlob);
+            const yamlA = document.createElement('a');
+            yamlA.href = yamlUrl;
+            yamlA.download = `${modId}.yml`;
+            yamlA.click();
+            URL.revokeObjectURL(yamlUrl);
+            
+            showToast('Mod built and exported successfully', 'success');
+        } catch (error) {
+            showToast('Error building and exporting mod', 'error');
         }
     },
     writable: false,
