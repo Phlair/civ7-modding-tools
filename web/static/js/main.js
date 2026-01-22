@@ -58,10 +58,12 @@ Object.defineProperty(window, 'loadFile', {
                 if (result && result.data) {
                     state.setCurrentData(result.data);
                     state.setCurrentFilePath(result.path || filePathInput.value);
-                    // Switch to expert mode to display loaded data
+                    // Populate wizard with loaded data
+                    state.populateWizardFromData(result.data);
+                    // Switch to guided mode to use the wizard for editing
                     const { switchMode } = await import('./wizard/wizard.js');
-                    switchMode('expert', true);
-                    showToast('File loaded successfully', 'success');
+                    switchMode('guided', true);
+                    showToast('File loaded! Use the wizard to edit it.', 'success');
                 }
             } catch (error) {
                 showToast('Error loading file', 'error');
@@ -129,7 +131,12 @@ Object.defineProperty(window, 'loadTemplate', {
             const data = await loadTemplate(templateName);
             if (data) {
                 state.setCurrentData(data);
-                showToast(`Template "${templateName}" loaded`, 'success');
+                // Populate wizard with template data
+                state.populateWizardFromData(data);
+                // Switch to guided mode to use the wizard with template
+                const { switchMode } = await import('./wizard/wizard.js');
+                switchMode('guided', true);
+                showToast(`Template "${templateName}" loaded! Use the wizard to customize it.`, 'success');
             }
         } catch (error) {
             showToast('Error loading template', 'error');

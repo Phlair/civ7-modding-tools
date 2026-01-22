@@ -12,57 +12,104 @@ describe('UI Module', () => {
     });
 
     describe('showToast', () => {
-        it('should create and display toast notification', () => {
+        it('should display toast notification with message', () => {
+            // Create the toast element that the function expects
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.classList.add('hidden');
+            document.body.appendChild(toast);
+            
             ui.showToast('Test message', 'info');
             
-            const toast = document.querySelector('[class*="animate-fade-in"]');
-            expect(toast).toBeTruthy();
             expect(toast.textContent).toContain('Test message');
+            expect(toast.classList.contains('hidden')).toBe(false);
         });
 
         it('should apply correct background class for info type', () => {
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.classList.add('hidden');
+            document.body.appendChild(toast);
+            
             ui.showToast('Info message', 'info');
             
-            const toast = document.querySelector('[class*="animate-fade-in"]');
             expect(toast.className).toContain('bg-blue-600');
         });
 
         it('should apply correct background class for success type', () => {
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.classList.add('hidden');
+            document.body.appendChild(toast);
+            
             ui.showToast('Success message', 'success');
             
-            const toast = document.querySelector('[class*="animate-fade-in"]');
             expect(toast.className).toContain('bg-green-600');
         });
 
         it('should apply correct background class for error type', () => {
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.classList.add('hidden');
+            document.body.appendChild(toast);
+            
             ui.showToast('Error message', 'error');
             
-            const toast = document.querySelector('[class*="animate-fade-in"]');
             expect(toast.className).toContain('bg-red-600');
         });
 
         it('should default to info type when not specified', () => {
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.classList.add('hidden');
+            document.body.appendChild(toast);
+            
             ui.showToast('Default message');
             
-            const toast = document.querySelector('[class*="animate-fade-in"]');
             expect(toast.className).toContain('bg-blue-600');
         });
 
-        it('should create toast container if it does not exist', () => {
-            ui.showToast('Test');
+        it('should auto-dismiss toast after 3 seconds', async () => {
+            vi.useFakeTimers();
             
-            const container = document.getElementById('toast-container');
-            expect(container).toBeTruthy();
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.classList.add('hidden');
+            document.body.appendChild(toast);
+            
+            ui.showToast('Test');
+            expect(toast.classList.contains('hidden')).toBe(false);
+            
+            // Fast-forward 3 seconds
+            vi.advanceTimersByTime(3000);
+            
+            expect(toast.classList.contains('hidden')).toBe(true);
+            vi.useRealTimers();
         });
 
-        it('should reuse existing toast container', () => {
+        it('should clear previous timeout when showing new toast', async () => {
+            vi.useFakeTimers();
+            
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.classList.add('hidden');
+            document.body.appendChild(toast);
+            
             ui.showToast('First');
-            const container1 = document.getElementById('toast-container');
+            vi.advanceTimersByTime(1500);
             
+            // Show second toast before first dismisses
             ui.showToast('Second');
-            const container2 = document.getElementById('toast-container');
+            vi.advanceTimersByTime(1500);
             
-            expect(container1).toBe(container2);
+            // Should still be visible (old timeout was cleared)
+            expect(toast.classList.contains('hidden')).toBe(false);
+            
+            // Complete the new 3-second timer
+            vi.advanceTimersByTime(1500);
+            expect(toast.classList.contains('hidden')).toBe(true);
+            
+            vi.useRealTimers();
         });
     });
 

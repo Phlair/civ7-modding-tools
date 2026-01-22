@@ -9,35 +9,24 @@
  * @param {'info' | 'success' | 'error'} type - Toast type (default: 'info')
  */
 export function showToast(message, type = 'info') {
-    const container = document.getElementById('toast-container') || createToastContainer();
-    
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
+    const toast = document.getElementById('toast');
+    if (!toast) return;
     
     const bgClass = type === 'error' ? 'bg-red-600' : type === 'success' ? 'bg-green-600' : 'bg-blue-600';
     
-    toast.innerHTML = `
-        <div class="fixed bottom-4 right-4 ${bgClass} text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in z-50">
-            ${message}
-        </div>
-    `;
+    toast.className = `fixed bottom-4 right-4 px-4 py-3 rounded-lg shadow-lg ${bgClass} text-white z-50 animate-fade-in`;
+    toast.textContent = message;
+    toast.classList.remove('hidden');
     
-    container.appendChild(toast.firstElementChild);
+    // Clear any existing timeout
+    if (toast.dismissTimeout) {
+        clearTimeout(toast.dismissTimeout);
+    }
     
-    setTimeout(() => {
-        toast.firstElementChild?.remove();
+    // Auto-dismiss after 3 seconds
+    toast.dismissTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
     }, 3000);
-}
-
-/**
- * Create toast container if it doesn't exist
- * @returns {HTMLElement} Toast container element
- */
-function createToastContainer() {
-    const container = document.createElement('div');
-    container.id = 'toast-container';
-    document.body.appendChild(container);
-    return container;
 }
 
 /**

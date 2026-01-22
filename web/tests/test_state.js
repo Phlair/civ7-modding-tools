@@ -204,6 +204,229 @@ describe('State Module', () => {
         });
     });
 
+    describe('populateWizardFromData', () => {
+        it('should populate module_localization from loaded YAML', () => {
+            const loadedData = {
+                module_localization: {
+                    name: 'Babylon Module',
+                    description: 'Babylon civilization module',
+                    authors: 'Phlair',
+                },
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.module_localization.name).toBe('Babylon Module');
+            expect(state.wizardData.module_localization.description).toBe(
+                'Babylon civilization module'
+            );
+            expect(state.wizardData.module_localization.authors).toBe('Phlair');
+        });
+
+        it('should handle action_group as string or object', () => {
+            const loadedData1 = {
+                action_group: 'AGE_ANTIQUITY',
+            };
+
+            state.populateWizardFromData(loadedData1);
+            expect(state.wizardData.action_group.action_group_id).toBe('AGE_ANTIQUITY');
+
+            const loadedData2 = {
+                action_group: { action_group_id: 'AGE_EXPLORATION' },
+            };
+
+            state.populateWizardFromData(loadedData2);
+            expect(state.wizardData.action_group.action_group_id).toBe('AGE_EXPLORATION');
+        });
+
+        it('should populate metadata from loaded data', () => {
+            const loadedData = {
+                metadata: {
+                    id: 'babylon',
+                    version: '1.0.0',
+                    name: 'Babylon',
+                    description: 'Babylon Civilization',
+                    authors: 'Phlair',
+                    package: 'Babylon',
+                },
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.metadata.id).toBe('babylon');
+            expect(state.wizardData.metadata.name).toBe('Babylon');
+            expect(state.wizardData.metadata.package).toBe('Babylon');
+        });
+
+        it('should populate civilization data from loaded YAML', () => {
+            const loadedData = {
+                civilization: {
+                    civilization_type: 'CIVILIZATION_BABYLON',
+                    civilization_traits: ['TRAIT_SCIENTIFIC'],
+                    leaders: ['LEADER_HAMMURABI'],
+                    vis_art_building_cultures: ['BUILDING_CULTURE_MID'],
+                    building_culture_base: 'MUD',
+                    vis_art_unit_cultures: ['MidE'],
+                    civilization_unlocks: [
+                        { age_type: 'AGE_EXPLORATION', type: 'CIVILIZATION_PERSIA' },
+                    ],
+                },
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.civilization.civilization_type).toBe(
+                'CIVILIZATION_BABYLON'
+            );
+            expect(state.wizardData.civilization.civilization_traits).toEqual([
+                'TRAIT_SCIENTIFIC',
+            ]);
+            expect(state.wizardData.civilization.vis_art_building_cultures).toEqual([
+                'BUILDING_CULTURE_MID',
+            ]);
+            expect(state.wizardData.civilization.building_culture_base).toBe('MUD');
+            expect(state.wizardData.civilization.vis_art_unit_cultures).toEqual(['MidE']);
+            expect(state.wizardData.civilization.civilization_unlocks).toHaveLength(1);
+            expect(state.wizardData.civilization.civilization_unlocks[0].type).toBe(
+                'CIVILIZATION_PERSIA'
+            );
+        });
+
+        it('should populate units array from loaded data', () => {
+            const loadedData = {
+                units: [
+                    { id: 'unit1', unit_type: 'UNIT_BABYLON_SCOUT' },
+                    { id: 'unit2', unit_type: 'UNIT_BABYLON_PRIEST' },
+                ],
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.units).toHaveLength(2);
+            expect(state.wizardData.units[0].id).toBe('unit1');
+            expect(state.wizardData.units[1].unit_type).toBe('UNIT_BABYLON_PRIEST');
+        });
+
+        it('should populate constructibles array from loaded data', () => {
+            const loadedData = {
+                constructibles: [
+                    { id: 'building1', constructible_type: 'BUILDING_LIBRARY' },
+                ],
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.constructibles).toHaveLength(1);
+            expect(state.wizardData.constructibles[0].constructible_type).toBe(
+                'BUILDING_LIBRARY'
+            );
+        });
+
+        it('should populate modifiers array from loaded data', () => {
+            const loadedData = {
+                modifiers: [
+                    { id: 'mod1', modifier: { effect: 'ADJUST_YIELD' } },
+                ],
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.modifiers).toHaveLength(1);
+            expect(state.wizardData.modifiers[0].modifier.effect).toBe('ADJUST_YIELD');
+        });
+
+        it('should populate traditions array from loaded data', () => {
+            const loadedData = {
+                traditions: [{ id: 'trad1', tradition_type: 'TRADITION_SCIENCE' }],
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.traditions).toHaveLength(1);
+            expect(state.wizardData.traditions[0].tradition_type).toBe('TRADITION_SCIENCE');
+        });
+
+        it('should populate progression tree nodes from loaded data', () => {
+            const loadedData = {
+                progression_tree_nodes: [
+                    { id: 'node1', progression_tree_node_type: 'NODE_TECH' },
+                ],
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.progression_tree_nodes).toHaveLength(1);
+            expect(state.wizardData.progression_tree_nodes[0].id).toBe('node1');
+        });
+
+        it('should populate progression trees from loaded data', () => {
+            const loadedData = {
+                progression_trees: [
+                    { id: 'tree1', progression_tree_type: 'TECH_TREE' },
+                ],
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.progression_trees).toHaveLength(1);
+            expect(state.wizardData.progression_trees[0].progression_tree_type).toBe(
+                'TECH_TREE'
+            );
+        });
+
+        it('should populate all sections together from complete loaded data', () => {
+            const loadedData = {
+                metadata: { id: 'babylon', name: 'Babylon' },
+                module_localization: { name: 'Babylon Module' },
+                action_group: { action_group_id: 'AGE_ANTIQUITY' },
+                civilization: { civilization_type: 'CIVILIZATION_BABYLON' },
+                units: [{ id: 'unit1', unit_type: 'UNIT_SCOUT' }],
+                constructibles: [{ id: 'building1' }],
+                modifiers: [{ id: 'mod1' }],
+                traditions: [{ id: 'trad1' }],
+                progression_tree_nodes: [{ id: 'node1' }],
+                progression_trees: [{ id: 'tree1' }],
+                constants: { city_names: ['Babylon', 'Nippur'] },
+                imports: [{ id: 'icon1' }],
+                build: { builders: [] },
+            };
+
+            state.populateWizardFromData(loadedData);
+
+            expect(state.wizardData.metadata.id).toBe('babylon');
+            expect(state.wizardData.module_localization.name).toBe('Babylon Module');
+            expect(state.wizardData.action_group.action_group_id).toBe('AGE_ANTIQUITY');
+            expect(state.wizardData.civilization.civilization_type).toBe(
+                'CIVILIZATION_BABYLON'
+            );
+            expect(state.wizardData.units).toHaveLength(1);
+            expect(state.wizardData.constructibles).toHaveLength(1);
+            expect(state.wizardData.modifiers).toHaveLength(1);
+            expect(state.wizardData.traditions).toHaveLength(1);
+            expect(state.wizardData.progression_tree_nodes).toHaveLength(1);
+            expect(state.wizardData.progression_trees).toHaveLength(1);
+            expect(state.wizardData.constants.city_names).toEqual(['Babylon', 'Nippur']);
+            expect(state.wizardData.imports).toHaveLength(1);
+        });
+
+        it('should handle null/undefined data gracefully', () => {
+            state.populateWizardFromData(null);
+
+            expect(state.wizardData.metadata).toEqual({});
+            expect(state.wizardData.units).toEqual([]);
+            expect(state.wizardData.civilization).toEqual({});
+        });
+
+        it('should reset wizard step to 1 when populating', () => {
+            state.setWizardStep(5);
+            state.populateWizardFromData({
+                metadata: { id: 'test' },
+            });
+
+            expect(state.wizardStep).toBe(1);
+        });
+    });
+
     describe('Reference Data Cache', () => {
         it('should cache reference data', () => {
             const data = ['YIELD_PRODUCTION', 'YIELD_SCIENCE'];

@@ -402,3 +402,136 @@ export function updateFieldValue(fieldPath, value) {
     obj[last_part] = value;
     markDirty();
 }
+
+/**
+ * Populate wizard data from loaded YAML data
+ * Converts YAML structure into wizard-compatible format for editing
+ * @param {Object} loadedData - Loaded YAML data
+ */
+export function populateWizardFromData(loadedData) {
+    if (!loadedData) {
+        resetWizardData();
+        return;
+    }
+
+    // Start with fresh wizard data structure
+    resetWizardData();
+
+    // Populate metadata section (Step 1)
+    if (loadedData.metadata) {
+        wizardData.metadata = {
+            id: loadedData.metadata.id || '',
+            version: loadedData.metadata.version || '1.0.0',
+            name: loadedData.metadata.name || '',
+            description: loadedData.metadata.description || '',
+            authors: loadedData.metadata.authors || '',
+            package: loadedData.metadata.package || '',
+        };
+    }
+
+    // Populate module localization (Step 1)
+    if (loadedData.module_localization) {
+        wizardData.module_localization = {
+            name: loadedData.module_localization.name || '',
+            description: loadedData.module_localization.description || '',
+            authors: loadedData.module_localization.authors || '',
+        };
+    }
+
+    // Populate action group (Step 1)
+    if (loadedData.action_group) {
+        const actionGroupId = typeof loadedData.action_group === 'string'
+            ? loadedData.action_group
+            : loadedData.action_group.action_group_id || 'ALWAYS';
+        wizardData.action_group = {
+            action_group_id: actionGroupId,
+        };
+    }
+
+    // Populate civilization (Step 2)
+    if (loadedData.civilization) {
+        wizardData.civilization = {
+            civilization_type: loadedData.civilization.civilization_type || '',
+            civilization_traits: loadedData.civilization.civilization_traits || [],
+            civilization_tags: loadedData.civilization.civilization_tags || [],
+            leaders: loadedData.civilization.leaders || [],
+            localizations: loadedData.civilization.localizations || [],
+            icon: loadedData.civilization.icon || {},
+            start_bias_rivers: loadedData.civilization.start_bias_rivers || 0,
+            start_bias_terrains: loadedData.civilization.start_bias_terrains || [],
+            vis_art_building_cultures: loadedData.civilization.vis_art_building_cultures || [],
+            building_culture_base: loadedData.civilization.building_culture_base || '',
+            vis_art_unit_cultures: loadedData.civilization.vis_art_unit_cultures || [],
+            civilization_unlocks: loadedData.civilization.civilization_unlocks || [],
+            civilization_unlocks_leaders:
+                loadedData.civilization.civilization_unlocks_leaders || [],
+            civilization_unlocks_resources:
+                loadedData.civilization.civilization_unlocks_resources || [],
+            loading_info_civilizations:
+                loadedData.civilization.loading_info_civilizations || [],
+        };
+    }
+
+    // Populate units (Step 3)
+    if (Array.isArray(loadedData.units)) {
+        wizardData.units = loadedData.units.map(unit => ({
+            ...unit,
+        }));
+    }
+
+    // Populate constructibles (Step 3)
+    if (Array.isArray(loadedData.constructibles)) {
+        wizardData.constructibles = loadedData.constructibles.map(
+            constructible => ({
+                ...constructible,
+            })
+        );
+    }
+
+    // Populate modifiers (Step 4)
+    if (Array.isArray(loadedData.modifiers)) {
+        wizardData.modifiers = loadedData.modifiers.map(modifier => ({
+            ...modifier,
+        }));
+    }
+
+    // Populate traditions (Step 4)
+    if (Array.isArray(loadedData.traditions)) {
+        wizardData.traditions = loadedData.traditions.map(tradition => ({
+            ...tradition,
+        }));
+    }
+
+    // Populate progression tree nodes (Step 5)
+    if (Array.isArray(loadedData.progression_tree_nodes)) {
+        wizardData.progression_tree_nodes = loadedData.progression_tree_nodes.map(
+            node => ({
+                ...node,
+            })
+        );
+    }
+
+    // Populate progression trees (Step 5)
+    if (Array.isArray(loadedData.progression_trees)) {
+        wizardData.progression_trees = loadedData.progression_trees.map(
+            tree => ({
+                ...tree,
+            })
+        );
+    }
+
+    // Populate constants
+    if (loadedData.constants) {
+        wizardData.constants = { ...loadedData.constants };
+    }
+
+    // Populate imports
+    if (Array.isArray(loadedData.imports)) {
+        wizardData.imports = [...loadedData.imports];
+    }
+
+    // Populate build configuration
+    if (loadedData.build) {
+        wizardData.build = { ...loadedData.build };
+    }
+}
