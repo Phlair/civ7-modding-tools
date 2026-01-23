@@ -18,6 +18,15 @@ export let wizardStep = 1; // Current wizard step (1-5)
 export let wizardData = {}; // Temporary storage for wizard inputs
 export let wizardBuildingYields = []; // Temporary storage for yields in form
 
+// User settings
+export let userSettings = (() => {
+    try {
+        return JSON.parse(localStorage.getItem('userSettings') || '{}');
+    } catch {
+        return {};
+    }
+})();
+
 // Autocomplete usage tracking
 export let autocompleteUsageStats = (() => {
     try {
@@ -534,4 +543,52 @@ export function populateWizardFromData(loadedData) {
     if (loadedData.build) {
         wizardData.build = { ...loadedData.build };
     }
+}
+
+// ============================================================================
+// Settings Management
+// ============================================================================
+
+/**
+ * Update a user setting using dot notation path
+ * Examples: 'openai.apiKey', 'openai.defaultModel', 'ui.theme'
+ */
+export function updateSettings(path, value) {
+    const parts = path.split('.');
+    let obj = userSettings;
+    
+    for (let i = 0; i < parts.length - 1; i++) {
+        if (!obj[parts[i]]) {
+            obj[parts[i]] = {};
+        }
+        obj = obj[parts[i]];
+    }
+    
+    obj[parts[parts.length - 1]] = value;
+    localStorage.setItem('userSettings', JSON.stringify(userSettings));
+}
+
+/**
+ * Get all user settings
+ */
+export function getSettings() {
+    return userSettings;
+}
+
+/**
+ * Get a specific setting using dot notation path
+ */
+export function getSetting(path, defaultValue = null) {
+    const parts = path.split('.');
+    let obj = userSettings;
+    
+    for (const part of parts) {
+        if (obj && typeof obj === 'object' && part in obj) {
+            obj = obj[part];
+        } else {
+            return defaultValue;
+        }
+    }
+    
+    return obj;
 }

@@ -14,10 +14,14 @@ import subprocess
 import sys
 import tempfile
 import zipfile
+import base64
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 
 import yaml
+import requests
+from PIL import Image
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.responses import Response, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -322,6 +326,14 @@ async def export_built_mod(data: dict[str, Any]) -> StreamingResponse:
         # Save generated Python
         with open(python_file, "w", encoding="utf-8") as f:
             f.write(python_code)
+        
+        # Debug: print the generated Python to see imports
+        print(f"[BUILD_DEBUG] Generated Python code (first 2000 chars):")
+        print(python_code[:2000])
+        print(f"[BUILD_DEBUG] Generated Python code (looking for 'imports' section):")
+        import_section = [line for line in python_code.split('\n') if 'import' in line.lower() and ('source_path' in line or 'target_name' in line)]
+        for line in import_section[:10]:
+            print(f"  {line}")
 
         # Execute the generated Python to build the mod
         result = subprocess.run(
@@ -370,9 +382,13 @@ async def export_built_mod(data: dict[str, Any]) -> StreamingResponse:
             detail=f"civ7_modding_tools not available in backend environment: {str(e)}",
         )
     except Exception as e:
+        error_detail = str(e)
+        print(f"[BUILD_EXPORT_ERROR] Exception: {error_detail}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to build and export mod: {str(e)}",
+            detail=f"Failed to build and export mod: {error_detail}",
         )
     finally:
         # Cleanup temp directory
@@ -529,6 +545,263 @@ async def validate_field(
         }
     except (FileNotFoundError, ValueError) as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+# ============================================================================
+# Icon Generation Endpoints
+# ============================================================================
+
+
+class IconGenerateRequest(BaseModel):
+    """Request to generate an icon using OpenAI."""
+    prompt: str
+    icon_type: str  # 'civilization', 'unit', 'building'
+    model: str = "gpt-image-1-mini"
+    quality: str = "medium"
+    reference_images: list[str] = []
+    api_key: str
+
+
+class IconSaveRequest(BaseModel):
+    """Request to save a generated icon."""
+    image_b64: str
+    icon_type: str
+    target_name: str
+    prompt: str
+
+
+@app.post("/api/icons/generate")
+async def generate_icon(request: IconGenerateRequest) -> dict[str, Any]:
+    """
+    Generate an icon using OpenAI GPT Image API.
+    
+    Args:
+        request: Icon generation parameters
+        
+    Returns:
+        Generated icon as base64 string
+    """
+    try:
+        from openai import OpenAI
+        
+        # Build prompt with style guidance based on icon type
+        prompt_template = {
+            'civilization': (
+                f"Create a minimalist, geometric game icon for a civilization. "
+                f"Description: {request.prompt}\n"
+                f"Ensure consistency in colour/shade with examples."
+                f"Requirements: 256x256 PNG, white emblem with transparent background, "
+                f"clean vector-like style, recognizable at any size, matches Civilization VII aesthetic. "
+                f"No text or labels. Match the artistic style of the reference images."
+            ),
+            'unit': (
+                f"Create a minimalist game icon for a military unit. "
+                f"Description: {request.prompt}\n"
+                f"Ensure consistency in colour/shade with examples."
+                f"Requirements: 256x256 PNG, simple silhouette with transparent background, "
+                f"bold shapes, 3-4 colors maximum, recognizable at thumbnail size. "
+                f"Match the artistic style of the reference images."
+            ),
+            'building': (
+                f"Create a minimalist game icon for a building/constructible. "
+                f"Description: {request.prompt}\n"
+                f"Ensure consistency in colour/shade with examples."
+                f"Requirements: 256x256 PNG, isometric or 3/4 view, transparent background, "
+                f"warm earth tones, clean edges, game-ready asset. "
+                f"Match the artistic style of the reference images."
+            ),
+        }
+        
+        prompt = prompt_template.get(request.icon_type, request.prompt)
+        
+        # Initialize OpenAI client
+        client = OpenAI(api_key=request.api_key)
+        
+        # Load reference image files
+        reference_file_handles = []
+        icons_dir = Path(__file__).parent.parent / "src" / "civ7_modding_tools" / "icons"
+        
+        if request.reference_images:
+            for icon_name in request.reference_images:
+                icon_path = icons_dir / f"{icon_name}.png"
+                if icon_path.exists():
+                    reference_file_handles.append(open(icon_path, "rb"))
+        
+        # Use images.edit() with reference images (GPT Image 1.5 supports multiple references)
+        if reference_file_handles:
+            result = client.images.edit(
+                model=request.model,
+                image=reference_file_handles,
+                prompt=prompt,
+            )
+            
+            # Close file handles
+            for fh in reference_file_handles:
+                fh.close()
+        else:
+            # Fallback to generate if no references provided
+            result = client.images.generate(
+                model=request.model,
+                prompt=prompt,
+                size="1024x1024",
+                n=1,
+            )
+        
+        # Extract base64 image (edit API returns b64_json by default)
+        b64_image = result.data[0].b64_json
+        
+        # Resize to 256x256
+        try:
+            image_bytes = base64.b64decode(b64_image)
+            img = Image.open(BytesIO(image_bytes))
+            img_resized = img.resize((256, 256), Image.Resampling.LANCZOS)
+            
+            # Convert back to base64
+            buffer = BytesIO()
+            img_resized.save(buffer, format="PNG")
+            resized_b64 = base64.b64encode(buffer.getvalue()).decode()
+        except Exception:
+            resized_b64 = b64_image
+        
+        return {
+            "success": True,
+            "image": resized_b64,
+            "size": "256x256",
+            "references_used": len(reference_file_handles),
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Icon generation failed: {str(e)}"
+        )
+
+
+@app.post("/api/icons/save")
+async def save_generated_icon(request: IconSaveRequest) -> dict[str, Any]:
+    """
+    Save a generated icon and prepare for import into mod.
+    
+    Args:
+        request: Save request with icon data
+        
+    Returns:
+        Icon path, import configuration, and metadata for addition to mod config
+    """
+    try:
+        # Create persistent directory for generated icons (relative to project root)
+        # This ensures the file exists when the mod is built
+        icons_dir = Path.cwd() / "generated_icons"
+        icons_dir.mkdir(exist_ok=True)
+        
+        # Save image file
+        filename = f"{request.target_name}.png"
+        file_path = icons_dir / filename
+        
+        image_bytes = base64.b64decode(request.image_b64)
+        with open(file_path, "wb") as f:
+            f.write(image_bytes)
+        
+        # Create import configuration for YAML - use ABSOLUTE path so it works from temp dir
+        import_id = f"{request.icon_type}_icon_{request.target_name}"
+        # Convert to forward slashes for cross-platform compatibility in generated Python code
+        absolute_source_path = str(file_path.resolve()).replace("\\", "/")
+        import_entry = {
+            "id": import_id,
+            "source_path": absolute_source_path,
+            "target_name": request.target_name,
+        }
+        
+        # Icon path in mod (what gets referenced in icon.path)
+        icon_path = f"icons/{request.target_name}"
+        
+        return {
+            "success": True,
+            "icon_path": icon_path,
+            "file_path": str(file_path),
+            "target_name": request.target_name,
+            "icon_type": request.icon_type,
+            "import_entry": import_entry,
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to save icon: {str(e)}"
+        )
+
+
+@app.post("/api/icons/upload")
+async def upload_icon(file: UploadFile = File(...)) -> dict[str, Any]:
+    """
+    Upload a local icon file and save it for use in the mod.
+    
+    Args:
+        file: Uploaded image file
+        
+    Returns:
+        Icon path and import configuration
+    """
+    try:
+        # Validate file type
+        if not file.content_type or not file.content_type.startswith("image/"):
+            raise ValueError(f"Invalid file type: {file.content_type}. Must be an image.")
+        
+        # Create persistent directory for uploaded icons
+        icons_dir = Path.cwd() / "generated_icons"
+        icons_dir.mkdir(exist_ok=True)
+        
+        # Read and validate image
+        content = await file.read()
+        if not content:
+            raise ValueError("File is empty")
+        
+        try:
+            img = Image.open(BytesIO(content))
+            # Resize to 256x256 for consistency
+            img_resized = img.resize((256, 256), Image.Resampling.LANCZOS)
+        except Exception as e:
+            raise ValueError(f"Failed to process image: {str(e)}")
+        
+        # Generate unique filename
+        import time
+        timestamp = int(time.time() * 1000)
+        filename = f"icon_uploaded_{timestamp}.png"
+        file_path = icons_dir / filename
+        
+        # Save image
+        img_resized.save(file_path, "PNG")
+        
+        # Create import configuration
+        import_id = f"uploaded_icon_{timestamp}"
+        absolute_source_path = str(file_path.resolve()).replace("\\", "/")
+        import_entry = {
+            "id": import_id,
+            "source_path": absolute_source_path,
+            "target_name": filename.replace(".png", ""),
+        }
+        
+        # Icon path in mod
+        icon_path = f"icons/{filename.replace('.png', '')}"
+        
+        return {
+            "success": True,
+            "icon_path": icon_path,
+            "file_path": str(file_path),
+            "target_name": filename.replace(".png", ""),
+            "import_entry": import_entry,
+        }
+        
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Upload failed: {str(e)}"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to upload icon: {str(e)}"
+        )
 
 
 @app.get("/api/health")

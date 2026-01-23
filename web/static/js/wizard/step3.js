@@ -19,9 +19,11 @@ export function renderWizardStep3(container) {
         window.wizardShowUnitForm = wizardShowUnitForm;
         window.wizardEditUnit = wizardEditUnit;
         window.removeWizardUnit = removeWizardUnit;
+        window.updateUnitIconPath = updateUnitIconPath;
         window.wizardShowConstructibleForm = wizardShowConstructibleForm;
         window.wizardEditConstructible = wizardEditConstructible;
         window.removeWizardConstructible = removeWizardConstructible;
+        window.updateBuildingIconPath = updateBuildingIconPath;
         window.wizardSaveUnit = wizardSaveUnit;
         window.wizardCancelUnitForm = wizardCancelUnitForm;
         window.wizardSaveConstructible = wizardSaveConstructible;
@@ -197,12 +199,22 @@ export function renderWizardStep3(container) {
                             <div class="p-3 pt-0 space-y-2">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-300 mb-1">Icon Path</label>
-                                    <input 
-                                        type="text" 
-                                        id="wizard-unit-icon" 
-                                        placeholder="fs://game/mod_id/unit_icon.png"
-                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                                    />
+                                    <div class="flex gap-2">
+                                        <input 
+                                            type="text" 
+                                            id="wizard-unit-icon" 
+                                            placeholder="fs://game/mod_id/unit_icon.png"
+                                            onchange="window.updateUnitIconPath(this.value)"
+                                            class="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                        <button 
+                                            onclick="window.generateUnitIcon()"
+                                            class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium whitespace-nowrap transition-colors"
+                                            title="Generate icon using AI"
+                                        >
+                                            ✨
+                                        </button>
+                                    </div>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-slate-300 mb-1">Cost Yield Type</label>
@@ -388,12 +400,22 @@ export function renderWizardStep3(container) {
                             <div class="p-3 pt-0 space-y-2">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-300 mb-1">Icon Path</label>
-                                    <input 
-                                        type="text" 
-                                        id="wizard-constructible-icon" 
-                                        placeholder="fs://game/mod_id/building_icon.png"
-                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                                    />
+                                    <div class="flex gap-2">
+                                        <input 
+                                            type="text" 
+                                            id="wizard-constructible-icon" 
+                                            placeholder="fs://game/mod_id/building_icon.png"
+                                            onchange="window.updateBuildingIconPath(this.value)"
+                                            class="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                        <button 
+                                            onclick="window.generateBuildingIcon()"
+                                            class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium whitespace-nowrap transition-colors"
+                                            title="Generate icon using AI"
+                                        >
+                                            ✨
+                                        </button>
+                                    </div>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-slate-300 mb-1">Valid Districts (comma-separated)</label>
@@ -629,6 +651,17 @@ export function removeWizardUnit(idx) {
     }
 }
 
+/**
+ * Update the icon path for the unit currently being edited
+ */
+export function updateUnitIconPath(value) {
+    const iconInput = document.getElementById('wizard-unit-icon');
+    if (iconInput) {
+        iconInput.value = value;
+    }
+    markDirty();
+}
+
 export function wizardShowConstructibleForm() {
     const form = document.getElementById('wizard-constructible-form');
     const idxInput = document.getElementById('wizard-constructible-edit-idx');
@@ -744,6 +777,17 @@ export function removeWizardConstructible(idx) {
         markDirty();
         showToast('Building removed', 'info');
     }
+}
+
+/**
+ * Update the icon path for the building currently being edited
+ */
+export function updateBuildingIconPath(value) {
+    const iconInput = document.getElementById('wizard-constructible-icon');
+    if (iconInput) {
+        iconInput.value = value;
+    }
+    markDirty();
 }
 
 export function addWizardBuildingYield() {

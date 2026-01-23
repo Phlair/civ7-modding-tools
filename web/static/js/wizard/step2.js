@@ -87,15 +87,38 @@ export function renderWizardStep2(container) {
                                 Civilization Icon Path
                                 <button onclick="import('./wizard.js').then(m => m.showFieldHelp('civilization_icon'))" class="ml-1 text-blue-400 hover:text-blue-300">ⓘ</button>
                             </label>
-                            <input 
-                                type="text" 
-                                id="wizard-civ-icon" 
-                                value="${wizardData.civilization?.icon?.path || ''}"
-                                onchange="window.updateWizardIconPath(this.value)"
-                                placeholder="icons/civ_sym_babylon"
-                                class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
-                            />
-                            <p class="text-xs text-slate-500 mt-1">Path to civilization icon (e.g., icons/civ_sym_iceni)</p>
+                            <div class="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    id="wizard-civ-icon" 
+                                    value="${wizardData.civilization?.icon?.path || ''}"
+                                    onchange="window.updateWizardIconPath(this.value)"
+                                    placeholder="icons/civ_sym_babylon"
+                                    class="flex-1 px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
+                                />
+                                <button 
+                                    onclick="window.generateCivIcon()"
+                                    class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
+                                    title="Generate icon using AI"
+                                >
+                                    ✨ Generate
+                                </button>
+                                <button 
+                                    onclick="document.getElementById('wizard-civ-icon-upload-input').click()"
+                                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
+                                    title="Upload a local icon file"
+                                >
+                                    📁 Upload
+                                </button>
+                                <input 
+                                    type="file" 
+                                    id="wizard-civ-icon-upload-input" 
+                                    accept="image/*"
+                                    style="display: none;"
+                                    onchange="window.handleCivIconUpload(this)"
+                                />
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">Path to civilization icon (e.g., icons/civ_sym_iceni) or click Generate to create with AI</p>
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-slate-300 mb-1">
@@ -402,6 +425,82 @@ export function updateWizardIconPath(value) {
     markDirty();
 }
 
+/**
+ * Handle civilization icon file upload
+ */
+export async function handleCivIconUpload(inputElement) {
+    const file = inputElement.files?.[0];
+    if (!file) return;
+
+    // Validate file is an image
+    if (!file.type.startsWith('image/')) {
+        const { showToast } = await import('../ui.js');
+        showToast('❌ Please select a valid image file', 'error');
+        return;
+    }
+
+    try {
+        const { showToast } = await import('../ui.js');
+        showToast('📤 Uploading icon...', 'info');
+
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch('/api/icons/upload', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Upload failed');
+        }
+
+        const result = await response.json();
+        
+        if (result.success) {
+            // Update the icon path field (same as generate handler)
+            const iconInput = document.getElementById('wizard-civ-icon');
+            if (iconInput) {
+                iconInput.value = result.icon_path;
+                iconInput.dispatchEvent(new Event('change'));
+            }
+            
+            // Update wizardData imports
+            const { wizardData } = await import('../state.js');
+            
+            if (!wizardData.imports) {
+                wizardData.imports = [];
+            }
+            
+            // Remove old civilization icon imports 
+            wizardData.imports = wizardData.imports.filter(
+                imp => !imp.id?.includes('civilization_icon') && !imp.target_name?.startsWith('icon_uploaded')
+            );
+            
+            // Add new import entry
+            wizardData.imports.push(result.import_entry);
+            
+            // SYNC to currentData so export gets the updated imports
+            const { syncWizardToCurrentData } = await import('../state.js');
+            syncWizardToCurrentData();
+            
+            markDirty();
+            showToast(`✅ Icon uploaded successfully!`, 'success');
+        } else {
+            throw new Error(result.error || 'Upload failed');
+        }
+    } catch (error) {
+        const { showToast } = await import('../ui.js');
+        console.error('[ICON_UPLOAD_ERROR]', error);
+        showToast(`❌ Upload failed: ${error.message}`, 'error');
+    } finally {
+        // Reset file input
+        inputElement.value = '';
+    }
+}
+
 export function addWizardTrait() {
     if (!wizardData.civilization) wizardData.civilization = {};
     if (!wizardData.civilization.civilization_traits) wizardData.civilization.civilization_traits = [];
@@ -688,6 +787,7 @@ if (typeof window !== 'undefined') {
     window.updateCivilization = updateCivilization;
     window.updateWizardCivLocalization = updateWizardCivLocalization;
     window.updateWizardIconPath = updateWizardIconPath;
+    window.handleCivIconUpload = handleCivIconUpload;
     window.updateWizardBuildingCulturePalace = updateWizardBuildingCulturePalace;
     window.updateWizardBuildingCultureAges = updateWizardBuildingCultureAges;
     window.updateWizardUnitCulture = updateWizardUnitCulture;

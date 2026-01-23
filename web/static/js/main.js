@@ -14,6 +14,8 @@ import {
 import { healthCheck, loadFile, saveFile, exportYAML, exportBuiltMod } from './api.js';
 import { showToast } from './ui.js';
 import { loadReferenceData } from './data/loader.js';
+import { showSettingsModal, toggleApiKeyVisibility, saveSettings } from './settings.js';
+import { generateCivIcon, generateUnitIcon, generateBuildingIcon, handleIconGenerate, handleIconSave } from './icons.js';
 import * as state from './state.js';
 
 // Expose to global scope IMMEDIATELY for inline handlers (HTML onclick compatibility)
@@ -142,6 +144,58 @@ Object.defineProperty(window, 'exportBuiltMod', {
             showToast('Error building and exporting mod', 'error');
         }
     },
+    writable: false,
+    configurable: false
+});
+
+// ============================================================================
+// Settings & Icon Generation Functions
+// ============================================================================
+
+Object.defineProperty(window, 'showSettingsModal', {
+    value: showSettingsModal,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'toggleApiKeyVisibility', {
+    value: toggleApiKeyVisibility,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'saveSettings', {
+    value: saveSettings,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'generateCivIcon', {
+    value: generateCivIcon,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'generateUnitIcon', {
+    value: generateUnitIcon,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'generateBuildingIcon', {
+    value: generateBuildingIcon,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'handleIconGenerate', {
+    value: handleIconGenerate,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'handleIconSave', {
+    value: handleIconSave,
     writable: false,
     configurable: false
 });
