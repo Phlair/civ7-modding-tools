@@ -43,6 +43,7 @@ example-generated-mod/
 dist-*/
 **/dist-*/
 *-EXAMPLE/
+generated-icons/
 
 # js stuff
 coverage/
