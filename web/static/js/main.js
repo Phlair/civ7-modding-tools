@@ -11,7 +11,16 @@ import {
     wizardNextStep,
     createNewMod
 } from './wizard/wizard.js';
-import { healthCheck, loadFile, uploadFile, saveFile, exportYAML, exportBuiltMod } from './api.js';
+import { 
+    healthCheck, 
+    loadFile, 
+    uploadFile, 
+    saveFile, 
+    exportYAML,
+    exportYAMLToDisk,
+    exportBuiltMod,
+    exportBuiltModToDisk
+} from './api.js';
 import { showToast } from './ui.js';
 import { loadReferenceData } from './data/loader.js';
 import { showSettingsModal, toggleApiKeyVisibility, saveSettings } from './settings.js';
@@ -123,15 +132,27 @@ Object.defineProperty(window, 'saveFile', {
 Object.defineProperty(window, 'exportYAML', {
     value: async () => {
         try {
-            const blob = await exportYAML(state.currentData);
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            const modId = state.currentData?.metadata?.id || 'mod';
-            a.download = `${modId}.yml`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('YAML exported successfully', 'success');
+            const settings = state.getSettings();
+            const useDiskPath = settings.export?.useDiskPath || false;
+            const downloadPath = settings.export?.downloadPath || '';
+            
+            if (useDiskPath && downloadPath) {
+                // Save to disk via backend
+                await exportYAMLToDisk(state.currentData, downloadPath);
+                const modId = state.currentData?.metadata?.id || 'mod';
+                showToast(`YAML exported to ${downloadPath}/${modId}.yml`, 'success');
+            } else {
+                // Browser download
+                const blob = await exportYAML(state.currentData);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const modId = state.currentData?.metadata?.id || 'mod';
+                a.download = `${modId}.yml`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('YAML exported successfully', 'success');
+            }
         } catch (error) {
             showToast('Error exporting YAML', 'error');
         }
@@ -143,26 +164,38 @@ Object.defineProperty(window, 'exportYAML', {
 Object.defineProperty(window, 'exportBuiltMod', {
     value: async () => {
         try {
-            showToast('Building mod... please wait', 'info');
+            const settings = state.getSettings();
+            const useDiskPath = settings.export?.useDiskPath || false;
+            const downloadPath = settings.export?.downloadPath || '';
             const modId = state.currentData?.metadata?.id || 'mod';
             
-            // First, download the built mod zip
-            const blob = await exportBuiltMod(state.currentData);
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${modId}.zip`;
-            a.click();
-            URL.revokeObjectURL(url);
+            showToast('Building mod... please wait', 'info');
             
-            // Then, download the YAML config
-            const yamlBlob = await exportYAML(state.currentData);
-            const yamlUrl = URL.createObjectURL(yamlBlob);
-            const yamlA = document.createElement('a');
-            yamlA.href = yamlUrl;
-            yamlA.download = `${modId}.yml`;
-            yamlA.click();
-            URL.revokeObjectURL(yamlUrl);
+            if (useDiskPath && downloadPath) {
+                // Save to disk via backend
+                const result = await exportBuiltModToDisk(state.currentData, downloadPath);
+                showToast(`Mod exported to ${downloadPath}`, 'success');
+            } else {
+                // Browser download
+                const blob = await exportBuiltMod(state.currentData);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${modId}.zip`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                // Also download the YAML config
+                const yamlBlob = await exportYAML(state.currentData);
+                const yamlUrl = URL.createObjectURL(yamlBlob);
+                const yamlA = document.createElement('a');
+                yamlA.href = yamlUrl;
+                yamlA.download = `${modId}.yml`;
+                yamlA.click();
+                URL.revokeObjectURL(yamlUrl);
+                
+                showToast('Mod exported successfully', 'success');
+            }
             
             showToast('Mod built and exported successfully', 'success');
         } catch (error) {

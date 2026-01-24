@@ -431,6 +431,209 @@ async def export_built_mod(data: dict[str, Any]) -> StreamingResponse:
                 print(f"Warning: Failed to cleanup temp directory: {cleanup_error}")
 
 
+class ExportToDiskRequest(BaseModel):
+    """Request to export to disk."""
+    
+    data: dict[str, Any]
+    download_path: str
+
+
+@app.post("/api/civilization/export-disk")
+async def export_yaml_to_disk(request: ExportToDiskRequest) -> dict[str, str]:
+    """
+    Export YAML to disk at specified path.
+
+    Args:
+        request: Contains data and target download path
+
+    Returns:
+        Confirmation with file path
+    """
+    try:
+        download_path = Path(request.download_path).expanduser().resolve()
+        
+        if not download_path.exists():
+            raise HTTPException(
+                status_code=400,
+                detail=f"Download path does not exist: {request.download_path}",
+            )
+        
+        if not download_path.is_dir():
+            raise HTTPException(
+                status_code=400,
+                detail=f"Download path is not a directory: {request.download_path}",
+            )
+        
+        mod_id = request.data.get("metadata", {}).get("id", "mod")
+        file_path = download_path / f"{mod_id}.yml"
+        
+        yaml_content = yaml.dump(
+            request.data,
+            default_flow_style=False,
+            sort_keys=False,
+            allow_unicode=True,
+        )
+        
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(yaml_content)
+        
+        return {
+            "status": "success",
+            "message": f"YAML exported to {file_path}",
+            "path": str(file_path),
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to export YAML to disk: {str(e)}",
+        )
+
+
+@app.post("/api/civilization/export-built-disk")
+async def export_built_mod_to_disk(request: ExportToDiskRequest) -> dict[str, str]:
+    """
+    Export built mod to disk at specified path.
+
+    Args:
+        request: Contains data and target download path
+
+    Returns:
+        Confirmation with file path
+    """
+    temp_dir = None
+    try:
+        from civ7_modding_tools.yml_to_py import YamlToPyConverter
+        
+        download_path = Path(request.download_path).expanduser().resolve()
+        
+        if not download_path.exists():
+            raise HTTPException(
+                status_code=400,
+                detail=f"Download path does not exist: {request.download_path}",
+            )
+        
+        if not download_path.is_dir():
+            raise HTTPException(
+                status_code=400,
+                detail=f"Download path is not a directory: {request.download_path}",
+            )
+        
+        # Create temp directories
+        temp_dir = tempfile.mkdtemp()
+        temp_path = Path(temp_dir)
+        yaml_file = temp_path / "config.yml"
+        python_file = temp_path / "build_mod.py"
+        build_dir = temp_path / "dist"
+
+        # Save YAML to temp location
+        with open(yaml_file, "w", encoding="utf-8") as f:
+            yaml.dump(request.data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+
+        # Convert YAML to Python
+        converter = YamlToPyConverter(request.data)
+        python_code = converter.convert()
+
+        # Modify the generated code to use our temp build directory
+        mod_id = request.data.get("metadata", {}).get("id", "mod")
+        new_call = f"mod.build(r'{str(build_dir)}')"
+        
+        # Try to replace both literal string and f-string variants
+        patterns = [
+            f"mod.build('./dist-{mod_id}')",
+            "mod.build(f'./dist-{mod.mod_id}')",
+        ]
+        
+        replaced = False
+        for pattern in patterns:
+            if pattern in python_code:
+                python_code = python_code.replace(pattern, new_call)
+                replaced = True
+                break
+        
+        if not replaced:
+            python_code = re.sub(
+                r"mod\.build\(['\"]\.?/?dist-[^'\"]*['\"]\)",
+                new_call,
+                python_code
+            )
+            python_code = re.sub(
+                r"mod\.build\(f['\"]\.?/?dist-\{[^}]*\}['\"]\)",
+                new_call,
+                python_code
+            )
+
+        # Save generated Python
+        with open(python_file, "w", encoding="utf-8") as f:
+            f.write(python_code)
+
+        # Execute the generated Python to build the mod
+        result = subprocess.run(
+            [sys.executable, str(python_file)],
+            cwd=str(temp_path),
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+
+        if result.returncode != 0:
+            error_msg = result.stderr or result.stdout or "Unknown error during build"
+            raise RuntimeError(f"Build failed: {error_msg}")
+
+        # Check if build directory was created
+        if not build_dir.exists():
+            raise RuntimeError(f"Build directory not created at {build_dir}")
+
+        # Copy built mod to download path
+        output_dir = download_path / mod_id
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
+        
+        shutil.copytree(build_dir, output_dir)
+        
+        # Also save YAML to download path
+        yaml_output = download_path / f"{mod_id}.yml"
+        yaml_content = yaml.dump(
+            request.data,
+            default_flow_style=False,
+            sort_keys=False,
+            allow_unicode=True,
+        )
+        with open(yaml_output, "w", encoding="utf-8") as f:
+            f.write(yaml_content)
+        
+        return {
+            "status": "success",
+            "message": f"Mod exported to {output_dir}",
+            "path": str(output_dir),
+            "yaml_path": str(yaml_output),
+        }
+    except HTTPException:
+        raise
+    except ImportError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"civ7_modding_tools not available in backend environment: {str(e)}",
+        )
+    except Exception as e:
+        error_detail = str(e)
+        print(f"[BUILD_EXPORT_DISK_ERROR] Exception: {error_detail}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to build and export mod to disk: {error_detail}",
+        )
+    finally:
+        # Cleanup temp directory
+        if temp_dir:
+            try:
+                shutil.rmtree(temp_dir)
+            except Exception as cleanup_error:
+                print(f"Warning: Failed to cleanup temp directory: {cleanup_error}")
+
+
 @app.post("/api/civilization/validate")
 async def validate_yaml(request: YAMLSaveRequest) -> ValidationResult:
     """

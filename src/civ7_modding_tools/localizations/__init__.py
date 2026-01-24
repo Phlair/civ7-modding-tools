@@ -192,20 +192,51 @@ class LeaderUnlockLocalization(BaseLocalization):
 
 
 class CivilizationUnlockLocalization(BaseLocalization):
-    """Localization for civilization unlocks."""
+    """Localization for civilization unlocks.
+    
+    The 'description' field is auto-generated as "Play as [B]{CivName}[/B]." 
+    unless explicitly provided. Use 'custom_description' for civ-to-civ 
+    tooltips like "Carthage and Spain were both Mediterranean powers".
+    """
+    civilization_name: Optional[str] = None
     name: Optional[str] = None
     description: Optional[str] = None
+    custom_description: Optional[str] = None
     
     def get_nodes(self, entity_id: str) -> list[dict]:
-        """Generate nodes for civilization unlock localization."""
+        """Generate nodes for civilization unlock localization.
+        
+        Auto-generates 'description' if not explicitly provided.
+        custom_description is output as a separate entry for civ-to-civ
+        tooltips (e.g., LOC_UNLOCK_PLAY_AS_CARTHAGE_SPAIN_TOOLTIP).
+        """
         from civ7_modding_tools.utils import locale
         nodes = []
         prefix = entity_id.upper()
         
         if self.name:
             nodes.append({"tag": locale(prefix, "name"), "text": self.name})
+        
+        # Auto-generate description if not explicitly provided
         if self.description:
-            nodes.append({"tag": locale(prefix, "description"), "text": self.description})
+            # Explicit description takes precedence
+            nodes.append(
+                {"tag": locale(prefix, "description"), "text": self.description}
+            )
+        elif self.civilization_name:
+            # Auto-generate: "Play as [B]{CivName}[/B]."
+            auto_desc = f"Play as [B]{self.civilization_name}[/B]."
+            nodes.append(
+                {"tag": locale(prefix, "description"), "text": auto_desc}
+            )
+        
+        # Custom description for civ-to-civ tooltips
+        if self.custom_description:
+            nodes.append(
+                {"tag": locale(prefix, "customDescription"), 
+                 "text": self.custom_description}
+            )
+        
         return nodes
 
 

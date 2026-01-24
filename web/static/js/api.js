@@ -105,6 +105,56 @@ export async function exportYAML(data) {
 }
 
 /**
+ * Save YAML to disk via backend
+ * @param {Object} data - Data to export
+ * @param {string} downloadPath - Directory path to save to
+ * @returns {Promise<Object>} Save confirmation
+ */
+export async function exportYAMLToDisk(data, downloadPath) {
+    try {
+        const response = await fetch('/api/civilization/export-disk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data, download_path: downloadPath }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Export failed: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('[EXPORT_DISK_ERROR]', error);
+        throw error;
+    }
+}
+
+/**
+ * Save built mod to disk via backend
+ * @param {Object} data - Data to export and build
+ * @param {string} downloadPath - Directory path to save to
+ * @returns {Promise<Object>} Save confirmation
+ */
+export async function exportBuiltModToDisk(data, downloadPath) {
+    try {
+        const response = await fetch('/api/civilization/export-built-disk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data, download_path: downloadPath }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Export failed: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('[EXPORT_BUILT_DISK_ERROR]', error);
+        throw error;
+    }
+}
+
+/**
  * Export data as a fully built mod (zipped)
  * @param {Object} data - Data to export and build
  * @returns {Promise<Blob>} Built mod zip blob

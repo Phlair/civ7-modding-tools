@@ -62,6 +62,20 @@ export function renderStartBiasTerrains(container) {
 export function renderCivilizationUnlocks(container) {
     container.innerHTML = '';
 
+    // Add help text
+    const helpDiv = document.createElement('div');
+    helpDiv.className = 'mb-4 p-3 bg-blue-900/30 border border-blue-700 rounded text-sm text-slate-300';
+    helpDiv.innerHTML = `
+        <p><strong>Civilization Unlocks:</strong> Define other civilizations that can be unlocked in specific ages.</p>
+        <ul class="list-disc list-inside mt-2 text-xs text-slate-400">
+            <li><strong>Name:</strong> Localization key for the unlock display name (e.g., LOC_CIVILIZATION_SPAIN_NAME)</li>
+            <li><strong>Description:</strong> Localization key for why it unlocks (auto-generated as "[B]Civ Name[/B] can be played in this age")</li>
+            <li><strong>Icon:</strong> Civilization ID (e.g., CIVILIZATION_SPAIN, not a file path)</li>
+        </ul>
+        <p class="mt-2"><em>For civ-to-civ compatibility tooltips, use the localizations system with custom_description field.</em></p>
+    `;
+    container.appendChild(helpDiv);
+
     const itemsDiv = document.createElement('div');
     itemsDiv.className = 'space-y-3';
 
@@ -74,11 +88,22 @@ export function renderCivilizationUnlocks(container) {
             itemDiv.className = 'p-3 bg-slate-900/50 rounded border border-slate-600 space-y-2';
 
             itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.age_type`, 'Age Type', unlock.age_type || ''));
-            itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.type`, 'Type', unlock.type || ''));
+            itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.type`, 'Type (Civ ID)', unlock.type || ''));
             itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.kind`, 'Kind', unlock.kind || ''));
-            itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.name`, 'Name', unlock.name || ''));
-            itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.description`, 'Description', unlock.description || ''));
-            itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.icon`, 'Icon', unlock.icon || ''));
+            itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.name`, 'Name (LOC Key)', unlock.name || ''));
+            
+            // Description with hint about auto-generation
+            const descField = createTextField(`civilization.civilization_unlocks.${idx}.description`, 'Description (LOC Key)', unlock.description || '');
+            const descLabel = descField.querySelector('label');
+            if (descLabel) {
+                const hint = document.createElement('span');
+                hint.className = 'text-xs text-slate-400 ml-2';
+                hint.textContent = '(auto-generated if left empty)';
+                descLabel.appendChild(hint);
+            }
+            itemDiv.appendChild(descField);
+            
+            itemDiv.appendChild(createTextField(`civilization.civilization_unlocks.${idx}.icon`, 'Icon (Civ ID)', unlock.icon || ''));
 
             const removeBtn = document.createElement('button');
             removeBtn.textContent = 'Remove';
