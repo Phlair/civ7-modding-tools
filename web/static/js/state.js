@@ -61,6 +61,8 @@ export const AUTOCOMPLETE_MAPPINGS = {
     biome_type: 'biome-types',
     feature_type: 'feature-types',
     constructible_type: 'constructible-classes',
+    unit_type: 'units',
+    visual_remap_base: 'units',
 };
 
 /**
@@ -78,6 +80,7 @@ export const FIELD_HELP_TEXT = {
     formation_class: 'Combat formation type: LAND_COMBAT (melee), LAND_RANGED (archers), NAVAL_COMBAT (ships), SIEGE (siege weapons)',
     unit_movement_class: 'Terrain movement: FOOT (infantry), MOUNTED (cavalry), NAVAL (ships), FLYING (aircraft)',
     unit_type: 'Unit ID: UNIT_* for military/civilian units, format like UNIT_BABYLON_SABUM_KIBITTUM',
+    visual_remap_base: 'Base game unit to reuse 3D model from. Your custom unit will use this unit\'s visuals, animations, and icons. Sorted by availability in your starting age. Examples: UNIT_WARRIOR (melee), UNIT_ARCHER (ranged), UNIT_CHARIOT (cavalry), UNIT_SPEARMAN (defensive)',
 
     // Building Related
     yield_type: 'Resource output: PRODUCTION (building), SCIENCE (research), GOLD (economy), CULTURE (civics), FAITH (religion), TOURISM (great works)',

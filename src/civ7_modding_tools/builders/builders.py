@@ -1083,6 +1083,18 @@ class UnitBuilder(BaseBuilder):
         if self.visual_remap:
             from civ7_modding_tools.nodes import VisualRemapRowNode
             from civ7_modding_tools.utils import locale
+            from civ7_modding_tools.data import get_units
+            
+            remap_to = self.visual_remap.get('to')
+            
+            # Validate that the base unit exists
+            if remap_to:
+                valid_units = {u['id'] for u in get_units()}
+                if remap_to not in valid_units:
+                    raise ValueError(
+                        f"Invalid visual_remap base unit: {remap_to}. "
+                        f"Must be a valid base game unit ID."
+                    )
             
             remap_id = f"REMAP_{self.unit_type}"
             remap_row = VisualRemapRowNode()
@@ -1090,7 +1102,7 @@ class UnitBuilder(BaseBuilder):
             remap_row.display_name = locale(self.unit_type, 'name')
             remap_row.kind = 'UNIT'
             remap_row.from_ = self.unit_type
-            remap_row.to = self.visual_remap.get('to')
+            remap_row.to = remap_to
             
             self._visual_remap = DatabaseNode()
             self._visual_remap.visual_remaps = [remap_row]

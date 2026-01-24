@@ -1,0 +1,2152 @@
+{
+  "values": [
+    {
+      "id": "UNIT_ABAMBOWA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ABAMBOWA_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_ABAMBOWA_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_ALEXANDER_VON_HUMBOLDT",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_AL_FARABI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_AL_FARGHANI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_AL_JAHIZ",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_AL_JAZARI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_AL_KHWARIZMI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_AL_MAQDISI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_AL_SHAYBANI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_IBN_FADLAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_IBN_SINA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ALIM_RABIA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ANTIQUARIAN",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_MO_MAIN_NATURAL_HISTORY"
+      ]
+    },
+    {
+      "id": "UNIT_ARCHER",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_ARQUEBUSIER",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_ASSAULT_GUN",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_AT_GUN",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_BABYLON_SABUM_KIBITTUM",
+      "ages": [],
+      "unlocked_by": [
+        "NODE_CIVICS_BABYLON1"
+      ]
+    },
+    {
+      "id": "UNIT_BALIK",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_BALLISTA",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_WHEEL"
+      ]
+    },
+    {
+      "id": "UNIT_BARBARY_CORSAIR",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_STEAM_ENGINE"
+      ]
+    },
+    {
+      "id": "UNIT_BARBARY_CORSAIR_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_BARBARY_CORSAIR_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_MOBILIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_BATTLESHIP",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_MOBILIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_BIPLANE",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_FLIGHT"
+      ]
+    },
+    {
+      "id": "UNIT_BOMBARD",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_BOMBER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_FLIGHT"
+      ]
+    },
+    {
+      "id": "UNIT_BOYAR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_BOYAR_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_BOYAR_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_BUCCANEER",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_ASTRONOMY"
+      ]
+    },
+    {
+      "id": "UNIT_BURNING_ARROW",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
+      ]
+    },
+    {
+      "id": "UNIT_BURNING_ARROW_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_CARRACK",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_SHIPBUILDING"
+      ]
+    },
+    {
+      "id": "UNIT_CATAPULT",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CETBANG",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CETBANG_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_SHIPBUILDING"
+      ]
+    },
+    {
+      "id": "UNIT_CETBANG_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_CHANG_BEUN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CHANG_BEUN_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_CHANG_BEUN_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_CHARIOT",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_WHEEL"
+      ]
+    },
+    {
+      "id": "UNIT_CHASQUI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CHEVALER",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CHEVALER_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_CHEVALER_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_COG",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_COLONIST",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_ALVAR_NUNEZ_CABEZA_DE_VACA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_CHRISTOPHER_COLUMBUS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_FERDINAND_MAGELLAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_FRANCISCO_DE_ORELLANA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_FRANCISCO_PIZARRO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_HERNANDO_DE_SOTO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_HERNAN_CORTES",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_JUAN_PONCE_DE_LEON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_MIGUEL_LOPEZ_DE_LEGAZPI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CONQUISTADOR_SUAREZ",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CORSAIR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CORSAIR_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_SHIPBUILDING"
+      ]
+    },
+    {
+      "id": "UNIT_CORSAIR_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_COSSACK",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_COSSACK_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_COSSACK_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_COURSER",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_CROSSBOWMAN",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_CASTLES"
+      ]
+    },
+    {
+      "id": "UNIT_CRUISER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_CUIRASSIER",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_DANTINAS_TATHA",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_WHEEL"
+      ]
+    },
+    {
+      "id": "UNIT_DANTINAS_TATHA_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_DESTROYER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_MOBILIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_DHOW",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_SAILING"
+      ]
+    },
+    {
+      "id": "UNIT_DHOW_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_NAVIGATION"
+      ]
+    },
+    {
+      "id": "UNIT_DIVEBOMBER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_AERODYNAMICS"
+      ]
+    },
+    {
+      "id": "UNIT_DREADNOUGHT",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_EXPLORER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_MO_MAIN_NATURAL_HISTORY"
+      ]
+    },
+    {
+      "id": "UNIT_FIELD_CANNON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_FIELD_GUN",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_FIGHTER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_AERODYNAMICS"
+      ]
+    },
+    {
+      "id": "UNIT_FOEDERATI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_FRIGATE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_GALLEON",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_GALLEY",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_SAILING"
+      ]
+    },
+    {
+      "id": "UNIT_GARDE_IMPERIALE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_GARDE_IMPERIALE_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_GARDE_IMPERIALE_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_GHILMAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_GHILMAN_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_GHILMAN_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_GOLD_BANGLES",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_GOLD_BANGLES_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_GOLD_BANGLES_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_GURKHA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_GURKHA_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_GURKHA_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_GUSA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_GUSA_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_GUSA_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_HANGSHANG",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_HAZARAPATIS",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_AQ_MAIN_DISCIPLINE"
+      ]
+    },
+    {
+      "id": "UNIT_HEAVY_ARCHER",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_HEAVY_ARTILLERY",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_HEAVY_BOMBER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_AERODYNAMICS"
+      ]
+    },
+    {
+      "id": "UNIT_HERODOTUS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_HOPLITE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_HOPLITE_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_HOPLITE_3",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_HORSEMAN",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_HULCHE",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
+      ]
+    },
+    {
+      "id": "UNIT_HULCHE_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_HUSSAR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_HUSSAR_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_HUSSAR_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_IMMORTAL",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_IMMORTAL_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_INFANTRY_COMPANY",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_IRONCLAD",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_STEAM_ENGINE"
+      ]
+    },
+    {
+      "id": "UNIT_JACOBIN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_BARRAS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_BILLAUD_VARENNE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_BRISSOT",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_DANTON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_DESMOULINS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_D_AELDERS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_GOUGES",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_MARAT",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_ROBESPIERRE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JACOBIN_SAINT_JUST",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JAGUAR_SLAYER",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JANISSARY",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_JANISSARY_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_JANISSARY_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_JOHN_MAYNARD_KEYNES",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_KAHUNA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_KALAM",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_KALAM_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_SHIPBUILDING"
+      ]
+    },
+    {
+      "id": "UNIT_KALAM_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_KALIA",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_SAILING"
+      ]
+    },
+    {
+      "id": "UNIT_KALIA_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_NAVIGATION"
+      ]
+    },
+    {
+      "id": "UNIT_KATYUSHA",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_KATYUSHA_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_KESHIG",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_KESHIG_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_CASTLES"
+      ]
+    },
+    {
+      "id": "UNIT_KESHIG_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_KNIGHT",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_LANCER",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_LANDSHIP",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_LEGATUS",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_AQ_MAIN_DISCIPLINE"
+      ]
+    },
+    {
+      "id": "UNIT_LEGION",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_LEGION_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_LEIOMANO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LEIOMANO_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_LEIOMANO_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_LINE_INFANTRY",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_ARETE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_ARISTOTLE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_ASPASIA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_HYPATIA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_PLATO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_PYTHAGORAS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_SAPPHO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_SOCRATES",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_THALES",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_LOGIOS_XENOPHON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_MAGARRU",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_WHEEL"
+      ]
+    },
+    {
+      "id": "UNIT_MAGARRU_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_MAMLUK",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_MAMLUK_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_MAMLUK_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_MANDARIN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_MAN_AT_ARMS",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_MARINE",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_MARINE_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_MEDJAY",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_MEDJAY_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_MEDJAY_3",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_MIKASA",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_MIKASA_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_MOBILIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_MISSIONARY",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_MORTAR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_MWAMI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_NAGARIKA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_NOYAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_NU",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
+      ]
+    },
+    {
+      "id": "UNIT_NUMIDIAN_CAVALRY",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_WHEEL"
+      ]
+    },
+    {
+      "id": "UNIT_NUMIDIAN_CAVALRY_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_NU_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_OTTRU",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_ASTRONOMY"
+      ]
+    },
+    {
+      "id": "UNIT_PARTISAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_PARTISAN_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_PARTISAN_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_PEDANDA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_PHALANX",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_PHYSICIAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_PIKEMAN",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_PRIVATEER",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_PRIVATEER_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_PROSPECTOR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_PURABHETTARAH",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_WHEEL"
+      ]
+    },
+    {
+      "id": "UNIT_PURABHETTARAH_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_IRON_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_QUADRIREME",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_NAVIGATION"
+      ]
+    },
+    {
+      "id": "UNIT_REVENGE",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_COMBUSTION"
+      ]
+    },
+    {
+      "id": "UNIT_REVENGE_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_MOBILIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_AVILA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_GUERRERO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_HERRERA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_HIDALGO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_JIMENEZ",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_JUAREZ",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_MORELOS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_SANTA_ANNA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_VILLA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_REVOLUCIONARIO_ZAPATA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_RIFLEMAN",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_SAGA_HERO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_EGILL_SKALLAGRIMSSON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_FREYDIS_EIRIKSDOTTIR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_GISLI_SURSSON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_GRETTIR_ASMUNDARSON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_GUDRIDR_THORBJARNARDOTTIR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_GUDRUN_OSVIFRSDOTTIR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_GUNNAR_HAMUNDARSON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_HRAFNKELL_HALLFREDSSON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_KJARTAN_OLAFSSON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SAGA_HERO_NJALL_THORGEIRSSON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SEPOY",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SEPOY_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_SEPOY_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_SHERPA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_BAN_ZHAO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_HAN_FEI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_LAOZI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_MENCIUS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_MOZI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_SHANG_YANG",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_SHEN_BUHAI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_WANG_YANGMING",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_XUN_KUANG",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SHI_DAFU_ZHANG_HENG",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SLINGER",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
+      ]
+    },
+    {
+      "id": "UNIT_SLOOP",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SLOOP_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_SLOOP_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_SOKEMAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SOLDADERAS",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SOLDADERAS_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_INDUSTRIALIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_SOLDADERAS_3",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_SOLTAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_SPEARMAN",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ]
+    },
+    {
+      "id": "UNIT_STUKA",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_FLIGHT"
+      ]
+    },
+    {
+      "id": "UNIT_STUKA_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_AERODYNAMICS"
+      ]
+    },
+    {
+      "id": "UNIT_SUBMARINE",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_MOBILIZATION"
+      ]
+    },
+    {
+      "id": "UNIT_SWORDSMAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TAJIRO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TANK",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_ARMOR"
+      ]
+    },
+    {
+      "id": "UNIT_TANKWA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TEHINA",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TERCIO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TERCIO_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_TERCIO_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_TJATY",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_AMHOSE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_APEREL",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_HEMIUNU",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_IMHOTEP",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_KHAY",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_NEBET",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_PASER",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_PTAHHOTEP",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_RAMOSE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TJATY_USERAMEN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TREASURE_FLEET",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_TREBUCHET",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METALLURGY"
+      ]
+    },
+    {
+      "id": "UNIT_TRENCH_FIGHTER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_FLIGHT"
+      ]
+    },
+    {
+      "id": "UNIT_TURTANU",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_AQ_ASSYRIA_TUPSARRUTU",
+        "NODE_CIVIC_AQ_MAIN_DISCIPLINE"
+      ]
+    },
+    {
+      "id": "UNIT_UPARAT",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_CHAKRABONGSE",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_ITSARASUNTHON",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_PHIBUN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_PINKLAO",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_PRIDI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_RASMI",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_SAKDIPHONLASEP",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_SENANURAK",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_VAJRAVUDH",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_UPARAT_WICHAICHAN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_VAISHYA",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_AQ_MAIN_CODE_OF_LAWS"
+      ]
+    },
+    {
+      "id": "UNIT_VICTORY",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_VIET_KIEU",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_VIKINGR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_VIKINGR_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_SHIPBUILDING"
+      ]
+    },
+    {
+      "id": "UNIT_VIKINGR_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_VOI_CHIEN",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_VOI_CHIEN_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_CASTLES"
+      ]
+    },
+    {
+      "id": "UNIT_VOI_CHIEN_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_WARAKAQ",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_WARAKAQ_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_CASTLES"
+      ]
+    },
+    {
+      "id": "UNIT_WARAKAQ_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_GUNPOWDER"
+      ]
+    },
+    {
+      "id": "UNIT_WARRIOR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_WATONATHI",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_AQ_MAIN_CODE_OF_LAWS"
+      ]
+    },
+    {
+      "id": "UNIT_XUNLEICHONG",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_XUNLEICHONG_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ]
+    },
+    {
+      "id": "UNIT_XUNLEICHONG_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ]
+    },
+    {
+      "id": "UNIT_ZAMINDAR",
+      "ages": [],
+      "unlocked_by": []
+    },
+    {
+      "id": "UNIT_ZERO",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_FLIGHT"
+      ]
+    },
+    {
+      "id": "UNIT_ZERO_2",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_AERODYNAMICS"
+      ]
+    }
+  ]
+}

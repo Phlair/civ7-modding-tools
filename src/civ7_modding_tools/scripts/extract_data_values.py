@@ -9,7 +9,7 @@ Scans XML files to harvest valid values for:
 - CostProgressionModel, BiomeType, FeatureType, RiverPlacement, Age
 - MilitaryDomain, PromotionClass, GovernmentType, ProjectType
 - BeliefClassType, DifficultyType, ProgressionTree, GreatWorkObjectType
-- Leader, LeaderAttribute
+- Leader, LeaderAttribute, Unit
 - And more!
 
 Output: JSON files in src/civ7_modding_tools/data/ with kebab-case naming.
@@ -66,12 +66,16 @@ class CivVIIDataExtractor:
             'handicap_system_types': set(),
             'leaders': set(),
             'leader_attributes': set(),
+            'units': set(),
             'civilizations': set(),
             'civilization_traits': set(),
         }
         self.civ_cache = defaultdict(dict)
         self.civilization_ages = {}  # {civ_id: age_id}
         self.civ_era_mapping = {}  # {civ_name: era_id} - maps civs to eras from filenames
+        self.unit_ages = defaultdict(set)  # {unit_id: {age_ids}} - tracks which ages unlock each unit
+        self.unit_unlocks = defaultdict(set)  # {unit_id: {node_types}} - progression nodes that unlock
+        self._tree_ages = {}  # {progression_tree_id: age_id} - maps trees to ages
 
     def scan_files(self) -> None:
         """Recursively scan all XML files in EXAMPLE and dist folders."""
@@ -264,6 +268,28 @@ class CivVIIDataExtractor:
                 if attribs['Kind'] == 'KIND_GREATWORKOBJECT':
                     self.data['great_work_object_types'].add(attribs['Type'])
             
+            # Unit - from Type Kind
+            if tag == 'Row' and 'Type' in attribs and 'Kind' in attribs:
+                if attribs['Kind'] == 'KIND_UNIT':
+                    self.data['units'].add(attribs['Type'])
+            
+            # Track units unlocked by progression tree nodes (for age mapping)
+            # ProgressionTreeNodeUnlocks table maps progression nodes to units
+            if tag == 'Row' and 'ProgressionTreeNodeType' in attribs and \
+               'TargetKind' in attribs and 'TargetType' in attribs:
+                target_kind = attribs.get('TargetKind')
+                target_type = attribs.get('TargetType')
+                node_type = attribs.get('ProgressionTreeNodeType')
+                
+                if target_kind == 'KIND_UNIT' and target_type and node_type:
+                    # Track both node type and age
+                    if not hasattr(self, '_unit_unlock_nodes'):
+                        self._unit_unlock_nodes = defaultdict(set)
+                    self._unit_unlock_nodes[target_type].add(node_type)
+                    self.unit_unlocks[target_type].add(node_type)
+                    # Infer age from node name pattern
+                    self._infer_node_age_from_name(node_type)
+
             # ResourceClass - infer from resource type patterns
             if tag == 'Row' and 'Type' in attribs and 'Kind' in attribs:
                 if attribs['Kind'] == 'KIND_RESOURCE':
@@ -317,10 +343,13 @@ class CivVIIDataExtractor:
                 tree_id = attribs['ProgressionTreeType']
                 age_id = attribs['AgeType']
                 # Store mapping for later lookup
-                if hasattr(self, '_tree_ages'):
-                    self._tree_ages[tree_id] = age_id
-                else:
-                    self._tree_ages = {tree_id: age_id}
+                self._tree_ages[tree_id] = age_id
+            
+            # Progression tree nodes - try to extract age information
+            if tag == 'Row' and 'ProgressionTreeNodeType' in attribs:
+                node_type = attribs['ProgressionTreeNodeType']
+                # Infer age from node name pattern (e.g., NODE_TECH_AQ_AGRICULTURE)
+                self._infer_node_age_from_name(node_type)
 
     def _get_civ_name_from_path(self, file_path: Path) -> str:
         """Extract civilization name from file path."""
@@ -344,7 +373,7 @@ class CivVIIDataExtractor:
         tree_id = self.civilization_ages[civ_id]
         
         # Try to look up age from tree mappings
-        if hasattr(self, '_tree_ages') and tree_id in self._tree_ages:
+        if tree_id in self._tree_ages:
             return self._tree_ages[tree_id]
         
         # Fallback: infer age from tree ID pattern
@@ -356,6 +385,40 @@ class CivVIIDataExtractor:
             return 'AGE_MODERN'
         
         return None
+    
+    def _infer_node_age(self, node_type: str, age_id: str) -> None:
+        """Store inferred age for a progression tree node."""
+        if not hasattr(self, '_node_ages'):
+            self._node_ages = {}
+        self._node_ages[node_type] = age_id
+    
+    def _infer_node_age_from_name(self, node_type: str) -> None:
+        """Infer and store age from node type name pattern."""
+        if not hasattr(self, '_node_ages'):
+            self._node_ages = {}
+        
+        if node_type in self._node_ages:
+            return  # Already mapped
+        
+        # Parse node name: NODE_TECH_AQ_*, NODE_CIVIC_AQ_*, NODE_TECH_EX_*, etc.
+        if '_AQ_' in node_type or node_type.endswith('_AQ'):
+            self._node_ages[node_type] = 'AGE_ANTIQUITY'
+        elif '_EX_' in node_type or node_type.endswith('_EX'):
+            self._node_ages[node_type] = 'AGE_EXPLORATION'
+        elif '_MO_' in node_type or node_type.endswith('_MO'):
+            self._node_ages[node_type] = 'AGE_MODERN'
+    
+    def _resolve_unit_ages(self) -> None:
+        """Resolve ages for all units based on progression tree unlocks."""
+        if not hasattr(self, '_unit_unlock_nodes'):
+            return
+        
+        node_ages = getattr(self, '_node_ages', {})
+        
+        for unit_type, node_types in self._unit_unlock_nodes.items():
+            for node_type in node_types:
+                if node_type in node_ages:
+                    self.unit_ages[unit_type].add(node_ages[node_type])
 
     def _write_json(self, filename: str, data: Dict | List | Set) -> None:
         """Write data to JSON file in kebab-case naming."""
@@ -424,6 +487,9 @@ class CivVIIDataExtractor:
 
     def export_json_files(self) -> None:
         """Export all extracted data to JSON files."""
+        # Resolve unit ages before exporting
+        self._resolve_unit_ages()
+        
         # BuildingCulture split into two categories:
         # 1. Palace/Premium styles (BUILDING_CULTURE_XXX)
         # 2. Age-specific variants (ANT_*, EXP_*, MOD_*)
@@ -696,6 +762,23 @@ class CivVIIDataExtractor:
             'values': [{'id': l} for l in sorted(self.data['leaders'])]
         }
         self._write_json('leaders.json', leaders)
+
+        # Unit
+        units = {
+            'values': [
+                {
+                    'id': u,
+                    'ages': sorted(list(self.unit_ages.get(u, set())))
+                        if self.unit_ages.get(u)
+                        else [],
+                    'unlocked_by': sorted(list(self.unit_unlocks.get(u, set())))
+                        if self.unit_unlocks.get(u)
+                        else []
+                }
+                for u in sorted(self.data['units'])
+            ]
+        }
+        self._write_json('units.json', units)
 
         # LeaderAttribute
         leader_attributes = {

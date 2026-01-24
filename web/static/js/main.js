@@ -132,6 +132,9 @@ Object.defineProperty(window, 'saveFile', {
 Object.defineProperty(window, 'exportYAML', {
     value: async () => {
         try {
+            // Sync wizard data to currentData before exporting
+            state.syncWizardToCurrentData();
+            
             const settings = state.getSettings();
             const useDiskPath = settings.export?.useDiskPath || false;
             const downloadPath = settings.export?.downloadPath || '';
@@ -164,6 +167,9 @@ Object.defineProperty(window, 'exportYAML', {
 Object.defineProperty(window, 'exportBuiltMod', {
     value: async () => {
         try {
+            // Sync wizard data to currentData before exporting
+            state.syncWizardToCurrentData();
+            
             const settings = state.getSettings();
             const useDiskPath = settings.export?.useDiskPath || false;
             const downloadPath = settings.export?.downloadPath || '';

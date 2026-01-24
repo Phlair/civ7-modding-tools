@@ -32,6 +32,7 @@ export function renderWizardStep3(container) {
         window.updateWizardBuildingYield = updateWizardBuildingYield;
         window.removeWizardBuildingYield = removeWizardBuildingYield;
         window.showFieldHelp = showFieldHelp;
+        window.populateVisualRemapDropdown = populateVisualRemapDropdown;
     }
 
     container.innerHTML = `
@@ -286,6 +287,20 @@ export function renderWizardStep3(container) {
                             </div>
                         </details>
                         
+                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
+                            <h6 class="text-xs font-semibold text-slate-400 mb-2">Visual Remap (Optional)</h6>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Base Unit 3D Model</label>
+                                <select 
+                                    id="wizard-unit-visual-remap" 
+                                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                >
+                                    <option value="">Loading...</option>
+                                </select>
+                                <p class="text-xs text-slate-500 mt-1">Select an existing unit to reuse its 3D model. Available units are filtered by your civilization's starting age.</p>
+                            </div>
+                        </div>
+                        
                         <div class="flex gap-2 mt-4">
                             <button 
                                 onclick="window.wizardSaveUnit()"
@@ -499,6 +514,7 @@ export function wizardShowUnitForm() {
     createWizardDropdown('wizard-unit-formation', 'formation-classes', '', 'Select formation...');
     createWizardDropdown('wizard-unit-movement', 'unit-movement-classes', '', 'Select movement type...');
     createWizardDropdown('wizard-unit-cost-yield', 'yield-types', '', 'Select yield type...');
+    populateVisualRemapDropdown('');
 
     form.classList.remove('hidden');
     document.getElementById('wizard-unit-id').focus();
@@ -560,6 +576,7 @@ export function wizardSaveUnit() {
     const rangedCombat = document.getElementById('wizard-unit-ranged-combat').value;
     const range = document.getElementById('wizard-unit-range').value;
     const replacesUnit = document.getElementById('wizard-unit-replaces').value.trim();
+    const visualRemapBase = document.getElementById('wizard-unit-visual-remap').value.trim();
 
     const unit = {
         id: id,
@@ -571,8 +588,18 @@ export function wizardSaveUnit() {
     if (domain) unit.unit.domain = domain;
     if (formation) unit.unit.formation_class = formation;
     if (movement) unit.unit.unit_movement_class = movement;
-    if (moves) unit.unit.base_moves = parseInt(moves, 10);
-    if (sight) unit.unit.base_sight_range = parseInt(sight, 10);
+    // Always set moves and sight with defaults if not provided
+    unit.unit.base_moves = moves ? parseInt(moves, 10) : 2;
+    unit.unit.base_sight_range = sight ? parseInt(sight, 10) : 2;
+    
+    // Set trait_type from civilization (required for unique units)
+    if (wizardData.civilization?.civilization_traits && wizardData.civilization.civilization_traits.length > 0) {
+        // Use the first civilization trait (typically the main civ trait like TRAIT_BABYLON)
+        const civTrait = wizardData.civilization.civilization_traits.find(t => !t.startsWith('TRAIT_ANTIQUITY') && !t.startsWith('TRAIT_ATTRIBUTE'));
+        if (civTrait) {
+            unit.unit.trait_type = civTrait;
+        }
+    }
 
     if (combat || rangedCombat || range) {
         unit.unit_stat = {};
@@ -584,6 +611,12 @@ export function wizardSaveUnit() {
     if (replacesUnit) {
         unit.unit_replace = {
             replaces_unit_type: replacesUnit,
+        };
+    }
+
+    if (visualRemapBase) {
+        unit.visual_remap = {
+            to: visualRemapBase,
         };
     }
 
@@ -617,7 +650,7 @@ export function wizardSaveUnit() {
     markDirty();
 }
 
-export function wizardEditUnit(idx) {
+export async function wizardEditUnit(idx) {
     const unit = wizardData.units[idx];
     document.getElementById('wizard-unit-id').value = unit.id || '';
     document.getElementById('wizard-unit-type').value = unit.unit_type || '';
@@ -638,6 +671,7 @@ export function wizardEditUnit(idx) {
     createWizardDropdown('wizard-unit-formation', 'formation-classes', unit.unit?.formation_class || '', 'Select formation...');
     createWizardDropdown('wizard-unit-movement', 'unit-movement-classes', unit.unit?.unit_movement_class || '', 'Select movement type...');
     createWizardDropdown('wizard-unit-cost-yield', 'yield-types', unit.unit_cost?.yield_type || '', 'Select yield type...');
+    await populateVisualRemapDropdown(unit.visual_remap?.to || '');
 
     document.getElementById('wizard-unit-form').classList.remove('hidden');
 }
@@ -839,4 +873,35 @@ export function renderWizardBuildingYields() {
     wizardBuildingYields.forEach((yieldItem, idx) => {
         createWizardDropdown(`wizard-yield-type-${idx}`, 'yield-types', yieldItem.yield_type || '', 'Select yield...');
     });
+}
+
+/**
+ * Populate visual remap dropdown with all available units
+ * @param {string} selectedValue - Currently selected unit ID
+ */
+export async function populateVisualRemapDropdown(selectedValue = '') {
+    const dropdown = document.getElementById('wizard-unit-visual-remap');
+    if (!dropdown) return;
+
+    try {
+        const response = await fetch('/api/data/units');
+        if (!response.ok) throw new Error('Failed to fetch units');
+        
+        const data = await response.json();
+        const units = data.values || [];
+        
+        // Build options with all units, sorted alphabetically by ID
+        dropdown.innerHTML = '<option value="">None (no visual remap)</option>' +
+            units.sort((a, b) => a.id.localeCompare(b.id)).map(unit => {
+                return `<option value="${unit.id}">${unit.id}</option>`;
+            }).join('');
+        
+        // Restore selection
+        if (selectedValue) {
+            dropdown.value = selectedValue;
+        }
+    } catch (error) {
+        console.error('Error populating visual remap dropdown:', error);
+        dropdown.innerHTML = '<option value="">Error loading units</option>';
+    }
 }

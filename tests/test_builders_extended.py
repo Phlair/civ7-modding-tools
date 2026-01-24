@@ -315,7 +315,7 @@ class TestUnitBuilderAdvancedScenarios:
         unit = UnitBuilder().fill({
             'unit_type': 'UNIT_WITH_VISUAL',
             'unit': {},
-            'visual_remap': {'dummy': 'value'},
+            'visual_remap': {'to': 'UNIT_WARRIOR'},
             'unit_upgrade': {'upgrade_type': 'UNIT_ELITE'},
             'unit_advisories': [{'advisory_type': 'OFFENSE'}]
         })
