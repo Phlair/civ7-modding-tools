@@ -325,7 +325,19 @@ export function clearAllState() {
  * Used when transitioning from wizard to expert mode
  */
 export function syncWizardToCurrentData() {
-    currentData = { ...currentData, ...wizardData };
+    // Merge wizard data into current data
+    // For imports: if wizardData has an imports array (even empty), use it
+    // This respects filtering that handlers have done
+    const hasWizardImports = Array.isArray(wizardData.imports);
+    const finalImports = hasWizardImports 
+        ? wizardData.imports 
+        : (currentData.imports || []);
+    
+    // Merge other fields (but exclude imports to avoid confusion)
+    const { imports: _, ...wizardDataWithoutImports } = wizardData;
+    currentData = { ...currentData, ...wizardDataWithoutImports };
+    // Always set imports to our determined value
+    currentData.imports = finalImports;
 }
 
 /**
@@ -545,6 +557,51 @@ export function populateWizardFromData(loadedData) {
     // Populate build configuration
     if (loadedData.build) {
         wizardData.build = { ...loadedData.build };
+    }
+    
+    // Ensure import entries exist for civilization/unit icons that are set but missing imports
+    ensureIconImports();
+}
+
+/**
+ * Ensure import entries exist for all set icon paths
+ */
+function ensureIconImports() {
+    if (!wizardData.imports) {
+        wizardData.imports = [];
+    }
+    
+    // Check civilization icon
+    const civIconPath = wizardData.civilization?.icon?.path;
+    if (civIconPath && civIconPath.trim()) {
+        // For relative icon paths like "icons/icon_uploaded_1769131114478",
+        // construct the source path (actual file location)
+        let sourcePathForImport = civIconPath;
+        
+        if (!civIconPath.includes('generated_icons') && !civIconPath.startsWith('/')) {
+            const fileName = civIconPath.split('/').pop();
+            sourcePathForImport = `generated_icons/${fileName}.png`;
+        }
+        
+        const cleanName = civIconPath.split('/').pop() || 'civilization_icon';
+        
+        // Check if import exists
+        const existingImportIdx = wizardData.imports.findIndex(
+            imp => imp.id?.includes('civilization_icon')
+        );
+        
+        if (existingImportIdx >= 0) {
+            // Update existing import with correct source path AND target_name
+            wizardData.imports[existingImportIdx].source_path = sourcePathForImport;
+            wizardData.imports[existingImportIdx].target_name = cleanName;
+        } else {
+            // Create new import entry
+            wizardData.imports.push({
+                id: `civilization_icon_manual_${Date.now()}`,
+                source_path: sourcePathForImport,
+                target_name: cleanName,
+            });
+        }
     }
 }
 

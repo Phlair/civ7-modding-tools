@@ -15,11 +15,11 @@ class TestIconDefinitionNode:
         """Test basic IconDefinitionNode creation."""
         node = IconDefinitionNode(
             id="CIVILIZATION_BABYLON",
-            path="icons/civ_sym_babylon.png"
+            path="icons/civs/civ_sym_babylon.png"
         )
         
         assert node.id == "CIVILIZATION_BABYLON"
-        assert node.path == "icons/civ_sym_babylon.png"
+        assert node.path == "icons/civs/civ_sym_babylon.png"
         assert node.context is None
         assert node.icon_size is None
 
@@ -27,7 +27,7 @@ class TestIconDefinitionNode:
         """Test IconDefinitionNode with context."""
         node = IconDefinitionNode(
             id="CIVILIZATION_BABYLON",
-            path="icons/civ_sym_babylon.png",
+            path="icons/civs/civ_sym_babylon.png",
             context="DEFAULT"
         )
         
@@ -38,7 +38,7 @@ class TestIconDefinitionNode:
         """Test IconDefinitionNode with icon size."""
         node = IconDefinitionNode(
             id="CIVILIZATION_BABYLON",
-            path="icons/civ_sym_babylon.png",
+            path="icons/civs/civ_sym_babylon.png",
             icon_size="256"
         )
         
@@ -48,13 +48,13 @@ class TestIconDefinitionNode:
         """Test IconDefinitionNode with all properties."""
         node = IconDefinitionNode(
             id="CIVILIZATION_BABYLON",
-            path="icons/civ_sym_babylon.png",
+            path="icons/civs/civ_sym_babylon.png",
             context="BACKGROUND",
             icon_size="1080"
         )
         
         assert node.id == "CIVILIZATION_BABYLON"
-        assert node.path == "icons/civ_sym_babylon.png"
+        assert node.path == "icons/civs/civ_sym_babylon.png"
         assert node.context == "BACKGROUND"
         assert node.icon_size == "1080"
 
@@ -62,7 +62,7 @@ class TestIconDefinitionNode:
         """Test IconDefinitionNode XML generation."""
         node = IconDefinitionNode(
             id="CIVILIZATION_BABYLON",
-            path="icons/civ_sym_babylon.png"
+            path="icons/civs/civ_sym_babylon.png"
         )
         
         xml = node.to_xml_element()
@@ -74,7 +74,7 @@ class TestIconDefinitionNode:
         """Test IconDefinitionNode XML generation with context."""
         node = IconDefinitionNode(
             id="CIVILIZATION_BABYLON",
-            path="icons/civ_sym_babylon.png",
+            path="icons/civs/civ_sym_babylon.png",
             context="DEFAULT"
         )
         
@@ -86,7 +86,7 @@ class TestIconDefinitionNode:
         """Test IconDefinitionNode XML generation with size."""
         node = IconDefinitionNode(
             id="CIVILIZATION_BABYLON",
-            path="icons/civ_sym_babylon.png",
+            path="icons/civs/civ_sym_babylon.png",
             icon_size="256"
         )
         
@@ -97,7 +97,7 @@ class TestIconDefinitionNode:
     def test_icon_definition_node_without_id(self):
         """Test IconDefinitionNode returns None when ID is missing."""
         node = IconDefinitionNode(
-            path="icons/civ_sym_babylon.png"
+            path="icons/civs/civ_sym_babylon.png"
         )
         
         xml = node.to_xml_element()
@@ -122,7 +122,7 @@ class TestMultiResolutionIcons:
         
         # Icon with resolution information
         icon_dict = {
-            "path": "icons/civ_sym_babylon.png",
+            "path": "icons/civs/civ_sym_babylon.png",
             "context": "DEFAULT",
             "icon_size": "256"
         }
@@ -148,7 +148,7 @@ class TestMultiResolutionIcons:
         for res in resolutions:
             node = IconDefinitionNode(
                 id="CIVILIZATION_BABYLON",
-                path=f"icons/civ_sym_babylon_{res['icon_size']}.png",
+                path=f"icons/civs/civ_sym_babylon_{res['icon_size']}.png",
                 context=res.get("context"),
                 icon_size=res.get("icon_size")
             )
@@ -202,7 +202,7 @@ class TestIconIntegration:
             'civilization_type': 'CIVILIZATION_BABYLON',
             'civilization_traits': [],
             'icon': {
-                'path': 'icons/babylon_256',
+                'path': 'icons/civs/babylon_256',
                 'context': 'DEFAULT',
                 'icon_size': '256'
             }

@@ -358,12 +358,12 @@ class TestNamedPlacePlacements:
             'placement': 'PLACEMENT_RIVER',
             'yield_changes': [],
             'icon': {
-                'path': 'icons/named_place_test.png'
+                'path': 'icons/civs/named_place_test.png'
             }
         })
         
         assert builder.icon is not None
-        assert builder.icon['path'] == 'icons/named_place_test.png'
+        assert builder.icon['path'] == 'icons/civs/named_place_test.png'
 
 
 class TestNamedPlaceYields:

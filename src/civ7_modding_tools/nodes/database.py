@@ -582,7 +582,7 @@ class IconDefinitionNode(BaseNode):
     """
     _name: str = "Row"
     id: Optional[str] = None  # e.g., "CIVILIZATION_BABYLON"
-    path: Optional[str] = None  # e.g., "icons/civ_sym_babylon.png"
+    path: Optional[str] = None  # e.g., "icons/civs/civ_sym_babylon.png"
     context: Optional[str] = None  # e.g., "DEFAULT", "BACKGROUND", "PORTRAIT"
     icon_size: Optional[str] = None  # e.g., "256", "128", "80", "1080"
 

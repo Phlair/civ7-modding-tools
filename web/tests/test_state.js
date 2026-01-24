@@ -202,6 +202,57 @@ describe('State Module', () => {
             expect(state.getCurrentData().id).toBe('mod-1');
             expect(state.getCurrentData().version).toBe('1.0.0');
         });
+
+        it('should use wizard imports when populated', () => {
+            // Load file with imports into currentData
+            state.setCurrentData({
+                id: 'mod-1',
+                imports: [
+                    { id: 'civilization_icon_uploaded_123', target: 'civilization' },
+                    { id: 'unit_icon_uploaded_456', target: 'unit' }
+                ]
+            });
+            
+            // Populate wizard from this data
+            state.populateWizardFromData(state.getCurrentData());
+            
+            // Verify wizard has the imports
+            expect(state.getWizardData().imports).toHaveLength(2);
+            
+            // Now simulate filtering out one and adding a new one (like icon handler does)
+            const wizData = state.getWizardData();
+            wizData.imports = wizData.imports.filter(
+                imp => !imp.id?.includes('unit_icon')
+            );
+            wizData.imports.push({ id: 'unit_icon_new_789', target: 'unit' });
+            
+            // Sync should preserve the civilization import and the new unit import
+            state.syncWizardToCurrentData();
+            
+            const currentImports = state.getCurrentData().imports;
+            expect(currentImports).toHaveLength(2);
+            expect(currentImports.some(imp => imp.id === 'civilization_icon_uploaded_123')).toBe(true);
+            expect(currentImports.some(imp => imp.id === 'unit_icon_new_789')).toBe(true);
+            expect(currentImports.some(imp => imp.id === 'unit_icon_uploaded_456')).toBe(false);
+        });
+
+        it('should handle empty imports array correctly', () => {
+            state.setCurrentData({
+                id: 'mod-1',
+                imports: [{ id: 'icon_123' }]
+            });
+            
+            state.populateWizardFromData(state.getCurrentData());
+            
+            // Manually clear wizard imports
+            const wizData = state.getWizardData();
+            wizData.imports = [];
+            
+            // Sync should use the empty array from wizard, not keep existing
+            state.syncWizardToCurrentData();
+            
+            expect(state.getCurrentData().imports).toEqual([]);
+        });
     });
 
     describe('populateWizardFromData', () => {

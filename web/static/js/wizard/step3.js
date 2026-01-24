@@ -107,6 +107,26 @@ export function renderWizardStep3(container) {
                             />
                         </div>
                         
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Icon *</label>
+                            <div class="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    id="wizard-unit-icon" 
+                                    placeholder="icons/units/unit_icon.png"
+                                    onchange="window.updateUnitIconPath(this.value)"
+                                    class="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                />
+                                <button 
+                                    onclick="window.generateUnitIcon()"
+                                    class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium whitespace-nowrap transition-colors"
+                                    title="Generate icon using AI"
+                                >
+                                    ✨
+                                </button>
+                            </div>
+                        </div>
+                        
                         <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
                             <h6 class="text-xs font-semibold text-slate-400 mb-2">Unit Configuration</h6>
                             <div class="space-y-2">
@@ -196,27 +216,8 @@ export function renderWizardStep3(container) {
                         </div>
                         
                         <details class="bg-slate-900/50 rounded border border-slate-700">
-                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Icon & Cost (Optional)</summary>
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Cost (Optional)</summary>
                             <div class="p-3 pt-0 space-y-2">
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">Icon Path</label>
-                                    <div class="flex gap-2">
-                                        <input 
-                                            type="text" 
-                                            id="wizard-unit-icon" 
-                                            placeholder="fs://game/mod_id/unit_icon.png"
-                                            onchange="window.updateUnitIconPath(this.value)"
-                                            class="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                                        />
-                                        <button 
-                                            onclick="window.generateUnitIcon()"
-                                            class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium whitespace-nowrap transition-colors"
-                                            title="Generate icon using AI"
-                                        >
-                                            ✨
-                                        </button>
-                                    </div>
-                                </div>
                                 <div>
                                     <label class="block text-xs font-medium text-slate-300 mb-1">Cost Yield Type</label>
                                     <select 

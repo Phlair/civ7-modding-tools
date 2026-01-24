@@ -453,7 +453,7 @@ civilization.fill({
     'civilization_traits': ['TRAIT_ANTIQUITY_CIV', 'TRAIT_ATTRIBUTE_SCIENTIFIC'],
     'civilization_tags': ['TAG_TRAIT_SCIENTIFIC'],
     'icon': {
-        'path': 'icons/civ_sym_babylon',
+        'path': 'icons/civs/civ_sym_babylon',
     },
     'civilization_unlocks': [
         {

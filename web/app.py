@@ -49,6 +49,11 @@ static_path = Path(__file__).parent / "static"
 if static_path.exists():
     app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
 
+# Mount reference icons from civ7_modding_tools package
+icons_path = Path(__file__).parent.parent / "src" / "civ7_modding_tools" / "icons"
+if icons_path.exists():
+    app.mount("/icons", StaticFiles(directory=str(icons_path)), name="icons")
+
 # Get data directory from civ7_modding_tools
 data_dir = Path(__file__).parent.parent / "src" / "civ7_modding_tools" / "data"
 
@@ -830,12 +835,12 @@ async def generate_icon(request: IconGenerateRequest) -> dict[str, Any]:
                 f"No text or labels. Match the artistic style of the reference images."
             ),
             'unit': (
-                f"Create a minimalist game icon for a military unit. "
+                f"Create a minimalist game icon for a unit in civilization VII. "
                 f"Description: {request.prompt}\n"
                 f"Ensure consistency in colour/shade with examples."
-                f"Requirements: 256x256 PNG, simple silhouette with transparent background, "
-                f"bold shapes, 3-4 colors maximum, recognizable at thumbnail size. "
-                f"Match the artistic style of the reference images."
+                f"Requirements: 256x256 PNG, white emblem with transparent background, "
+                f"clean vector-like style, recognizable at any size, matches Civilization VII aesthetic. "
+                f"No text or labels. Match the artistic style of the reference images."
             ),
             'building': (
                 f"Create a minimalist game icon for a building/constructible. "
@@ -843,7 +848,7 @@ async def generate_icon(request: IconGenerateRequest) -> dict[str, Any]:
                 f"Ensure consistency in colour/shade with examples."
                 f"Requirements: 256x256 PNG, isometric or 3/4 view, transparent background, "
                 f"warm earth tones, clean edges, game-ready asset. "
-                f"Match the artistic style of the reference images."
+                f"No text or labels. Match the artistic style of the reference images."
             ),
         }
         
@@ -857,10 +862,21 @@ async def generate_icon(request: IconGenerateRequest) -> dict[str, Any]:
         icons_dir = Path(__file__).parent.parent / "src" / "civ7_modding_tools" / "icons"
         
         if request.reference_images:
-            for icon_name in request.reference_images:
-                icon_path = icons_dir / f"{icon_name}.png"
-                if icon_path.exists():
-                    reference_file_handles.append(open(icon_path, "rb"))
+            for icon_path_str in request.reference_images:
+                # Parse path like "/icons/civs/america.png" or "/icons/units/ANT/atlatl.png"
+                # Strip leading /icons/ and use the rest as relative path
+                if icon_path_str.startswith('/icons/'):
+                    relative_path = icon_path_str[7:]  # Remove '/icons/' prefix
+                    icon_path = icons_dir / relative_path
+                    if icon_path.exists():
+                        reference_file_handles.append(open(icon_path, "rb"))
+                    else:
+                        print(f"[ICON_WARNING] Reference icon not found: {icon_path}")
+                else:
+                    # Legacy format: just icon name (assume civs/)
+                    icon_path = icons_dir / "civs" / f"{icon_path_str}.png"
+                    if icon_path.exists():
+                        reference_file_handles.append(open(icon_path, "rb"))
         
         # Use images.edit() with reference images (GPT Image 1.5 supports multiple references)
         if reference_file_handles:
@@ -948,7 +964,14 @@ async def save_generated_icon(request: IconSaveRequest) -> dict[str, Any]:
         }
         
         # Icon path in mod (what gets referenced in icon.path)
-        icon_path = f"icons/{request.target_name}"
+        # Use civs subfolder for civilization icons, units/ for unit icons
+        if request.icon_type == "civilization":
+            subfolder = "civs/"
+        elif request.icon_type == "unit":
+            subfolder = "units/"
+        else:
+            subfolder = ""
+        icon_path = f"icons/{subfolder}{request.target_name}"
         
         return {
             "success": True,
@@ -967,12 +990,13 @@ async def save_generated_icon(request: IconSaveRequest) -> dict[str, Any]:
 
 
 @app.post("/api/icons/upload")
-async def upload_icon(file: UploadFile = File(...)) -> dict[str, Any]:
+async def upload_icon(file: UploadFile = File(...), icon_type: str = Form("civilization")) -> dict[str, Any]:
     """
     Upload a local icon file and save it for use in the mod.
     
     Args:
         file: Uploaded image file
+        icon_type: Type of icon ('civilization', 'unit', 'building')
         
     Returns:
         Icon path and import configuration
@@ -1007,8 +1031,8 @@ async def upload_icon(file: UploadFile = File(...)) -> dict[str, Any]:
         # Save image
         img_resized.save(file_path, "PNG")
         
-        # Create import configuration
-        import_id = f"uploaded_icon_{timestamp}"
+        # Create import configuration - include icon_type in ID for proper filtering
+        import_id = f"{icon_type}_icon_uploaded_{timestamp}"
         absolute_source_path = str(file_path.resolve()).replace("\\", "/")
         import_entry = {
             "id": import_id,
@@ -1017,7 +1041,14 @@ async def upload_icon(file: UploadFile = File(...)) -> dict[str, Any]:
         }
         
         # Icon path in mod
-        icon_path = f"icons/{filename.replace('.png', '')}"
+        # Use civs subfolder for civilization icons, units/ for unit icons
+        if icon_type == "civilization":
+            subfolder = "civs/"
+        elif icon_type == "unit":
+            subfolder = "units/"
+        else:
+            subfolder = ""
+        icon_path = f"icons/{subfolder}{filename.replace('.png', '')}"
         
         return {
             "success": True,

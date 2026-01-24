@@ -217,6 +217,9 @@ class YamlToPyConverter:
     
     def generate_imports_builders(self) -> None:
         """Generate import file builders."""
+        from pathlib import Path
+        import os
+        
         imports = self.data.get('imports', [])
         if not imports:
             return
@@ -225,11 +228,24 @@ class YamlToPyConverter:
         
         for imp in imports:
             builder_id = imp['id']
+            source_path = imp['source_path']
+            
+            # Convert relative paths to absolute
+            # If path is relative and starts with generated_icons/, resolve it
+            if not source_path.startswith('/') and not source_path.startswith('C:'):
+                if 'generated_icons' in source_path:
+                    # Make absolute relative to current working directory
+                    resolved = str(Path(source_path).resolve())
+                    source_path = resolved
+            
+            # Convert backslashes to forward slashes for Python code
+            source_path = source_path.replace('\\', '/')
+            
             self.add_line(f'{builder_id} = ImportFileBuilder()')
             self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             self.add_line(f'{builder_id}.fill({{')
             self.indent_level += 1
-            self.add_line(f"'source_path': '{imp['source_path']}',")
+            self.add_line(f"'source_path': '{source_path}',")
             self.add_line(f"'target_name': '{imp['target_name']}'")
             self.indent_level -= 1
             self.add_line('})')

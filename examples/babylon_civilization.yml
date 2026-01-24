@@ -79,7 +79,7 @@ civilization:
     - TAG_TRAIT_SCIENTIFIC
   
   icon:
-    path: icons/civ_sym_babylon
+    path: icons/civs/civ_sym_babylon
   
   civilization_unlocks:
     - age_type: AGE_EXPLORATION

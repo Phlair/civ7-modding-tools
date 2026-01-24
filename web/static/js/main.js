@@ -24,7 +24,7 @@ import {
 import { showToast } from './ui.js';
 import { loadReferenceData } from './data/loader.js';
 import { showSettingsModal, toggleApiKeyVisibility, saveSettings } from './settings.js';
-import { generateCivIcon, generateUnitIcon, generateBuildingIcon, handleIconGenerate, handleIconSave } from './icons.js';
+import { generateCivIcon, generateUnitIcon, generateBuildingIcon, handleIconGenerate, handleIconSave, switchUnitAgeTab, updateUnitSelectionCount } from './icons.js';
 import * as state from './state.js';
 
 // Expose to global scope IMMEDIATELY for inline handlers (HTML onclick compatibility)
@@ -118,6 +118,8 @@ Object.defineProperty(window, 'saveFile', {
             return;
         }
         try {
+            // Sync wizard data to currentData before saving
+            state.syncWizardToCurrentData();
             await saveFile(state.currentFilePath, state.currentData);
             state.isDirty = false;
             showToast('File saved successfully', 'success');
@@ -264,6 +266,18 @@ Object.defineProperty(window, 'handleIconSave', {
     configurable: false
 });
 
+Object.defineProperty(window, 'switchUnitAgeTab', {
+    value: switchUnitAgeTab,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(window, 'updateUnitSelectionCount', {
+    value: updateUnitSelectionCount,
+    writable: false,
+    configurable: false
+});
+
 /**
  * Initialize application on DOM ready
  */
@@ -318,6 +332,8 @@ function setupEventListeners() {
                 return;
             }
             try {
+                // Sync wizard data to currentData before saving
+                state.syncWizardToCurrentData();
                 await saveFile(state.currentFilePath, state.currentData);
                 state.isDirty = false;
                 showToast('File saved successfully', 'success');

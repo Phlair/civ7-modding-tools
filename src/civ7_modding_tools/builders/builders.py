@@ -2544,7 +2544,7 @@ class ImportFileBuilder(BaseBuilder):
         if folder:
             entries.append(folder)
         
-        # Add file entry (e.g., "icons/civ_sym_babylon.png")
+        # Add file entry (e.g., "icons/civs/civ_sym_babylon.png")
         if source.exists():
             file_entry = f"{folder}/{self.target_name}" if folder else self.target_name
             entries.append(file_entry)

@@ -93,7 +93,7 @@ export function renderWizardStep2(container) {
                                     id="wizard-civ-icon" 
                                     value="${wizardData.civilization?.icon?.path || ''}"
                                     onchange="window.updateWizardIconPath(this.value)"
-                                    placeholder="icons/civ_sym_babylon"
+                                    placeholder="icons/civs/civ_sym_babylon"
                                     class="flex-1 px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
                                 />
                                 <button 
@@ -118,7 +118,7 @@ export function renderWizardStep2(container) {
                                     onchange="window.handleCivIconUpload(this)"
                                 />
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">Path to civilization icon (e.g., icons/civ_sym_iceni) or click Generate to create with AI</p>
+                            <p class="text-xs text-slate-500 mt-1">Path to civilization icon (e.g., icons/civs/civ_sym_iceni) or click Generate to create with AI</p>
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-slate-300 mb-1">
@@ -430,6 +430,47 @@ export function updateWizardIconPath(value) {
     if (!wizardData.civilization) wizardData.civilization = {};
     if (!wizardData.civilization.icon) wizardData.civilization.icon = {};
     wizardData.civilization.icon.path = value;
+    
+    // If an icon path is set, ensure there's a corresponding import entry
+    if (value && value.trim()) {
+        if (!wizardData.imports) {
+            wizardData.imports = [];
+        }
+        
+        // Remove old civilization icon imports (both new format with type and old format)
+        wizardData.imports = wizardData.imports.filter(
+            imp => !imp.id?.includes('civilization_icon') && !imp.source_path?.includes('generated_icons/icon_civilization_')
+        );
+        
+        // Only create an import entry if one doesn't already exist for this path
+        const importExists = wizardData.imports.some(
+            imp => imp.source_path === value
+        );
+        
+        if (!importExists) {
+            // Create a manual import entry for this path
+            // For relative icon paths like "icons/icon_uploaded_1769131114478",
+            // we need to construct the source path (the actual file location)
+            let sourcePathForImport = value;
+            
+            // If it looks like a relative path, try to resolve to generated_icons
+            if (!value.includes('generated_icons') && !value.startsWith('/')) {
+                // Extract just the filename part
+                const fileName = value.split('/').pop();
+                // Assume it's in generated_icons folder
+                sourcePathForImport = `generated_icons/${fileName}.png`;
+            }
+            
+            const cleanName = value.split('/').pop() || 'civilization_icon';
+            
+            wizardData.imports.push({
+                id: `civilization_icon_manual_${Date.now()}`,
+                source_path: sourcePathForImport,
+                target_name: cleanName,
+            });
+        }
+    }
+    
     markDirty();
 }
 
@@ -454,6 +495,7 @@ export async function handleCivIconUpload(inputElement) {
         // Create FormData for file upload
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('icon_type', 'civilization');  // Specify icon type
 
         const response = await fetch('/api/icons/upload', {
             method: 'POST',
@@ -482,9 +524,10 @@ export async function handleCivIconUpload(inputElement) {
                 wizardData.imports = [];
             }
             
-            // Remove old civilization icon imports 
+            // Remove old civilization icon imports (both new format with type and old format)
+            // Check both ID pattern and source_path pattern to handle legacy uploads
             wizardData.imports = wizardData.imports.filter(
-                imp => !imp.id?.includes('civilization_icon') && !imp.target_name?.startsWith('icon_uploaded')
+                imp => !imp.id?.includes('civilization_icon') && !imp.source_path?.includes('generated_icons/icon_civilization_')
             );
             
             // Add new import entry

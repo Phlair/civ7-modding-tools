@@ -7,9 +7,15 @@ import { showToast, showLoading } from './ui.js';
 import { getSettings, markDirty, updateFieldValue } from './state.js';
 
 // Reference icons available for styling
-const REFERENCE_ICONS = [
+const CIV_REFERENCE_ICONS = [
     'america', 'assyria', 'chola', 'greece', 'maya', 'norman', 'russia'
 ];
+
+const UNIT_REFERENCE_ICONS = {
+    ANT: ['atlatl', 'dhow', 'egyptgreatpers', 'elephant', 'immortal', 'jagwarr', 'legatus', 'legion', 'medjay', 'numidcav', 'tonganboat'],
+    EXP: ['abbasidgreatpers', 'bolgar', 'buccaneer', 'cholaboat', 'chuko', 'conquistador', 'icelandgreatpers', 'kahuna', 'keshig', 'sloop', 'tarkhan', 'vietnamelephant', 'vietnamsettler', 'vikingboat'],
+    MOD: ['britishship', 'corsair', 'cossack', 'frenchguard', 'generic', 'gunelephant', 'gurkha', 'japanship', 'mughalsettler', 'prospector', 'qajarcommander', 'rocketlauncher', 'sepoy', 'sherpa', 'stuka', 'zero']
+};
 
 /**
  * Generate civilization icon
@@ -68,18 +74,62 @@ function showIconGenerationModal(iconType, displayName) {
         }
     };
     
-    const referenceCheckboxes = REFERENCE_ICONS.map(name => `
-        <label class="flex items-center gap-2 p-2 rounded hover:bg-slate-800 cursor-pointer">
-            <input 
-                type="checkbox" 
-                class="reference-checkbox w-4 h-4" 
-                data-icon="${name}"
-                checked
-            />
-            <img src="/static/icons/${name}.png" alt="${name}" class="w-12 h-12 rounded border border-slate-600" />
-            <span class="text-xs text-slate-300">${name}</span>
-        </label>
-    `).join('');
+    // Generate reference icons HTML based on icon type
+    let referenceIconsHTML = '';
+    
+    if (iconType === 'civilization') {
+        const checkboxes = CIV_REFERENCE_ICONS.map(name => `
+            <label class="flex items-center gap-2 p-2 rounded hover:bg-slate-800 cursor-pointer">
+                <input 
+                    type="checkbox" 
+                    class="reference-checkbox w-4 h-4" 
+                    data-icon="${name}"
+                    data-path="/icons/civs/${name}.png"
+                    checked
+                    onchange="window.updateUnitSelectionCount()"
+                />
+                <img src="/icons/civs/${name}.png" alt="${name}" class="w-12 h-12 rounded border border-slate-600" />
+                <span class="text-xs text-slate-300">${name}</span>
+            </label>
+        `).join('');
+        
+        referenceIconsHTML = `
+            <div class="grid grid-cols-4 gap-2 bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                ${checkboxes}
+            </div>
+            <p id="selection-count" class="text-xs text-slate-400 mt-2">
+                <span id="selected-count">7</span> / 7 selected
+            </p>
+            <p class="text-xs text-slate-500">
+                💡 All reference icons are used to match the game's visual style. Uncheck to exclude specific icons.
+            </p>
+        `;
+    } else if (iconType === 'unit') {
+        // Create tabs for unit ages
+        referenceIconsHTML = `
+            <div class="space-y-2">
+                <div class="flex gap-2 border-b border-slate-700">
+                    <button onclick="window.switchUnitAgeTab('ANT')" data-age="ANT" class="unit-age-tab px-4 py-2 font-medium text-sm transition-colors bg-slate-700 text-slate-200 border-b-2 border-blue-500">Antiquity</button>
+                    <button onclick="window.switchUnitAgeTab('EXP')" data-age="EXP" class="unit-age-tab px-4 py-2 font-medium text-sm transition-colors text-slate-400 hover:text-slate-200">Exploration</button>
+                    <button onclick="window.switchUnitAgeTab('MOD')" data-age="MOD" class="unit-age-tab px-4 py-2 font-medium text-sm transition-colors text-slate-400 hover:text-slate-200">Modern</button>
+                </div>
+                <div id="unit-icons-container" class="bg-slate-800/50 p-3 rounded-lg border border-slate-700 min-h-[200px]">
+                    ${generateUnitAgeCheckboxes('ANT')}
+                </div>
+                <p class="text-xs text-slate-500">
+                    💡 Select up to 7 reference icons to match the game's visual style.
+                </p>
+                <p id="selection-count" class="text-xs text-slate-400">
+                    <span id="selected-count">0</span> / 7 selected
+                </p>
+            </div>
+        `;
+    } else {
+        // Building icons (placeholder for now)
+        referenceIconsHTML = `
+            <p class="text-sm text-slate-400">Building icon references coming soon...</p>
+        `;
+    }
     
     modal.innerHTML = `
         <div class="bg-slate-900 border border-slate-700 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -109,12 +159,7 @@ function showIconGenerationModal(iconType, displayName) {
                     <label class="block text-sm font-medium text-slate-300 mb-2">
                         Reference Style (Auto-selected for consistency)
                     </label>
-                    <div class="grid grid-cols-4 gap-2 bg-slate-800/50 p-3 rounded-lg border border-slate-700">
-                        ${referenceCheckboxes}
-                    </div>
-                    <p class="text-xs text-slate-500 mt-2">
-                        💡 All 7 example icons are used to match the game's visual style. Uncheck to exclude specific icons.
-                    </p>
+                    ${referenceIconsHTML}
                 </div>
                 
                 <!-- Preview Area -->
@@ -181,10 +226,10 @@ export async function handleIconGenerate(iconType) {
         return;
     }
     
-    // Get selected reference images
+    // Get selected reference images (use data-path for full path)
     const selectedReferences = Array.from(
         document.querySelectorAll('.reference-checkbox:checked')
-    ).map(cb => cb.dataset.icon);
+    ).map(cb => cb.dataset.path || `/icons/civs/${cb.dataset.icon}.png`);
     
     const settings = getSettings();
     const generateBtn = document.querySelector('#generate-btn');
@@ -309,9 +354,11 @@ export async function handleIconSave(iconType) {
             }
             
             // Remove old icon imports for this type (civilization/unit/building)
+            // Check both new format (type in ID) and old format (check source_path)
             const iconTypePattern = `${iconType}_icon`;
+            const generatedPrefix = `generated_icons/icon_${iconType}_`;
             wizardData.imports = wizardData.imports.filter(
-                imp => !imp.id?.includes(iconTypePattern) && !imp.target_name?.startsWith('icon_uploaded')
+                imp => !imp.id?.includes(iconTypePattern) && !imp.source_path?.includes(generatedPrefix)
             );
             
             // Add new import entry
@@ -331,3 +378,83 @@ export async function handleIconSave(iconType) {
         showToast(`❌ Failed to save icon: ${error.message}`, 'error');
     }
 }
+
+/**
+ * Generate unit age checkboxes HTML
+ */
+function generateUnitAgeCheckboxes(age) {
+    const icons = UNIT_REFERENCE_ICONS[age] || [];
+    return `
+        <div class="grid grid-cols-4 gap-2">
+            ${icons.map(name => `
+                <label class="flex items-center gap-2 p-2 rounded hover:bg-slate-800 cursor-pointer">
+                    <input 
+                        type="checkbox" 
+                        class="reference-checkbox w-4 h-4" 
+                        data-icon="${name}"
+                        data-path="/icons/units/${age}/${name}.png"
+                        onchange="window.updateUnitSelectionCount()"
+                    />
+                    <img src="/icons/units/${age}/${name}.png" alt="${name}" class="w-12 h-12 rounded border border-slate-600" />
+                    <span class="text-xs text-slate-300">${name}</span>
+                </label>
+            `).join('')}
+        </div>
+    `;
+}
+
+/**
+ * Switch unit age tab
+ */
+export function switchUnitAgeTab(age) {
+    // Update tab styles
+    document.querySelectorAll('.unit-age-tab').forEach(tab => {
+        const isActive = tab.dataset.age === age;
+        tab.className = `unit-age-tab px-4 py-2 font-medium text-sm transition-colors ${
+            isActive 
+                ? 'bg-slate-700 text-slate-200 border-b-2 border-blue-500' 
+                : 'text-slate-400 hover:text-slate-200'
+        }`;
+    });
+    
+    // Update icons container
+    const container = document.querySelector('#unit-icons-container');
+    if (container) {
+        container.innerHTML = generateUnitAgeCheckboxes(age);
+    }
+    
+    updateUnitSelectionCount();
+}
+
+/**
+ * Update unit selection count and enforce 7-icon limit
+ */
+export function updateUnitSelectionCount() {
+    const checkboxes = document.querySelectorAll('.reference-checkbox');
+    const checked = Array.from(checkboxes).filter(cb => cb.checked);
+    
+    const countSpan = document.querySelector('#selected-count');
+    if (countSpan) {
+        countSpan.textContent = checked.length;
+    }
+    
+    // Enforce 7-icon limit
+    if (checked.length >= 7) {
+        // Disable unchecked boxes
+        checkboxes.forEach(cb => {
+            if (!cb.checked) {
+                cb.disabled = true;
+                cb.parentElement.style.opacity = '0.5';
+                cb.parentElement.style.cursor = 'not-allowed';
+            }
+        });
+    } else {
+        // Enable all boxes
+        checkboxes.forEach(cb => {
+            cb.disabled = false;
+            cb.parentElement.style.opacity = '1';
+            cb.parentElement.style.cursor = 'pointer';
+        });
+    }
+}
+
