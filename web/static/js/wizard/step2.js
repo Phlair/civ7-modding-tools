@@ -302,12 +302,10 @@ export function renderWizardStep2(container) {
                     </summary>
                     <div class="mt-4">
                         <div class="mb-4 p-3 bg-blue-900/30 border border-blue-700 rounded text-xs text-slate-300">
-                            <p><strong>Civilization Unlocks:</strong> Define other civilizations that can be unlocked in specific ages.</p>
+                            <p><strong>Civilization Unlocks:</strong> Define which civilizations can be unlocked in future ages.</p>
                             <ul class="list-disc list-inside mt-2 text-slate-400 space-y-1">
-                                <li><strong>Target Civilization:</strong> The civilization ID (e.g., CIVILIZATION_PERSIA)</li>
-                                <li><strong>Display Name:</strong> Localization key for unlock display (e.g., LOC_CIVILIZATION_PERSIA_NAME)</li>
-                                <li><strong>Description:</strong> Localization key for unlock reason (auto-generated if left empty)</li>
-                                <li><strong>Icon:</strong> Civilization ID for the unlock icon (e.g., CIVILIZATION_PERSIA)</li>
+                                <li>Select the age and target civilization - names and icons are auto-generated</li>
+                                <li>Optionally add an <strong>unlock reason</strong> tooltip (e.g., "Carthage and Spain were both Mediterranean powers")</li>
                             </ul>
                         </div>
                         <div class="flex items-center justify-between mb-2">
@@ -337,7 +335,7 @@ export function renderWizardStep2(container) {
                                             <label class="block text-xs font-medium text-slate-300 mb-1">Target Civilization</label>
                                             <select 
                                                 id="wizard-unlock-target-${idx}"
-                                                onchange="window.updateWizardCivUnlockAt(${idx}, 'type', this.value)"
+                                                onchange="window.autoFillCivUnlock(${idx}, this.value)"
                                                 class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
                                             >
                                                 <option value="">Loading civilizations...</option>
@@ -345,33 +343,13 @@ export function renderWizardStep2(container) {
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-medium text-slate-300 mb-1">Display Name (LOC Key)</label>
-                                        <input 
-                                            type="text" 
-                                            value="${unlock.name || ''}"
-                                            onchange="window.updateWizardCivUnlockAt(${idx}, 'name', this.value)"
-                                            placeholder="LOC_CIVILIZATION_PERSIA_NAME"
-                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-300 mb-1">Description (LOC Key) <span class="text-slate-500">optional - auto-generated if empty</span></label>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Unlock Reason (Optional) <span class="text-slate-500">- e.g., "Carthage and Spain were both Mediterranean powers"</span></label>
                                         <textarea 
-                                            onchange="window.updateWizardCivUnlockAt(${idx}, 'description', this.value)"
-                                            placeholder="LOC_CIVILIZATION_PERSIA_DESCRIPTION"
+                                            onchange="window.updateWizardCivUnlockAt(${idx}, 'unlock_reason', this.value)"
+                                            placeholder="Explain why this civilization unlocks (optional)"
                                             rows="2"
                                             class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
-                                        >${unlock.description || ''}</textarea>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-300 mb-1">Icon (Civ ID)</label>
-                                        <input 
-                                            type="text" 
-                                            value="${unlock.icon || ''}"
-                                            onchange="window.updateWizardCivUnlockAt(${idx}, 'icon', this.value)"
-                                            placeholder="CIVILIZATION_PERSIA"
-                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
-                                        />
+                                        >${unlock.unlock_reason || ''}</textarea>
                                     </div>
                                     <button 
                                         onclick="window.removeWizardCivUnlock(${idx})"
@@ -428,6 +406,8 @@ export function renderWizardStep2(container) {
 
     (wizardData.civilization?.civilization_unlocks || []).forEach((unlock, idx) => {
         createWizardDropdown(`wizard-unlock-age-${idx}`, 'ages', unlock.age_type || '', 'Select age...');
+        // Populate target civilization dropdown after age is set
+        updateCivUnlockTargetOptions(idx);
     });
 }
 
@@ -697,7 +677,7 @@ export function addWizardCivUnlock() {
                     <label class="block text-xs font-medium text-slate-300 mb-1">Target Civilization</label>
                     <select 
                         id="wizard-unlock-target-${newIdx}"
-                        onchange="window.updateWizardCivUnlockAt(${newIdx}, 'type', this.value)"
+                        onchange="window.autoFillCivUnlock(${newIdx}, this.value)"
                         class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
                     >
                         <option value="">Loading civilizations...</option>
@@ -705,33 +685,13 @@ export function addWizardCivUnlock() {
                 </div>
             </div>
             <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1">Display Name</label>
-                <input 
-                    type="text" 
-                    value=""
-                    onchange="window.updateWizardCivUnlockAt(${newIdx}, 'name', this.value)"
-                    placeholder="Display Name"
-                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
-                />
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1">Description</label>
+                <label class="block text-xs font-medium text-slate-300 mb-1">Unlock Reason (Optional) <span class="text-slate-500">- e.g., "Carthage and Spain were both Mediterranean powers"</span></label>
                 <textarea 
-                    onchange="window.updateWizardCivUnlockAt(${newIdx}, 'description', this.value)"
-                    placeholder="Describes the unlock"
+                    onchange="window.updateWizardCivUnlockAt(${newIdx}, 'unlock_reason', this.value)"
+                    placeholder="Explain why this civilization unlocks (optional)"
                     rows="2"
                     class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
                 ></textarea>
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1">Icon</label>
-                <input 
-                    type="text" 
-                    value=""
-                    onchange="window.updateWizardCivUnlockAt(${newIdx}, 'icon', this.value)"
-                    placeholder="Icon Path"
-                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
-                />
             </div>
             <button 
                 onclick="window.removeWizardCivUnlock(${newIdx})"
@@ -788,6 +748,18 @@ function updateCivUnlockTargetOptions(idx) {
         });
 }
 
+export function autoFillCivUnlock(idx, civType) {
+    if (wizardData.civilization?.civilization_unlocks?.[idx]) {
+        const unlock = wizardData.civilization.civilization_unlocks[idx];
+        unlock.type = civType;
+        unlock.name = `LOC_${civType}_NAME`;
+        unlock.description = `LOC_${civType}_DESCRIPTION`;
+        unlock.icon = civType;
+        unlock.kind = 'KIND_CIVILIZATION';
+        markDirty();
+    }
+}
+
 export function updateWizardCivUnlockAt(idx, field, value) {
     if (wizardData.civilization?.civilization_unlocks?.[idx]) {
         wizardData.civilization.civilization_unlocks[idx][field] = value;
@@ -828,8 +800,10 @@ if (typeof window !== 'undefined') {
     window.removeWizardCity = removeWizardCity;
     // Note: addWizardBuilding, removeWizardBuilding, addWizardUnit, removeWizardUnit not in wizard  
     window.addWizardCivUnlock = addWizardCivUnlock;
+    window.autoFillCivUnlock = autoFillCivUnlock;
     window.updateWizardCivUnlockAt = updateWizardCivUnlockAt;
     window.removeWizardCivUnlock = removeWizardCivUnlock;
+    window.updateCivUnlockTargetOptions = updateCivUnlockTargetOptions;
     window.addWizardTerrainBias = addWizardTerrainBias;
     window.updateWizardTerrainBiasAt = updateWizardTerrainBiasAt;
     window.removeWizardTerrainBias = removeWizardTerrainBias;
