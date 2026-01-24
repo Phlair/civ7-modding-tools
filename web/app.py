@@ -189,6 +189,38 @@ async def load_yaml(request: YAMLLoadRequest) -> YAMLLoadResponse:
         )
 
 
+@app.post("/api/civilization/upload")
+async def upload_yaml(file: UploadFile = File(...)) -> YAMLLoadResponse:
+    """
+    Upload and parse a YAML civilization file.
+
+    Args:
+        file: Uploaded YAML file
+
+    Returns:
+        Parsed YAML data and file path
+    """
+    if file.filename is None or not file.filename.endswith((".yml", ".yaml")):
+        raise HTTPException(
+            status_code=400, detail="File must be a YAML file (.yml or .yaml)"
+        )
+
+    try:
+        contents = await file.read()
+        data = yaml.safe_load(contents) or {}
+        return YAMLLoadResponse(data=data, path=file.filename)
+    except yaml.YAMLError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Failed to parse YAML: {str(e)}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to upload file: {str(e)}",
+        )
+
+
 @app.post("/api/civilization/save")
 async def save_yaml(request: YAMLSaveRequest) -> dict[str, str]:
     """

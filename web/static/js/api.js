@@ -6,6 +6,32 @@
 import { getCachedReferenceData, setCachedReferenceData } from './state.js';
 
 /**
+ * Upload and load a YAML file
+ * @param {File} file - File object from input element
+ * @returns {Promise<Object>} Parsed YAML data
+ */
+export async function uploadFile(file) {
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch('/api/civilization/upload', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error(`Upload failed: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('[UPLOAD_ERROR]', error);
+        throw error;
+    }
+}
+
+/**
  * Load a YAML file from disk
  * @param {string} filePath - Absolute path to YAML file
  * @returns {Promise<Object>} Parsed YAML data

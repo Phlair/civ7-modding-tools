@@ -11,7 +11,7 @@ import {
     wizardNextStep,
     createNewMod
 } from './wizard/wizard.js';
-import { healthCheck, loadFile, saveFile, exportYAML, exportBuiltMod } from './api.js';
+import { healthCheck, loadFile, uploadFile, saveFile, exportYAML, exportBuiltMod } from './api.js';
 import { showToast } from './ui.js';
 import { loadReferenceData } from './data/loader.js';
 import { showSettingsModal, toggleApiKeyVisibility, saveSettings } from './settings.js';
@@ -50,32 +50,57 @@ Object.defineProperty(window, 'createNew', {
     configurable: false
 });
 
-Object.defineProperty(window, 'loadFile', {
-    value: async () => {
-        const filePathInput = document.getElementById('file-path-input');
-        if (filePathInput && filePathInput.value) {
-            try {
-                const result = await loadFile(filePathInput.value);
-                if (result && result.data) {
-                    state.setCurrentData(result.data);
-                    state.setCurrentFilePath(result.path || filePathInput.value);
-                    // Populate wizard with loaded data
-                    state.populateWizardFromData(result.data);
-                    // Switch to guided mode to use the wizard for editing
-                    const { switchMode } = await import('./wizard/wizard.js');
-                    switchMode('guided', true);
-                    showToast('File loaded! Use the wizard to edit it.', 'success');
-                }
-            } catch (error) {
-                showToast('Error loading file', 'error');
-            }
-        } else {
-            showToast('Please enter a file path', 'error');
+Object.defineProperty(window, 'openFileUpload', {
+    value: () => {
+        const fileInput = document.getElementById('file-upload-input');
+        if (fileInput) {
+            fileInput.click();
         }
     },
     writable: false,
     configurable: false
 });
+
+Object.defineProperty(window, 'loadFile', {
+    value: async () => {
+        // This function is kept for compatibility but the main logic is in the change listener
+        // Trigger the file input click which will be handled by the change listener
+    },
+    writable: false,
+    configurable: false
+});
+
+// Add file change listener
+const setupFileInput = () => {
+    const fileInput = document.getElementById('file-upload-input');
+    if (fileInput) {
+        fileInput.addEventListener('change', async () => {
+            if (fileInput.files && fileInput.files.length > 0) {
+                try {
+                    const result = await uploadFile(fileInput.files[0]);
+                    if (result && result.data) {
+                        state.setCurrentData(result.data);
+                        state.setCurrentFilePath(result.path);
+                        state.populateWizardFromData(result.data);
+                        const { switchMode } = await import('./wizard/wizard.js');
+                        switchMode('guided', true);
+                        showToast(`File loaded: ${result.path}`, 'success');
+                        fileInput.value = '';
+                    }
+                } catch (error) {
+                    showToast('Error loading file', 'error');
+                }
+            }
+        });
+    }
+};
+
+// Setup on DOM ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFileInput);
+} else {
+    setupFileInput();
+}
 
 Object.defineProperty(window, 'saveFile', {
     value: async () => {
