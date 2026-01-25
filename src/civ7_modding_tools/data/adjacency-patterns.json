@@ -1,0 +1,132 @@
+{
+  "values": [
+    {
+      "id": "WonderProduction",
+      "name": "Wonder Production (+1)",
+      "yield_type": "YIELD_PRODUCTION",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_district": "DISTRICT_WONDER"
+    },
+    {
+      "id": "WonderScience",
+      "name": "Wonder Science (+1)",
+      "yield_type": "YIELD_SCIENCE",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_district": "DISTRICT_WONDER"
+    },
+    {
+      "id": "WonderGold",
+      "name": "Wonder Gold (+1)",
+      "yield_type": "YIELD_GOLD",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_district": "DISTRICT_WONDER"
+    },
+    {
+      "id": "WonderCulture",
+      "name": "Wonder Culture (+1)",
+      "yield_type": "YIELD_CULTURE",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_district": "DISTRICT_WONDER"
+    },
+    {
+      "id": "WonderHappiness",
+      "name": "Wonder Happiness (+1)",
+      "yield_type": "YIELD_HAPPINESS",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_district": "DISTRICT_WONDER"
+    },
+    {
+      "id": "WonderFood",
+      "name": "Wonder Food (+1)",
+      "yield_type": "YIELD_FOOD",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_district": "DISTRICT_WONDER"
+    },
+    {
+      "id": "RiverGold",
+      "name": "River Gold (+1)",
+      "yield_type": "YIELD_GOLD",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_river": true
+    },
+    {
+      "id": "RiverFood",
+      "name": "River Food (+1)",
+      "yield_type": "YIELD_FOOD",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_river": true
+    },
+    {
+      "id": "CoastGold",
+      "name": "Coast Gold (+1)",
+      "yield_type": "YIELD_GOLD",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_terrain": "TERRAIN_COAST"
+    },
+    {
+      "id": "CoastFood",
+      "name": "Coast Food (+1)",
+      "yield_type": "YIELD_FOOD",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_terrain": "TERRAIN_COAST"
+    },
+    {
+      "id": "MountainCulture",
+      "name": "Mountain Culture (+1)",
+      "yield_type": "YIELD_CULTURE",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_terrain": "TERRAIN_MOUNTAIN"
+    },
+    {
+      "id": "MountainHappiness",
+      "name": "Mountain Happiness (+1)",
+      "yield_type": "YIELD_HAPPINESS",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_terrain": "TERRAIN_MOUNTAIN"
+    },
+    {
+      "id": "ResourceProduction",
+      "name": "Resource Production (+1)",
+      "yield_type": "YIELD_PRODUCTION",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_resource": true
+    },
+    {
+      "id": "ResourceScience",
+      "name": "Resource Science (+1)",
+      "yield_type": "YIELD_SCIENCE",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_resource": true
+    },
+    {
+      "id": "NaturalWonderCulture",
+      "name": "Natural Wonder Culture (+1)",
+      "yield_type": "YIELD_CULTURE",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_district": "DISTRICT_NATURAL_WONDER"
+    },
+    {
+      "id": "NaturalWonderHappiness",
+      "name": "Natural Wonder Happiness (+1)",
+      "yield_type": "YIELD_HAPPINESS",
+      "yield_change": 1,
+      "tiles_required": 1,
+      "adjacent_district": "DISTRICT_NATURAL_WONDER"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "values": [
+    {
+      "id": "PLUNDER_GOLD"
+    },
+    {
+      "id": "PLUNDER_SCIENCE"
+    },
+    {
+      "id": "PLUNDER_HEAL"
+    },
+    {
+      "id": "PLUNDER_CULTURE"
+    },
+    {
+      "id": "PLUNDER_FAITH"
+    }
+  ]
+}

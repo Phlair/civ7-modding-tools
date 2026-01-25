@@ -110,6 +110,13 @@ class ImprovementNode(BaseNode):
     """Represents an Improvement definition."""
     _name: str = "Row"
     constructible_type: Optional[str] = None
+    trait_type: Optional[str] = None
+    city_buildable: Optional[bool] = None
+    resource_tier: Optional[int] = None
+    one_per_settlement: Optional[bool] = None
+    same_adjacent_valid: Optional[bool] = None
+    build_in_line: Optional[bool] = None
+    must_be_appealing: Optional[bool] = None
     improvement_type: Optional[str] = None
     improvement_class: Optional[str] = None
 
@@ -169,6 +176,13 @@ class ConstructiblePlunderNode(BaseNode):
     amount: Optional[int] = None
 
 
+class ConstructibleBuildingCostProgressionNode(BaseNode):
+    """Represents building cost progression."""
+    _name: str = "Row"
+    constructible_type: Optional[str] = None
+    percent: Optional[int] = None
+
+
 class ConstructibleAdvisoryNode(BaseNode):
     """Represents constructible advisory classification."""
     _name: str = "Row"
@@ -184,7 +198,27 @@ class ConstructibleAdjacencyNode(BaseNode):
     """Represents adjacency yield constraints for constructible."""
     _name: str = "Row"
     constructible_type: Optional[str] = None
-    adjacency_type: Optional[str] = None
+    yield_change_id: Optional[str] = None
+    requires_activation: Optional[bool] = None
+
+
+class AdjacencyYieldChangeNode(BaseNode):
+    """Represents adjacency yield change definition."""
+    _name: str = "Row"
+    id: Optional[str] = None
+    age: Optional[str] = None
+    yield_type: Optional[str] = None
+    yield_change: Optional[int] = None
+    tiles_required: Optional[int] = None
+    project_max_yield: Optional[bool] = None
+    adjacent_terrain: Optional[str] = None
+    adjacent_biome: Optional[str] = None
+    adjacent_district: Optional[str] = None
+    adjacent_quarter: Optional[bool] = None
+    adjacent_resource: Optional[bool] = None
+    adjacent_river: Optional[bool] = None
+    adjacent_constructible: Optional[str] = None
+    adjacent_constructible_tag: Optional[str] = None
 
 
 class WarehouseYieldChangeNode(BaseNode):
@@ -702,6 +736,7 @@ class DatabaseNode(BaseNode):
     warehouse_yield_changes: list['WarehouseYieldChangeNode'] = []
     constructible_warehouse_yields: list['ConstructibleWarehouseYieldNode'] = []
     constructible_plunders: list['ConstructiblePlunderNode'] = []
+    constructible_building_cost_progressions: list['ConstructibleBuildingCostProgressionNode'] = []
     constructible_advisories: list['ConstructibleAdvisoryNode'] = []
     
     # Cities
@@ -843,6 +878,7 @@ class DatabaseNode(BaseNode):
             'constructible_yield_changes': 'Constructible_YieldChanges',
             'constructible_adjacencies': 'Constructible_Adjacencies',
             'constructible_plunders': 'Constructible_Plunders',
+            'constructible_building_cost_progressions': 'Constructible_BuildingCostProgressions',
             'constructible_advisories': 'Constructible_Advisories',
             'constructible_warehouse_yields': 'Constructible_WarehouseYields',
             'district_free_constructibles': 'District_FreeConstructibles',

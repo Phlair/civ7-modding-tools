@@ -20,8 +20,15 @@ from civ7_modding_tools.nodes import (
     ConstructibleNode,
     ConstructibleYieldChangeNode,
     ConstructibleValidDistrictNode,
+    ConstructibleValidTerrainNode,
+    ConstructibleValidBiomeNode,
+    ConstructibleValidFeatureNode,
     ConstructibleMaintenanceNode,
+    ConstructiblePlunderNode,
+    ConstructibleBuildingCostProgressionNode,
     ConstructibleAdvisoryNode,
+    ConstructibleAdjacencyNode,
+    AdjacencyYieldChangeNode,
     UniqueQuarterNode,
     UniqueQuarterModifierNode,
     ProgressionTreeNode,
@@ -1610,8 +1617,14 @@ class ConstructibleBuilder(BaseBuilder):
         self.building_attributes: Dict[str, Any] = {}
         self.type_tags: list[str] = []
         self.constructible_valid_districts: list[str] = []
+        self.constructible_valid_terrains: list[str] = []
+        self.constructible_valid_biomes: list[str] = []
+        self.constructible_valid_features: list[str] = []
         self.constructible_maintenances: list[Dict[str, Any]] = []
         self.yield_changes: list[Dict[str, Any]] = []
+        self.adjacencies: list[Dict[str, Any]] = []
+        self.plunders: list[Dict[str, Any]] = []
+        self.cost_progressions: list[Dict[str, Any]] = []
         self.advisories: list[Dict[str, Any]] = []
         self.adjacency_bonuses: list[Dict[str, Any]] = []  # Phase 5: Custom adjacency bonuses
         self.building_suite: Optional[Dict[str, Any]] = None  # Phase 5: Multi-tile buildings
@@ -1716,6 +1729,36 @@ class ConstructibleBuilder(BaseBuilder):
                 for district in self.constructible_valid_districts
             ]
         
+        # Valid terrains
+        if self.constructible_valid_terrains:
+            self._always.constructible_valid_terrains = [
+                ConstructibleValidTerrainNode(
+                    constructible_type=self.constructible_type,
+                    terrain_type=terrain
+                )
+                for terrain in self.constructible_valid_terrains
+            ]
+        
+        # Valid biomes
+        if self.constructible_valid_biomes:
+            self._always.constructible_valid_biomes = [
+                ConstructibleValidBiomeNode(
+                    constructible_type=self.constructible_type,
+                    biome_type=biome
+                )
+                for biome in self.constructible_valid_biomes
+            ]
+        
+        # Valid features
+        if self.constructible_valid_features:
+            self._always.constructible_valid_features = [
+                ConstructibleValidFeatureNode(
+                    constructible_type=self.constructible_type,
+                    feature_type=feature
+                )
+                for feature in self.constructible_valid_features
+            ]
+        
         # Maintenances
         if self.constructible_maintenances:
             self._always.constructible_maintenances = [
@@ -1746,6 +1789,79 @@ class ConstructibleBuilder(BaseBuilder):
                     advisory_class_type=adv if isinstance(adv, str) else adv.get('advisory_class_type')
                 )
                 for adv in self.advisories
+            ]
+        
+        # Adjacencies with custom yield changes
+        if self.adjacencies:
+            adjacency_refs = []
+            adjacency_defs = []
+            
+            for adj in self.adjacencies:
+                # Get the adjacency pattern ID or custom definition
+                pattern_id = adj.get('pattern_id') or adj.get('yield_change_id')
+                
+                if pattern_id:
+                    # Reference existing adjacency pattern
+                    adj_ref = ConstructibleAdjacencyNode(
+                        constructible_type=self.constructible_type,
+                        yield_change_id=pattern_id,
+                        requires_activation=adj.get('requires_activation')
+                    )
+                    adjacency_refs.append(adj_ref)
+                
+                # If custom adjacency definition provided, create the yield change node
+                if adj.get('custom'):
+                    custom_id = adj.get('id') or f"{self.constructible_type}_Custom_{len(adjacency_defs)}"
+                    
+                    adj_def = AdjacencyYieldChangeNode(
+                        id=custom_id,
+                        yield_type=adj.get('yield_type'),
+                        yield_change=adj.get('yield_change'),
+                        tiles_required=adj.get('tiles_required', 1),
+                        project_max_yield=adj.get('project_max_yield'),
+                        adjacent_terrain=adj.get('adjacent_terrain'),
+                        adjacent_biome=adj.get('adjacent_biome'),
+                        adjacent_district=adj.get('adjacent_district'),
+                        adjacent_quarter=adj.get('adjacent_quarter'),
+                        adjacent_resource=adj.get('adjacent_resource'),
+                        adjacent_river=adj.get('adjacent_river'),
+                        adjacent_constructible=adj.get('adjacent_constructible'),
+                        adjacent_constructible_tag=adj.get('adjacent_constructible_tag')
+                    )
+                    adjacency_defs.append(adj_def)
+                    
+                    # Also add reference to this custom adjacency
+                    adj_ref = ConstructibleAdjacencyNode(
+                        constructible_type=self.constructible_type,
+                        yield_change_id=custom_id,
+                        requires_activation=adj.get('requires_activation')
+                    )
+                    adjacency_refs.append(adj_ref)
+            
+            if adjacency_refs:
+                self._always.constructible_adjacencies = adjacency_refs
+            if adjacency_defs:
+                self._always.adjacency_yield_changes = adjacency_defs
+        
+        # Plunders
+        if self.plunders:
+            self._always.constructible_plunders = [
+                ConstructiblePlunderNode(
+                    constructible_type=self.constructible_type,
+                    plunder_type=plunder.get('plunder_type'),
+                    amount=plunder.get('amount')
+                )
+                for plunder in self.plunders
+            ]
+        
+        # Cost progressions
+        if self.cost_progressions:
+            self._always.constructible_building_cost_progressions = [
+                ConstructibleBuildingCostProgressionNode(
+                    constructible_type=self.constructible_type,
+                    percent=prog.get('percent')
+                )
+                for prog in self.cost_progressions
             ]
         
         # ==== POPULATE _icons DATABASE ====

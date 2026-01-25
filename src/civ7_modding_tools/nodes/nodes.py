@@ -100,6 +100,20 @@ class ConstructibleNode(BaseNode):
     tooltip: Optional[str] = None
     cost: Optional[int] = 1
     population: Optional[int] = 1
+    age: Optional[str] = None
+    cost_progression_model: Optional[str] = None
+    cost_progression_param1: Optional[int] = None
+    river_placement: Optional[str] = None
+    adjacent_terrain: Optional[str] = None
+    adjacent_district: Optional[str] = None
+    adjacent_river: Optional[bool] = None
+    requires_unlock: Optional[bool] = None
+    immune_damage: Optional[bool] = None
+    district_defense: Optional[bool] = None
+    existing_district_only: Optional[bool] = None
+    repairable: Optional[bool] = None
+    production_boost_over_route: Optional[int] = None
+    military_domain: Optional[str] = None
     construction_cost: Optional[int] = None
     maintenance: Optional[int] = None
 

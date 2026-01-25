@@ -127,6 +127,7 @@ class YamlToPyConverter:
         self.add_line('CivilizationBuilder,')
         self.add_line('UnitBuilder,')
         self.add_line('ConstructibleBuilder,')
+        self.add_line('UniqueQuarterBuilder,')
         self.add_line('ProgressionTreeBuilder,')
         self.add_line('ProgressionTreeNodeBuilder,')
         self.add_line('ModifierBuilder,')
@@ -449,6 +450,31 @@ class YamlToPyConverter:
             self.add_line('})')
             self.add_line()
     
+    def generate_unique_quarters(self) -> None:
+        """Generate unique quarter builders."""
+        unique_quarters = self.data.get('unique_quarters', [])
+        if not unique_quarters:
+            return
+        
+        self.add_line('# Unique Quarters')
+        
+        for quarter_data in unique_quarters:
+            builder_id = quarter_data['id']
+            self.add_line(f'{builder_id} = UniqueQuarterBuilder()')
+            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
+            
+            # Build fill dict
+            fill_dict = {k: v for k, v in quarter_data.items() if k not in ['id', 'bindings']}
+            
+            self.add_line(f'{builder_id}.fill({{')
+            self.indent_level += 1
+            for key, value in fill_dict.items():
+                formatted_value = self.format_value(value)
+                self.add_line(f"'{key}': {formatted_value},")
+            self.indent_level -= 1
+            self.add_line('})')
+            self.add_line()
+    
     def generate_progression_tree_nodes(self) -> None:
         """Generate progression tree node builders."""
         nodes = self.data.get('progression_tree_nodes', [])
@@ -562,6 +588,10 @@ class YamlToPyConverter:
         for constructible in self.data.get('constructibles', []):
             builders.append(constructible['id'])
         
+        # Unique quarter builders
+        for quarter in self.data.get('unique_quarters', []):
+            builders.append(quarter['id'])
+        
         # Progression tree node builders
         for node in self.data.get('progression_tree_nodes', []):
             builders.append(node['id'])
@@ -625,6 +655,10 @@ class YamlToPyConverter:
         # Constructibles
         for constructible in self.data.get('constructibles', []):
             to_bind.append(constructible['id'])
+        
+        # Unique quarters
+        for quarter in self.data.get('unique_quarters', []):
+            to_bind.append(quarter['id'])
         
         # Progression trees
         for tree in self.data.get('progression_trees', []):
@@ -694,6 +728,7 @@ class YamlToPyConverter:
         self.generate_traditions()
         self.generate_units()
         self.generate_constructibles()
+        self.generate_unique_quarters()
         self.generate_progression_tree_nodes()
         self.generate_progression_trees()
         self.generate_civilization()

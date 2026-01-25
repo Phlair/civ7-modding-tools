@@ -272,6 +272,16 @@ def get_unit_abilities() -> List[Dict[str, str]]:
     return load_reference_data('unit-abilities.json')['values']
 
 
+def get_plunder_types() -> List[Dict[str, str]]:
+    """Get all available plunder types for constructibles."""
+    return load_reference_data('plunder-types.json')['values']
+
+
+def get_adjacency_patterns() -> List[Dict[str, Any]]:
+    """Get all common adjacency bonus patterns."""
+    return load_reference_data('adjacency-patterns.json')['values']
+
+
 __all__ = [
     'load_reference_data',
     # Original types
@@ -315,4 +325,6 @@ __all__ = [
     'get_civilizations',
     'get_units',
     'get_unit_abilities',
+    'get_plunder_types',
+    'get_adjacency_patterns',
 ]

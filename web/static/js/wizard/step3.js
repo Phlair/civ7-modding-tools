@@ -6,6 +6,11 @@ import { wizardData, wizardBuildingYields, markDirty } from '../state.js';
 import { showToast } from '../ui.js';
 import { createWizardDropdown, showFieldHelp } from './wizard.js';
 
+// Additional arrays for building configuration
+let wizardBuildingAdjacencies = [];
+let wizardBuildingPlunders = [];
+let wizardBuildingCostProgressions = [];
+
 /**
  * Render Step 3: Units & Buildings
  * @param {HTMLElement} container - Container element to render into
@@ -32,10 +37,22 @@ export function renderWizardStep3(container) {
         window.addWizardBuildingYield = addWizardBuildingYield;
         window.updateWizardBuildingYield = updateWizardBuildingYield;
         window.removeWizardBuildingYield = removeWizardBuildingYield;
+        window.addWizardBuildingAdjacency = addWizardBuildingAdjacency;
+        window.updateWizardBuildingAdjacency = updateWizardBuildingAdjacency;
+        window.removeWizardBuildingAdjacency = removeWizardBuildingAdjacency;
+        window.addWizardBuildingPlunder = addWizardBuildingPlunder;
+        window.updateWizardBuildingPlunder = updateWizardBuildingPlunder;
+        window.removeWizardBuildingPlunder = removeWizardBuildingPlunder;
+        window.setConstructibleIsBuilding = setConstructibleIsBuilding;
         window.showFieldHelp = showFieldHelp;
         window.populateVisualRemapDropdown = populateVisualRemapDropdown;
         window.toggleUnitReplacesCustom = toggleUnitReplacesCustom;
         window.toggleUnitUpgradeCustom = toggleUnitUpgradeCustom;
+        window.wizardShowUniqueQuarterForm = wizardShowUniqueQuarterForm;
+        window.wizardCancelUniqueQuarterForm = wizardCancelUniqueQuarterForm;
+        window.wizardSaveUniqueQuarter = wizardSaveUniqueQuarter;
+        window.wizardEditUniqueQuarter = wizardEditUniqueQuarter;
+        window.removeWizardUniqueQuarter = removeWizardUniqueQuarter;
     }
 
     container.innerHTML = `
@@ -766,26 +783,52 @@ export function renderWizardStep3(container) {
                     <div class="space-y-3">
                         <input type="hidden" id="wizard-constructible-edit-idx" value="-1" />
                         
+                        <!-- Type Selector -->
+                        <div class="bg-slate-900 p-3 rounded border border-slate-700">
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Constructible Type *</label>
+                            <div class="flex gap-2">
+                                <button 
+                                    type="button"
+                                    id="wizard-constructible-is-building-btn"
+                                    onclick="window.setConstructibleIsBuilding(true)"
+                                    class="flex-1 px-3 py-2 bg-blue-600 border border-blue-500 rounded text-sm font-medium transition-colors"
+                                >
+                                    Building
+                                </button>
+                                <button 
+                                    type="button"
+                                    id="wizard-constructible-is-improvement-btn"
+                                    onclick="window.setConstructibleIsBuilding(false)"
+                                    class="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded text-sm font-medium transition-colors"
+                                >
+                                    Improvement
+                                </button>
+                            </div>
+                            <input type="hidden" id="wizard-constructible-is-building" value="true" />
+                        </div>
+                        
                         <h5 class="text-sm font-semibold text-emerald-400 border-b border-slate-600 pb-2 mb-3">Basic Information</h5>
                         <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-1">Building ID *</label>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">ID *</label>
                             <input 
                                 type="text" 
                                 id="wizard-constructible-id" 
-                                placeholder="BUILDING_CIVILIZATION_NAME"
+                                placeholder="BUILDING_CIVILIZATION_NAME or IMPROVEMENT_CIVILIZATION_NAME"
                                 class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
                             />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-1">Constructible Type *</label>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Base Type *</label>
                             <input 
                                 type="text" 
                                 id="wizard-constructible-type" 
-                                placeholder="BUILDING_TYPE_ID"
+                                placeholder="BUILDING_LIBRARY or IMPROVEMENT_FARM"
                                 class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
                             />
+                            <p class="text-xs text-slate-500 mt-1">The base game building/improvement this replaces or extends</p>
                         </div>
                         
+                        <!-- Localization -->
                         <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
                             <h6 class="text-xs font-semibold text-slate-400 mb-2">Localization</h6>
                             <div class="space-y-2">
@@ -794,7 +837,7 @@ export function renderWizardStep3(container) {
                                     <input 
                                         type="text" 
                                         id="wizard-constructible-name" 
-                                        placeholder="Unique Building Name"
+                                        placeholder="Royal Library"
                                         class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
                                     />
                                 </div>
@@ -802,7 +845,16 @@ export function renderWizardStep3(container) {
                                     <label class="block text-xs font-medium text-slate-300 mb-1">Description</label>
                                     <textarea 
                                         id="wizard-constructible-desc" 
-                                        placeholder="Brief description of the building"
+                                        placeholder="Provides +2 Science and +1 Culture per adjacent Campus district."
+                                        rows="2"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    ></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Tooltip (Optional)</label>
+                                    <textarea 
+                                        id="wizard-constructible-tooltip" 
+                                        placeholder="Additional gameplay information"
                                         rows="2"
                                         class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
                                     ></textarea>
@@ -810,55 +862,290 @@ export function renderWizardStep3(container) {
                             </div>
                         </div>
                         
-                        <details class="bg-slate-900/50 rounded border border-slate-700">
-                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Icon & Valid Districts (Optional)</summary>
-                            <div class="p-3 pt-0 space-y-2">
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">Icon Path</label>
-                                    <div class="flex gap-2">
-                                        <input 
-                                            type="text" 
-                                            id="wizard-constructible-icon" 
-                                            placeholder="fs://game/mod_id/building_icon.png"
-                                            onchange="window.updateBuildingIconPath(this.value)"
-                                            class="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                                        />
-                                        <button 
-                                            onclick="window.generateBuildingIcon()"
-                                            class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium whitespace-nowrap transition-colors"
-                                            title="Generate icon using AI"
-                                        >
-                                            ✨
-                                        </button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">Valid Districts (comma-separated)</label>
+                        <!-- Icon -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Icon Path</label>
+                            <div class="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    id="wizard-constructible-icon" 
+                                    placeholder="fs://game/mod_id/icon_building_name.png"
+                                    onchange="window.updateBuildingIconPath(this.value)"
+                                    class="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                />
+                                <button 
+                                    onclick="window.generateBuildingIcon()"
+                                    class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium whitespace-nowrap transition-colors"
+                                    title="Generate icon using AI"
+                                >
+                                    ✨ AI
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Placement Constraints -->
+                        <details class="bg-slate-900/50 rounded border border-slate-700" open>
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">📍 Placement Constraints</summary>
+                            <div class="p-3 pt-2 space-y-3">
+                                <div id="wizard-constructible-district-section">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Valid Districts (Building Only)</label>
                                     <input 
                                         type="text" 
                                         id="wizard-constructible-districts" 
                                         placeholder="DISTRICT_CAMPUS, DISTRICT_HOLY_SITE"
                                         class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
                                     />
+                                    <p class="text-xs text-slate-500 mt-1">Districts where this building can be constructed</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Valid Terrains</label>
+                                    <input 
+                                        type="text" 
+                                        id="wizard-constructible-terrains" 
+                                        placeholder="TERRAIN_GRASS, TERRAIN_PLAINS"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Valid Biomes</label>
+                                    <input 
+                                        type="text" 
+                                        id="wizard-constructible-biomes" 
+                                        placeholder="BIOME_TEMPERATE, BIOME_TROPICAL"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Valid Features</label>
+                                    <input 
+                                        type="text" 
+                                        id="wizard-constructible-features" 
+                                        placeholder="FEATURE_FOREST, FEATURE_JUNGLE"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">River Placement</label>
+                                    <select 
+                                        id="wizard-constructible-river" 
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    >
+                                        <option value="">No requirement</option>
+                                        <option value="RIVER_PLACEMENT_ADJACENT">Adjacent to river</option>
+                                        <option value="RIVER_PLACEMENT_NONE">Not adjacent to river</option>
+                                    </select>
                                 </div>
                             </div>
                         </details>
                         
+                        <!-- Yields & Maintenance -->
+                        <details class="bg-slate-900/50 rounded border border-slate-700" open>
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">📊 Yields & Maintenance</summary>
+                            <div class="p-3 pt-2 space-y-3">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <label class="block text-xs font-medium text-slate-300">Base Yields</label>
+                                        <button 
+                                            onclick="window.addWizardBuildingYield()"
+                                            type="button"
+                                            class="px-2 py-1 bg-green-600 hover:bg-green-700 rounded text-xs font-medium"
+                                        >
+                                            + Add Yield
+                                        </button>
+                                    </div>
+                                    <div id="wizard-building-yields" class="space-y-2"></div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Gold Maintenance</label>
+                                    <input 
+                                        type="number" 
+                                        id="wizard-constructible-maintenance-gold" 
+                                        placeholder="0"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Happiness Maintenance</label>
+                                    <input 
+                                        type="number" 
+                                        id="wizard-constructible-maintenance-happiness" 
+                                        placeholder="0"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                </div>
+                            </div>
+                        </details>
+                        
+                        <!-- Adjacency Bonuses -->
                         <details class="bg-slate-900/50 rounded border border-slate-700">
-                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Yields & Bonuses (Optional)</summary>
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">🔗 Adjacency Bonuses</summary>
                             <div class="p-3 pt-2 space-y-2">
                                 <div class="flex items-center justify-between mb-2">
-                                    <label class="block text-xs font-medium text-slate-300">Yield Bonuses</label>
+                                    <label class="block text-xs font-medium text-slate-300">Adjacency Patterns</label>
                                     <button 
-                                        onclick="window.addWizardBuildingYield()"
+                                        onclick="window.addWizardBuildingAdjacency()"
                                         type="button"
                                         class="px-2 py-1 bg-green-600 hover:bg-green-700 rounded text-xs font-medium"
                                     >
-                                        + Add Yield
+                                        + Add Adjacency
                                     </button>
                                 </div>
-                                <div id="wizard-building-yields" class="space-y-2"></div>
-                                <p class="text-xs text-slate-500 mt-2">Science, culture, production, etc.</p>
+                                <div id="wizard-building-adjacencies" class="space-y-2"></div>
+                                <p class="text-xs text-slate-500 mt-2">Bonuses from adjacent tiles (wonders, rivers, districts, etc.)</p>
+                            </div>
+                        </details>
+                        
+                        <!-- Plunder & Costs -->
+                        <details class="bg-slate-900/50 rounded border border-slate-700">
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">💰 Plunder & Costs</summary>
+                            <div class="p-3 pt-2 space-y-3">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <label class="block text-xs font-medium text-slate-300">Plunder Rewards</label>
+                                        <button 
+                                            onclick="window.addWizardBuildingPlunder()"
+                                            type="button"
+                                            class="px-2 py-1 bg-green-600 hover:bg-green-700 rounded text-xs font-medium"
+                                        >
+                                            + Add Plunder
+                                        </button>
+                                    </div>
+                                    <div id="wizard-building-plunders" class="space-y-2"></div>
+                                    <p class="text-xs text-slate-500 mt-1">Rewards when pillaged by enemies</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Cost Progression (%)</label>
+                                    <input 
+                                        type="number" 
+                                        id="wizard-constructible-cost-progression" 
+                                        placeholder="0"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                    <p class="text-xs text-slate-500 mt-1">Percentage increase per copy (e.g., 15 = 15% more expensive each time)</p>
+                                </div>
+                            </div>
+                        </details>
+                        
+                        <!-- Advanced Properties -->
+                        <details class="bg-slate-900/50 rounded border border-slate-700">
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">⚙️ Advanced Properties</summary>
+                            <div class="p-3 pt-2 space-y-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Age</label>
+                                    <select 
+                                        id="wizard-constructible-age" 
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    >
+                                        <option value="">Default</option>
+                                        <option value="AGE_ANTIQUITY">Antiquity</option>
+                                        <option value="AGE_EXPLORATION">Exploration</option>
+                                        <option value="AGE_MODERN">Modern</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Cost Progression Model</label>
+                                    <input 
+                                        type="text" 
+                                        id="wizard-constructible-cost-model" 
+                                        placeholder="COST_PROGRESSION_BUILDING_LINEAR"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">District Defense Bonus</label>
+                                    <input 
+                                        type="number" 
+                                        id="wizard-constructible-district-defense" 
+                                        placeholder="0"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-constructible-requires-unlock"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span class="text-xs text-slate-300">Requires Unlock</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-constructible-immune-damage"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span class="text-xs text-slate-300">Immune to Damage</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-constructible-repairable"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span class="text-xs text-slate-300">Repairable</span>
+                                    </label>
+                                </div>
+                                
+                                <!-- Building-specific -->
+                                <div id="wizard-constructible-building-section" class="space-y-2 pt-2 border-t border-slate-700">
+                                    <h6 class="text-xs font-semibold text-slate-400">Building-Specific</h6>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-constructible-purchasable"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span class="text-xs text-slate-300">Purchasable with Gold</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-constructible-multiple-per-city"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span class="text-xs text-slate-300">Multiple Per City</span>
+                                    </label>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Town</label>
+                                        <input 
+                                            type="text" 
+                                            id="wizard-constructible-town" 
+                                            placeholder="TOWN_PLACEHOLDER"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <!-- Improvement-specific -->
+                                <div id="wizard-constructible-improvement-section" class="hidden space-y-2 pt-2 border-t border-slate-700">
+                                    <h6 class="text-xs font-semibold text-slate-400">Improvement-Specific</h6>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Trait Type</label>
+                                        <input 
+                                            type="text" 
+                                            id="wizard-constructible-trait-type" 
+                                            placeholder="TRAIT_ECONOMIC"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                    </div>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-constructible-city-buildable"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span class="text-xs text-slate-300">City Buildable</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-constructible-one-per-settlement"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span class="text-xs text-slate-300">One Per Settlement</span>
+                                    </label>
+                                </div>
                             </div>
                         </details>
                         
@@ -873,6 +1160,163 @@ export function renderWizardStep3(container) {
                             <button 
                                 onclick="window.wizardCancelConstructibleForm()"
                                 id="wizard-constructible-form-cancel"
+                                class="flex-1 px-3 py-1 bg-slate-700 hover:bg-slate-600 rounded text-sm font-medium"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-semibold text-slate-200 flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 rounded-full bg-purple-500"></span>
+                        Unique Quarters (${wizardData.unique_quarters?.length || 0})
+                    </h4>
+                    ${(wizardData.constructibles?.filter(c => c.constructible?.constructible_class === 'BUILDING' || c.is_building !== false).length >= 2) ? `
+                        <button 
+                            onclick="window.wizardShowUniqueQuarterForm()"
+                            class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-sm font-medium"
+                        >
+                            + Create Quarter
+                        </button>
+                    ` : `
+                        <p class="text-xs text-slate-400">Add 2+ buildings first</p>
+                    `}
+                </div>
+                
+                ${wizardData.unique_quarters && wizardData.unique_quarters.length > 0 ? `
+                    <div class="space-y-2 mb-4">
+                        ${wizardData.unique_quarters.map((quarter, idx) => `
+                            <div class="p-3 bg-slate-800/50 rounded border border-slate-600">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div>
+                                        <p class="font-medium text-sm">${quarter.id || 'Unnamed Quarter'}</p>
+                                        <p class="text-xs text-slate-400">${quarter.unique_quarter_type || '—'}</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button 
+                                            onclick="window.wizardEditUniqueQuarter(${idx})"
+                                            class="px-2 py-1 text-xs bg-blue-600/30 hover:bg-blue-600/50 border border-blue-600 rounded text-blue-300"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button 
+                                            onclick="window.removeWizardUniqueQuarter(${idx})"
+                                            class="px-2 py-1 text-xs bg-red-600/30 hover:bg-red-600/50 border border-red-600 rounded text-red-300"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 text-xs text-slate-400">
+                                    <span>🏛️ ${quarter.building_type_1 || 'Building 1'}</span>
+                                    <span>+</span>
+                                    <span>🏛️ ${quarter.building_type_2 || 'Building 2'}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : '<p class="text-slate-400 text-sm py-4">No unique quarters created yet. Combine 2 buildings to create one!</p>'}
+                
+                <div id="wizard-unique-quarter-form" class="hidden bg-slate-800 p-4 rounded border border-slate-600 mt-4">
+                    <div class="space-y-3">
+                        <input type="hidden" id="wizard-unique-quarter-edit-idx" value="-1" />
+                        
+                        <h5 class="text-sm font-semibold text-purple-400 border-b border-slate-600 pb-2 mb-3">Create Unique Quarter</h5>
+                        
+                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
+                            <p class="text-xs text-slate-400 mb-3">
+                                Unique Quarters combine 2 buildings into a special district that provides bonus effects when both are built in the same city.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Quarter ID *</label>
+                            <input 
+                                type="text" 
+                                id="wizard-unique-quarter-id" 
+                                placeholder="QUARTER_CIVILIZATION_NAME"
+                                class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                            />
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Quarter Type *</label>
+                            <input 
+                                type="text" 
+                                id="wizard-unique-quarter-type" 
+                                placeholder="QUARTER_TYPE_ID"
+                                class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                            />
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">First Building *</label>
+                            <select 
+                                id="wizard-unique-quarter-building1" 
+                                class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                            >
+                                <option value="">Select building...</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Second Building *</label>
+                            <select 
+                                id="wizard-unique-quarter-building2" 
+                                class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                            >
+                                <option value="">Select building...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
+                            <h6 class="text-xs font-semibold text-slate-400 mb-2">Localization</h6>
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Display Name</label>
+                                    <input 
+                                        type="text" 
+                                        id="wizard-unique-quarter-name" 
+                                        placeholder="Royal Academy"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Description</label>
+                                    <textarea 
+                                        id="wizard-unique-quarter-desc" 
+                                        placeholder="A prestigious district combining academic and cultural institutions."
+                                        rows="2"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    ></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Tooltip (Optional)</label>
+                                    <textarea 
+                                        id="wizard-unique-quarter-tooltip" 
+                                        placeholder="Additional effects and bonuses..."
+                                        rows="2"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-2 mt-4">
+                            <button 
+                                onclick="window.wizardSaveUniqueQuarter()"
+                                id="wizard-unique-quarter-form-save"
+                                class="flex-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm font-medium"
+                            >
+                                Save
+                            </button>
+                            <button 
+                                onclick="window.wizardCancelUniqueQuarterForm()"
+                                id="wizard-unique-quarter-form-cancel"
                                 class="flex-1 px-3 py-1 bg-slate-700 hover:bg-slate-600 rounded text-sm font-medium"
                             >
                                 Cancel
@@ -1314,33 +1758,77 @@ export function updateUnitIconPath(value) {
 }
 
 export function wizardShowConstructibleForm() {
+    wizardCancelConstructibleForm(); // Reset all fields
     const form = document.getElementById('wizard-constructible-form');
-    const idxInput = document.getElementById('wizard-constructible-edit-idx');
-
-    document.getElementById('wizard-constructible-id').value = '';
-    document.getElementById('wizard-constructible-type').value = '';
-    document.getElementById('wizard-constructible-name').value = '';
-    document.getElementById('wizard-constructible-desc').value = '';
-    document.getElementById('wizard-constructible-icon').value = '';
-    document.getElementById('wizard-constructible-districts').value = '';
-    wizardBuildingYields.length = 0;
-    renderWizardBuildingYields();
-    idxInput.value = '-1';
-
     form.classList.remove('hidden');
+    
+    // Initialize type toggle to building
+    setConstructibleIsBuilding(true);
+    
+    // Initialize empty arrays
+    renderWizardBuildingYields();
+    renderWizardBuildingAdjacencies();
+    renderWizardBuildingPlunders();
+    
     document.getElementById('wizard-constructible-id').focus();
 }
 
 export function wizardCancelConstructibleForm() {
     const form = document.getElementById('wizard-constructible-form');
     form.classList.add('hidden');
+    
+    // Clear basic fields
     document.getElementById('wizard-constructible-id').value = '';
     document.getElementById('wizard-constructible-type').value = '';
     document.getElementById('wizard-constructible-name').value = '';
     document.getElementById('wizard-constructible-desc').value = '';
+    document.getElementById('wizard-constructible-tooltip').value = '';
     document.getElementById('wizard-constructible-icon').value = '';
+    
+    // Clear placement constraints
     document.getElementById('wizard-constructible-districts').value = '';
+    document.getElementById('wizard-constructible-terrains').value = '';
+    document.getElementById('wizard-constructible-biomes').value = '';
+    document.getElementById('wizard-constructible-features').value = '';
+    document.getElementById('wizard-constructible-river').value = '';
+    
+    // Clear yields and arrays
     wizardBuildingYields.length = 0;
+    wizardBuildingAdjacencies.length = 0;
+    wizardBuildingPlunders.length = 0;
+    renderWizardBuildingYields();
+    renderWizardBuildingAdjacencies();
+    renderWizardBuildingPlunders();
+    
+    // Clear maintenance
+    document.getElementById('wizard-constructible-maintenance-gold').value = '';
+    document.getElementById('wizard-constructible-maintenance-happiness').value = '';
+    
+    // Clear cost progression
+    document.getElementById('wizard-constructible-cost-progression').value = '';
+    
+    // Clear advanced properties
+    document.getElementById('wizard-constructible-age').value = '';
+    document.getElementById('wizard-constructible-cost-model').value = '';
+    document.getElementById('wizard-constructible-district-defense').value = '';
+    document.getElementById('wizard-constructible-requires-unlock').checked = false;
+    document.getElementById('wizard-constructible-immune-damage').checked = false;
+    document.getElementById('wizard-constructible-repairable').checked = false;
+    
+    // Clear building-specific
+    document.getElementById('wizard-constructible-purchasable').checked = false;
+    document.getElementById('wizard-constructible-multiple-per-city').checked = false;
+    document.getElementById('wizard-constructible-town').value = '';
+    
+    // Clear improvement-specific
+    document.getElementById('wizard-constructible-trait-type').value = '';
+    document.getElementById('wizard-constructible-city-buildable').checked = false;
+    document.getElementById('wizard-constructible-one-per-settlement').checked = false;
+    
+    // Reset type to building
+    document.getElementById('wizard-constructible-is-building').value = 'true';
+    setConstructibleIsBuilding(true);
+    
     document.getElementById('wizard-constructible-edit-idx').value = '-1';
 }
 
@@ -1348,13 +1836,14 @@ export function wizardSaveConstructible() {
     const id = document.getElementById('wizard-constructible-id').value.trim();
     const type = document.getElementById('wizard-constructible-type').value.trim();
     const editIdx = parseInt(document.getElementById('wizard-constructible-edit-idx').value, 10);
+    const isBuilding = document.getElementById('wizard-constructible-is-building').value === 'true';
 
     if (!id) {
-        showToast('Building ID is required', 'error');
+        showToast('ID is required', 'error');
         return;
     }
     if (!type) {
-        showToast('Building Type is required', 'error');
+        showToast('Base Type is required', 'error');
         return;
     }
 
@@ -1362,43 +1851,134 @@ export function wizardSaveConstructible() {
         wizardData.constructibles = [];
     }
 
+    // Basic fields
     const displayName = document.getElementById('wizard-constructible-name').value.trim();
     const description = document.getElementById('wizard-constructible-desc').value.trim();
+    const tooltip = document.getElementById('wizard-constructible-tooltip').value.trim();
     const icon = document.getElementById('wizard-constructible-icon').value.trim();
+    
+    // Placement constraints
     const districts = document.getElementById('wizard-constructible-districts').value.trim();
+    const terrains = document.getElementById('wizard-constructible-terrains').value.trim();
+    const biomes = document.getElementById('wizard-constructible-biomes').value.trim();
+    const features = document.getElementById('wizard-constructible-features').value.trim();
+    const riverPlacement = document.getElementById('wizard-constructible-river').value.trim();
+    
+    // Maintenance
+    const maintenanceGold = document.getElementById('wizard-constructible-maintenance-gold').value.trim();
+    const maintenanceHappiness = document.getElementById('wizard-constructible-maintenance-happiness').value.trim();
+    
+    // Costs
+    const costProgression = document.getElementById('wizard-constructible-cost-progression').value.trim();
+    
+    // Advanced properties
+    const age = document.getElementById('wizard-constructible-age').value.trim();
+    const costModel = document.getElementById('wizard-constructible-cost-model').value.trim();
+    const districtDefense = document.getElementById('wizard-constructible-district-defense').value.trim();
+    const requiresUnlock = document.getElementById('wizard-constructible-requires-unlock').checked;
+    const immuneDamage = document.getElementById('wizard-constructible-immune-damage').checked;
+    const repairable = document.getElementById('wizard-constructible-repairable').checked;
 
     const constructible = {
         id: id,
         constructible_type: type,
+        is_building: isBuilding,
     };
 
-    if (displayName || description) {
+    // Localization
+    if (displayName || description || tooltip) {
         constructible.localizations = [{}];
         if (displayName) constructible.localizations[0].name = displayName;
         if (description) constructible.localizations[0].description = description;
+        if (tooltip) constructible.localizations[0].tooltip = tooltip;
     }
 
+    // Icon
     if (icon) {
         constructible.icon = { path: icon };
     }
 
+    // Placement constraints
     if (districts) {
-        constructible.constructible_valid_districts = districts
-            .split(',')
-            .map(d => d.trim())
-            .filter(d => d.length > 0);
+        constructible.constructible_valid_districts = districts.split(',').map(d => d.trim()).filter(d => d.length > 0);
+    }
+    if (terrains) {
+        constructible.constructible_valid_terrains = terrains.split(',').map(t => t.trim()).filter(t => t.length > 0);
+    }
+    if (biomes) {
+        constructible.constructible_valid_biomes = biomes.split(',').map(b => b.trim()).filter(b => b.length > 0);
+    }
+    if (features) {
+        constructible.constructible_valid_features = features.split(',').map(f => f.trim()).filter(f => f.length > 0);
+    }
+    if (riverPlacement) {
+        constructible.river_placement = riverPlacement;
     }
 
+    // Yields
     if (wizardBuildingYields.length > 0) {
         constructible.yield_changes = wizardBuildingYields.filter(y => y.yield_type && y.yield_change);
     }
 
+    // Maintenance
+    if (maintenanceGold) {
+        constructible.maintenance_gold = parseInt(maintenanceGold, 10);
+    }
+    if (maintenanceHappiness) {
+        constructible.maintenance_happiness = parseInt(maintenanceHappiness, 10);
+    }
+
+    // Adjacencies
+    if (wizardBuildingAdjacencies.length > 0) {
+        constructible.adjacencies = wizardBuildingAdjacencies.filter(a => a.pattern_id || a.yield_type);
+    }
+
+    // Plunders
+    if (wizardBuildingPlunders.length > 0) {
+        constructible.plunders = wizardBuildingPlunders.filter(p => p.plunder_type && p.amount);
+    }
+
+    // Cost progression
+    if (costProgression) {
+        constructible.cost_progressions = [{
+            percent: parseInt(costProgression, 10)
+        }];
+    }
+
+    // Advanced properties
+    if (age) constructible.age = age;
+    if (costModel) constructible.cost_progression_model = costModel;
+    if (districtDefense) constructible.district_defense = parseInt(districtDefense, 10);
+    if (requiresUnlock) constructible.requires_unlock = true;
+    if (immuneDamage) constructible.immune_damage = true;
+    if (repairable) constructible.repairable = true;
+
+    // Building-specific properties
+    if (isBuilding) {
+        const purchasable = document.getElementById('wizard-constructible-purchasable').checked;
+        const multiplePerCity = document.getElementById('wizard-constructible-multiple-per-city').checked;
+        const town = document.getElementById('wizard-constructible-town').value.trim();
+
+        if (purchasable) constructible.building = { ...constructible.building, purchasable: true };
+        if (multiplePerCity) constructible.building = { ...constructible.building, multiple_per_city: true };
+        if (town) constructible.building = { ...constructible.building, town: town };
+    } else {
+        // Improvement-specific properties
+        const traitType = document.getElementById('wizard-constructible-trait-type').value.trim();
+        const cityBuildable = document.getElementById('wizard-constructible-city-buildable').checked;
+        const onePerSettlement = document.getElementById('wizard-constructible-one-per-settlement').checked;
+
+        if (traitType) constructible.improvement = { ...constructible.improvement, trait_type: traitType };
+        if (cityBuildable) constructible.improvement = { ...constructible.improvement, city_buildable: true };
+        if (onePerSettlement) constructible.improvement = { ...constructible.improvement, one_per_settlement: true };
+    }
+
     if (editIdx >= 0) {
         wizardData.constructibles[editIdx] = constructible;
-        showToast('Building updated', 'success');
+        showToast('Constructible updated', 'success');
     } else {
         wizardData.constructibles.push(constructible);
-        showToast('Building added', 'success');
+        showToast('Constructible added', 'success');
     }
 
     wizardCancelConstructibleForm();
@@ -1408,15 +1988,69 @@ export function wizardSaveConstructible() {
 
 export function wizardEditConstructible(idx) {
     const building = wizardData.constructibles[idx];
+    const isBuilding = building.is_building !== false; // Default to true
+    
+    // Set type toggle
+    document.getElementById('wizard-constructible-is-building').value = isBuilding ? 'true' : 'false';
+    setConstructibleIsBuilding(isBuilding, false); // Don't clear fields yet
+    
+    // Basic fields
     document.getElementById('wizard-constructible-id').value = building.id || '';
     document.getElementById('wizard-constructible-type').value = building.constructible_type || '';
     document.getElementById('wizard-constructible-name').value = building.localizations?.[0]?.name || '';
     document.getElementById('wizard-constructible-desc').value = building.localizations?.[0]?.description || '';
+    document.getElementById('wizard-constructible-tooltip').value = building.localizations?.[0]?.tooltip || '';
     document.getElementById('wizard-constructible-icon').value = building.icon?.path || '';
+    
+    // Placement constraints
     document.getElementById('wizard-constructible-districts').value = (building.constructible_valid_districts || []).join(', ');
+    document.getElementById('wizard-constructible-terrains').value = (building.constructible_valid_terrains || []).join(', ');
+    document.getElementById('wizard-constructible-biomes').value = (building.constructible_valid_biomes || []).join(', ');
+    document.getElementById('wizard-constructible-features').value = (building.constructible_valid_features || []).join(', ');
+    document.getElementById('wizard-constructible-river').value = building.river_placement || '';
+    
+    // Yields
     wizardBuildingYields.length = 0;
     wizardBuildingYields.push(...(building.yield_changes || []));
     renderWizardBuildingYields();
+    
+    // Maintenance
+    document.getElementById('wizard-constructible-maintenance-gold').value = building.maintenance_gold || '';
+    document.getElementById('wizard-constructible-maintenance-happiness').value = building.maintenance_happiness || '';
+    
+    // Adjacencies
+    wizardBuildingAdjacencies.length = 0;
+    wizardBuildingAdjacencies.push(...(building.adjacencies || []));
+    renderWizardBuildingAdjacencies();
+    
+    // Plunders
+    wizardBuildingPlunders.length = 0;
+    wizardBuildingPlunders.push(...(building.plunders || []));
+    renderWizardBuildingPlunders();
+    
+    // Cost progression
+    document.getElementById('wizard-constructible-cost-progression').value = building.cost_progressions?.[0]?.percent || '';
+    
+    // Advanced properties
+    document.getElementById('wizard-constructible-age').value = building.age || '';
+    document.getElementById('wizard-constructible-cost-model').value = building.cost_progression_model || '';
+    document.getElementById('wizard-constructible-district-defense').value = building.district_defense || '';
+    document.getElementById('wizard-constructible-requires-unlock').checked = building.requires_unlock || false;
+    document.getElementById('wizard-constructible-immune-damage').checked = building.immune_damage || false;
+    document.getElementById('wizard-constructible-repairable').checked = building.repairable || false;
+    
+    // Building-specific
+    if (isBuilding) {
+        document.getElementById('wizard-constructible-purchasable').checked = building.building?.purchasable || false;
+        document.getElementById('wizard-constructible-multiple-per-city').checked = building.building?.multiple_per_city || false;
+        document.getElementById('wizard-constructible-town').value = building.building?.town || '';
+    } else {
+        // Improvement-specific
+        document.getElementById('wizard-constructible-trait-type').value = building.improvement?.trait_type || '';
+        document.getElementById('wizard-constructible-city-buildable').checked = building.improvement?.city_buildable || false;
+        document.getElementById('wizard-constructible-one-per-settlement').checked = building.improvement?.one_per_settlement || false;
+    }
+    
     document.getElementById('wizard-constructible-edit-idx').value = idx;
     document.getElementById('wizard-constructible-form').classList.remove('hidden');
 }
@@ -1491,6 +2125,174 @@ export function renderWizardBuildingYields() {
         createWizardDropdown(`wizard-yield-type-${idx}`, 'yield-types', yieldItem.yield_type || '', 'Select yield...');
     });
 }
+
+/**
+ * Set constructible type (building vs improvement) and toggle visibility of sections
+ */
+export function setConstructibleIsBuilding(isBuilding, clearFields = true) {
+    document.getElementById('wizard-constructible-is-building').value = isBuilding ? 'true' : 'false';
+    
+    // Update button styles
+    const buildingBtn = document.getElementById('wizard-constructible-is-building-btn');
+    const improvementBtn = document.getElementById('wizard-constructible-is-improvement-btn');
+    
+    if (isBuilding) {
+        buildingBtn.classList.add('bg-blue-600', 'border-blue-500');
+        buildingBtn.classList.remove('bg-slate-700', 'border-slate-600');
+        improvementBtn.classList.remove('bg-blue-600', 'border-blue-500');
+        improvementBtn.classList.add('bg-slate-700', 'border-slate-600');
+    } else {
+        improvementBtn.classList.add('bg-blue-600', 'border-blue-500');
+        improvementBtn.classList.remove('bg-slate-700', 'border-slate-600');
+        buildingBtn.classList.remove('bg-blue-600', 'border-blue-500');
+        buildingBtn.classList.add('bg-slate-700', 'border-slate-600');
+    }
+    
+    // Toggle section visibility
+    const districtSection = document.getElementById('wizard-constructible-district-section');
+    const buildingSection = document.getElementById('wizard-constructible-building-section');
+    const improvementSection = document.getElementById('wizard-constructible-improvement-section');
+    
+    if (districtSection) {
+        districtSection.style.display = isBuilding ? 'block' : 'none';
+    }
+    if (buildingSection) {
+        buildingSection.style.display = isBuilding ? 'block' : 'none';
+    }
+    if (improvementSection) {
+        improvementSection.style.display = isBuilding ? 'none' : 'block';
+    }
+    
+    if (clearFields) {
+        // Clear type-specific fields when switching
+        if (isBuilding) {
+            document.getElementById('wizard-constructible-trait-type').value = '';
+            document.getElementById('wizard-constructible-city-buildable').checked = false;
+            document.getElementById('wizard-constructible-one-per-settlement').checked = false;
+        } else {
+            document.getElementById('wizard-constructible-districts').value = '';
+            document.getElementById('wizard-constructible-purchasable').checked = false;
+            document.getElementById('wizard-constructible-multiple-per-city').checked = false;
+            document.getElementById('wizard-constructible-town').value = '';
+        }
+    }
+}
+
+// Adjacency management
+export function addWizardBuildingAdjacency() {
+    wizardBuildingAdjacencies.push({ pattern_id: '' });
+    renderWizardBuildingAdjacencies();
+}
+
+export function updateWizardBuildingAdjacency(idx, field, value) {
+    if (wizardBuildingAdjacencies[idx]) {
+        wizardBuildingAdjacencies[idx][field] = value;
+    }
+}
+
+export function removeWizardBuildingAdjacency(idx) {
+    wizardBuildingAdjacencies.splice(idx, 1);
+    renderWizardBuildingAdjacencies();
+}
+
+export function renderWizardBuildingAdjacencies() {
+    const container = document.getElementById('wizard-building-adjacencies');
+    if (!container) return;
+
+    container.innerHTML = wizardBuildingAdjacencies.map((adj, idx) => `
+        <div class="flex gap-2 items-center">
+            <select 
+                id="wizard-adjacency-pattern-${idx}"
+                onchange="window.updateWizardBuildingAdjacency(${idx}, 'pattern_id', this.value)"
+                class="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
+            >
+                <option value="">Loading...</option>
+            </select>
+            <button 
+                onclick="window.removeWizardBuildingAdjacency(${idx})"
+                type="button"
+                class="px-2 py-1 bg-red-600/20 hover:bg-red-600/30 border border-red-600 rounded text-red-400 text-xs"
+            >
+                ×
+            </button>
+        </div>
+    `).join('');
+
+    wizardBuildingAdjacencies.forEach(async (adj, idx) => {
+        const dropdown = document.getElementById(`wizard-adjacency-pattern-${idx}`);
+        if (!dropdown) return;
+
+        try {
+            const response = await fetch('/api/data/adjacency-patterns');
+            if (!response.ok) throw new Error('Failed to fetch adjacency patterns');
+            
+            const data = await response.json();
+            const patterns = data.values || [];
+            
+            dropdown.innerHTML = '<option value="">Select pattern...</option>' +
+                patterns.map(pattern => {
+                    const selected = adj.pattern_id === pattern.id ? 'selected' : '';
+                    return `<option value="${pattern.id}" ${selected}>${pattern.name}</option>`;
+                }).join('');
+        } catch (error) {
+            console.error('Error loading adjacency patterns:', error);
+            dropdown.innerHTML = '<option value="">Error loading patterns</option>';
+        }
+    });
+}
+
+// Plunder management
+export function addWizardBuildingPlunder() {
+    wizardBuildingPlunders.push({ plunder_type: '', amount: 0 });
+    renderWizardBuildingPlunders();
+}
+
+export function updateWizardBuildingPlunder(idx, field, value) {
+    if (wizardBuildingPlunders[idx]) {
+        wizardBuildingPlunders[idx][field] = field === 'amount' ? parseInt(value, 10) || 0 : value;
+    }
+}
+
+export function removeWizardBuildingPlunder(idx) {
+    wizardBuildingPlunders.splice(idx, 1);
+    renderWizardBuildingPlunders();
+}
+
+export function renderWizardBuildingPlunders() {
+    const container = document.getElementById('wizard-building-plunders');
+    if (!container) return;
+
+    container.innerHTML = wizardBuildingPlunders.map((plunder, idx) => `
+        <div class="flex gap-2 items-center">
+            <select 
+                id="wizard-plunder-type-${idx}"
+                onchange="window.updateWizardBuildingPlunder(${idx}, 'plunder_type', this.value)"
+                class="flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
+            >
+                <option value="">Loading...</option>
+            </select>
+            <input 
+                type="number" 
+                value="${plunder.amount || ''}"
+                onchange="window.updateWizardBuildingPlunder(${idx}, 'amount', this.value)"
+                placeholder="Amount"
+                class="w-24 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm"
+            />
+            <button 
+                onclick="window.removeWizardBuildingPlunder(${idx})"
+                type="button"
+                class="px-2 py-1 bg-red-600/20 hover:bg-red-600/30 border border-red-600 rounded text-red-400 text-xs"
+            >
+                ×
+            </button>
+        </div>
+    `).join('');
+
+    wizardBuildingPlunders.forEach((plunder, idx) => {
+        createWizardDropdown(`wizard-plunder-type-${idx}`, 'plunder-types', plunder.plunder_type || '', 'Select plunder type...');
+    });
+}
+
 
 /**
  * Populate visual remap dropdown with all available units
@@ -1862,3 +2664,158 @@ window.wizardSaveAbility = wizardSaveAbility;
 window.wizardEditAbility = wizardEditAbility;
 window.wizardRemoveAbility = wizardRemoveAbility;
 window.toggleAbilityCustomType = toggleAbilityCustomType;
+/**
+ * Unique Quarter Functions
+ */
+
+function wizardShowUniqueQuarterForm() {
+    const form = document.getElementById('wizard-unique-quarter-form');
+    const editIdx = document.getElementById('wizard-unique-quarter-edit-idx').value;
+    
+    // Populate building dropdowns
+    populateQuarterBuildingDropdowns();
+    
+    // If not editing, clear form
+    if (editIdx === '-1') {
+        document.getElementById('wizard-unique-quarter-id').value = '';
+        document.getElementById('wizard-unique-quarter-type').value = '';
+        document.getElementById('wizard-unique-quarter-building1').value = '';
+        document.getElementById('wizard-unique-quarter-building2').value = '';
+        document.getElementById('wizard-unique-quarter-name').value = '';
+        document.getElementById('wizard-unique-quarter-desc').value = '';
+        document.getElementById('wizard-unique-quarter-tooltip').value = '';
+    }
+    
+    form.classList.remove('hidden');
+    document.getElementById('wizard-unique-quarter-id').focus();
+}
+
+function populateQuarterBuildingDropdowns() {
+    const buildings = wizardData.constructibles?.filter(c => 
+        c.constructible?.constructible_class === 'BUILDING' || c.is_building !== false
+    ) || [];
+    
+    const dropdown1 = document.getElementById('wizard-unique-quarter-building1');
+    const dropdown2 = document.getElementById('wizard-unique-quarter-building2');
+    
+    // Clear existing options except first
+    dropdown1.innerHTML = '<option value="">Select building...</option>';
+    dropdown2.innerHTML = '<option value="">Select building...</option>';
+    
+    buildings.forEach(building => {
+        const id = building.id || building.constructible?.constructible_type;
+        const name = building.localizations?.[0]?.name || id || 'Unnamed Building';
+        
+        const opt1 = document.createElement('option');
+        opt1.value = id;
+        opt1.textContent = name;
+        dropdown1.appendChild(opt1);
+        
+        const opt2 = document.createElement('option');
+        opt2.value = id;
+        opt2.textContent = name;
+        dropdown2.appendChild(opt2);
+    });
+}
+
+function wizardCancelUniqueQuarterForm() {
+    const form = document.getElementById('wizard-unique-quarter-form');
+    form.classList.add('hidden');
+    document.getElementById('wizard-unique-quarter-edit-idx').value = '-1';
+}
+
+function wizardSaveUniqueQuarter() {
+    const id = document.getElementById('wizard-unique-quarter-id').value.trim();
+    const type = document.getElementById('wizard-unique-quarter-type').value.trim();
+    const building1 = document.getElementById('wizard-unique-quarter-building1').value.trim();
+    const building2 = document.getElementById('wizard-unique-quarter-building2').value.trim();
+    const editIdx = parseInt(document.getElementById('wizard-unique-quarter-edit-idx').value, 10);
+    
+    // Validation
+    if (!id) {
+        showToast('Quarter ID is required', 'error');
+        return;
+    }
+    if (!type) {
+        showToast('Quarter Type is required', 'error');
+        return;
+    }
+    if (!building1 || !building2) {
+        showToast('Both buildings are required', 'error');
+        return;
+    }
+    if (building1 === building2) {
+        showToast('Buildings must be different', 'error');
+        return;
+    }
+    
+    const quarter = {
+        id: id,
+        unique_quarter_type: type,
+        building_type_1: building1,
+        building_type_2: building2,
+        localization: {
+            name: document.getElementById('wizard-unique-quarter-name').value.trim() || id,
+            description: document.getElementById('wizard-unique-quarter-desc').value.trim() || '',
+            tooltip: document.getElementById('wizard-unique-quarter-tooltip').value.trim() || ''
+        }
+    };
+    
+    if (!wizardData.unique_quarters) {
+        wizardData.unique_quarters = [];
+    }
+    
+    if (editIdx >= 0) {
+        wizardData.unique_quarters[editIdx] = quarter;
+        showToast('Unique quarter updated', 'success');
+    } else {
+        wizardData.unique_quarters.push(quarter);
+        showToast('Unique quarter added', 'success');
+    }
+    
+    markDirty();
+    wizardCancelUniqueQuarterForm();
+    
+    // Re-render step 3 to show updated quarter list
+    const container = document.getElementById('wizard-step-3');
+    if (container) {
+        renderWizardStep3(container);
+    }
+}
+
+function wizardEditUniqueQuarter(idx) {
+    const quarter = wizardData.unique_quarters[idx];
+    if (!quarter) return;
+    
+    document.getElementById('wizard-unique-quarter-id').value = quarter.id || '';
+    document.getElementById('wizard-unique-quarter-type').value = quarter.unique_quarter_type || '';
+    document.getElementById('wizard-unique-quarter-building1').value = quarter.building_type_1 || '';
+    document.getElementById('wizard-unique-quarter-building2').value = quarter.building_type_2 || '';
+    document.getElementById('wizard-unique-quarter-name').value = quarter.localization?.name || '';
+    document.getElementById('wizard-unique-quarter-desc').value = quarter.localization?.description || '';
+    document.getElementById('wizard-unique-quarter-tooltip').value = quarter.localization?.tooltip || '';
+    document.getElementById('wizard-unique-quarter-edit-idx').value = idx;
+    
+    wizardShowUniqueQuarterForm();
+}
+
+function removeWizardUniqueQuarter(idx) {
+    if (!confirm('Remove this unique quarter?')) return;
+    
+    wizardData.unique_quarters.splice(idx, 1);
+    markDirty();
+    showToast('Unique quarter removed', 'success');
+    
+    // Re-render step 3
+    const container = document.getElementById('wizard-step-3');
+    if (container) {
+        renderWizardStep3(container);
+    }
+}
+
+// Expose unique quarter functions to window
+window.wizardShowUniqueQuarterForm = wizardShowUniqueQuarterForm;
+window.wizardCancelUniqueQuarterForm = wizardCancelUniqueQuarterForm;
+window.wizardSaveUniqueQuarter = wizardSaveUniqueQuarter;
+window.wizardEditUniqueQuarter = wizardEditUniqueQuarter;
+window.removeWizardUniqueQuarter = removeWizardUniqueQuarter;
