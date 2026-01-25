@@ -776,9 +776,24 @@ export function wizardShowUnitForm() {
     createWizardDropdown('wizard-unit-cost-progression-model', 'cost-progression-models', '', 'None');
     createWizardDropdown('wizard-unit-promotion-class', 'promotion-classes', '', 'None');
     createWizardDropdown('wizard-unit-replaces', 'units', '', 'None');
+    // Reset replaces custom fields
+    document.getElementById('wizard-unit-replaces-custom').value = '';
+    document.getElementById('wizard-unit-replaces-custom-toggle').checked = false;
+    toggleUnitReplacesCustom(false);
     createWizardDropdown('wizard-unit-upgrade-to', 'units', '', 'None');
+    // Reset upgrade custom fields
+    document.getElementById('wizard-unit-upgrade-custom').value = '';
+    document.getElementById('wizard-unit-upgrade-custom-toggle').checked = false;
+    toggleUnitUpgradeCustom(false);
     createWizardDropdown('wizard-unit-advisory', 'advisory-class-types', '', 'None');
     populateVisualRemapDropdown('');
+    // Reset unlock fields
+    document.getElementById('wizard-unit-auto-infer-unlock').checked = true;
+    createWizardDropdown('wizard-unit-unlock-tech', 'progression-trees', '', 'None');
+    createWizardDropdown('wizard-unit-unlock-civic', 'progression-trees', '', 'None');
+    toggleUnitAutoInferUnlock(false);
+    // Reset civ picker visibility
+    document.getElementById('wizard-unit-show-in-civ-picker').checked = true;
 
     form.classList.remove('hidden');
     document.getElementById('wizard-unit-id').focus();

@@ -48,9 +48,8 @@ class YamlToPyConverter:
                     return f"mod.mod_id"
                 elif parts[0] == 'constants':
                     return parts[1].upper()
-            # Escape single quotes and backslashes
-            escaped_value = value.replace('\\', '\\\\').replace("'", "\\'")
-            return f"'{escaped_value}'"
+            # Use repr() which properly escapes all special characters including newlines
+            return repr(value)
         elif isinstance(value, bool):
             return str(value)
         elif isinstance(value, (int, float)):
@@ -60,7 +59,7 @@ class YamlToPyConverter:
                 return '[]'
             # Check if it's a simple list of strings
             if all(isinstance(v, str) for v in value):
-                items = ', '.join(f"'{v}'" for v in value)
+                items = ', '.join(repr(v) for v in value)
                 return f'[{items}]'
             # Otherwise format as multi-line
             return self.format_list(value)
