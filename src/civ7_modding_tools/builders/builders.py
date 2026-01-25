@@ -300,13 +300,9 @@ class CivilizationBuilder(BaseBuilder):
         )
         
         # ==== POPULATE _current DATABASE ====
-        # Types section (ability trait only; base trait is handled in always scope)
-        self._current.types = [
-            TypeNode(type_=trait_ability_type, kind="KIND_TRAIT"),
-        ]
+        # Types section - empty (types moved to always scope)
         
-        # Traits section (ability trait only; base trait is handled in legacy scope)
-        self._current.traits = [trait_ability_node]
+        # Traits section - empty (traits moved to always scope)
         
         # Civilizations section
         self._current.civilizations = [civ_node]
@@ -618,11 +614,12 @@ class CivilizationBuilder(BaseBuilder):
         
         self._always.types = [
             TypeNode(type_=trait_type, kind="KIND_TRAIT"),
+            TypeNode(type_=trait_ability_type, kind="KIND_TRAIT"),
         ]
         
-        # Base trait definition (not ability trait)
+        # Both base trait and ability trait definitions (must be in always scope)
         always_trait = TraitNode(trait_type=trait_type, internal_only=True)
-        self._always.traits = [always_trait]
+        self._always.traits = [always_trait, trait_ability_node]
         
         # ==== POPULATE _legacy DATABASE ====
         # Legacy system uses regular Row elements (game convention)
@@ -716,11 +713,12 @@ class CivilizationBuilder(BaseBuilder):
                         self._game_effects.modifiers.extend(item._game_effects.modifiers)
                         
                         # Link modifiers to trait (if not detached)
+                        # TraitModifiers must be in always scope since modifiers are loaded in always action group
                         if not getattr(item, 'is_detached', False):
-                            if not self._current.trait_modifiers:
-                                self._current.trait_modifiers = []
+                            if not self._always.trait_modifiers:
+                                self._always.trait_modifiers = []
                             for modifier in item._game_effects.modifiers:
-                                self._current.trait_modifiers.append(
+                                self._always.trait_modifiers.append(
                                     TraitModifierNode(
                                         trait_type=trait_ability_type,
                                         modifier_id=modifier.id
@@ -782,10 +780,10 @@ class CivilizationBuilder(BaseBuilder):
                         self._game_effects.modifiers = []
                     self._game_effects.modifiers.append(reveal_modifier)
                     
-                    # Also add to trait modifiers
-                    if not self._current.trait_modifiers:
-                        self._current.trait_modifiers = []
-                    self._current.trait_modifiers.append(
+                    # Also add to trait modifiers (must be in always scope)
+                    if not self._always.trait_modifiers:
+                        self._always.trait_modifiers = []
+                    self._always.trait_modifiers.append(
                         TraitModifierNode(
                             trait_type=trait_ability_type,
                             modifier_id=reveal_modifier.id
@@ -924,7 +922,7 @@ class CivilizationBuilder(BaseBuilder):
                 path=path,
                 name="game-effects.xml",
                 content=self._game_effects,
-                action_group=self.action_group_bundle.current
+                action_group=self.action_group_bundle.always
             ),
         ]
         
@@ -1158,27 +1156,28 @@ class UnitBuilder(BaseBuilder):
             
             # Process dict-based abilities (simple format)
             for ability_config in self.unit_abilities:
+                ability_id = ability_config.get('ability_id')
                 ability_type = ability_config.get('ability_type')
-                if not ability_type:
+                if not ability_id or not ability_type:
                     continue
                 
-                # Create ability node
+                # Create ability node (using unique ability_id)
                 ability_node = UnitAbilityNode(
-                    unit_ability_type=ability_type,
-                    name=locale(ability_type, 'name'),
-                    description=locale(ability_type, 'description'),
+                    unit_ability_type=ability_id,
+                    name=ability_config.get('name', locale(ability_id, 'name')),
+                    description=ability_config.get('description', locale(ability_id, 'description')),
                     inactive=ability_config.get('inactive', False) if ability_config.get('inactive') else None,
                 )
                 ability_nodes.append(ability_node)
                 
-                # Add Type
+                # Add Type (for unique ability ID)
                 if not self._current.types:
                     self._current.types = []
-                self._current.types.append(TypeNode(type_=ability_type, kind="KIND_ABILITY"))
+                self._current.types.append(TypeNode(type_=ability_id, kind="KIND_ABILITY"))
                 
                 # Link to unit class
                 unit_class_ability_nodes.append(UnitClassAbilityNode(
-                    unit_ability_type=ability_type,
+                    unit_ability_type=ability_id,
                     unit_class_type=unit_class_tag,
                 ))
                 
@@ -1186,20 +1185,20 @@ class UnitBuilder(BaseBuilder):
                 if 'modifiers' in ability_config:
                     for modifier_id in ability_config['modifiers']:
                         ability_modifier_nodes.append(UnitAbilityModifierNode(
-                            unit_ability_type=ability_type,
+                            unit_ability_type=ability_id,
                             modifier_id=modifier_id,
                         ))
                 
                 # Charged ability config
                 if 'charged_config' in ability_config:
                     charged_ability_nodes.append(ChargedUnitAbilityNode(
-                        unit_ability_type=ability_type,
+                        unit_ability_type=ability_id,
                         recharge_turns=ability_config['charged_config'].get('recharge_turns'),
                     ))
                 
                 # Auto-activate if inactive
                 if ability_config.get('inactive'):
-                    activation_modifiers.append(self._create_ability_activation_modifier(ability_type))
+                    activation_modifiers.append(self._create_ability_activation_modifier(ability_id))
             
             # Store all ability-related nodes
             if ability_nodes:
@@ -1270,10 +1269,46 @@ class UnitBuilder(BaseBuilder):
                         tag=loc_name,
                         text=loc["name"]
                     ))
-                if "description" in loc:
+                
+                # Build description with auto-appended ability descriptions
+                description_text = loc.get("summary_description") or loc.get("description")
+                if description_text:
+                    # Collect ability descriptions from reference data
+                    ability_descriptions = []
+                    for ability_config in self.unit_abilities:
+                        ability_type = ability_config.get('ability_type')
+                        if ability_type:
+                            # Try to get description_text from ability config or reference data
+                            desc_text = ability_config.get('description_text')
+                            if not desc_text:
+                                # Load from reference data
+                                from civ7_modding_tools.data import get_unit_abilities
+                                abilities_data = {a['id']: a for a in get_unit_abilities()}
+                                if ability_type in abilities_data:
+                                    desc_text = abilities_data[ability_type].get('description_text', '')
+                            
+                            if desc_text:  # Only append if we have actual text
+                                ability_descriptions.append(desc_text)
+                    
+                    # Append ability descriptions if any exist
+                    if ability_descriptions:
+                        combined_description = description_text + '\n' + '\n'.join(ability_descriptions)
+                    else:
+                        combined_description = description_text
+                    
                     localization_rows.append(EnglishTextNode(
                         tag=loc_description,
-                        text=loc["description"]
+                        text=combined_description
+                    ))
+                
+                # Add historical context for Civilopedia
+                if "historical_description" in loc:
+                    # Extract unit type from loc_name (e.g., LOC_UNIT_DRUID_NAME -> DRUID)
+                    unit_type_part = loc_name.replace("LOC_UNIT_", "").replace("_NAME", "")
+                    pedia_tag = f"LOC_PEDIA_PAGE_UNIT_{unit_type_part}_CHAPTER_HISTORY_PARA_1"
+                    localization_rows.append(EnglishTextNode(
+                        tag=pedia_tag,
+                        text=loc["historical_description"]
                     ))
         
         if localization_rows:
@@ -2190,17 +2225,9 @@ class ModifierBuilder(BaseBuilder):
         modifier_node.requirements = self.modifier.get('requirements', [])
         modifier_node.arguments = self.modifier.get('arguments', [])
         
-        # Add string localizations if provided
-        strings = []
-        for loc in self.localizations:
-            if isinstance(loc, dict):
-                for key, text in loc.items():
-                    loc_key = locale(modifier_node.id, key)
-                    strings.append({
-                        'context': key.capitalize(),
-                        'value': loc_key
-                    })
-        modifier_node.strings = strings
+        # Do not populate strings in the modifier node; localizations should
+        # only appear in the localization.xml file, not in game-effects.xml
+        modifier_node.strings = []
         
         # Populate game_effects with modifier
         self._game_effects = GameEffectNode()
@@ -2239,28 +2266,17 @@ class ModifierBuilder(BaseBuilder):
         return self
     
     def build(self) -> list[BaseFile]:
-        """Build modifier files with preview strings in current.xml."""
-        files = []
+        """
+        Build modifier files with preview strings in current.xml.
         
-        # Generate current.xml if we have modifier_strings
-        if self.modifier_strings and hasattr(self, '_current'):
-            xml_file = XmlFile(
-                name="current.xml",
-                content=self._current,
-                action_group=self.action_group_bundle.current
-            )
-            files.append(xml_file)
-        
-        # Generate localizations.xml if we have localizations
-        if self.localizations and hasattr(self, '_localizations'):
-            xml_file = XmlFile(
-                name="localization.xml",
-                content=self._localizations,
-                action_group=self.action_group_bundle.always
-            )
-            files.append(xml_file)
-        
-        return files
+        Note: ModifierBuilder typically doesn't generate standalone files.
+        Modifiers are usually bound to other builders (CivilizationBuilder, etc.)
+        and their content is merged into the parent builder's files.
+        Returns empty list as modifiers are merged into parent builders.
+        """
+        # ModifierBuilder content is merged into parent builders via bind()
+        # No standalone files should be generated
+        return []
 
 
 class GameModifierBuilder(BaseBuilder):

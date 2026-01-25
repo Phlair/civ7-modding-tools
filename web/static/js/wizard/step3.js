@@ -249,13 +249,24 @@ export function renderWizardStep3(container) {
                                     />
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">Description</label>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Summary Description</label>
                                     <textarea 
-                                        id="wizard-unit-desc" 
-                                        placeholder="Brief description of the unit"
+                                        id="wizard-unit-summary" 
+                                        placeholder="Brief summary of unit's role and purpose"
                                         rows="2"
                                         class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
                                     ></textarea>
+                                    <p class="text-xs text-slate-500 mt-1">Appears at top of unit card. Ability descriptions from base game abilities will be auto-appended.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Historical Context (Optional)</label>
+                                    <textarea 
+                                        id="wizard-unit-historical" 
+                                        placeholder="Historical background or lore about this unit"
+                                        rows="3"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    ></textarea>
+                                    <p class="text-xs text-slate-500 mt-1">Separate historical/lore section shown below the summary.</p>
                                 </div>
                             </div>
                         </div>
@@ -565,6 +576,17 @@ export function renderWizardStep3(container) {
                                 <!-- Ability Form (Hidden by default) -->
                                 <div id="wizard-ability-form" class="hidden mt-3 p-3 bg-slate-800/50 rounded border border-slate-600 space-y-2">
                                     <input type="hidden" id="wizard-ability-edit-idx" value="-1" />
+                                    
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Unique Ability ID *</label>
+                                        <input 
+                                            type="text" 
+                                            id="wizard-ability-id" 
+                                            placeholder="ABILITY_MY_UNIQUE_DRUID"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                        <p class="text-xs text-slate-500 mt-1">Unique identifier for this specific ability instance</p>
+                                    </div>
                                     
                                     <div>
                                         <label class="block text-xs font-medium text-slate-300 mb-1">Ability Type *</label>
@@ -882,7 +904,8 @@ export function wizardShowUnitForm() {
     document.getElementById('wizard-unit-moves').value = '';
     document.getElementById('wizard-unit-sight').value = '';
     document.getElementById('wizard-unit-name').value = '';
-    document.getElementById('wizard-unit-desc').value = '';
+    document.getElementById('wizard-unit-summary').value = '';
+    document.getElementById('wizard-unit-historical').value = '';
     document.getElementById('wizard-unit-icon').value = '';
     document.getElementById('wizard-unit-cost').value = '';
     idxInput.value = '-1';
@@ -945,7 +968,8 @@ export function wizardCancelUnitForm() {
     document.getElementById('wizard-unit-found-city').checked = false;
     document.getElementById('wizard-unit-make-trade-route').checked = false;
     document.getElementById('wizard-unit-name').value = '';
-    document.getElementById('wizard-unit-desc').value = '';
+    document.getElementById('wizard-unit-summary').value = '';
+    document.getElementById('wizard-unit-historical').value = '';
     document.getElementById('wizard-unit-icon').value = '';
     document.getElementById('wizard-unit-cost-yield').value = '';
     document.getElementById('wizard-unit-cost').value = '';
@@ -1006,7 +1030,8 @@ export function wizardSaveUnit() {
     const foundCity = document.getElementById('wizard-unit-found-city').checked;
     const makeTradeRoute = document.getElementById('wizard-unit-make-trade-route').checked;
     const displayName = document.getElementById('wizard-unit-name').value.trim();
-    const description = document.getElementById('wizard-unit-desc').value.trim();
+    const summaryDesc = document.getElementById('wizard-unit-summary').value.trim();
+    const historicalDesc = document.getElementById('wizard-unit-historical').value.trim();
     const icon = document.getElementById('wizard-unit-icon').value.trim();
     const costYield = document.getElementById('wizard-unit-cost-yield').value.trim();
     const costAmount = document.getElementById('wizard-unit-cost').value;
@@ -1119,10 +1144,11 @@ export function wizardSaveUnit() {
         };
     }
 
-    if (displayName || description) {
+    if (displayName || summaryDesc || historicalDesc) {
         unit.localizations = [{}];
         if (displayName) unit.localizations[0].name = displayName;
-        if (description) unit.localizations[0].description = description;
+        if (summaryDesc) unit.localizations[0].summary_description = summaryDesc;
+        if (historicalDesc) unit.localizations[0].historical_description = historicalDesc;
     }
 
     if (icon) {
@@ -1168,7 +1194,8 @@ export async function wizardEditUnit(idx) {
     document.getElementById('wizard-unit-make-trade-route').checked = unit.unit?.make_trade_route || false;
     document.getElementById('wizard-unit-show-in-civ-picker').checked = unit.show_in_civ_picker !== false;
     document.getElementById('wizard-unit-name').value = unit.localizations?.[0]?.name || '';
-    document.getElementById('wizard-unit-desc').value = unit.localizations?.[0]?.description || '';
+    document.getElementById('wizard-unit-summary').value = unit.localizations?.[0]?.summary_description || unit.localizations?.[0]?.description || '';
+    document.getElementById('wizard-unit-historical').value = unit.localizations?.[0]?.historical_description || '';
     document.getElementById('wizard-unit-icon').value = unit.icon?.path || '';
     document.getElementById('wizard-unit-cost').value = unit.unit_cost?.cost || '';
     document.getElementById('wizard-unit-combat').value = unit.unit_stat?.combat || '';
@@ -1578,7 +1605,7 @@ export function renderWizardUnitAbilitiesList() {
     container.innerHTML = abilities.map((ability, idx) => `
         <div class="p-2 bg-slate-800/50 rounded border border-slate-600 flex items-center justify-between">
             <div class="flex-1">
-                <div class="font-semibold text-slate-200 text-xs">${ability.ability_type || 'Unknown Ability'}</div>
+                <div class="font-semibold text-slate-200 text-xs">${ability.ability_id || ability.ability_type || 'Unknown Ability'}</div>
                 <div class="text-xs text-slate-400 mt-1">${ability.name || 'No name'}</div>
                 ${ability.inactive ? '<span class="inline-block px-1.5 py-0.5 mt-1 bg-amber-600/20 text-amber-400 text-xs rounded">Inactive</span>' : ''}
                 ${ability.charged_config ? '<span class="inline-block px-1.5 py-0.5 mt-1 bg-purple-600/20 text-purple-400 text-xs rounded">Charged</span>' : ''}
@@ -1610,11 +1637,14 @@ export function wizardShowAbilityForm() {
     const editIdx = document.getElementById('wizard-ability-edit-idx');
     
     // Reset form
+    document.getElementById('wizard-ability-id').value = '';
     document.getElementById('wizard-ability-type-select').value = '';
     document.getElementById('wizard-ability-type-custom').value = '';
     document.getElementById('wizard-ability-type-custom').classList.add('hidden');
     document.getElementById('wizard-ability-name').value = '';
+    document.getElementById('wizard-ability-name').disabled = false;
     document.getElementById('wizard-ability-description').value = '';
+    document.getElementById('wizard-ability-description').disabled = false;
     document.getElementById('wizard-ability-inactive').checked = false;
     document.getElementById('wizard-ability-charged').checked = false;
     document.getElementById('wizard-ability-recharge-turns').value = '';
@@ -1637,6 +1667,7 @@ export function wizardCancelAbilityForm() {
 
 export function wizardSaveAbility() {
     const editIdx = parseInt(document.getElementById('wizard-ability-edit-idx').value, 10);
+    const abilityId = document.getElementById('wizard-ability-id').value.trim();
     const selectedType = document.getElementById('wizard-ability-type-select').value;
     const customType = document.getElementById('wizard-ability-type-custom').value.trim();
     const abilityType = selectedType === '__CUSTOM__' ? customType : selectedType;
@@ -1647,12 +1678,13 @@ export function wizardSaveAbility() {
     const rechargeTurns = document.getElementById('wizard-ability-recharge-turns').value;
     const modifiersText = document.getElementById('wizard-ability-modifiers').value.trim();
 
-    if (!abilityType || !name || !description) {
-        showToast('Ability type, name, and description are required', 'error');
+    if (!abilityId || !abilityType || !name || !description) {
+        showToast('Ability ID, type, name, and description are required', 'error');
         return;
     }
 
     const ability = {
+        ability_id: abilityId,
         ability_type: abilityType,
         name: name,
         description: description,
@@ -1685,24 +1717,37 @@ export function wizardEditAbility(idx) {
     loadAbilityOptions().then(() => {
         const select = document.getElementById('wizard-ability-type-select');
         const customInput = document.getElementById('wizard-ability-type-custom');
+        const nameInput = document.getElementById('wizard-ability-name');
+        const descInput = document.getElementById('wizard-ability-description');
+        const abilityId = ability.ability_id || '';
         const abilityType = ability.ability_type || '';
         
         // Check if it's an existing ability
-        const isExisting = Array.from(select.options).some(opt => opt.value === abilityType);
+        const isExisting = abilityDataCache[abilityType];
+        
+        document.getElementById('wizard-ability-id').value = abilityId;
         
         if (isExisting) {
             select.value = abilityType;
             customInput.classList.add('hidden');
+            // Use stored name/description from ability data, but allow editing
+            nameInput.value = ability.name || isExisting.name || abilityType;
+            descInput.value = ability.description || isExisting.description || '';
+            // Don't disable for editing - user might want to override
+            nameInput.disabled = false;
+            descInput.disabled = false;
         } else {
             select.value = '__CUSTOM__';
             customInput.value = abilityType;
             customInput.classList.remove('hidden');
+            nameInput.value = ability.name || '';
+            descInput.value = ability.description || '';
+            nameInput.disabled = false;
+            descInput.disabled = false;
             document.getElementById('wizard-ability-type-help').textContent = 'Custom ability identifier';
             document.getElementById('wizard-ability-modifiers-help').textContent = 'Required: Define modifiers to specify what this custom ability does';
         }
         
-        document.getElementById('wizard-ability-name').value = ability.name || '';
-        document.getElementById('wizard-ability-description').value = ability.description || '';
         document.getElementById('wizard-ability-inactive').checked = ability.inactive || false;
         document.getElementById('wizard-ability-charged').checked = !!ability.charged_config;
         document.getElementById('wizard-ability-recharge-turns').value = ability.charged_config?.recharge_turns || '';
@@ -1731,22 +1776,47 @@ export function toggleAbilityCustomType(isCustom) {
     const customInput = document.getElementById('wizard-ability-type-custom');
     const helpText = document.getElementById('wizard-ability-type-help');
     const modifiersHelp = document.getElementById('wizard-ability-modifiers-help');
+    const nameInput = document.getElementById('wizard-ability-name');
+    const descInput = document.getElementById('wizard-ability-description');
     
     if (isCustom) {
         customInput.classList.remove('hidden');
         customInput.focus();
         helpText.textContent = 'Enter unique ability identifier (e.g., ABILITY_MY_CUSTOM_UNIT)';
         modifiersHelp.textContent = 'Required: Define modifiers to specify what this custom ability does';
+        // Clear and enable name/description for custom abilities
+        nameInput.value = '';
+        descInput.value = '';
+        nameInput.disabled = false;
+        descInput.disabled = false;
     } else {
         customInput.classList.add('hidden');
         customInput.value = '';
-        helpText.textContent = 'Select an existing game ability or create a custom one';
-        modifiersHelp.textContent = 'Optional: Only needed for custom abilities. Existing abilities already have their effects defined.';
+        
+        // Get the selected ability
+        const selectedAbilityId = document.getElementById('wizard-ability-type-select').value;
+        if (selectedAbilityId && abilityDataCache[selectedAbilityId]) {
+            const abilityData = abilityDataCache[selectedAbilityId];
+            // Auto-populate with localization keys from game data
+            nameInput.value = abilityData.name || selectedAbilityId;
+            descInput.value = abilityData.description || '';
+            // Make read-only since these come from the game
+            nameInput.disabled = true;
+            descInput.disabled = true;
+            helpText.textContent = 'Existing game ability - name and description from game data';
+            modifiersHelp.textContent = 'Optional: Only needed for custom abilities. This existing ability already has its effects defined in the game.';
+        } else {
+            helpText.textContent = 'Select an existing game ability or create a custom one';
+            modifiersHelp.textContent = 'Optional: Only needed for custom abilities. Existing abilities already have their effects defined.';
+            nameInput.disabled = false;
+            descInput.disabled = false;
+        }
     }
 }
 
 // Helper: Load ability options from reference data
 let abilityOptionsLoaded = false;
+let abilityDataCache = {}; // Store full ability data for lookup
 async function loadAbilityOptions() {
     if (abilityOptionsLoaded) return;
     
@@ -1762,13 +1832,20 @@ async function loadAbilityOptions() {
             select.remove(2);
         }
         
-        // Add abilities
+        // Add abilities and cache their data
         if (data.values && Array.isArray(data.values)) {
             data.values.forEach(ability => {
                 const option = document.createElement('option');
                 option.value = ability.id;
-                option.textContent = ability.id;
+                // Show ID with preview of name if available
+                const displayText = ability.name && ability.name !== '' 
+                    ? `${ability.id} (${ability.name})`
+                    : ability.id;
+                option.textContent = displayText;
                 select.appendChild(option);
+                
+                // Cache the full ability data
+                abilityDataCache[ability.id] = ability;
             });
         }
         

@@ -32,7 +32,7 @@ export function renderWizardStep4(container) {
         <div class="space-y-6">
             <div>
                 <h3 class="text-xl font-semibold mb-2 text-green-400">✨ Step 4: Advanced Features (Optional)</h3>
-                <p class="text-slate-400 text-sm mb-6">Add game modifiers and cultural traditions. Progression trees are best configured in Expert Mode.</p>
+                <p class="text-slate-400 text-sm mb-6">Add game modifiers and cultural traditions. Modifiers are automatically bound to your civilization. Progression trees are best configured in Expert Mode.</p>
             </div>
             
             <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">

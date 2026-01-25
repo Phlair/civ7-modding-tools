@@ -253,6 +253,97 @@ describe('State Module', () => {
             
             expect(state.getCurrentData().imports).toEqual([]);
         });
+
+        it('should auto-bind modifiers to civilization', () => {
+            // Set up wizard data with modifiers
+            const wizData = state.getWizardData();
+            wizData.modifiers = [
+                { id: 'MODIFIER_CIV_BONUS_SCIENCE' },
+                { id: 'MODIFIER_CIV_BONUS_CULTURE' }
+            ];
+
+            state.syncWizardToCurrentData();
+
+            expect(state.getCurrentData().civilization).toBeDefined();
+            expect(state.getCurrentData().civilization.bindings).toBeDefined();
+            expect(state.getCurrentData().civilization.bindings).toContain('MODIFIER_CIV_BONUS_SCIENCE');
+            expect(state.getCurrentData().civilization.bindings).toContain('MODIFIER_CIV_BONUS_CULTURE');
+        });
+
+        it('should not duplicate modifier bindings', () => {
+            // Set up existing civilization with one modifier
+            state.setCurrentData({
+                civilization: {
+                    bindings: ['MODIFIER_EXISTING']
+                }
+            });
+
+            // Add modifiers including the existing one
+            const wizData = state.getWizardData();
+            wizData.modifiers = [
+                { id: 'MODIFIER_EXISTING' },
+                { id: 'MODIFIER_NEW' }
+            ];
+
+            state.syncWizardToCurrentData();
+
+            expect(state.getCurrentData().civilization.bindings).toHaveLength(2);
+            expect(state.getCurrentData().civilization.bindings).toContain('MODIFIER_EXISTING');
+            expect(state.getCurrentData().civilization.bindings).toContain('MODIFIER_NEW');
+        });
+
+        it('should preserve non-modifier bindings when adding modifiers', () => {
+            // Set up civilization with existing bindings (units, buildings, etc.)
+            state.setCurrentData({
+                civilization: {
+                    bindings: ['unit', 'building', 'progression_tree']
+                }
+            });
+
+            // Add modifiers
+            const wizData = state.getWizardData();
+            wizData.modifiers = [
+                { id: 'MODIFIER_CIV_BONUS' }
+            ];
+
+            state.syncWizardToCurrentData();
+
+            expect(state.getCurrentData().civilization.bindings).toHaveLength(4);
+            expect(state.getCurrentData().civilization.bindings).toContain('unit');
+            expect(state.getCurrentData().civilization.bindings).toContain('building');
+            expect(state.getCurrentData().civilization.bindings).toContain('progression_tree');
+            expect(state.getCurrentData().civilization.bindings).toContain('MODIFIER_CIV_BONUS');
+        });
+
+        it('should handle modifiers without ID gracefully', () => {
+            const wizData = state.getWizardData();
+            wizData.modifiers = [
+                { id: 'MODIFIER_VALID' },
+                { modifier: {} }, // No ID field
+                { id: null }, // Null ID
+                { id: '' } // Empty ID
+            ];
+
+            state.syncWizardToCurrentData();
+
+            // Should only add the valid modifier
+            expect(state.getCurrentData().civilization.bindings).toHaveLength(1);
+            expect(state.getCurrentData().civilization.bindings).toContain('MODIFIER_VALID');
+        });
+
+        it('should not add bindings if no modifiers exist', () => {
+            const wizData = state.getWizardData();
+            wizData.modifiers = [];
+            wizData.civilization = {
+                civilization_type: 'CIVILIZATION_TEST'
+            };
+
+            state.syncWizardToCurrentData();
+
+            // civilization should exist but bindings should not be created
+            expect(state.getCurrentData().civilization).toBeDefined();
+            expect(state.getCurrentData().civilization.bindings).toBeUndefined();
+        });
     });
 
     describe('populateWizardFromData', () => {

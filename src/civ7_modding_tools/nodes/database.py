@@ -364,6 +364,7 @@ class UnitAbilityNode(BaseNode):
 class UnitClassAbilityNode(BaseNode):
     """Represents Unit Class-Ability relationship (junction table)."""
     _name: str = "Row"
+    _container_name: str = "UnitClass_Abilities"
     unit_ability_type: Optional[str] = None
     unit_class_type: Optional[str] = None
 
@@ -857,6 +858,7 @@ class DatabaseNode(BaseNode):
             'unit_advisories': 'Unit_Advisories',
             'unit_replaces': 'UnitReplaces',
             'unit_upgrades': 'UnitUpgrades',
+            'unit_class_abilities': 'UnitClass_Abilities',
             'unlock_rewards': 'Unlock_Rewards',
             'unlock_requirements': 'Unlock_Requirements',
             'unlock_configuration_values': 'Unlock_ConfigurationValues',

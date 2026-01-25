@@ -268,6 +268,9 @@ class YamlToPyConverter:
                 fill_dict['modifier_type'] = modifier_data['modifier_type']
             if 'modifier' in modifier_data:
                 fill_dict['modifier'] = modifier_data['modifier']
+                # Inject the ID into the modifier dict so it's available to the builder
+                if 'id' not in fill_dict['modifier']:
+                    fill_dict['modifier']['id'] = modifier_data['id']
             if 'localizations' in modifier_data:
                 fill_dict['localizations'] = modifier_data['localizations']
             

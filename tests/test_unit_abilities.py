@@ -19,6 +19,7 @@ def test_simple_passive_ability():
             'formation_class': 'FORMATION_CLASS_MELEE',
         },
         'unit_abilities': [{
+            'ability_id': 'ABILITY_HOPLITE',
             'ability_type': 'ABILITY_HOPLITE',
             'name': 'Phalanx Formation',
             'description': '+2 Combat from adjacent Hoplites',
@@ -47,10 +48,10 @@ def test_simple_passive_ability():
         # Check UnitAbilities
         abilities = root.findall(".//UnitAbilities/Row[@UnitAbilityType='ABILITY_HOPLITE']")
         assert len(abilities) == 1
-        assert 'LOC_ABILITY_HOPLITE_NAME' in abilities[0].get('Name')
+        assert 'Phalanx Formation' in abilities[0].get('Name')
         
-        # Check UnitClassAbilities junction
-        unit_class_abilities = root.findall(".//UnitClassAbilities/Row[@UnitAbilityType='ABILITY_HOPLITE']")
+        # Check UnitClass_Abilities junction
+        unit_class_abilities = root.findall(".//UnitClass_Abilities/Row[@UnitAbilityType='ABILITY_HOPLITE']")
         assert len(unit_class_abilities) == 1
         assert unit_class_abilities[0].get('UnitClassType') == 'UNIT_CLASS_HOPLITE'
         
@@ -68,6 +69,7 @@ def test_inactive_ability_auto_activation():
         'unit_type': 'UNIT_INFANTRY',
         'unit': {'core_class': 'CORE_CLASS_COMBAT'},
         'unit_abilities': [{
+            'ability_id': 'ABILITY_TECH_INFANTRY',
             'ability_type': 'ABILITY_TECH_INFANTRY',
             'name': 'Tech Infantry',
             'description': 'Combat bonus',
@@ -99,6 +101,7 @@ def test_charged_ability():
         'unit_type': 'UNIT_JAGUAR_SLAYER',
         'unit': {'core_class': 'CORE_CLASS_COMBAT'},
         'unit_abilities': [{
+            'ability_id': 'ABILITY_STONE_TRAP',
             'ability_type': 'ABILITY_STONE_TRAP',
             'name': 'Stone Trap',
             'description': 'Limited use ability',
@@ -130,6 +133,7 @@ def test_ability_with_multiple_modifiers():
         'unit_type': 'UNIT_CAVALRY',
         'unit': {'core_class': 'CORE_CLASS_COMBAT'},
         'unit_abilities': [{
+            'ability_id': 'ABILITY_CAVALRY',
             'ability_type': 'ABILITY_CAVALRY',
             'name': 'Cavalry',
             'description': 'Multiple bonuses',
@@ -174,6 +178,7 @@ def test_unit_ability_builder_with_modifiers():
     
     # Create ability and bind modifier
     ability = UnitAbilityBuilder().fill({
+        'ability_id': 'ABILITY_NUMIDIAN_CAVALRY',
         'ability_type': 'ABILITY_NUMIDIAN_CAVALRY',
         'localizations': [
             {'name': 'Numidian Cavalry', 'description': '+1 combat per capital resource'},
@@ -216,12 +221,14 @@ def test_multiple_abilities_on_same_unit():
         'unit': {'core_class': 'CORE_CLASS_COMBAT'},
         'unit_abilities': [
             {
+                'ability_id': 'ABILITY_SPECIAL_1',
                 'ability_type': 'ABILITY_SPECIAL_1',
                 'name': 'Ability 1',
                 'description': 'First ability',
                 'modifiers': ['MOD_1'],
             },
             {
+                'ability_id': 'ABILITY_SPECIAL_2',
                 'ability_type': 'ABILITY_SPECIAL_2',
                 'name': 'Ability 2',
                 'description': 'Second ability',
@@ -247,5 +254,5 @@ def test_multiple_abilities_on_same_unit():
         assert 'ABILITY_SPECIAL_2' in ability_types
         
         # Check both have junctions
-        junctions = root.findall(".//UnitClassAbilities/Row[@UnitClassType='UNIT_CLASS_SPECIAL']")
+        junctions = root.findall(".//UnitClass_Abilities/Row[@UnitClassType='UNIT_CLASS_SPECIAL']")
         assert len(junctions) == 2

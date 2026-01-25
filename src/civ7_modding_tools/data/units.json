@@ -641,6 +641,12 @@
       "replaces": null
     },
     {
+      "id": "UNIT_DRUID_ICENI",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
       "id": "UNIT_EXPLORER",
       "ages": [
         "AGE_MODERN"

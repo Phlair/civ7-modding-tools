@@ -333,6 +333,32 @@ export function syncWizardToCurrentData() {
         ? wizardData.imports 
         : (currentData.imports || []);
     
+    // Auto-bind all modifiers to civilization BEFORE merging
+    // Modifiers must be in civilization.bindings array to function in-game
+    if (wizardData.modifiers && Array.isArray(wizardData.modifiers) && wizardData.modifiers.length > 0) {
+        // Ensure wizardData.civilization exists for the merge
+        if (!wizardData.civilization) {
+            wizardData.civilization = {};
+        }
+        if (!wizardData.civilization.bindings) {
+            wizardData.civilization.bindings = [];
+        }
+        
+        // Preserve existing bindings from currentData
+        const existingBindings = currentData.civilization?.bindings || [];
+        
+        // Merge existing bindings with new ones
+        const allBindings = [...existingBindings];
+        wizardData.modifiers.forEach(modifier => {
+            const modifierId = modifier.id;
+            if (modifierId && !allBindings.includes(modifierId)) {
+                allBindings.push(modifierId);
+            }
+        });
+        
+        wizardData.civilization.bindings = allBindings;
+    }
+    
     // Merge other fields (but exclude imports to avoid confusion)
     const { imports: _, ...wizardDataWithoutImports } = wizardData;
     currentData = { ...currentData, ...wizardDataWithoutImports };

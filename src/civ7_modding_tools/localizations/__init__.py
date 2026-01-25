@@ -60,6 +60,8 @@ class UnitLocalization(BaseLocalization):
     """Localization for units."""
     name: Optional[str] = None
     description: Optional[str] = None
+    summary_description: Optional[str] = None
+    historical_description: Optional[str] = None
     unique_name: Optional[str] = None
     
     def get_nodes(self, entity_id: str) -> list[dict]:
@@ -72,6 +74,8 @@ class UnitLocalization(BaseLocalization):
             nodes.append({"tag": locale(prefix, "name"), "text": self.name})
         if self.description:
             nodes.append({"tag": locale(prefix, "description"), "text": self.description})
+        if self.historical_description:
+            nodes.append({"tag": locale(prefix, "historicalContext"), "text": self.historical_description})
         if self.unique_name:
             nodes.append({"tag": locale(prefix, "uniqueName"), "text": self.unique_name})
         return nodes

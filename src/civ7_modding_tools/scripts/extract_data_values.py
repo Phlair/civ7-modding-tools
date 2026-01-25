@@ -69,8 +69,9 @@ class CivVIIDataExtractor:
             'units': set(),
             'civilizations': set(),
             'civilization_traits': set(),
-            'unit_abilities': set(),
+            'unit_abilities': {},  # {ability_id: {name, description, description_text}}
         }
+        self.localization_texts = {}  # {LOC_TAG: english_text} - for resolving LOC_ keys
         self.civ_cache = defaultdict(dict)
         self.civilization_ages = {}  # {civ_id: age_id}
         self.civ_era_mapping = {}  # {civ_name: era_id} - maps civs to eras from filenames
@@ -88,6 +89,9 @@ class CivVIIDataExtractor:
         # dist-* folders
         for dist_dir in self.root.glob('dist-*'):
             self._scan_directory(dist_dir, is_example=False)
+        
+        # Resolve LOC_ keys to English text for abilities
+        self._resolve_ability_descriptions()
 
     def _scan_directory(self, directory: Path, is_example: bool = False) -> None:
         """Scan a directory for XML files."""
@@ -95,8 +99,45 @@ class CivVIIDataExtractor:
             try:
                 self._extract_from_file(xml_file)
             except Exception as e:
-                print(f"Warning: Failed to parse {xml_file}: {e}")
-
+                print(f"Warning: Failed to parse {xml_file}: {e}")    
+    def _extract_english_text(self, file_path: Path) -> None:
+        """Extract English localization text from EnglishText or LocalizedText nodes."""
+        try:
+            tree = ET.parse(file_path)
+            root = tree.getroot()
+        except ET.ParseError:
+            return
+        
+        # EnglishText format (used in text/en_us/ and modules/text/)
+        for row in root.findall(".//EnglishText/Row"):
+            tag = row.get('Tag')
+            text_elem = row.find('Text')
+            if tag and text_elem is not None and text_elem.text:
+                self.localization_texts[tag] = text_elem.text
+    
+    def _resolve_ability_descriptions(self) -> None:
+        """Resolve LOC_ description keys to actual English text."""
+        for ability_id, ability_data in self.data['unit_abilities'].items():
+            loc_key = ability_data.get('description', '')
+            if loc_key and loc_key in self.localization_texts:
+                ability_data['description_text'] = self.localization_texts[loc_key]
+            else:
+                ability_data['description_text'] = ''
+    def _extract_english_text(self, file_path: Path) -> None:
+        """Extract English localization text from EnglishText or LocalizedText nodes."""
+        try:
+            tree = ET.parse(file_path)
+            root = tree.getroot()
+        except ET.ParseError:
+            return
+        
+        # EnglishText format (used in text/en_us/ and modules/text/)
+        for row in root.findall(".//EnglishText/Row"):
+            tag = row.get('Tag')
+            text_elem = row.find('Text')
+            if tag and text_elem is not None and text_elem.text:
+                self.localization_texts[tag] = text_elem.text
+    
     def _extract_from_file(self, file_path: Path) -> None:
         """Extract values from a single XML file."""
         try:
@@ -104,6 +145,10 @@ class CivVIIDataExtractor:
             root = tree.getroot()
         except ET.ParseError:
             return
+        
+        # Extract English text if this is a localization file
+        if 'text' in str(file_path).lower() or 'localization' in str(file_path).lower():
+            self._extract_english_text(file_path)
 
         # Get civilization name from folder structure if available
         civ_name = self._get_civ_name_from_path(file_path)
@@ -280,7 +325,18 @@ class CivVIIDataExtractor:
             if 'UnitAbilityType' in attribs:
                 ability_type = attribs['UnitAbilityType']
                 if ability_type.startswith('ABILITY_') or ability_type.startswith('CHARGED_ABILITY_'):
-                    self.data['unit_abilities'].add(ability_type)
+                    # If this row has Name and Description, it's from UnitAbilities table - capture metadata
+                    if 'Name' in attribs and 'Description' in attribs:
+                        loc_description = attribs.get('Description', '')
+                        # Resolve LOC_ key to English text (will be done in finalize phase)
+                        self.data['unit_abilities'][ability_type] = {
+                            'name': attribs.get('Name', ''),
+                            'description': loc_description,
+                            'description_text': ''  # Will be resolved later
+                        }
+                    # Otherwise just ensure the ability exists in the dict
+                    elif ability_type not in self.data['unit_abilities']:
+                        self.data['unit_abilities'][ability_type] = {'name': '', 'description': '', 'description_text': ''}
             
             # Track units unlocked by progression tree nodes (for age mapping)
             # ProgressionTreeNodeUnlocks table maps progression nodes to units
@@ -798,7 +854,15 @@ class CivVIIDataExtractor:
 
         # UnitAbilities
         unit_abilities = {
-            'values': [{'id': ua} for ua in sorted(self.data['unit_abilities'])]
+            'values': [
+                {
+                    'id': ability_id,
+                    'name': ability_data.get('name', ''),
+                    'description': ability_data.get('description', ''),
+                    'description_text': ability_data.get('description_text', '')
+                }
+                for ability_id, ability_data in sorted(self.data['unit_abilities'].items())
+            ]
         }
         self._write_json('unit-abilities.json', unit_abilities)
 

@@ -1,529 +1,1060 @@
 {
   "values": [
     {
-      "id": "ABILITY_ABAMBOWA"
+      "id": "ABILITY_ABAMBOWA",
+      "name": "LOC_ABILITY_ABAMBOWA",
+      "description": "LOC_ABILITY_ABAMBOWA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_AERODROME_AERIAL_RECON"
+      "id": "ABILITY_AERODROME_AERIAL_RECON",
+      "name": "LOC_ABILITY_AERODROME_AERIAL_RECON_NAME",
+      "description": "LOC_ABILITY_AERODROME_AERIAL_RECON_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_AERODYNAMICS_AIRCRAFT"
+      "id": "ABILITY_AERODYNAMICS_AIRCRAFT",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_ANTIQUARIAN"
+      "id": "ABILITY_ANTIQUARIAN",
+      "name": "LOC_UNIT_ANTIQUARIAN_NAME",
+      "description": "LOC_ABILITY_ANTIQUARIAN_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_APERAL_CAVALRY_COMBAT_STRENGTH"
+      "id": "ABILITY_APERAL_CAVALRY_COMBAT_STRENGTH",
+      "name": "LOC_GREAT_PERSON_INDIVIDUAL_TJATY_APEREL_NAME",
+      "description": "LOC_ABILITY_APERAL_CAVALRY_COMBAT_STRENGTH_DESCRIPTION",
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength"
     },
     {
-      "id": "ABILITY_AQ_TECH_INFANTRY"
+      "id": "ABILITY_AQ_TECH_INFANTRY",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_AQ_TECH_NAVAL"
+      "id": "ABILITY_AQ_TECH_NAVAL",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_AQ_TECH_RANGED"
+      "id": "ABILITY_AQ_TECH_RANGED",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_AQ_TECH_SIEGE"
+      "id": "ABILITY_AQ_TECH_SIEGE",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_AT_MOD_COMBAT_FRIENDLY_TERRITORY"
+      "id": "ABILITY_AT_MOD_COMBAT_FRIENDLY_TERRITORY",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_AUTHORITARIANISM"
+      "id": "ABILITY_AUTHORITARIANISM",
+      "name": "LOC_ABILITY_AUTHORITARIANISM",
+      "description": "LOC_ABILITY_AUTHORITARIANISM_DESCRIPTION",
+      "description_text": "+{1_Amount} Combat Strength on all Units."
     },
     {
-      "id": "ABILITY_AVILA"
+      "id": "ABILITY_AVILA",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BALIK"
+      "id": "ABILITY_BALIK",
+      "name": "LOC_UNIT_BALIK_NAME",
+      "description": "LOC_ABILITY_BALIK_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BALIK_PILLAGE"
+      "id": "ABILITY_BALIK_PILLAGE",
+      "name": "LOC_UNIT_BALIK_NAME",
+      "description": "LOC_ABILITY_BALIK_PILLAGE_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BANNER_ARMY"
+      "id": "ABILITY_BANNER_ARMY",
+      "name": "LOC_TRADITION_BANNER_ARMY_NAME",
+      "description": "LOC_TRADITION_BANNER_ARMY_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BARBARY_CORSAIR"
+      "id": "ABILITY_BARBARY_CORSAIR",
+      "name": "LOC_UNIT_BARBARY_CORSAIR_NAME",
+      "description": "LOC_ABILITY_BARBARY_CORSAIR_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BILLAUD_VARENNE"
+      "id": "ABILITY_BILLAUD_VARENNE",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BOYAR"
+      "id": "ABILITY_BOYAR",
+      "name": "LOC_UNIT_BOYAR_NAME",
+      "description": "LOC_ABILITY_BOYAR_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BREAK_SOUND_BARRIER"
+      "id": "ABILITY_BREAK_SOUND_BARRIER",
+      "name": "LOC_ABILITY_BREAK_SOUND_BARRIER_NAME",
+      "description": "LOC_ABILITY_BREAK_SOUND_BARRIER_DESCRIPTION",
+      "description_text": "Sound Barrier Broken"
     },
     {
-      "id": "ABILITY_BRISSOT"
+      "id": "ABILITY_BRISSOT",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BUCCANEER"
+      "id": "ABILITY_BUCCANEER",
+      "name": "LOC_UNIT_BUCCANEER_NAME",
+      "description": "LOC_ABILITY_BUCCANEER_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BURNING_ARROW"
+      "id": "ABILITY_BURNING_ARROW",
+      "name": "LOC_ABILITY_BURNING_ARROW_NAME",
+      "description": "LOC_ABILITY_BURNING_ARROW_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_BURNING_ARROW_PILLAGE"
+      "id": "ABILITY_BURNING_ARROW_PILLAGE",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_CAM_QUAN"
+      "id": "ABILITY_CAM_QUAN",
+      "name": "LOC_CIVIC_CAM_QUAN_NAME",
+      "description": "LOC_MOD_FORMAL_WAR_COMBAT_ABILITY_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_CETBANG"
+      "id": "ABILITY_CETBANG",
+      "name": "LOC_UNIT_CETBANG_NAME",
+      "description": "LOC_ABILITY_CETBANG_DESCRIPTION",
+      "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength against Naval Units. Can [icon:Action_Pillage] Pillage within 2 tiles for 1 [icon:Action_Move] Movement."
     },
     {
-      "id": "ABILITY_CHANG_BEUN"
+      "id": "ABILITY_CHANG_BEUN",
+      "name": "LOC_ABILITY_CHANG_BEUN",
+      "description": "LOC_ABILITY_CHANG_BEUN_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_CHASQUI"
+      "id": "ABILITY_CHASQUI",
+      "name": "LOC_ABILITY_CHASQUI_NAME",
+      "description": "LOC_ABILITY_CHASQUI_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_CHEVALER"
+      "id": "ABILITY_CHEVALER",
+      "name": "LOC_UNIT_CHEVALER_NAME",
+      "description": "LOC_ABILITY_CHEVALER_DESCRIPTION",
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength against slower Units."
     },
     {
-      "id": "ABILITY_CHEVALER_CIV_TRADITIONS"
+      "id": "ABILITY_CHEVALER_CIV_TRADITIONS",
+      "name": "LOC_ABILITY_CHEVALER_CIV_TRADITIONS_NAME",
+      "description": "LOC_ABILITY_CHEVALER_CIV_TRADITIONS_DESCRIPTION",
+      "description_text": "+1 [icon:NAR_REW_COMBAT] Combat Strength for every [icon:TRADITION] Tradition slotted."
     },
     {
-      "id": "ABILITY_CLAIM_MOUNTAIN"
+      "id": "ABILITY_CLAIM_MOUNTAIN",
+      "name": "LOC_UNIT_SHERPA_UNLOCK_NAME",
+      "description": "LOC_ABILITY_SHERPA_UNLOCK_DESCRIPTION",
+      "description_text": "Activate on a [icon:CITY_UNIMPROVED] Mountain tile within 5 tiles of one of your Settlement's City Centers. The Mountain is [icon:CITY_RURAL] Improved immediately with a Highland Power Station. If the Mountain is outside your borders, a path of tiles is claimed back to the Settlement."
     },
     {
-      "id": "ABILITY_CLAIM_RESOURCE"
+      "id": "ABILITY_CLAIM_RESOURCE",
+      "name": "LOC_ABILITY_CLAIM_RESOURCE_NAME",
+      "description": "LOC_ABILITY_CLAIM_RESOURCE_DESCRIPTION",
+      "description_text": "Activate on an unowned [icon:RADIAL_RESOURCES] Land Resource tile within 5 tiles of one of your Settlements' Palace or City Hall. A path of tiles is claimed back to the Settlement and the [icon:RADIAL_RESOURCES] Resource is improved immediately."
     },
     {
-      "id": "ABILITY_COLONIST"
+      "id": "ABILITY_COLONIST",
+      "name": "LOC_UNIT_COLONIST_NAME",
+      "description": "LOC_ABILITY_COLONIST_DESCRIPTION",
+      "description_text": "+1 [icon:Action_Move] Embarked Movement and +1 [icon:YIELD_POPULATION] Population if Settled adjacent to a [icon:RADIAL_RESOURCES] Resource."
     },
     {
-      "id": "ABILITY_CORSAIR"
+      "id": "ABILITY_CORSAIR",
+      "name": "LOC_CORSAIR_CHASQUI_NAME",
+      "description": "LOC_ABILITY_CORSAIR_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_COSSACK"
+      "id": "ABILITY_COSSACK",
+      "name": "LOC_ABILITY_COSSACK",
+      "description": "LOC_ABILITY_COSSACK_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_CRISIS_COMBAT_MINOR_PENALTY"
+      "id": "ABILITY_CRISIS_COMBAT_MINOR_PENALTY",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_DANTINAS_TATHA"
+      "id": "ABILITY_DANTINAS_TATHA",
+      "name": "LOC_ABILITY_DANTINAS_TATHA_NAME",
+      "description": "LOC_ABILITY_DANTINAS_TATHA_DESCRIPTION",
+      "description_text": "Immune to flood damage."
     },
     {
-      "id": "ABILITY_DEFENSE_OF_THE_MOTHERLAND"
+      "id": "ABILITY_DEFENSE_OF_THE_MOTHERLAND",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_DE_FACTO"
+      "id": "ABILITY_DE_FACTO",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_DHOW"
+      "id": "ABILITY_DHOW",
+      "name": "LOC_ABILITY_DHOW_NAME",
+      "description": "LOC_ABILITY_DHOW_DESCRIPTION",
+      "description_text": "+{1_Amount} Combat Strength on Coast."
     },
     {
-      "id": "ABILITY_ECONOMIC_DARK_AGE"
+      "id": "ABILITY_DRUID_ICENI",
+      "name": "LOC_ABILITY_DRUID_ICENI_NAME",
+      "description": "LOC_ABILITY_DRUID_ICENI_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_EGILL_SKALLAGRIMSSON"
+      "id": "ABILITY_ECONOMIC_DARK_AGE",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_EGILL_SKALLAGRIMSSON_COMMANDER"
+      "id": "ABILITY_EGILL_SKALLAGRIMSSON",
+      "name": "LOC_ABILITY_EGILL_SKALLAGRIMSSON_NAME",
+      "description": "LOC_ABILITY_EGILL_SKALLAGRIMSSON_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_EX_TECH_CAVALRY"
+      "id": "ABILITY_EGILL_SKALLAGRIMSSON_COMMANDER",
+      "name": "LOC_ABILITY_EGILL_SKALLAGRIMSSON_NAME",
+      "description": "LOC_ABILITYEGILL_SKALLAGRIMSSON_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_EX_TECH_INFANTRY"
+      "id": "ABILITY_EX_TECH_CAVALRY",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_EX_TECH_NAVAL"
+      "id": "ABILITY_EX_TECH_INFANTRY",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_EX_TECH_RANGED"
+      "id": "ABILITY_EX_TECH_NAVAL",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_EX_TECH_SIEGE"
+      "id": "ABILITY_EX_TECH_RANGED",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_FOEDERATI"
+      "id": "ABILITY_EX_TECH_SIEGE",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_GARDE_IMPERIALE"
+      "id": "ABILITY_FOEDERATI",
+      "name": "LOC_UNIT_FOEDERATI_NAME",
+      "description": "LOC_UNIT_FOEDERATI_DESCRIPTION",
+      "description_text": "Tier 1 City-State Unique Infantry Unit. Up to 20% cheaper to purchase. Each one is slightly more expensive than the last. +2 [icon:NAR_REW_COMBAT] Combat Strength for each adjacent Military Unit."
     },
     {
-      "id": "ABILITY_GENERAL_MOROZ"
+      "id": "ABILITY_GARDE_IMPERIALE",
+      "name": "LOC_ABILITY_GARDE_IMPERIALE",
+      "description": "LOC_GARDE_IMPERIALE_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_GHILMAN"
+      "id": "ABILITY_GENERAL_MOROZ",
+      "name": "LOC_ABILITY_GENERAL_MOROZ_NAME",
+      "description": "LOC_ABILITY_GENERAL_MOROZ_DESCRIPTION",
+      "description_text": "+{1_Amount} Combat Strength in Tundra"
     },
     {
-      "id": "ABILITY_GOLD_BANGLES"
+      "id": "ABILITY_GHILMAN",
+      "name": "LOC_ABILITY_GHILMAN",
+      "description": "LOC_ABILITY_GHILMAN_DESCRIPTION",
+      "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength and +10 [icon:Action_Heal] Healing in Command Radius of a [icon:UNIT_SOLTAN] Sard\u0101r."
     },
     {
-      "id": "ABILITY_GRANDE_ARMEE"
+      "id": "ABILITY_GOLD_BANGLES",
+      "name": "LOC_ABILITY_GOLD_BANGLES_NAME",
+      "description": "LOC_ABILITY_GOLD_BANGLES_DESCRIPTION",
+      "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength when fighting on [icon:RADIAL_RESOURCES] Resource tiles. +100% [icon:YIELD_GOLD] Gold from pillaging [icon:TRADE_ROUTE] Trade Routes."
     },
     {
-      "id": "ABILITY_GRETTIR_ASMUNDARSON"
+      "id": "ABILITY_GRANDE_ARMEE",
+      "name": "LOC_CIVIC_GRANDE_ARMEE_NAME",
+      "description": "LOC_CIVIC_GRANDE_ARMEE_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_GRETTIR_ASMUNDARSON_COMMANDER"
+      "id": "ABILITY_GRETTIR_ASMUNDARSON",
+      "name": "LOC_ABILITY_GRETTIR_ASMUNDARSON_NAME",
+      "description": "LOC_ABILITY_GRETTIR_ASMUNDARSON_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_GUDRIDR_MOVEMENT"
+      "id": "ABILITY_GRETTIR_ASMUNDARSON_COMMANDER",
+      "name": "LOC_ABILITY_GRETTIR_ASMUNDARSON_NAME",
+      "description": "LOC_ABILITY_GRETTIR_ASMUNDARSON_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_GUDRIDR_SIGHT"
+      "id": "ABILITY_GUDRIDR_MOVEMENT",
+      "name": "LOC_ABILITY_GUDRIDR_NAME",
+      "description": "LOC_ABILITY_GUDRIDR_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_GURKHA"
+      "id": "ABILITY_GUDRIDR_SIGHT",
+      "name": "LOC_ABILITY_GRETTIR_ASMUNDARSON_NAME",
+      "description": "LOC_ABILITY_GUDRIDR_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_GUSA"
+      "id": "ABILITY_GURKHA",
+      "name": "LOC_UNIT_GURKHA_NAME",
+      "description": "LOC_ABILITY_GURKHA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_HAMARANA_COUNCIL"
+      "id": "ABILITY_GUSA",
+      "name": "LOC_ABILITY_GUSA",
+      "description": "LOC_ABILITY_GUSA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_HANGSHANG"
+      "id": "ABILITY_HAMARANA_COUNCIL",
+      "name": "LOC_ABILITY_HAMARANA_COUNCIL_NAME",
+      "description": "LOC_ABILITY_HAMARANA_COUNCIL_DESCRIPTION",
+      "description_text": "+{1_Amount} when attacking"
     },
     {
-      "id": "ABILITY_HAN_YI"
+      "id": "ABILITY_HANGSHANG",
+      "name": "LOC_ABILITY_HANGSHANG_NAME",
+      "description": "LOC_HANGSHANG_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_HAZARAPATIS"
+      "id": "ABILITY_HAN_YI",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_HERRERA"
+      "id": "ABILITY_HAZARAPATIS",
+      "name": "LOC_ABILITY_HAZARAPATIS_NAME",
+      "description": "LOC_ABILITY_HAZARAPATIS_DESCRIPTION",
+      "description_text": "Gains the [icon:NAR_REW_PROMOTION] Initiative Promotion."
     },
     {
-      "id": "ABILITY_HERRERA_COMBAT"
+      "id": "ABILITY_HERRERA",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_HILLFORT"
+      "id": "ABILITY_HERRERA_COMBAT",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_HOPLITE"
+      "id": "ABILITY_HILLFORT",
+      "name": "LOC_IMPROVEMENT_HILLFORT_NAME",
+      "description": "LOC_ABILITY_HILLFORT_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_HOPLITE_UPGRADE"
+      "id": "ABILITY_HOPLITE",
+      "name": "LOC_ABILITY_HOPLITE_NAME",
+      "description": "LOC_ABILITY_HOPLITE_DESCRIPTION",
+      "description_text": "+2 [icon:NAR_REW_COMBAT] Combat Strength if adjacent to another [icon:UNIT_HOPLITE] Hoplite."
     },
     {
-      "id": "ABILITY_HULCHE"
+      "id": "ABILITY_HOPLITE_UPGRADE",
+      "name": "LOC_ABILITY_HOPLITE_NAME",
+      "description": "LOC_ABILITY_HOPLITE_UPGRADE_DESCRIPTION",
+      "description_text": "+1 [icon:NAR_REW_COMBAT] Combat Strength for each [icon:CITYSTATE] City-State you are suzerain of."
     },
     {
-      "id": "ABILITY_HUSSAR"
+      "id": "ABILITY_HULCHE",
+      "name": "LOC_ABILITY_HULCHE_NAME",
+      "description": "LOC_ABILITY_HULCHE_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_IGNORE_BORDERS"
+      "id": "ABILITY_HUSSAR",
+      "name": "LOC_ABILITY_HUSSAR",
+      "description": "LOC_ABILITY_HUSSAR_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_IMMORTAL"
+      "id": "ABILITY_IGNORE_BORDERS",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_INITIATION"
+      "id": "ABILITY_IMMORTAL",
+      "name": "LOC_ABILITY_IMMORTAL_NAME",
+      "description": "LOC_ABILITY_IMMORTAL_DESCRIPTION",
+      "description_text": "Heals 15 [icon:Action_Heal] HP after defeating an enemy Unit."
     },
     {
-      "id": "ABILITY_INVASION_CRISIS_1"
+      "id": "ABILITY_INITIATION",
+      "name": "LOC_ABILITY_INITIATION_NAME",
+      "description": "LOC_ABILITY_INITIATION_DESCRIPTION",
+      "description_text": "Receive 25[icon:YIELD_GOLD] Gold when you convert a Settlement for the first time."
     },
     {
-      "id": "ABILITY_INVASION_CRISIS_1_RANGED"
+      "id": "ABILITY_INVASION_CRISIS_1",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_INVASION_CRISIS_2"
+      "id": "ABILITY_INVASION_CRISIS_1_RANGED",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_INVASION_CRISIS_2_RANGED"
+      "id": "ABILITY_INVASION_CRISIS_2",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_INVASION_CRISIS_3"
+      "id": "ABILITY_INVASION_CRISIS_2_RANGED",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_INVASION_CRISIS_3_RANGED"
+      "id": "ABILITY_INVASION_CRISIS_3",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_IRON_CROSS"
+      "id": "ABILITY_INVASION_CRISIS_3_RANGED",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_JANISSARY"
+      "id": "ABILITY_IRON_CROSS",
+      "name": "LOC_ABILITY_IRON_CROSS_NAME",
+      "description": "LOC_ABILITY_IRON_CROSS_DESCRIPTION",
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength for Units within the [icon:COMMANDER_RADIUS] Command Radius of a [icon:UNIT_ARMY_COMMANDER] Commander that has earned at least 1 Commendation."
     },
     {
-      "id": "ABILITY_KALAM"
+      "id": "ABILITY_JANISSARY",
+      "name": "LOC_ABILITY_JANISSARY",
+      "description": "LOC_ABILITY_JANISSARY_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_KALIA"
+      "id": "ABILITY_KALAM",
+      "name": "LOC_UNIT_KALAM_NAME",
+      "description": "LOC_ABILITY_KALAM_DESCRIPTION",
+      "description_text": "+1 additional attack per turn if [icon:Action_Move] Movement allows."
     },
     {
-      "id": "ABILITY_KATYUSHA"
+      "id": "ABILITY_KALIA",
+      "name": "LOC_UNIT_KALIA_NAME",
+      "description": "LOC_ABILITY_KALIA_DESCRIPTION",
+      "description_text": "+{1_amount} [icon:NAR_REW_COMBAT] Combat Strength against [icon:CITY_FORTIFIED] Fortified Districts."
     },
     {
-      "id": "ABILITY_KESHIG"
+      "id": "ABILITY_KATYUSHA",
+      "name": "LOC_ABILITY_KATYUSHA",
+      "description": "LOC_ABILITY_KATYUSHA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_KHAY_MEDJAY_COMBAT_STRENGTH"
+      "id": "ABILITY_KESHIG",
+      "name": "LOC_ABILITY_KESHIG_NAME",
+      "description": "LOC_ABILITY_KESHIG_DESCRIPTION",
+      "description_text": "Heals 15 [icon:Action_Heal] HP after defeating an enemy Unit."
     },
     {
-      "id": "ABILITY_KIBRAT_ARBA_I"
+      "id": "ABILITY_KHAY_MEDJAY_COMBAT_STRENGTH",
+      "name": "LOC_GREAT_PERSON_INDIVIDUAL_TJATY_KHAY_NAME",
+      "description": "LOC_ABILITY_KHAY_MEDJAY_COMBAT_STRENGTH_DESCRIPTION",
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength"
     },
     {
-      "id": "ABILITY_KIBRAT_ARBA_I_COMBAT"
+      "id": "ABILITY_KIBRAT_ARBA_I",
+      "name": "LOC_CIVIC_KIBRAT_ARBA_I_NAME",
+      "description": "LOC_MOD_KIBRAT_ARBA_I_COMBAT_MAGARRU_DESCRIPTION",
+      "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength to [icon:UNIT_MAGARRU] Magarru if they are in a [icon:COMMANDER_RADIUS] Command Radius."
     },
     {
-      "id": "ABILITY_LEGATUS"
+      "id": "ABILITY_KIBRAT_ARBA_I_COMBAT",
+      "name": "LOC_CIVIC_KIBRAT_ARBA_I_NAME",
+      "description": "LOC_MOD_KIBRAT_ARBA_I_COMBAT_MAGARRU_DESCRIPTION",
+      "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength to [icon:UNIT_MAGARRU] Magarru if they are in a [icon:COMMANDER_RADIUS] Command Radius."
     },
     {
-      "id": "ABILITY_LEGION"
+      "id": "ABILITY_LEGATUS",
+      "name": "LOC_ABILITY_LEGATUS_NAME",
+      "description": "LOC_ABILITY_LEGATUS_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_LEIOMANO"
+      "id": "ABILITY_LEGION",
+      "name": "LOC_ABILITY_LEGION_NAME",
+      "description": "LOC_ABILITY_LEGION_DESCRIPTION",
+      "description_text": "+1 [icon:NAR_REW_COMBAT] Combat Strength for every [icon:TRADITION] Tradition in the [icon:GOVERNMENT] Government."
     },
     {
-      "id": "ABILITY_LEIOMANO_CULTURE"
+      "id": "ABILITY_LEIOMANO",
+      "name": "LOC_UNIT_LEIOMANO_NAME",
+      "description": "LOC_ABILITY_LEIOMANO_DESCRIPTION",
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength against Infantry and Cavalry Units. +5 [icon:NAR_REW_COMBAT] Combat Strength defending against Naval Units."
     },
     {
-      "id": "ABILITY_MAGARRU"
+      "id": "ABILITY_LEIOMANO_CULTURE",
+      "name": "LOC_UNIT_LEIOMANO_NAME",
+      "description": "LOC_ABILITY_LEIOMANO_CULTURE_DESCRIPTION",
+      "description_text": "Gain [icon:YIELD_CULTURE] Culture equal to 25% of the defeated Unit's [icon:NAR_REW_COMBAT] Combat Strength."
     },
     {
-      "id": "ABILITY_MAMLUK"
+      "id": "ABILITY_MAGARRU",
+      "name": "LOC_UNIT_MAGARRU_NAME",
+      "description": "LOC_ABILITY_MAGARRU_DESCRIPTION",
+      "description_text": "Can move after attacking and ignores Zone of Control."
     },
     {
-      "id": "ABILITY_MAMLUK_LOCATION_CHECK"
+      "id": "ABILITY_MAMLUK",
+      "name": "LOC_UNIT_MAMLUK_NAME",
+      "description": "LOC_ABILITY_MAMLUK_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MANDALA"
+      "id": "ABILITY_MAMLUK_LOCATION_CHECK",
+      "name": "LOC_UNIT_MAMLUK_NAME",
+      "description": "LOC_ABILITY_MAMLUK_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MANDARIN"
+      "id": "ABILITY_MANDALA",
+      "name": "LOC_CIVIC_MANDALA_NAME",
+      "description": "LOC_MOD_MANDALA_CHANG_BEUN_COMBAT_STRENGTH_IN_CITY_STATE_ALLY_DESCRIPTION",
+      "description_text": "+6 [icon:NAR_REW_COMBAT] Combat Strength for Chang Beun in or adjacent to territory of [icon:CITYSTATE] City-States you are Suzerain of."
     },
     {
-      "id": "ABILITY_MANDARIN_BONUS"
+      "id": "ABILITY_MANDARIN",
+      "name": "LOC_UNIT_MANDARIN_NAME",
+      "description": "LOC_ABILITY_MANDARIN_DESCRIPTION",
+      "description_text": "+100[icon:YIELD_GOLD] Gold when using the Create a Road Action."
     },
     {
-      "id": "ABILITY_MARINE"
+      "id": "ABILITY_MANDARIN_BONUS",
+      "name": "LOC_UNIT_MANDARIN_NAME",
+      "description": "LOC_OTTRU_ABILITY_DESCRIPTION",
+      "description_text": "Opposing Military Units in the [icon:COMMANDER_RADIUS] Command Radius receive -3 [icon:NAR_REW_COMBAT] Combat Strength from Ottru."
     },
     {
-      "id": "ABILITY_MEDJAY"
+      "id": "ABILITY_MARINE",
+      "name": "LOC_ABILITY_MARINE",
+      "description": "LOC_ABILITY_MARINE_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MEIJI_KANTAI_KESSEN"
+      "id": "ABILITY_MEDJAY",
+      "name": "LOC_ABILITY_MEDJAY_NAME",
+      "description": "LOC_ABILITY_MEDJAY_DESCRIPTION",
+      "description_text": "+{1_Amount} Combat Strength in friendly territory, doubled when stationed in a Settlement you own."
     },
     {
-      "id": "ABILITY_MIKASA"
+      "id": "ABILITY_MEIJI_KANTAI_KESSEN",
+      "name": "LOC_ABILITY_MEIJI_KANTAI_KESSEN",
+      "description": "LOC_ABILITY_MEIJI_KANTAI_KESSEN_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MO_TECH_CAVALRY"
+      "id": "ABILITY_MIKASA",
+      "name": "LOC_ABILITY_MIKASA",
+      "description": "LOC_ABILITY_MIKASA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MO_TECH_INFANTRY"
+      "id": "ABILITY_MO_TECH_CAVALRY",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MO_TECH_INTERCEPT_RANGE"
+      "id": "ABILITY_MO_TECH_INFANTRY",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MO_TECH_NAVAL"
+      "id": "ABILITY_MO_TECH_INTERCEPT_RANGE",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MO_TECH_RANGED"
+      "id": "ABILITY_MO_TECH_NAVAL",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MO_TECH_SIEGE"
+      "id": "ABILITY_MO_TECH_RANGED",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_MWAMI"
+      "id": "ABILITY_MO_TECH_SIEGE",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_NG_OMA"
+      "id": "ABILITY_MWAMI",
+      "name": "LOC_ABILITY_MWAMI",
+      "description": "LOC_ABILITY_MWAMI_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_NOYAN"
+      "id": "ABILITY_NG_OMA",
+      "name": "LOC_TRADITION_NG_OMA_NAME",
+      "description": "LOC_TRADITION_NG_OMA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_NOYAN_MOUNTED_COMBAT"
+      "id": "ABILITY_NOYAN",
+      "name": "LOC_UNIT_NOYAN_NAME",
+      "description": "LOC_ABILITY_NOYAN_DESCRIPTION",
+      "description_text": "+50% [icon:NAR_REW_COMBAT] Combat Strength from Flanking for Cavalry Units in the [icon:COMMANDER_RADIUS] Command Radius."
     },
     {
-      "id": "ABILITY_NU"
+      "id": "ABILITY_NOYAN_MOUNTED_COMBAT",
+      "name": "LOC_ABILITY_NOYAN_MOUNTED_COMBAT_NAME",
+      "description": "LOC_ABILITY_NOYAN_MOUNTED_COMBAT_PREVIEW",
+      "description_text": "+{1_Amount}% Flanking from Noyan"
     },
     {
-      "id": "ABILITY_NUMIDIAN_CAVALRY"
+      "id": "ABILITY_NU",
+      "name": "LOC_ABILITY_NU_NAME",
+      "description": "LOC_ABILITY_NU_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_OTTRU"
+      "id": "ABILITY_NUMIDIAN_CAVALRY",
+      "name": "LOC_UNIT_NUMIDIAN_CAVALRY_NAME",
+      "description": "LOC_ABILITY_NUMIDIAN_CAVALRY_DESCRIPTION",
+      "description_text": "+1 [icon:NAR_REW_COMBAT] Combat Strength for each [icon:RADIAL_RESOURCES] Unique City Resource assigned to your [icon:NOTIFICATION_SELECT_CAPITAL] Capital."
     },
     {
-      "id": "ABILITY_PARTISAN"
+      "id": "ABILITY_OTTRU",
+      "name": "LOC_UNIT_OTTRU_NAME",
+      "description": "LOC_OTTRU_ABILITY_DESCRIPTION",
+      "description_text": "Opposing Military Units in the [icon:COMMANDER_RADIUS] Command Radius receive -3 [icon:NAR_REW_COMBAT] Combat Strength from Ottru."
     },
     {
-      "id": "ABILITY_PEDANDA"
+      "id": "ABILITY_PARTISAN",
+      "name": "LOC_UNIT_PARTISAN",
+      "description": "LOC_UNIT_PARTISAN_DESCRIPTION",
+      "description_text": "City State Unique Infantry Unit. Each one is slightly more expensive than the last. +5 [icon:NAR_REW_COMBAT] Combat Strength against Civilizations with a different [icon:NOTIFICATION_IDEOLOGY_CHOSEN] Ideology. +10 [icon:Action_Heal] Healing in owned territory."
     },
     {
-      "id": "ABILITY_PHYSICIAN"
+      "id": "ABILITY_PEDANDA",
+      "name": "LOC_UNIT_PEDANDA_NAME",
+      "description": "LOC_ABILITY_PEDANDA_DESCRIPTION",
+      "description_text": "Receive {1_Amount}[icon:YIELD_CULTURE] Culture when you convert a Settlement for the first time."
     },
     {
-      "id": "ABILITY_PLUNDER_TRADE_ROUTES_BETWEEN_OTHER_CIVS"
+      "id": "ABILITY_PHYSICIAN",
+      "name": "LOC_UNIT_PHYSICIAN_NAME",
+      "description": "LOC_ABILITY_PHYSICIAN_HAPPINESS_DESCRIPTION",
+      "description_text": "Use in an Infected Urban District to remove [icon:YIELD_ANGRY] Unrest from that Settlement."
     },
     {
-      "id": "ABILITY_PRIVATEER"
+      "id": "ABILITY_PLUNDER_TRADE_ROUTES_BETWEEN_OTHER_CIVS",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_PRIVATEER_GOLD"
+      "id": "ABILITY_PRIVATEER",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_PURABHETTARAH"
+      "id": "ABILITY_PRIVATEER_GOLD",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_PURABHETTARAH_ADJACENT"
+      "id": "ABILITY_PURABHETTARAH",
+      "name": "LOC_ABILITY_PURABHETTARAH_NAME",
+      "description": "LOC_ABILITY_PURABHETTARAH_DESCRIPTION",
+      "description_text": "+{1_amount} Combat Strength against [icon:CITY_FORTIFIED] Fortified Districts."
     },
     {
-      "id": "ABILITY_PURABHETTARAH_HEALING"
+      "id": "ABILITY_PURABHETTARAH_ADJACENT",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_REVENGE"
+      "id": "ABILITY_PURABHETTARAH_HEALING",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_RIVER_RAIDS"
+      "id": "ABILITY_REVENGE",
+      "name": "LOC_UNIT_REVENGE_NAME",
+      "description": "LOC_ABILITY_REVENGE_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SAINT_JUST"
+      "id": "ABILITY_RIVER_RAIDS",
+      "name": "LOC_ABILITY_RIVER_RAIDS_NAME",
+      "description": "LOC_ABILITY_RIVER_RAIDS_DESCRIPTION",
+      "description_text": "[icon:Action_Pillage] Pillaging grants [icon:YIELD_CULTURE] Culture equal to the other Yield or [icon:Action_Heal] Healing gained. Civilian and Support Units gain +3 [icon:Action_Move] Movement Speed while Embarked."
     },
     {
-      "id": "ABILITY_SAINT_JUST_COMBAT"
+      "id": "ABILITY_SAINT_JUST",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SAKDIPHONLASEP"
+      "id": "ABILITY_SAINT_JUST_COMBAT",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SEARCH_RECON"
+      "id": "ABILITY_SAKDIPHONLASEP",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SENANURAK"
+      "id": "ABILITY_SEARCH_RECON",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SENANURAK_COMBAT"
+      "id": "ABILITY_SENANURAK",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SEPOY"
+      "id": "ABILITY_SENANURAK_COMBAT",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SHERPA"
+      "id": "ABILITY_SEPOY",
+      "name": "LOC_ABILITY_SEPOY",
+      "description": "LOC_ABILITY_SEPOY_DESCRIPTION",
+      "description_text": "Ranged attack with +20 [icon:Action_Ranged] Combat Strength against [icon:CITY_FORTIFIED] Fortified Districts."
     },
     {
-      "id": "ABILITY_SHIPSHEDS_FIRST_STRIKE"
+      "id": "ABILITY_SHERPA",
+      "name": "LOC_UNIT_SHERPA_NAME",
+      "description": "LOC_ABILITY_SHERPA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SHORE_BATTERY"
+      "id": "ABILITY_SHIPSHEDS_FIRST_STRIKE",
+      "name": "LOC_CIVIC_SHIPSHEDS_NAME",
+      "description": "LOC_MOD_SHIPSHEDS_NAVAL_FIRST_STRIKE_DESCRIPTION",
+      "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength for Naval Units at full health."
     },
     {
-      "id": "ABILITY_SLOOP"
+      "id": "ABILITY_SHORE_BATTERY",
+      "name": "LOC_IMPROVEMENT_SHORE_BATTERY_NAME",
+      "description": "LOC_IMPROVEMENT_SHORE_BATTERY_DESCRIPTION",
+      "description_text": "City-State Unique Improvement. +5 [icon:YIELD_PRODUCTION] Production. +3 [icon:Action_Ranged] Ranged Combat Strength, +1 range to Ranged and Siege Units in this tile. +5 [icon:Action_Heal]Healing per turn to Military Units in this tile. Ageless. Does not remove [icon:YIELD_WAREHOUSE] Warehouse bonuses on a tile. Must be placed on an existing [icon:CITY_RURAL] Improvement adjacent to Coast. "
     },
     {
-      "id": "ABILITY_SOLDADERAS"
+      "id": "ABILITY_SLOOP",
+      "name": "LOC_UNIT_SLOOP_NAME",
+      "description": "LOC_ABILITY_SLOOP_DESCRIPTION",
+      "description_text": "Can move after attacking."
     },
     {
-      "id": "ABILITY_SOLDADERAS_ADJACENT"
+      "id": "ABILITY_SOLDADERAS",
+      "name": "LOC_ABILITY_SOLDADERAS",
+      "description": "LOC_ABILITY_SOLDADERAS_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SOLTAN"
+      "id": "ABILITY_SOLDADERAS_ADJACENT",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_SONGHAI_TRADE_PROTECTION"
+      "id": "ABILITY_SOLTAN",
+      "name": "LOC_UNIT_SOLTAN_NAME",
+      "description": "LOC_ABILITY_SOLTAN_DESCRIPTION",
+      "description_text": "+1 [icon:Action_Move] Movement. While razing a settlement, an additional [icon:CITY_URBAN] District is Razed per turn in Settlements where this Commander is on a [icon:CITY_URBAN] District."
     },
     {
-      "id": "ABILITY_STONE_TRAP"
+      "id": "ABILITY_SONGHAI_TRADE_PROTECTION",
+      "name": "LOC_TRAIT_SONGHAI_ABILITY_NAME",
+      "description": "LOC_ABILITY_SONGHAI_TRADE_PROTECTION_DESCRIPTION",
+      "description_text": "When you create a [icon:TRADE_ROUTE] Trade Route receive an additional 100[icon:YIELD_GOLD] Gold if this is a Trade Route with at least 1 Navigable River."
     },
     {
-      "id": "ABILITY_STRENGTH_COMMAND_RADIUS"
+      "id": "ABILITY_STONE_TRAP",
+      "name": "LOC_ABILITY_STONE_TRAP_NAME",
+      "description": "LOC_ABILITY_STONE_TRAP_DESCRIPTION",
+      "description_text": "Deals 25 [icon:DAMAGED] damage to enemy Units that enter the tile and ends their [icon:Action_Move] Movement. This removes the trap. Traps are invisible to all other Civilizations until triggered. Can be placed in unowned territory. Must be placed on Flat or Vegetated Terrain."
     },
     {
-      "id": "ABILITY_STUKA"
+      "id": "ABILITY_STRENGTH_COMMAND_RADIUS",
+      "name": "LOC_ABILITY_GARDE_IMPERIALE",
+      "description": "LOC_GARDE_IMPERIALE_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_TAJIRO"
+      "id": "ABILITY_STUKA",
+      "name": "LOC_ABILITY_STUKA",
+      "description": "LOC_ABILITY_STUKA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_TAJIRO_BONUS"
+      "id": "ABILITY_TAJIRO",
+      "name": "LOC_UNIT_TAJIRO_NAME",
+      "description": "LOC_ABILITY_TAJIRO_DESCRIPTION",
+      "description_text": "When you create a [icon:TRADE_ROUTE] Trade Route receive 100[icon:YIELD_GOLD] Gold if this is a Trade Route with at least 1 Navigable River."
     },
     {
-      "id": "ABILITY_TANKWA"
+      "id": "ABILITY_TAJIRO_BONUS",
+      "name": "LOC_UNIT_TAJIRO_NAME",
+      "description": "LOC_ABILITY_TAJIRO_BONUS_DESCRIPTION",
+      "description_text": "When you create a [icon:TRADE_ROUTE] Trade Route receive an additional 100[icon:YIELD_GOLD] Gold if this is a Trade Route with at least 1 Navigable River."
     },
     {
-      "id": "ABILITY_TEHINA"
+      "id": "ABILITY_TANKWA",
+      "name": "LOC_ABILITY_TANKWA_NAME",
+      "description": "LOC_ABILITY_TANKWA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_TEN_GREAT_CAMPAIGNS"
+      "id": "ABILITY_TEHINA",
+      "name": "LOC_UNIT_TEHINA_NAME",
+      "description": "LOC_ABILITY_TEHINA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_TERCIO"
+      "id": "ABILITY_TEN_GREAT_CAMPAIGNS",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_TERCIO_CAVALRY_STRENGTH"
+      "id": "ABILITY_TERCIO",
+      "name": "LOC_UNIT_TERCIO_NAME",
+      "description": "LOC_ABILITY_TERCIO_DESCRIPTION",
+      "description_text": "Adjacent Units receive +3 [icon:NAR_REW_COMBAT] Combat Strength against Cavalry Units (bonus is only applied once)."
     },
     {
-      "id": "ABILITY_THEIR_FINEST_HOUR"
+      "id": "ABILITY_TERCIO_CAVALRY_STRENGTH",
+      "name": "LOC_UNIT_TERCIO_NAME",
+      "description": "LOC_ABILITY_TERCIO_DESCRIPTION",
+      "description_text": "Adjacent Units receive +3 [icon:NAR_REW_COMBAT] Combat Strength against Cavalry Units (bonus is only applied once)."
     },
     {
-      "id": "ABILITY_TREASURE_CONVOY_EMBARK_BONUS"
+      "id": "ABILITY_THEIR_FINEST_HOUR",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_TREASURE_FLEET"
+      "id": "ABILITY_TREASURE_CONVOY_EMBARK_BONUS",
+      "name": "LOC_ENHANCER_BELIEF_BONUS_10_NAME",
+      "description": "LOC_ENHANCER_BELIEF_TREASURE_DEFENSE_PREVIEW",
+      "description_text": "+5 Inter Caetera"
     },
     {
-      "id": "ABILITY_TURTANU"
+      "id": "ABILITY_TREASURE_FLEET",
+      "name": "LOC_ABILITY_TREASURE_FLEET_NAME",
+      "description": "LOC_ABILITY_TREASURE_FLEET_DESCRIPTION",
+      "description_text": "Is captured by attacker when defeated in combat."
     },
     {
-      "id": "ABILITY_VAISHYA"
+      "id": "ABILITY_TURTANU",
+      "name": "LOC_UNIT_TURTANU_NAME",
+      "description": "LOC_ABILITY_TURTANU_DESCRIPTION",
+      "description_text": "Infantry and Cavalry Units within the [icon:COMMANDER_RADIUS] Command Radius have +5 [icon:NAR_REW_COMBAT] Combat Strength against [icon:CITY_FORTIFIED] Fortified Districts."
     },
     {
-      "id": "ABILITY_VIET_KIEU"
+      "id": "ABILITY_VAISHYA",
+      "name": "LOC_ABILITY_VAISHYA_NAME",
+      "description": "LOC_ABILITY_VAISHYA_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_VIKINGR"
+      "id": "ABILITY_VIET_KIEU",
+      "name": "LOC_UNIT_VIET_KIEU_NAME",
+      "description": "LOC_ABILITY_VIET_KIEU_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_VILLA"
+      "id": "ABILITY_VIKINGR",
+      "name": "LOC_UNIT_VIKINGR_NAME",
+      "description": "LOC_ABILITY_VIKINGR_DESCRIPTION",
+      "description_text": "[icon:Action_Pillage] Coastal Raiding grants [icon:YIELD_SCIENCE] Science equal to 25% the [icon:YIELD_GOLD] Gold gained."
     },
     {
-      "id": "ABILITY_VILLA_GOLD"
+      "id": "ABILITY_VILLA",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_VOI_CHIEN"
+      "id": "ABILITY_VILLA_GOLD",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_VYUHAM_CAVALRY"
+      "id": "ABILITY_VOI_CHIEN",
+      "name": "LOC_UNIT_VOI_CHIEN_NAME",
+      "description": "LOC_ABILITY_VOI_CHIEN_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_VYUHAM_INFANTRY"
+      "id": "ABILITY_VYUHAM_CAVALRY",
+      "name": "LOC_ABILITY_VYUHAM_NAME",
+      "description": "LOC_ABILITY_VYUHAM_CAVALRY_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_WARAKAQ"
+      "id": "ABILITY_VYUHAM_INFANTRY",
+      "name": "LOC_ABILITY_VYUHAM_NAME",
+      "description": "LOC_ABILITY_VYUHAM_INFANTRY_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_WATONATHI"
+      "id": "ABILITY_WARAKAQ",
+      "name": "LOC_UNIT_WARAKAQ_NAME",
+      "description": "LOC_ABILITY_WARAKAQ_DESCRIPTION",
+      "description_text": "Rough Terrain does not end its [icon:Action_Move] Movement. +5 [icon:Action_Ranged] Combat Strength when attacking from Rough Terrain."
     },
     {
-      "id": "ABILITY_XENOPHON_HOPLITE_COMBAT_STRENGTH"
+      "id": "ABILITY_WATONATHI",
+      "name": "LOC_ABILITY_WATONATHI_NAME",
+      "description": "LOC_ABILITY_WATONATHI_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "ABILITY_XUNLEICHONG"
+      "id": "ABILITY_XENOPHON_HOPLITE_COMBAT_STRENGTH",
+      "name": "LOC_GREAT_PERSON_INDIVIDUAL_LOGIOS_XENOPHON_NAME",
+      "description": "LOC_ABILITY_XENOPHON_HOPLITE_COMBAT_STRENGTH_DESCRIPTION",
+      "description_text": "+3 Combat Strength"
     },
     {
-      "id": "ABILITY_XUNLEICHONG_BONUS"
+      "id": "ABILITY_XUNLEICHONG",
+      "name": "LOC_UNIT_XUNLEICHONG_NAME",
+      "description": "LOC_ABILITY_XUNLEICHONG_DESCRIPTION",
+      "description_text": "+4 [icon:NAR_REW_COMBAT] Combat Strength in Featureless tiles. Has a [icon:Action_Ranged] Ranged attack."
     },
     {
-      "id": "ABILITY_XUNLEICHONG_NO_FEATURE_STRENGTH"
+      "id": "ABILITY_XUNLEICHONG_BONUS",
+      "name": "LOC_UNIT_XUNLEICHONG_NAME",
+      "description": "LOC_ABILITY_XUNLEICHONG_BONUS_DESCRIPTION",
+      "description_text": "+3 [icon:Action_Ranged] Combat Strength to Ranged Units adjacent to the Xunleichong."
     },
     {
-      "id": "ABILITY_ZERO"
+      "id": "ABILITY_XUNLEICHONG_NO_FEATURE_STRENGTH",
+      "name": "LOC_UNIT_XUNLEICHONG_NAME",
+      "description": "LOC_ABILITY_XUNLEICHONG_BONUS_DESCRIPTION",
+      "description_text": "+3 [icon:Action_Ranged] Combat Strength to Ranged Units adjacent to the Xunleichong."
     },
     {
-      "id": "CHARGED_ABILITY_AERODROME_AERIAL_RECON"
+      "id": "ABILITY_ZERO",
+      "name": "LOC_ABILITY_ZERO",
+      "description": "LOC_ABILITY_ZERO_DESCRIPTION",
+      "description_text": ""
     },
     {
-      "id": "CHARGED_ABILITY_CLAIM_MOUNTAIN"
+      "id": "CHARGED_ABILITY_AERODROME_AERIAL_RECON",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "CHARGED_ABILITY_CLAIM_RESOURCE"
+      "id": "CHARGED_ABILITY_CLAIM_MOUNTAIN",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "CHARGED_ABILITY_RAIDING_PARTY"
+      "id": "CHARGED_ABILITY_CLAIM_RESOURCE",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
-      "id": "CHARGED_ABILITY_STONE_TRAP"
+      "id": "CHARGED_ABILITY_RAIDING_PARTY",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "CHARGED_ABILITY_STONE_TRAP",
+      "name": "",
+      "description": "",
+      "description_text": ""
     }
   ]
 }
