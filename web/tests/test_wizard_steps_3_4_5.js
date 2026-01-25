@@ -452,6 +452,9 @@ describe('Wizard Step 4 - Modifiers & Traditions', () => {
         });
 
         it('should populate form when editing', () => {
+            // Add requirements container
+            document.body.innerHTML += '<div id="wizard-modifier-requirements-container"></div>';
+            
             state.wizardData.modifiers = [{
                 id: 'MOD_EDIT',
                 modifier_type: 'CUSTOM_TYPE',
@@ -470,6 +473,144 @@ describe('Wizard Step 4 - Modifiers & Traditions', () => {
             expect(document.getElementById('wizard-modifier-type').value).toBe('CUSTOM_TYPE');
             expect(document.getElementById('wizard-modifier-permanent').checked).toBe(true);
             expect(document.getElementById('wizard-modifier-desc').value).toBe('Test description');
+        });
+    });
+
+    describe('Modifier Requirements', () => {
+        beforeEach(() => {
+            document.body.innerHTML = `
+                <div id="wizard-step-content"></div>
+                <div id="wizard-modifier-form" class="hidden">
+                    <input id="wizard-modifier-id" />
+                    <input id="wizard-modifier-type" />
+                    <select id="wizard-modifier-effect">
+                        <option value="EFFECT_ADJUST_UNIT_STRENGTH_MODIFIER">EFFECT_ADJUST_UNIT_STRENGTH_MODIFIER</option>
+                    </select>
+                    <select id="wizard-modifier-collection">
+                        <option value="COLLECTION_UNIT_COMBAT">COLLECTION_UNIT_COMBAT</option>
+                    </select>
+                    <input id="wizard-modifier-permanent" type="checkbox" />
+                    <input id="wizard-modifier-runonce" type="checkbox" />
+                    <textarea id="wizard-modifier-desc"></textarea>
+                    <textarea id="wizard-modifier-args"></textarea>
+                    <input id="wizard-modifier-edit-idx" value="-1" />
+                    <div id="wizard-modifier-requirements-container"></div>
+                </div>
+            `;
+            
+            // Mock the data loader
+            vi.mock('../static/js/data/loader.js', () => ({
+                loadReferenceData: vi.fn(() => Promise.resolve({
+                    values: [
+                        { id: 'REQUIREMENT_PLOT_BIOME_TYPE_MATCHES' },
+                        { id: 'REQUIREMENT_PLOT_IS_OWNER' },
+                        { id: 'REQUIREMENT_UNIT_TAG_MATCHES' },
+                    ]
+                }))
+            }));
+        });
+
+        it('should add a requirement', () => {
+            const container = document.getElementById('wizard-modifier-requirements-container');
+            step4.wizardAddRequirement();
+            expect(container.children.length).toBe(1);
+            expect(container.querySelector('.wizard-req-type')).toBeTruthy();
+        });
+
+        it('should remove a requirement', () => {
+            const container = document.getElementById('wizard-modifier-requirements-container');
+            step4.wizardAddRequirement();
+            step4.wizardAddRequirement();
+            expect(container.children.length).toBe(2);
+            step4.wizardRemoveRequirement(0);
+            expect(container.children.length).toBe(1);
+        });
+
+        it('should add requirement argument', () => {
+            step4.wizardAddRequirement();
+            step4.wizardAddRequirementArg(0);
+            const argsContainer = document.querySelector('.wizard-req-args-container[data-req-idx="0"]');
+            expect(argsContainer.children.length).toBe(1);
+            expect(argsContainer.querySelector('.wizard-req-arg-name')).toBeTruthy();
+            expect(argsContainer.querySelector('.wizard-req-arg-value')).toBeTruthy();
+        });
+
+        it('should remove requirement argument', () => {
+            step4.wizardAddRequirement();
+            step4.wizardAddRequirementArg(0);
+            step4.wizardAddRequirementArg(0);
+            const argsContainer = document.querySelector('.wizard-req-args-container[data-req-idx="0"]');
+            expect(argsContainer.children.length).toBe(2);
+            step4.wizardRemoveRequirementArg(0, 0);
+            expect(argsContainer.children.length).toBe(1);
+        });
+
+        it('should save modifier with requirements', () => {
+            state.wizardData.modifiers = [];
+            
+            // Setup form
+            document.getElementById('wizard-modifier-id').value = 'MOD_WITH_REQ';
+            document.getElementById('wizard-modifier-effect').value = 'EFFECT_ADJUST_UNIT_STRENGTH_MODIFIER';
+            document.getElementById('wizard-modifier-collection').value = 'COLLECTION_UNIT_COMBAT';
+            document.getElementById('wizard-modifier-args').value = 'Amount:3';
+            
+            // Manually add requirement to container (simulating what wizardAddRequirement would do)
+            const requirementsContainer = document.getElementById('wizard-modifier-requirements-container');
+            const reqDiv = document.createElement('div');
+            reqDiv.dataset.reqIdx = '0';
+            reqDiv.innerHTML = `
+                <select class="wizard-req-type">
+                    <option value="REQUIREMENT_PLOT_BIOME_TYPE_MATCHES" selected>REQUIREMENT_PLOT_BIOME_TYPE_MATCHES</option>
+                </select>
+                <div class="wizard-req-args-container" data-req-idx="0">
+                    <div data-arg-idx="0">
+                        <input class="wizard-req-arg-name" value="BiomeType" />
+                        <input class="wizard-req-arg-value" value="BIOME_TUNDRA" />
+                    </div>
+                </div>
+            `;
+            requirementsContainer.appendChild(reqDiv);
+            
+            // Save
+            step4.wizardSaveModifier();
+            
+            // Verify
+            expect(state.wizardData.modifiers.length).toBe(1);
+            const mod = state.wizardData.modifiers[0];
+            expect(mod.id).toBe('MOD_WITH_REQ');
+            expect(mod.modifier.requirements).toBeTruthy();
+            expect(mod.modifier.requirements.length).toBe(1);
+            expect(mod.modifier.requirements[0].type).toBe('REQUIREMENT_PLOT_BIOME_TYPE_MATCHES');
+            expect(mod.modifier.requirements[0].arguments).toBeTruthy();
+            expect(mod.modifier.requirements[0].arguments.length).toBe(1);
+            expect(mod.modifier.requirements[0].arguments[0].name).toBe('BiomeType');
+            expect(mod.modifier.requirements[0].arguments[0].value).toBe('BIOME_TUNDRA');
+        });
+
+        it('should skip requirements without type', () => {
+            state.wizardData.modifiers = [];
+            
+            document.getElementById('wizard-modifier-id').value = 'MOD_EMPTY_REQ';
+            document.getElementById('wizard-modifier-effect').value = 'EFFECT_ADJUST_UNIT_STRENGTH_MODIFIER';
+            document.getElementById('wizard-modifier-collection').value = 'COLLECTION_UNIT_COMBAT';
+            
+            // Add requirement but don't set type
+            step4.wizardAddRequirement();
+            
+            step4.wizardSaveModifier();
+            
+            const mod = state.wizardData.modifiers[0];
+            expect(mod.modifier.requirements).toBeUndefined();
+        });
+
+        it('should clear requirements when canceling', () => {
+            step4.wizardAddRequirement();
+            step4.wizardAddRequirement();
+            const container = document.getElementById('wizard-modifier-requirements-container');
+            expect(container.children.length).toBe(2);
+            
+            step4.wizardCancelModifierForm();
+            expect(container.innerHTML).toBe('');
         });
     });;
 

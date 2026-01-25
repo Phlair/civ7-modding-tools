@@ -335,7 +335,22 @@ export function syncWizardToCurrentData() {
     
     // Auto-bind all modifiers to civilization BEFORE merging
     // Modifiers must be in civilization.bindings array to function in-game
+    // EXCEPT modifiers that are part of unit abilities - those are bound to the ability, not the civ
     if (wizardData.modifiers && Array.isArray(wizardData.modifiers) && wizardData.modifiers.length > 0) {
+        // Collect all modifier IDs that are referenced by unit abilities
+        const unitAbilityModifierIds = new Set();
+        if (wizardData.units && Array.isArray(wizardData.units)) {
+            wizardData.units.forEach(unit => {
+                if (unit.unit_abilities && Array.isArray(unit.unit_abilities)) {
+                    unit.unit_abilities.forEach(ability => {
+                        if (ability.modifiers && Array.isArray(ability.modifiers)) {
+                            ability.modifiers.forEach(modId => unitAbilityModifierIds.add(modId));
+                        }
+                    });
+                }
+            });
+        }
+        
         // Ensure wizardData.civilization exists for the merge
         if (!wizardData.civilization) {
             wizardData.civilization = {};
@@ -347,11 +362,11 @@ export function syncWizardToCurrentData() {
         // Preserve existing bindings from currentData
         const existingBindings = currentData.civilization?.bindings || [];
         
-        // Merge existing bindings with new ones
+        // Merge existing bindings with new ones, excluding unit ability modifiers
         const allBindings = [...existingBindings];
         wizardData.modifiers.forEach(modifier => {
             const modifierId = modifier.id;
-            if (modifierId && !allBindings.includes(modifierId)) {
+            if (modifierId && !allBindings.includes(modifierId) && !unitAbilityModifierIds.has(modifierId)) {
                 allBindings.push(modifierId);
             }
         });

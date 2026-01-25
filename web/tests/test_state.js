@@ -344,6 +344,34 @@ describe('State Module', () => {
             expect(state.getCurrentData().civilization).toBeDefined();
             expect(state.getCurrentData().civilization.bindings).toBeUndefined();
         });
+
+        it('should not bind modifiers that are part of unit abilities', () => {
+            const wizData = state.getWizardData();
+            wizData.modifiers = [
+                { id: 'MODIFIER_CIV_BONUS' },
+                { id: 'MODIFIER_UNIT_ABILITY' },
+                { id: 'MODIFIER_ANOTHER_UNIT_ABILITY' }
+            ];
+            wizData.units = [
+                {
+                    id: 'UNIT_TEST',
+                    unit_abilities: [
+                        {
+                            ability_id: 'ABILITY_TEST',
+                            modifiers: ['MODIFIER_UNIT_ABILITY', 'MODIFIER_ANOTHER_UNIT_ABILITY']
+                        }
+                    ]
+                }
+            ];
+
+            state.syncWizardToCurrentData();
+
+            // Should only bind the civ modifier, not the unit ability modifiers
+            expect(state.getCurrentData().civilization.bindings).toHaveLength(1);
+            expect(state.getCurrentData().civilization.bindings).toContain('MODIFIER_CIV_BONUS');
+            expect(state.getCurrentData().civilization.bindings).not.toContain('MODIFIER_UNIT_ABILITY');
+            expect(state.getCurrentData().civilization.bindings).not.toContain('MODIFIER_ANOTHER_UNIT_ABILITY');
+        });
     });
 
     describe('populateWizardFromData', () => {

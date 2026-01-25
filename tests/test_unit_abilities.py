@@ -256,3 +256,148 @@ def test_multiple_abilities_on_same_unit():
         # Check both have junctions
         junctions = root.findall(".//UnitClass_Abilities/Row[@UnitClassType='UNIT_CLASS_SPECIAL']")
         assert len(junctions) == 2
+
+
+def test_custom_ability_description_appended_to_unit_summary():
+    """Test that custom ability descriptions are appended to unit summary."""
+    mod = Mod(id='test-custom-desc', version='1.0.0', name='Test', description='Test', authors='Test')
+    
+    # Create a custom ability with a description
+    ability = UnitAbilityBuilder().fill({
+        'ability_id': 'ABILITY_DRUID_SACRED_GROVE',
+        'ability_type': 'ABILITY_DRUID_SACRED_GROVE',
+        'localizations': [
+            {
+                'name': 'Sacred Grove',
+                'description': '+2 Combat Strength when adjacent to forest or jungle tiles'
+            }
+        ],
+    })
+    
+    # Create a unit with this custom ability
+    unit = UnitBuilder().fill({
+        'unit_type': 'UNIT_DRUID',
+        'unit': {
+            'core_class': 'CORE_CLASS_COMBAT',
+            'domain': 'DOMAIN_LAND',
+        },
+        'localizations': [
+            {
+                'name': 'Druid',
+                'description': 'Celtic religious warrior'
+            }
+        ],
+    })
+    unit.bind([ability])
+    
+    mod.add(unit)
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+        mod.build(tmpdir)
+        
+        # Check localization.xml has combined description
+        loc_xml = Path(tmpdir) / 'units' / 'druid' / 'localization.xml'
+        assert loc_xml.exists()
+        
+        tree = ET.parse(loc_xml)
+        root = tree.getroot()
+        
+        # Find the unit description
+        desc_rows = root.findall(".//EnglishText/Row[@Tag='LOC_UNIT_DRUID_DESCRIPTION']")
+        assert len(desc_rows) == 1
+        
+        description_text = desc_rows[0].find('Text').text
+        
+        # Should contain both the unit description and the ability description
+        assert 'Celtic religious warrior' in description_text
+        assert '+2 Combat Strength when adjacent to forest or jungle tiles' in description_text
+        
+        # The ability description should be appended after the unit description
+        assert description_text.index('Celtic religious warrior') < description_text.index('+2 Combat Strength')
+
+
+def test_mixed_abilities_both_descriptions_appended():
+    """Test that both dict-based and builder-based ability descriptions are appended."""
+    mod = Mod(id='test-mixed-desc', version='1.0.0', name='Test', description='Test', authors='Test')
+    
+    # Create a custom ability
+    custom_ability = UnitAbilityBuilder().fill({
+        'ability_id': 'ABILITY_CUSTOM',
+        'ability_type': 'ABILITY_CUSTOM',
+        'localizations': [
+            {
+                'name': 'Custom Ability',
+                'description': 'Custom ability description text'
+            }
+        ],
+    })
+    
+    # Create a unit with both dict-based abilities (one with description_text, one with description) and custom abilities
+    unit = UnitBuilder().fill({
+        'unit_type': 'UNIT_MIXED',
+        'unit': {'core_class': 'CORE_CLASS_COMBAT'},
+        'unit_abilities': [
+            {
+                'ability_id': 'ABILITY_WITH_DESCRIPTION_TEXT',
+                'ability_type': 'ABILITY_WITH_DESCRIPTION_TEXT',
+                'name': 'Ability 1',
+                'description': 'Dict ability 1',
+                'description_text': 'Dict ability 1 description text for summary',
+                'modifiers': [],
+            },
+            {
+                'ability_id': 'ABILITY_WITH_DESCRIPTION_ONLY',
+                'ability_type': 'ABILITY_WITH_DESCRIPTION_ONLY',
+                'name': 'Ability 2',
+                'description': '+{1_Amount} Combat Strength in Forest',
+                'modifiers': [],
+            }
+        ],
+        'localizations': [
+            {
+                'name': 'Mixed Unit',
+                'description': 'Base unit description'
+            }
+        ],
+    })
+    unit.bind([custom_ability])
+    
+    mod.add(unit)
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+        mod.build(tmpdir)
+        
+        # Check localization.xml
+        loc_xml = Path(tmpdir) / 'units' / 'mixed' / 'localization.xml'
+        assert loc_xml.exists()
+        
+        tree = ET.parse(loc_xml)
+        root = tree.getroot()
+        
+        # Find the unit description
+        desc_rows = root.findall(".//EnglishText/Row[@Tag='LOC_UNIT_MIXED_DESCRIPTION']")
+        assert len(desc_rows) == 1
+        
+        description_text = desc_rows[0].find('Text').text
+        
+        # Should contain the base description
+        assert 'Base unit description' in description_text
+        
+        # Should contain the first dict-based ability description (description_text takes precedence)
+        assert 'Dict ability 1 description text for summary' in description_text
+        
+        # Should contain the second dict-based ability description (using description field)
+        assert '+{1_Amount} Combat Strength in Forest' in description_text
+        
+        # Should contain the custom ability description
+        assert 'Custom ability description text' in description_text
+        
+        # All should be in order
+        base_idx = description_text.index('Base unit description')
+        dict1_idx = description_text.index('Dict ability 1 description text for summary')
+        dict2_idx = description_text.index('+{1_Amount} Combat Strength in Forest')
+        custom_idx = description_text.index('Custom ability description text')
+        
+        assert base_idx < dict1_idx
+        assert base_idx < dict2_idx
+        assert base_idx < custom_idx

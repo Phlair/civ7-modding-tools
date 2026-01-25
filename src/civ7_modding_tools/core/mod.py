@@ -281,6 +281,8 @@ class Mod:
         Returns:
             List of all generated files including .modinfo
         """
+        from civ7_modding_tools.builders import UnitBuilder, ModifierBuilder
+        
         dist_path = Path(dist)
         
         # Clear existing directory if requested
@@ -290,6 +292,25 @@ class Mod:
         
         # Create distribution directory
         dist_path.mkdir(parents=True, exist_ok=True)
+        
+        # Wire up modifiers to units that reference them in abilities
+        # Build a map of modifier_id -> ModifierBuilder
+        modifier_map = {}
+        for builder in self.builders:
+            if isinstance(builder, ModifierBuilder):
+                # Get modifier ID from modifier_type field or modifier dict
+                modifier_id = builder.modifier_type or builder.modifier.get('id') or builder.modifier.get('modifier_type')
+                if modifier_id:
+                    modifier_map[modifier_id] = builder
+        
+        # For each unit, find modifiers referenced in its abilities and attach them
+        for builder in self.builders:
+            if isinstance(builder, UnitBuilder) and hasattr(builder, 'unit_abilities'):
+                for ability in builder.unit_abilities:
+                    if 'modifiers' in ability:
+                        for modifier_id in ability['modifiers']:
+                            if modifier_id in modifier_map:
+                                builder._bound_modifiers.append(modifier_map[modifier_id])
         
         # Build all builders to generate files
         builder_files = []
@@ -311,6 +332,9 @@ class Mod:
         
         # Filter empty files
         all_files = [f for f in all_files if not f.is_empty]
+        
+        # Merge and deduplicate files that share the same path+name
+        all_files = self._merge_duplicate_files(all_files)
         
         # Generate .modinfo
         modinfo_content = self._generate_modinfo(all_files)
@@ -395,6 +419,251 @@ class Mod:
         )
         
         return module_file
+    
+    def _merge_duplicate_files(self, files: list[BaseFile]) -> list[BaseFile]:
+        """
+        Merge files with the same path+name, deduplicating XML content.
+        
+        This is critical for upgrade chains where multiple units share a folder
+        and have duplicate modifiers in their game-effects.xml files.
+        
+        Args:
+            files: List of files to merge
+            
+        Returns:
+            Deduplicated list of files
+        """
+        from collections import defaultdict
+        from civ7_modding_tools.nodes.database import DatabaseNode
+        
+        # Group files by (path, name)
+        file_groups: dict[tuple[str, str], list[BaseFile]] = defaultdict(list)
+        for file in files:
+            key = (file.path, file.name)
+            file_groups[key].append(file)
+        
+        merged_files = []
+        
+        for (path, name), group in file_groups.items():
+            if len(group) == 1:
+                # No merging needed
+                merged_files.append(group[0])
+            else:
+                # Merge files in this group
+                merged_file = self._merge_xml_files(group)
+                if merged_file:
+                    merged_files.append(merged_file)
+        
+        return merged_files
+    
+    def _merge_xml_files(self, files: list[BaseFile]) -> Optional[BaseFile]:
+        """
+        Merge multiple XmlFile instances with the same path/name.
+        
+        Combines their DatabaseNode content and deduplicates based on unique identifiers.
+        
+        Args:
+            files: List of XmlFile instances to merge
+            
+        Returns:
+            Single merged XmlFile
+        """
+        from civ7_modding_tools.nodes.database import DatabaseNode
+        from civ7_modding_tools.nodes.nodes import GameEffectNode
+        
+        if not files:
+            return None
+        
+        # Use first file as base
+        base_file = files[0]
+        
+        # Only merge XmlFile instances
+        if not all(isinstance(f, XmlFile) for f in files):
+            return base_file
+        
+        # Check if this is a game-effects.xml file (content is GameEffectNode)
+        if isinstance(base_file.content, GameEffectNode):
+            return self._merge_game_effects_files(files)
+        
+        # Otherwise, merge as DatabaseNode files
+        # Collect all DatabaseNode content
+        merged_content = DatabaseNode()
+        
+        # List of known table attributes on DatabaseNode
+        table_attrs = [
+            'types', 'type_tags', 'tags', 'traits', 'kinds',
+            'civilizations', 'civilization_traits', 'civilization_tags', 'civilization_items',
+            'units', 'unit_stats', 'unit_costs', 'unit_replaces', 'unit_upgrades',
+            'unit_advisories', 'unit_abilities', 'unit_class_abilities',
+            'unit_ability_modifiers', 'charged_unit_abilities',
+            'constructibles', 'constructible_yield_changes', 'constructible_valid_districts',
+            'constructible_maintenances', 'constructible_adjacency_bonuses',
+            'buildings', 'improvements', 'building_attributes',
+            'modifiers', 'modifier_arguments', 'game_modifiers',
+            'requirement_sets', 'requirement_set_requirements', 'requirements',
+            'requirement_arguments', 'english_text', 'icon_definitions',
+            'progression_trees', 'progression_tree_nodes', 'progression_tree_prereqs',
+            'progression_tree_node_unlocks', 'traditions', 'tradition_modifiers',
+            'visual_remaps', 'ai_lists', 'ai_list_types', 'ai_favored_items',
+            'leader_civ_priorities', 'loading_info_civilizations',
+            'civilization_favored_wonders', 'vis_art_civilization_building_cultures',
+            'vis_art_civilization_unit_cultures', 'legacy_civilizations',
+            'legacy_civilization_traits', 'start_bias_biomes', 'start_bias_terrains',
+            'start_bias_rivers', 'civilization_unlocks', 'leader_civilization_biases',
+            'leader_unlocks', 'great_people', 'named_places', 'named_place_yield_changes',
+            'city_names'
+        ]
+        
+        for file in files:
+            if not isinstance(file.content, DatabaseNode):
+                continue
+            
+            content = file.content
+            
+            # Merge each table, deduplicating by unique fields
+            for attr_name in table_attrs:
+                if not hasattr(content, attr_name):
+                    continue
+                
+                items = getattr(content, attr_name)
+                if not items or not isinstance(items, list):
+                    continue
+                
+                existing_items = getattr(merged_content, attr_name, None)
+                if existing_items is None:
+                    existing_items = []
+                
+                # Deduplicate based on identifying fields
+                merged_items = self._deduplicate_nodes(existing_items, items, attr_name)
+                setattr(merged_content, attr_name, merged_items)
+            
+            # Handle special _game_effects attribute (private DatabaseNode for game-effects.xml)
+            if hasattr(content, '_game_effects') and content._game_effects:
+                if not hasattr(merged_content, '_game_effects') or not merged_content._game_effects:
+                    from civ7_modding_tools.nodes.nodes import GameEffectNode
+                    merged_content._game_effects = GameEffectNode()
+                
+                # Merge modifiers from game effects
+                if hasattr(content._game_effects, 'modifiers') and content._game_effects.modifiers:
+                    existing_modifiers = getattr(merged_content._game_effects, 'modifiers', None) or []
+                    merged_modifiers = self._deduplicate_nodes(
+                        existing_modifiers, 
+                        content._game_effects.modifiers, 
+                        'modifiers'
+                    )
+                    merged_content._game_effects.modifiers = merged_modifiers
+            
+            # Handle private _game_effects attribute
+            if hasattr(content, '_game_effects') and content._game_effects:
+                if not hasattr(merged_content, '_game_effects') or not merged_content._game_effects:
+                    from civ7_modding_tools.nodes.nodes import GameEffectNode
+                    merged_content._game_effects = GameEffectNode()
+                
+                # Merge modifiers within _game_effects
+                if hasattr(content._game_effects, 'modifiers') and content._game_effects.modifiers:
+                    existing_modifiers = getattr(merged_content._game_effects, 'modifiers', None) or []
+                    new_modifiers = content._game_effects.modifiers
+                    merged_modifiers = self._deduplicate_nodes(existing_modifiers, new_modifiers, 'modifiers')
+                    merged_content._game_effects.modifiers = merged_modifiers
+        
+        # Create merged file
+        merged_file = XmlFile(
+            path=base_file.path,
+            name=base_file.name,
+            content=merged_content,
+            action_groups=base_file.action_groups
+        )
+        
+        return merged_file
+    
+    def _merge_game_effects_files(self, files: list[BaseFile]) -> BaseFile:
+        """
+        Merge multiple game-effects.xml files.
+        
+        Args:
+            files: List of XmlFile instances with GameEffectNode content
+            
+        Returns:
+            Single merged XmlFile with deduplicated modifiers
+        """
+        from civ7_modding_tools.nodes.nodes import GameEffectNode
+        
+        base_file = files[0]
+        merged_effects = GameEffectNode()
+        
+        all_modifiers = []
+        for file in files:
+            if not isinstance(file.content, GameEffectNode):
+                continue
+            
+            if hasattr(file.content, 'modifiers') and file.content.modifiers:
+                all_modifiers.extend(file.content.modifiers)
+        
+        # Deduplicate modifiers
+        if all_modifiers:
+            merged_effects.modifiers = self._deduplicate_nodes([], all_modifiers, 'modifiers')
+        
+        return XmlFile(
+            path=base_file.path,
+            name=base_file.name,
+            content=merged_effects,
+            action_groups=base_file.action_groups
+        )
+    
+    def _deduplicate_nodes(self, existing: list, new: list, table_name: str) -> list:
+        """
+        Deduplicate nodes based on unique identifier fields.
+        
+        Args:
+            existing: Existing node list
+            new: New nodes to add
+            table_name: Name of the table (for identifying unique fields)
+            
+        Returns:
+            Merged and deduplicated list
+        """
+        # Map table names to their unique identifier fields
+        unique_fields_map = {
+            'modifiers': ['modifier_id'],
+            'modifier_arguments': ['modifier_id', 'name'],
+            'types': ['type_'],
+            'units': ['unit_type'],
+            'unit_abilities': ['unit_ability_type'],
+            'unit_class_abilities': ['unit_ability_type', 'unit_class_type'],
+            'requirement_sets': ['requirement_set_id'],
+            'requirements': ['requirement_id'],
+            'game_modifiers': ['modifier_id'],
+        }
+        
+        unique_fields = unique_fields_map.get(table_name, [])
+        
+        if not unique_fields:
+            # No unique fields defined, just append
+            return existing + new
+        
+        # Build set of existing unique keys
+        existing_keys = set()
+        for item in existing:
+            key_parts = []
+            for field in unique_fields:
+                value = getattr(item, field, None)
+                key_parts.append(str(value) if value is not None else '')
+            existing_keys.add(tuple(key_parts))
+        
+        # Add only new items that don't exist
+        result = list(existing)
+        for item in new:
+            key_parts = []
+            for field in unique_fields:
+                value = getattr(item, field, None)
+                key_parts.append(str(value) if value is not None else '')
+            key = tuple(key_parts)
+            
+            if key not in existing_keys:
+                result.append(item)
+                existing_keys.add(key)
+        
+        return result
     
     def _generate_import_files_entries(self) -> dict[str, list[str]]:
         """

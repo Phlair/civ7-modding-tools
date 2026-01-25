@@ -336,15 +336,24 @@ class YamlToPyConverter:
         if not units:
             return
         
+        # Build upgrade chain map to detect which units are part of upgrade chains
+        upgrade_chains = self._detect_upgrade_chains(units)
+        
         self.add_line('# Units')
         
         for unit_data in units:
             builder_id = unit_data['id']
+            unit_type = unit_data.get('unit_type')
+            
             self.add_line(f'{builder_id} = UnitBuilder()')
             self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             
             # Build fill dict
             fill_dict = {k: v for k, v in unit_data.items() if k not in ['id', 'bindings']}
+            
+            # Set base_unit_type for units in upgrade chains
+            if unit_type and unit_type in upgrade_chains:
+                fill_dict['base_unit_type'] = upgrade_chains[unit_type]
             
             self.add_line(f'{builder_id}.fill({{')
             self.indent_level += 1
@@ -354,6 +363,66 @@ class YamlToPyConverter:
             self.indent_level -= 1
             self.add_line('})')
             self.add_line()
+    
+    def _detect_upgrade_chains(self, units: list[dict[str, Any]]) -> dict[str, str]:
+        """
+        Detect upgrade chains and map each unit to its chain root.
+        
+        Args:
+            units: List of unit data dictionaries
+            
+        Returns:
+            Dictionary mapping unit_type to base_unit_type (chain root)
+        """
+        # Build map of unit_type -> upgrade_unit
+        upgrades: dict[str, str] = {}
+        unit_types = set()
+        
+        for unit_data in units:
+            unit_type = unit_data.get('unit_type')
+            if not unit_type:
+                continue
+            
+            unit_types.add(unit_type)
+            unit_upgrade = unit_data.get('unit_upgrade', {})
+            if isinstance(unit_upgrade, dict):
+                upgrade_unit = unit_upgrade.get('upgrade_unit')
+                if upgrade_unit:
+                    upgrades[unit_type] = upgrade_unit
+        
+        # Find root of each chain (units that are upgraded to but not in our list)
+        chains: dict[str, str] = {}
+        
+        for unit_type in unit_types:
+            # Find the root by walking backwards
+            root = unit_type
+            visited = {unit_type}
+            
+            # Walk backwards through the chain
+            for potential_parent in unit_types:
+                if potential_parent in upgrades and upgrades[potential_parent] == unit_type:
+                    if potential_parent not in visited:
+                        root = potential_parent
+                        visited.add(potential_parent)
+            
+            # Continue walking backwards until we find the root
+            while True:
+                found_parent = False
+                for potential_parent in unit_types:
+                    if potential_parent in upgrades and upgrades[potential_parent] == root:
+                        if potential_parent not in visited:
+                            root = potential_parent
+                            visited.add(potential_parent)
+                            found_parent = True
+                            break
+                if not found_parent:
+                    break
+            
+            # If this unit is part of an upgrade chain (either upgrades or is upgraded to), map it
+            if unit_type in upgrades or any(upgrades.get(u) == unit_type for u in unit_types):
+                chains[unit_type] = root
+        
+        return chains
     
     def generate_constructibles(self) -> None:
         """Generate constructible builders."""
@@ -518,6 +587,22 @@ class YamlToPyConverter:
             if 'bindings' in tradition:
                 for binding in tradition['bindings']:
                     bound.add(binding)
+        
+        # Modifiers bound to unit abilities
+        for unit in self.data.get('units', []):
+            if 'unit_abilities' in unit:
+                for ability in unit['unit_abilities']:
+                    if 'modifiers' in ability:
+                        for modifier_id in ability['modifiers']:
+                            bound.add(modifier_id)
+        
+        # Modifiers bound to constructible abilities (if implemented in future)
+        for constructible in self.data.get('constructibles', []):
+            if 'abilities' in constructible:
+                for ability in constructible['abilities']:
+                    if 'modifiers' in ability:
+                        for modifier_id in ability['modifiers']:
+                            bound.add(modifier_id)
         
         return bound
     

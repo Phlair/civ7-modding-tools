@@ -944,6 +944,7 @@ class UnitBuilder(BaseBuilder):
         self._visual_remap: Optional[DatabaseNode] = None
         
         self.unit_type: Optional[str] = None
+        self.base_unit_type: Optional[str] = None  # For grouping upgrade chains in same folder
         self.civilization_type: Optional[str] = None  # Parent civilization for trait assignment
         self.unit: Dict[str, Any] = {}
         self.unit_stats: list[Dict[str, Any]] = []
@@ -964,6 +965,7 @@ class UnitBuilder(BaseBuilder):
         self.show_in_civ_picker: bool = True  # Display in civilization selection screen
         self.unit_abilities: list[Dict[str, Any]] = []  # Simple dict-based abilities
         self._bound_abilities: List['UnitAbilityBuilder'] = []  # Builder-based abilities
+        self._bound_modifiers: List['ModifierBuilder'] = []  # Modifiers for unit abilities
 
     def fill(self, payload: Dict[str, Any]) -> "UnitBuilder":
         """Fill unit builder from payload."""
@@ -1219,6 +1221,26 @@ class UnitBuilder(BaseBuilder):
                     self._current._game_effects.modifiers = []
                 self._current._game_effects.modifiers.extend(activation_modifiers)
         
+        # Merge bound modifier builders (for unit ability modifiers)
+        if self._bound_modifiers:
+            if not hasattr(self._current, '_game_effects') or not self._current._game_effects:
+                from civ7_modding_tools.nodes.nodes import GameEffectNode
+                self._current._game_effects = GameEffectNode()
+            if not hasattr(self._current._game_effects, 'modifiers'):
+                self._current._game_effects.modifiers = []
+            
+            for modifier_builder in self._bound_modifiers:
+                # Migrate the modifier builder
+                modifier_builder.migrate()
+                # Merge its game effects into the unit's game effects
+                if modifier_builder._game_effects and hasattr(modifier_builder._game_effects, 'modifiers'):
+                    self._current._game_effects.modifiers.extend(modifier_builder._game_effects.modifiers)
+                # Merge localizations
+                if modifier_builder._localizations and hasattr(modifier_builder._localizations, 'english_text'):
+                    if not hasattr(self._localizations, 'english_text') or not self._localizations.english_text:
+                        self._localizations.english_text = []
+                    self._localizations.english_text.extend(modifier_builder._localizations.english_text)
+        
         # Progression tree unlocks (tech/civic unlock requirements)
         unlock_node_type = None
         
@@ -1275,11 +1297,16 @@ class UnitBuilder(BaseBuilder):
                 if description_text:
                     # Collect ability descriptions from reference data
                     ability_descriptions = []
+                    
+                    # Collect from dict-based abilities
                     for ability_config in self.unit_abilities:
                         ability_type = ability_config.get('ability_type')
                         if ability_type:
-                            # Try to get description_text from ability config or reference data
+                            # Try to get description_text from ability config, then description, then reference data
                             desc_text = ability_config.get('description_text')
+                            if not desc_text:
+                                # Try description field as fallback
+                                desc_text = ability_config.get('description')
                             if not desc_text:
                                 # Load from reference data
                                 from civ7_modding_tools.data import get_unit_abilities
@@ -1289,6 +1316,15 @@ class UnitBuilder(BaseBuilder):
                             
                             if desc_text:  # Only append if we have actual text
                                 ability_descriptions.append(desc_text)
+                    
+                    # Collect from builder-based abilities (custom abilities)
+                    for ability_builder in self._bound_abilities:
+                        # Look for description in ability_builder's localizations
+                        for ability_loc in ability_builder.localizations:
+                            desc_text = ability_loc.get('description')
+                            if desc_text:
+                                ability_descriptions.append(desc_text)
+                                break  # Only use first description found
                     
                     # Append ability descriptions if any exist
                     if ability_descriptions:
@@ -1505,9 +1541,10 @@ class UnitBuilder(BaseBuilder):
         
         self.migrate()
         
-        # Generate path from unit type (trimmed + kebab-case)
+        # Generate path from base_unit_type if set (for upgrade chains), otherwise unit_type
         from civ7_modding_tools.utils import trim, kebab_case
-        trimmed = trim(self.unit_type)
+        path_unit_type = self.base_unit_type if self.base_unit_type else self.unit_type
+        trimmed = trim(path_unit_type)
         path = f"/units/{kebab_case(trimmed)}/"
         
         files: list[BaseFile] = [
@@ -1530,7 +1567,16 @@ class UnitBuilder(BaseBuilder):
                 action_groups=[self.action_group_bundle.shell, self.action_group_bundle.always]
             ),
         ]
-        
+
+        # Add game-effects if present (for unit ability modifiers)
+        if hasattr(self._current, '_game_effects') and self._current._game_effects:
+            files.append(XmlFile(
+                path=path,
+                name="game-effects.xml",
+                content=self._current._game_effects,
+                action_group=self.action_group_bundle.current
+            ))
+
         # Add visual-remap if present
         if self._visual_remap:
             files.append(XmlFile(
