@@ -80,3 +80,8 @@ npm-debug.log
 !CONTRIBUTING.md
 !.github/
 !.github/**
+
+# But ignore pycache in source directories
+src/**/__pycache__/
+tests/**/__pycache__/
+examples/**/__pycache__/
