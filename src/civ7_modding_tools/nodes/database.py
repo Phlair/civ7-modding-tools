@@ -347,6 +347,42 @@ class TraditionModifierNode(BaseNode):
 
 
 # ============================================================================
+# UNIT ABILITY NODES
+# ============================================================================
+
+class UnitAbilityNode(BaseNode):
+    """Represents a unit ability definition."""
+    _name: str = "Row"
+    unit_ability_type: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    inactive: Optional[bool] = None
+    keyword_ability_type: Optional[str] = None
+    operation_type: Optional[str] = None
+
+
+class UnitClassAbilityNode(BaseNode):
+    """Represents Unit Class-Ability relationship (junction table)."""
+    _name: str = "Row"
+    unit_ability_type: Optional[str] = None
+    unit_class_type: Optional[str] = None
+
+
+class UnitAbilityModifierNode(BaseNode):
+    """Represents Unit Ability-Modifier relationship (junction table)."""
+    _name: str = "Row"
+    unit_ability_type: Optional[str] = None
+    modifier_id: Optional[str] = None
+
+
+class ChargedUnitAbilityNode(BaseNode):
+    """Represents charged ability with recharge mechanics."""
+    _name: str = "Row"
+    unit_ability_type: Optional[str] = None
+    recharge_turns: Optional[int] = None
+
+
+# ============================================================================
 # LEADER UNLOCK NODES
 # ============================================================================
 
@@ -704,6 +740,12 @@ class DatabaseNode(BaseNode):
     unit_upgrades: list['UnitUpgradeNode'] = []
     unit_stats: list['BaseNode'] = []
     unit_advisories: list['UnitAdvisoryNode'] = []
+    
+    # Unit Abilities
+    unit_abilities: list['UnitAbilityNode'] = []
+    unit_class_abilities: list['UnitClassAbilityNode'] = []
+    unit_ability_modifiers: list['UnitAbilityModifierNode'] = []
+    charged_unit_abilities: list['ChargedUnitAbilityNode'] = []
     
     # Unlocks & Requirements
     unlocks: list['UnlockNode'] = []

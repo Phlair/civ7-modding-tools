@@ -1,0 +1,529 @@
+{
+  "values": [
+    {
+      "id": "ABILITY_ABAMBOWA"
+    },
+    {
+      "id": "ABILITY_AERODROME_AERIAL_RECON"
+    },
+    {
+      "id": "ABILITY_AERODYNAMICS_AIRCRAFT"
+    },
+    {
+      "id": "ABILITY_ANTIQUARIAN"
+    },
+    {
+      "id": "ABILITY_APERAL_CAVALRY_COMBAT_STRENGTH"
+    },
+    {
+      "id": "ABILITY_AQ_TECH_INFANTRY"
+    },
+    {
+      "id": "ABILITY_AQ_TECH_NAVAL"
+    },
+    {
+      "id": "ABILITY_AQ_TECH_RANGED"
+    },
+    {
+      "id": "ABILITY_AQ_TECH_SIEGE"
+    },
+    {
+      "id": "ABILITY_AT_MOD_COMBAT_FRIENDLY_TERRITORY"
+    },
+    {
+      "id": "ABILITY_AUTHORITARIANISM"
+    },
+    {
+      "id": "ABILITY_AVILA"
+    },
+    {
+      "id": "ABILITY_BALIK"
+    },
+    {
+      "id": "ABILITY_BALIK_PILLAGE"
+    },
+    {
+      "id": "ABILITY_BANNER_ARMY"
+    },
+    {
+      "id": "ABILITY_BARBARY_CORSAIR"
+    },
+    {
+      "id": "ABILITY_BILLAUD_VARENNE"
+    },
+    {
+      "id": "ABILITY_BOYAR"
+    },
+    {
+      "id": "ABILITY_BREAK_SOUND_BARRIER"
+    },
+    {
+      "id": "ABILITY_BRISSOT"
+    },
+    {
+      "id": "ABILITY_BUCCANEER"
+    },
+    {
+      "id": "ABILITY_BURNING_ARROW"
+    },
+    {
+      "id": "ABILITY_BURNING_ARROW_PILLAGE"
+    },
+    {
+      "id": "ABILITY_CAM_QUAN"
+    },
+    {
+      "id": "ABILITY_CETBANG"
+    },
+    {
+      "id": "ABILITY_CHANG_BEUN"
+    },
+    {
+      "id": "ABILITY_CHASQUI"
+    },
+    {
+      "id": "ABILITY_CHEVALER"
+    },
+    {
+      "id": "ABILITY_CHEVALER_CIV_TRADITIONS"
+    },
+    {
+      "id": "ABILITY_CLAIM_MOUNTAIN"
+    },
+    {
+      "id": "ABILITY_CLAIM_RESOURCE"
+    },
+    {
+      "id": "ABILITY_COLONIST"
+    },
+    {
+      "id": "ABILITY_CORSAIR"
+    },
+    {
+      "id": "ABILITY_COSSACK"
+    },
+    {
+      "id": "ABILITY_CRISIS_COMBAT_MINOR_PENALTY"
+    },
+    {
+      "id": "ABILITY_DANTINAS_TATHA"
+    },
+    {
+      "id": "ABILITY_DEFENSE_OF_THE_MOTHERLAND"
+    },
+    {
+      "id": "ABILITY_DE_FACTO"
+    },
+    {
+      "id": "ABILITY_DHOW"
+    },
+    {
+      "id": "ABILITY_ECONOMIC_DARK_AGE"
+    },
+    {
+      "id": "ABILITY_EGILL_SKALLAGRIMSSON"
+    },
+    {
+      "id": "ABILITY_EGILL_SKALLAGRIMSSON_COMMANDER"
+    },
+    {
+      "id": "ABILITY_EX_TECH_CAVALRY"
+    },
+    {
+      "id": "ABILITY_EX_TECH_INFANTRY"
+    },
+    {
+      "id": "ABILITY_EX_TECH_NAVAL"
+    },
+    {
+      "id": "ABILITY_EX_TECH_RANGED"
+    },
+    {
+      "id": "ABILITY_EX_TECH_SIEGE"
+    },
+    {
+      "id": "ABILITY_FOEDERATI"
+    },
+    {
+      "id": "ABILITY_GARDE_IMPERIALE"
+    },
+    {
+      "id": "ABILITY_GENERAL_MOROZ"
+    },
+    {
+      "id": "ABILITY_GHILMAN"
+    },
+    {
+      "id": "ABILITY_GOLD_BANGLES"
+    },
+    {
+      "id": "ABILITY_GRANDE_ARMEE"
+    },
+    {
+      "id": "ABILITY_GRETTIR_ASMUNDARSON"
+    },
+    {
+      "id": "ABILITY_GRETTIR_ASMUNDARSON_COMMANDER"
+    },
+    {
+      "id": "ABILITY_GUDRIDR_MOVEMENT"
+    },
+    {
+      "id": "ABILITY_GUDRIDR_SIGHT"
+    },
+    {
+      "id": "ABILITY_GURKHA"
+    },
+    {
+      "id": "ABILITY_GUSA"
+    },
+    {
+      "id": "ABILITY_HAMARANA_COUNCIL"
+    },
+    {
+      "id": "ABILITY_HANGSHANG"
+    },
+    {
+      "id": "ABILITY_HAN_YI"
+    },
+    {
+      "id": "ABILITY_HAZARAPATIS"
+    },
+    {
+      "id": "ABILITY_HERRERA"
+    },
+    {
+      "id": "ABILITY_HERRERA_COMBAT"
+    },
+    {
+      "id": "ABILITY_HILLFORT"
+    },
+    {
+      "id": "ABILITY_HOPLITE"
+    },
+    {
+      "id": "ABILITY_HOPLITE_UPGRADE"
+    },
+    {
+      "id": "ABILITY_HULCHE"
+    },
+    {
+      "id": "ABILITY_HUSSAR"
+    },
+    {
+      "id": "ABILITY_IGNORE_BORDERS"
+    },
+    {
+      "id": "ABILITY_IMMORTAL"
+    },
+    {
+      "id": "ABILITY_INITIATION"
+    },
+    {
+      "id": "ABILITY_INVASION_CRISIS_1"
+    },
+    {
+      "id": "ABILITY_INVASION_CRISIS_1_RANGED"
+    },
+    {
+      "id": "ABILITY_INVASION_CRISIS_2"
+    },
+    {
+      "id": "ABILITY_INVASION_CRISIS_2_RANGED"
+    },
+    {
+      "id": "ABILITY_INVASION_CRISIS_3"
+    },
+    {
+      "id": "ABILITY_INVASION_CRISIS_3_RANGED"
+    },
+    {
+      "id": "ABILITY_IRON_CROSS"
+    },
+    {
+      "id": "ABILITY_JANISSARY"
+    },
+    {
+      "id": "ABILITY_KALAM"
+    },
+    {
+      "id": "ABILITY_KALIA"
+    },
+    {
+      "id": "ABILITY_KATYUSHA"
+    },
+    {
+      "id": "ABILITY_KESHIG"
+    },
+    {
+      "id": "ABILITY_KHAY_MEDJAY_COMBAT_STRENGTH"
+    },
+    {
+      "id": "ABILITY_KIBRAT_ARBA_I"
+    },
+    {
+      "id": "ABILITY_KIBRAT_ARBA_I_COMBAT"
+    },
+    {
+      "id": "ABILITY_LEGATUS"
+    },
+    {
+      "id": "ABILITY_LEGION"
+    },
+    {
+      "id": "ABILITY_LEIOMANO"
+    },
+    {
+      "id": "ABILITY_LEIOMANO_CULTURE"
+    },
+    {
+      "id": "ABILITY_MAGARRU"
+    },
+    {
+      "id": "ABILITY_MAMLUK"
+    },
+    {
+      "id": "ABILITY_MAMLUK_LOCATION_CHECK"
+    },
+    {
+      "id": "ABILITY_MANDALA"
+    },
+    {
+      "id": "ABILITY_MANDARIN"
+    },
+    {
+      "id": "ABILITY_MANDARIN_BONUS"
+    },
+    {
+      "id": "ABILITY_MARINE"
+    },
+    {
+      "id": "ABILITY_MEDJAY"
+    },
+    {
+      "id": "ABILITY_MEIJI_KANTAI_KESSEN"
+    },
+    {
+      "id": "ABILITY_MIKASA"
+    },
+    {
+      "id": "ABILITY_MO_TECH_CAVALRY"
+    },
+    {
+      "id": "ABILITY_MO_TECH_INFANTRY"
+    },
+    {
+      "id": "ABILITY_MO_TECH_INTERCEPT_RANGE"
+    },
+    {
+      "id": "ABILITY_MO_TECH_NAVAL"
+    },
+    {
+      "id": "ABILITY_MO_TECH_RANGED"
+    },
+    {
+      "id": "ABILITY_MO_TECH_SIEGE"
+    },
+    {
+      "id": "ABILITY_MWAMI"
+    },
+    {
+      "id": "ABILITY_NG_OMA"
+    },
+    {
+      "id": "ABILITY_NOYAN"
+    },
+    {
+      "id": "ABILITY_NOYAN_MOUNTED_COMBAT"
+    },
+    {
+      "id": "ABILITY_NU"
+    },
+    {
+      "id": "ABILITY_NUMIDIAN_CAVALRY"
+    },
+    {
+      "id": "ABILITY_OTTRU"
+    },
+    {
+      "id": "ABILITY_PARTISAN"
+    },
+    {
+      "id": "ABILITY_PEDANDA"
+    },
+    {
+      "id": "ABILITY_PHYSICIAN"
+    },
+    {
+      "id": "ABILITY_PLUNDER_TRADE_ROUTES_BETWEEN_OTHER_CIVS"
+    },
+    {
+      "id": "ABILITY_PRIVATEER"
+    },
+    {
+      "id": "ABILITY_PRIVATEER_GOLD"
+    },
+    {
+      "id": "ABILITY_PURABHETTARAH"
+    },
+    {
+      "id": "ABILITY_PURABHETTARAH_ADJACENT"
+    },
+    {
+      "id": "ABILITY_PURABHETTARAH_HEALING"
+    },
+    {
+      "id": "ABILITY_REVENGE"
+    },
+    {
+      "id": "ABILITY_RIVER_RAIDS"
+    },
+    {
+      "id": "ABILITY_SAINT_JUST"
+    },
+    {
+      "id": "ABILITY_SAINT_JUST_COMBAT"
+    },
+    {
+      "id": "ABILITY_SAKDIPHONLASEP"
+    },
+    {
+      "id": "ABILITY_SEARCH_RECON"
+    },
+    {
+      "id": "ABILITY_SENANURAK"
+    },
+    {
+      "id": "ABILITY_SENANURAK_COMBAT"
+    },
+    {
+      "id": "ABILITY_SEPOY"
+    },
+    {
+      "id": "ABILITY_SHERPA"
+    },
+    {
+      "id": "ABILITY_SHIPSHEDS_FIRST_STRIKE"
+    },
+    {
+      "id": "ABILITY_SHORE_BATTERY"
+    },
+    {
+      "id": "ABILITY_SLOOP"
+    },
+    {
+      "id": "ABILITY_SOLDADERAS"
+    },
+    {
+      "id": "ABILITY_SOLDADERAS_ADJACENT"
+    },
+    {
+      "id": "ABILITY_SOLTAN"
+    },
+    {
+      "id": "ABILITY_SONGHAI_TRADE_PROTECTION"
+    },
+    {
+      "id": "ABILITY_STONE_TRAP"
+    },
+    {
+      "id": "ABILITY_STRENGTH_COMMAND_RADIUS"
+    },
+    {
+      "id": "ABILITY_STUKA"
+    },
+    {
+      "id": "ABILITY_TAJIRO"
+    },
+    {
+      "id": "ABILITY_TAJIRO_BONUS"
+    },
+    {
+      "id": "ABILITY_TANKWA"
+    },
+    {
+      "id": "ABILITY_TEHINA"
+    },
+    {
+      "id": "ABILITY_TEN_GREAT_CAMPAIGNS"
+    },
+    {
+      "id": "ABILITY_TERCIO"
+    },
+    {
+      "id": "ABILITY_TERCIO_CAVALRY_STRENGTH"
+    },
+    {
+      "id": "ABILITY_THEIR_FINEST_HOUR"
+    },
+    {
+      "id": "ABILITY_TREASURE_CONVOY_EMBARK_BONUS"
+    },
+    {
+      "id": "ABILITY_TREASURE_FLEET"
+    },
+    {
+      "id": "ABILITY_TURTANU"
+    },
+    {
+      "id": "ABILITY_VAISHYA"
+    },
+    {
+      "id": "ABILITY_VIET_KIEU"
+    },
+    {
+      "id": "ABILITY_VIKINGR"
+    },
+    {
+      "id": "ABILITY_VILLA"
+    },
+    {
+      "id": "ABILITY_VILLA_GOLD"
+    },
+    {
+      "id": "ABILITY_VOI_CHIEN"
+    },
+    {
+      "id": "ABILITY_VYUHAM_CAVALRY"
+    },
+    {
+      "id": "ABILITY_VYUHAM_INFANTRY"
+    },
+    {
+      "id": "ABILITY_WARAKAQ"
+    },
+    {
+      "id": "ABILITY_WATONATHI"
+    },
+    {
+      "id": "ABILITY_XENOPHON_HOPLITE_COMBAT_STRENGTH"
+    },
+    {
+      "id": "ABILITY_XUNLEICHONG"
+    },
+    {
+      "id": "ABILITY_XUNLEICHONG_BONUS"
+    },
+    {
+      "id": "ABILITY_XUNLEICHONG_NO_FEATURE_STRENGTH"
+    },
+    {
+      "id": "ABILITY_ZERO"
+    },
+    {
+      "id": "CHARGED_ABILITY_AERODROME_AERIAL_RECON"
+    },
+    {
+      "id": "CHARGED_ABILITY_CLAIM_MOUNTAIN"
+    },
+    {
+      "id": "CHARGED_ABILITY_CLAIM_RESOURCE"
+    },
+    {
+      "id": "CHARGED_ABILITY_RAIDING_PARTY"
+    },
+    {
+      "id": "CHARGED_ABILITY_STONE_TRAP"
+    }
+  ]
+}

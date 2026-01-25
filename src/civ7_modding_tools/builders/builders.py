@@ -964,6 +964,8 @@ class UnitBuilder(BaseBuilder):
         self.unlock_civic: Optional[str] = None  # Civic node that unlocks this unit
         self.auto_infer_unlock: bool = True  # Auto-detect unlock from replaced unit
         self.show_in_civ_picker: bool = True  # Display in civilization selection screen
+        self.unit_abilities: list[Dict[str, Any]] = []  # Simple dict-based abilities
+        self._bound_abilities: List['UnitAbilityBuilder'] = []  # Builder-based abilities
 
     def fill(self, payload: Dict[str, Any]) -> "UnitBuilder":
         """Fill unit builder from payload."""
@@ -1083,6 +1085,140 @@ class UnitBuilder(BaseBuilder):
                 )
                 advisory_nodes.append(advisory_node)
             self._current.unit_advisories = advisory_nodes
+        
+        # Unit abilities (process both dict-based and builder-based)
+        if self.unit_abilities or self._bound_abilities:
+            from civ7_modding_tools.nodes import (
+                UnitAbilityNode,
+                UnitClassAbilityNode,
+                UnitAbilityModifierNode,
+                ChargedUnitAbilityNode,
+            )
+            
+            ability_nodes = []
+            unit_class_ability_nodes = []
+            ability_modifier_nodes = []
+            charged_ability_nodes = []
+            activation_modifiers = []  # For auto-activating inactive abilities
+            
+            # Get unit class tag for linking abilities
+            unit_class_tag = self.unit_type.replace('UNIT_', 'UNIT_CLASS_')
+            
+            # Process builder-based abilities
+            for ability_builder in self._bound_abilities:
+                # Migrate the ability builder
+                ability_builder.migrate()
+                
+                ability_type = ability_builder.ability_type
+                if not ability_type:
+                    continue
+                
+                # Add Types
+                if ability_builder._current.types:
+                    if not self._current.types:
+                        self._current.types = []
+                    self._current.types.extend(ability_builder._current.types)
+                
+                # Collect UnitAbilities
+                if ability_builder._current.unit_abilities:
+                    ability_nodes.extend(ability_builder._current.unit_abilities)
+                
+                # Link ability to unit class
+                unit_class_ability_nodes.append(UnitClassAbilityNode(
+                    unit_ability_type=ability_type,
+                    unit_class_type=unit_class_tag,
+                ))
+                
+                # Collect UnitAbilityModifiers
+                if ability_builder._current.unit_ability_modifiers:
+                    ability_modifier_nodes.extend(ability_builder._current.unit_ability_modifiers)
+                
+                # Collect ChargedUnitAbilities
+                if ability_builder._current.charged_unit_abilities:
+                    charged_ability_nodes.extend(ability_builder._current.charged_unit_abilities)
+                
+                # Merge game effects
+                if ability_builder._game_effects and hasattr(ability_builder._game_effects, 'modifiers'):
+                    if not hasattr(self._current, '_game_effects') or not self._current._game_effects:
+                        from civ7_modding_tools.nodes.nodes import GameEffectNode
+                        self._current._game_effects = GameEffectNode()
+                    if not hasattr(self._current._game_effects, 'modifiers'):
+                        self._current._game_effects.modifiers = []
+                    self._current._game_effects.modifiers.extend(ability_builder._game_effects.modifiers)
+                
+                # Merge localizations
+                if ability_builder._localizations.english_text:
+                    if not self._localizations.english_text:
+                        self._localizations.english_text = []
+                    self._localizations.english_text.extend(ability_builder._localizations.english_text)
+                
+                # Auto-activate inactive abilities
+                if ability_builder.inactive:
+                    activation_modifiers.append(self._create_ability_activation_modifier(ability_type))
+            
+            # Process dict-based abilities (simple format)
+            for ability_config in self.unit_abilities:
+                ability_type = ability_config.get('ability_type')
+                if not ability_type:
+                    continue
+                
+                # Create ability node
+                ability_node = UnitAbilityNode(
+                    unit_ability_type=ability_type,
+                    name=locale(ability_type, 'name'),
+                    description=locale(ability_type, 'description'),
+                    inactive=ability_config.get('inactive', False) if ability_config.get('inactive') else None,
+                )
+                ability_nodes.append(ability_node)
+                
+                # Add Type
+                if not self._current.types:
+                    self._current.types = []
+                self._current.types.append(TypeNode(type_=ability_type, kind="KIND_ABILITY"))
+                
+                # Link to unit class
+                unit_class_ability_nodes.append(UnitClassAbilityNode(
+                    unit_ability_type=ability_type,
+                    unit_class_type=unit_class_tag,
+                ))
+                
+                # Link modifiers if provided
+                if 'modifiers' in ability_config:
+                    for modifier_id in ability_config['modifiers']:
+                        ability_modifier_nodes.append(UnitAbilityModifierNode(
+                            unit_ability_type=ability_type,
+                            modifier_id=modifier_id,
+                        ))
+                
+                # Charged ability config
+                if 'charged_config' in ability_config:
+                    charged_ability_nodes.append(ChargedUnitAbilityNode(
+                        unit_ability_type=ability_type,
+                        recharge_turns=ability_config['charged_config'].get('recharge_turns'),
+                    ))
+                
+                # Auto-activate if inactive
+                if ability_config.get('inactive'):
+                    activation_modifiers.append(self._create_ability_activation_modifier(ability_type))
+            
+            # Store all ability-related nodes
+            if ability_nodes:
+                self._current.unit_abilities = ability_nodes
+            if unit_class_ability_nodes:
+                self._current.unit_class_abilities = unit_class_ability_nodes
+            if ability_modifier_nodes:
+                self._current.unit_ability_modifiers = ability_modifier_nodes
+            if charged_ability_nodes:
+                self._current.charged_unit_abilities = charged_ability_nodes
+            
+            # Add activation modifiers to game effects
+            if activation_modifiers:
+                if not hasattr(self._current, '_game_effects') or not self._current._game_effects:
+                    from civ7_modding_tools.nodes.nodes import GameEffectNode
+                    self._current._game_effects = GameEffectNode()
+                if not hasattr(self._current._game_effects, 'modifiers'):
+                    self._current._game_effects.modifiers = []
+                self._current._game_effects.modifiers.extend(activation_modifiers)
         
         # Progression tree unlocks (tech/civic unlock requirements)
         unlock_node_type = None
@@ -1277,6 +1413,55 @@ class UnitBuilder(BaseBuilder):
             pass
         
         return None
+
+    def _create_ability_activation_modifier(self, ability_type: str) -> 'ModifierNode':
+        """
+        Create a modifier to auto-activate an inactive ability.
+        
+        Uses EFFECT_GRANT_ABILITY_CHARGE to grant the ability to units on creation.
+        
+        Args:
+            ability_type: The ability type to activate
+            
+        Returns:
+            ModifierNode for activating the ability
+        """
+        from civ7_modding_tools.nodes.nodes import ModifierNode
+        
+        modifier_id = f"{ability_type}_AUTO_ACTIVATION"
+        
+        modifier = ModifierNode()
+        modifier.id = modifier_id
+        modifier.collection = "COLLECTION_OWNER"
+        modifier.effect = "EFFECT_GRANT_ABILITY_CHARGE"
+        modifier.permanent = True
+        modifier.run_once = False
+        modifier.arguments = [
+            {"name": "AbilityType", "value": ability_type},
+            {"name": "Amount", "value": "1"},
+        ]
+        
+        return modifier
+
+    def bind(self, items: List['UnitAbilityBuilder']) -> "UnitBuilder":
+        """
+        Bind UnitAbilityBuilder items to this unit.
+        
+        Enables fluent API pattern:
+            ability = UnitAbilityBuilder().fill({...})
+            unit.bind([ability])
+        
+        Args:
+            items: List of UnitAbilityBuilder instances
+            
+        Returns:
+            Self for fluent API chaining
+        """
+        for item in items:
+            if not isinstance(item, UnitAbilityBuilder):
+                raise TypeError(f"Can only bind UnitAbilityBuilder to UnitBuilder, got {type(item)}")
+            self._bound_abilities.append(item)
+        return self
 
     def build(self) -> list[BaseFile]:
         """Build unit files with multiple variants."""
@@ -2163,6 +2348,157 @@ class GameModifierBuilder(BaseBuilder):
             files.append(xml_file)
         
         return files
+
+
+class UnitAbilityBuilder(BaseBuilder):
+    """Builder for creating unit abilities with modifier integration."""
+    
+    def __init__(self) -> None:
+        """Initialize unit ability builder."""
+        super().__init__()
+        self._current = DatabaseNode()
+        self._game_effects: Optional[DatabaseNode] = None
+        self._localizations = DatabaseNode()
+        
+        self.ability_type: Optional[str] = None
+        self.ability: Dict[str, Any] = {}
+        self.inactive: bool = False
+        self.charged_config: Optional[Dict[str, Any]] = None  # {'recharge_turns': 5}
+        self.localizations: List[Dict[str, Any]] = []
+        self._bound_modifiers: List['ModifierBuilder'] = []
+
+    def fill(self, payload: Dict[str, Any]) -> "UnitAbilityBuilder":
+        """Fill unit ability builder from payload."""
+        for key, value in payload.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        return self
+
+    def migrate(self) -> "UnitAbilityBuilder":
+        """Migrate and populate all database variants."""
+        from civ7_modding_tools.utils import locale
+        from civ7_modding_tools.nodes import (
+            UnitAbilityNode,
+            UnitAbilityModifierNode,
+            ChargedUnitAbilityNode,
+            EnglishTextNode,
+            GameEffectNode,
+        )
+        
+        if not self.ability_type:
+            raise ValueError("ability_type is required for UnitAbilityBuilder")
+        
+        # Generate localization keys
+        loc_name = locale(self.ability_type, 'name')
+        loc_description = locale(self.ability_type, 'description')
+        
+        # ==== POPULATE _current DATABASE ====
+        # Types
+        self._current.types = [
+            TypeNode(type_=self.ability_type, kind="KIND_ABILITY"),
+        ]
+        
+        # Unit ability definition
+        ability_node = UnitAbilityNode(
+            unit_ability_type=self.ability_type,
+            name=loc_name,
+            description=loc_description,
+            inactive=self.inactive if self.inactive else None,
+        )
+        # Apply additional ability properties
+        for key, value in self.ability.items():
+            setattr(ability_node, key, value)
+        
+        self._current.unit_abilities = [ability_node]
+        
+        # Charged ability configuration
+        if self.charged_config:
+            charged_node = ChargedUnitAbilityNode(
+                unit_ability_type=self.ability_type,
+                recharge_turns=self.charged_config.get('recharge_turns'),
+            )
+            self._current.charged_unit_abilities = [charged_node]
+        
+        # ==== POPULATE _game_effects DATABASE ====
+        # Process bound modifiers and link them to this ability
+        if self._bound_modifiers:
+            ability_modifier_nodes = []
+            all_game_effect_modifiers = []
+            
+            for modifier_builder in self._bound_modifiers:
+                # Ensure modifier is migrated
+                modifier_builder.migrate()
+                
+                # Get modifier ID from builder
+                modifier_id = modifier_builder.modifier_type or modifier_builder.modifier.get('id')
+                if not modifier_id:
+                    continue
+                
+                # Create UnitAbilityModifier junction entry
+                ability_modifier_nodes.append(UnitAbilityModifierNode(
+                    unit_ability_type=self.ability_type,
+                    modifier_id=modifier_id,
+                ))
+                
+                # Collect game effect modifiers from bound builders
+                if modifier_builder._game_effects and hasattr(modifier_builder._game_effects, 'modifiers'):
+                    all_game_effect_modifiers.extend(modifier_builder._game_effects.modifiers)
+            
+            self._current.unit_ability_modifiers = ability_modifier_nodes
+            
+            # Merge all game effects
+            if all_game_effect_modifiers:
+                if not self._game_effects:
+                    from civ7_modding_tools.nodes.nodes import GameEffectNode
+                    self._game_effects = GameEffectNode()
+                self._game_effects.modifiers = all_game_effect_modifiers
+        
+        # ==== POPULATE _localizations DATABASE ====
+        localization_rows = []
+        for loc in self.localizations:
+            if 'name' in loc:
+                localization_rows.append(EnglishTextNode(
+                    tag=loc_name,
+                    text=loc['name']
+                ))
+            if 'description' in loc:
+                localization_rows.append(EnglishTextNode(
+                    tag=loc_description,
+                    text=loc['description']
+                ))
+        
+        if localization_rows:
+            self._localizations.english_text = localization_rows
+        
+        return self
+
+    def bind(self, items: List['ModifierBuilder']) -> "UnitAbilityBuilder":
+        """
+        Bind ModifierBuilder items to this ability.
+        
+        Creates UnitAbilityModifiers junction entries and merges game effects.
+        
+        Args:
+            items: List of ModifierBuilder instances to attach
+            
+        Returns:
+            Self for fluent API chaining
+        """
+        for item in items:
+            if not isinstance(item, ModifierBuilder):
+                raise TypeError(f"Can only bind ModifierBuilder to UnitAbilityBuilder, got {type(item)}")
+            self._bound_modifiers.append(item)
+        return self
+
+    def build(self) -> list[BaseFile]:
+        """
+        Build unit ability files.
+        
+        Note: UnitAbilityBuilder doesn't generate files directly.
+        Instead, it's meant to be bound to a UnitBuilder which
+        generates the combined output.
+        """
+        return []
 
 
 class TraditionBuilder(BaseBuilder):

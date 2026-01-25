@@ -267,6 +267,11 @@ def get_units() -> List[Dict[str, str]]:
     return load_reference_data('units.json')['values']
 
 
+def get_unit_abilities() -> List[Dict[str, str]]:
+    """Get all available unit ability types."""
+    return load_reference_data('unit-abilities.json')['values']
+
+
 __all__ = [
     'load_reference_data',
     # Original types
@@ -309,4 +314,5 @@ __all__ = [
     'get_leader_attributes',
     'get_civilizations',
     'get_units',
+    'get_unit_abilities',
 ]

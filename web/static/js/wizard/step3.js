@@ -546,6 +546,125 @@ export function renderWizardStep3(container) {
                             </div>
                         </details>
                         
+                        <details class="bg-slate-900/50 rounded border border-slate-700">
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Unit Abilities (Optional)</summary>
+                            <div class="p-3 pt-2 space-y-3">
+                                <p class="text-xs text-slate-500 mb-2">Add special abilities to this unit with passive bonuses, combat modifiers, or charged effects.</p>
+                                
+                                <!-- Abilities List -->
+                                <div id="wizard-unit-abilities-list" class="space-y-2 mb-3"></div>
+                                
+                                <!-- Add Ability Button -->
+                                <button 
+                                    onclick="window.wizardShowAbilityForm()"
+                                    class="w-full px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium"
+                                >
+                                    + Add Ability
+                                </button>
+                                
+                                <!-- Ability Form (Hidden by default) -->
+                                <div id="wizard-ability-form" class="hidden mt-3 p-3 bg-slate-800/50 rounded border border-slate-600 space-y-2">
+                                    <input type="hidden" id="wizard-ability-edit-idx" value="-1" />
+                                    
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Ability Type *</label>
+                                        <select 
+                                            id="wizard-ability-type-select" 
+                                            onchange="window.toggleAbilityCustomType(this.value === '__CUSTOM__')"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        >
+                                            <option value="">Select existing ability...</option>
+                                            <option value="__CUSTOM__">✨ Create Custom Ability</option>
+                                        </select>
+                                        <input 
+                                            type="text" 
+                                            id="wizard-ability-type-custom" 
+                                            placeholder="ABILITY_MY_CUSTOM_UNIT"
+                                            class="hidden w-full px-2 py-1 mt-2 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                        <p class="text-xs text-slate-500 mt-1" id="wizard-ability-type-help">Select an existing game ability or create a custom one</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Display Name *</label>
+                                        <input 
+                                            type="text" 
+                                            id="wizard-ability-name" 
+                                            placeholder="Phalanx Formation"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Description *</label>
+                                        <textarea 
+                                            id="wizard-ability-description" 
+                                            placeholder="Gains +2 combat strength from each adjacent Hoplite"
+                                            rows="2"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        ></textarea>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-ability-inactive"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <label class="text-xs font-medium text-slate-300">Inactive (auto-activate on unit creation)</label>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-ability-charged"
+                                            onchange="document.getElementById('wizard-ability-recharge-div').classList.toggle('hidden', !this.checked)"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <label class="text-xs font-medium text-slate-300">Charged Ability (limited uses)</label>
+                                    </div>
+                                    
+                                    <div id="wizard-ability-recharge-div" class="hidden">
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Recharge Turns</label>
+                                        <input 
+                                            type="number" 
+                                            id="wizard-ability-recharge-turns" 
+                                            placeholder="5"
+                                            min="1"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                        <p class="text-xs text-slate-500 mt-1">Number of turns between ability uses</p>
+                                    </div>
+                                    
+                                    <div id="wizard-ability-modifiers-div">
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Modifier IDs (comma-separated)</label>
+                                        <input 
+                                            type="text" 
+                                            id="wizard-ability-modifiers" 
+                                            placeholder="HOPLITE_MOD_COMBAT_FROM_ADJACENT"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                        <p class="text-xs text-slate-500 mt-1" id="wizard-ability-modifiers-help">Optional: Only needed for custom abilities. Existing abilities already have their effects defined.</p>
+                                    </div>
+                                    
+                                    <div class="flex gap-2 mt-3">
+                                        <button 
+                                            onclick="window.wizardSaveAbility()"
+                                            class="flex-1 px-2 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium"
+                                        >
+                                            Save Ability
+                                        </button>
+                                        <button 
+                                            onclick="window.wizardCancelAbilityForm()"
+                                            class="flex-1 px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded text-xs font-medium"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                        
                         <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
                             <h6 class="text-xs font-semibold text-slate-400 mb-2">Visual Remap (Optional)</h6>
                             <div>
@@ -794,6 +913,9 @@ export function wizardShowUnitForm() {
     toggleUnitAutoInferUnlock(false);
     // Reset civ picker visibility
     document.getElementById('wizard-unit-show-in-civ-picker').checked = true;
+    // Reset abilities
+    wizardUnitCurrentAbilities = [];
+    renderWizardUnitAbilitiesList();
 
     form.classList.remove('hidden');
     document.getElementById('wizard-unit-id').focus();
@@ -985,6 +1107,11 @@ export function wizardSaveUnit() {
     if (showInCivPicker !== undefined) {
         unit.show_in_civ_picker = showInCivPicker;
     }
+    
+    // Unit abilities
+    if (wizardUnitCurrentAbilities && wizardUnitCurrentAbilities.length > 0) {
+        unit.unit_abilities = wizardUnitCurrentAbilities;
+    }
 
     if (visualRemapBase) {
         unit.visual_remap = {
@@ -1094,6 +1221,10 @@ export async function wizardEditUnit(idx) {
     createWizardDropdown('wizard-unit-unlock-civic', 'progression-trees', unit.unlock_civic || '', 'None');
     // Show/hide custom unlock fields based on auto-infer setting
     toggleUnitAutoInferUnlock(!autoInferUnlock);
+    
+    // Load abilities
+    wizardUnitCurrentAbilities = unit.unit_abilities || [];
+    renderWizardUnitAbilitiesList();
 
     document.getElementById('wizard-unit-form').classList.remove('hidden');
 }
@@ -1430,3 +1561,227 @@ export function toggleUnitAutoInferUnlock(showCustom) {
 window.toggleUnitReplacesCustom = toggleUnitReplacesCustom;
 window.toggleUnitUpgradeCustom = toggleUnitUpgradeCustom;
 window.toggleUnitAutoInferUnlock = toggleUnitAutoInferUnlock;
+
+// ===== UNIT ABILITIES CRUD =====
+
+export function renderWizardUnitAbilitiesList() {
+    const container = document.getElementById('wizard-unit-abilities-list');
+    if (!container) return;
+
+    const abilities = wizardUnitCurrentAbilities || [];
+    
+    if (abilities.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-500 italic">No abilities added yet</p>';
+        return;
+    }
+
+    container.innerHTML = abilities.map((ability, idx) => `
+        <div class="p-2 bg-slate-800/50 rounded border border-slate-600 flex items-center justify-between">
+            <div class="flex-1">
+                <div class="font-semibold text-slate-200 text-xs">${ability.ability_type || 'Unknown Ability'}</div>
+                <div class="text-xs text-slate-400 mt-1">${ability.name || 'No name'}</div>
+                ${ability.inactive ? '<span class="inline-block px-1.5 py-0.5 mt-1 bg-amber-600/20 text-amber-400 text-xs rounded">Inactive</span>' : ''}
+                ${ability.charged_config ? '<span class="inline-block px-1.5 py-0.5 mt-1 bg-purple-600/20 text-purple-400 text-xs rounded">Charged</span>' : ''}
+            </div>
+            <div class="flex gap-1">
+                <button 
+                    onclick="window.wizardEditAbility(${idx})"
+                    class="px-2 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs"
+                    title="Edit"
+                >
+                    Edit
+                </button>
+                <button 
+                    onclick="window.wizardRemoveAbility(${idx})"
+                    class="px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-xs"
+                    title="Remove"
+                >
+                    Remove
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+let wizardUnitCurrentAbilities = [];
+
+export function wizardShowAbilityForm() {
+    const form = document.getElementById('wizard-ability-form');
+    const editIdx = document.getElementById('wizard-ability-edit-idx');
+    
+    // Reset form
+    document.getElementById('wizard-ability-type-select').value = '';
+    document.getElementById('wizard-ability-type-custom').value = '';
+    document.getElementById('wizard-ability-type-custom').classList.add('hidden');
+    document.getElementById('wizard-ability-name').value = '';
+    document.getElementById('wizard-ability-description').value = '';
+    document.getElementById('wizard-ability-inactive').checked = false;
+    document.getElementById('wizard-ability-charged').checked = false;
+    document.getElementById('wizard-ability-recharge-turns').value = '';
+    document.getElementById('wizard-ability-modifiers').value = '';
+    document.getElementById('wizard-ability-recharge-div').classList.add('hidden');
+    document.getElementById('wizard-ability-type-help').textContent = 'Select an existing game ability or create a custom one';
+    document.getElementById('wizard-ability-modifiers-help').textContent = 'Optional: Only needed for custom abilities. Existing abilities already have their effects defined.';
+    editIdx.value = '-1';
+    
+    // Load ability options if not already loaded
+    loadAbilityOptions();
+    
+    form.classList.remove('hidden');
+}
+
+export function wizardCancelAbilityForm() {
+    const form = document.getElementById('wizard-ability-form');
+    form.classList.add('hidden');
+}
+
+export function wizardSaveAbility() {
+    const editIdx = parseInt(document.getElementById('wizard-ability-edit-idx').value, 10);
+    const selectedType = document.getElementById('wizard-ability-type-select').value;
+    const customType = document.getElementById('wizard-ability-type-custom').value.trim();
+    const abilityType = selectedType === '__CUSTOM__' ? customType : selectedType;
+    const name = document.getElementById('wizard-ability-name').value.trim();
+    const description = document.getElementById('wizard-ability-description').value.trim();
+    const inactive = document.getElementById('wizard-ability-inactive').checked;
+    const charged = document.getElementById('wizard-ability-charged').checked;
+    const rechargeTurns = document.getElementById('wizard-ability-recharge-turns').value;
+    const modifiersText = document.getElementById('wizard-ability-modifiers').value.trim();
+
+    if (!abilityType || !name || !description) {
+        showToast('Ability type, name, and description are required', 'error');
+        return;
+    }
+
+    const ability = {
+        ability_type: abilityType,
+        name: name,
+        description: description,
+        inactive: inactive || undefined,
+        modifiers: modifiersText ? modifiersText.split(',').map(m => m.trim()).filter(m => m) : [],
+    };
+
+    if (charged && rechargeTurns) {
+        ability.charged_config = { recharge_turns: parseInt(rechargeTurns, 10) };
+    }
+
+    if (editIdx >= 0) {
+        // Edit existing
+        wizardUnitCurrentAbilities[editIdx] = ability;
+    } else {
+        // Add new
+        wizardUnitCurrentAbilities.push(ability);
+    }
+
+    wizardCancelAbilityForm();
+    renderWizardUnitAbilitiesList();
+    markDirty();
+}
+
+export function wizardEditAbility(idx) {
+    const ability = wizardUnitCurrentAbilities[idx];
+    if (!ability) return;
+
+    // Load ability options first
+    loadAbilityOptions().then(() => {
+        const select = document.getElementById('wizard-ability-type-select');
+        const customInput = document.getElementById('wizard-ability-type-custom');
+        const abilityType = ability.ability_type || '';
+        
+        // Check if it's an existing ability
+        const isExisting = Array.from(select.options).some(opt => opt.value === abilityType);
+        
+        if (isExisting) {
+            select.value = abilityType;
+            customInput.classList.add('hidden');
+        } else {
+            select.value = '__CUSTOM__';
+            customInput.value = abilityType;
+            customInput.classList.remove('hidden');
+            document.getElementById('wizard-ability-type-help').textContent = 'Custom ability identifier';
+            document.getElementById('wizard-ability-modifiers-help').textContent = 'Required: Define modifiers to specify what this custom ability does';
+        }
+        
+        document.getElementById('wizard-ability-name').value = ability.name || '';
+        document.getElementById('wizard-ability-description').value = ability.description || '';
+        document.getElementById('wizard-ability-inactive').checked = ability.inactive || false;
+        document.getElementById('wizard-ability-charged').checked = !!ability.charged_config;
+        document.getElementById('wizard-ability-recharge-turns').value = ability.charged_config?.recharge_turns || '';
+        document.getElementById('wizard-ability-modifiers').value = ability.modifiers?.join(', ') || '';
+        document.getElementById('wizard-ability-edit-idx').value = idx;
+        
+        // Show/hide recharge field
+        if (ability.charged_config) {
+            document.getElementById('wizard-ability-recharge-div').classList.remove('hidden');
+        } else {
+            document.getElementById('wizard-ability-recharge-div').classList.add('hidden');
+        }
+
+        document.getElementById('wizard-ability-form').classList.remove('hidden');
+    });
+}
+
+export function wizardRemoveAbility(idx) {
+    wizardUnitCurrentAbilities.splice(idx, 1);
+    renderWizardUnitAbilitiesList();
+    markDirty();
+}
+
+// Helper: Toggle custom ability type input
+export function toggleAbilityCustomType(isCustom) {
+    const customInput = document.getElementById('wizard-ability-type-custom');
+    const helpText = document.getElementById('wizard-ability-type-help');
+    const modifiersHelp = document.getElementById('wizard-ability-modifiers-help');
+    
+    if (isCustom) {
+        customInput.classList.remove('hidden');
+        customInput.focus();
+        helpText.textContent = 'Enter unique ability identifier (e.g., ABILITY_MY_CUSTOM_UNIT)';
+        modifiersHelp.textContent = 'Required: Define modifiers to specify what this custom ability does';
+    } else {
+        customInput.classList.add('hidden');
+        customInput.value = '';
+        helpText.textContent = 'Select an existing game ability or create a custom one';
+        modifiersHelp.textContent = 'Optional: Only needed for custom abilities. Existing abilities already have their effects defined.';
+    }
+}
+
+// Helper: Load ability options from reference data
+let abilityOptionsLoaded = false;
+async function loadAbilityOptions() {
+    if (abilityOptionsLoaded) return;
+    
+    const select = document.getElementById('wizard-ability-type-select');
+    if (!select) return;
+    
+    try {
+        const response = await fetch('/api/data/unit-abilities');
+        const data = await response.json();
+        
+        // Clear loading option
+        while (select.options.length > 2) {
+            select.remove(2);
+        }
+        
+        // Add abilities
+        if (data.values && Array.isArray(data.values)) {
+            data.values.forEach(ability => {
+                const option = document.createElement('option');
+                option.value = ability.id;
+                option.textContent = ability.id;
+                select.appendChild(option);
+            });
+        }
+        
+        abilityOptionsLoaded = true;
+    } catch (error) {
+        console.error('Failed to load unit abilities:', error);
+    }
+}
+
+// Expose ability functions to window
+window.wizardShowAbilityForm = wizardShowAbilityForm;
+window.wizardCancelAbilityForm = wizardCancelAbilityForm;
+window.wizardSaveAbility = wizardSaveAbility;
+window.wizardEditAbility = wizardEditAbility;
+window.wizardRemoveAbility = wizardRemoveAbility;
+window.toggleAbilityCustomType = toggleAbilityCustomType;

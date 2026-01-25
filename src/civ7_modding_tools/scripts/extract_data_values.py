@@ -69,6 +69,7 @@ class CivVIIDataExtractor:
             'units': set(),
             'civilizations': set(),
             'civilization_traits': set(),
+            'unit_abilities': set(),
         }
         self.civ_cache = defaultdict(dict)
         self.civilization_ages = {}  # {civ_id: age_id}
@@ -273,6 +274,13 @@ class CivVIIDataExtractor:
             if tag == 'Row' and 'Type' in attribs and 'Kind' in attribs:
                 if attribs['Kind'] == 'KIND_UNIT':
                     self.data['units'].add(attribs['Type'])
+            
+            # UnitAbilities - extract ability types from UnitAbilityType attribute
+            # This captures abilities from UnitAbilities, UnitClass_Abilities, and UnitAbilityModifiers tables
+            if 'UnitAbilityType' in attribs:
+                ability_type = attribs['UnitAbilityType']
+                if ability_type.startswith('ABILITY_') or ability_type.startswith('CHARGED_ABILITY_'):
+                    self.data['unit_abilities'].add(ability_type)
             
             # Track units unlocked by progression tree nodes (for age mapping)
             # ProgressionTreeNodeUnlocks table maps progression nodes to units
@@ -787,6 +795,12 @@ class CivVIIDataExtractor:
             ]
         }
         self._write_json('units.json', units)
+
+        # UnitAbilities
+        unit_abilities = {
+            'values': [{'id': ua} for ua in sorted(self.data['unit_abilities'])]
+        }
+        self._write_json('unit-abilities.json', unit_abilities)
 
         # LeaderAttribute
         leader_attributes = {

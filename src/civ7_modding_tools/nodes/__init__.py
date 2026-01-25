@@ -81,6 +81,10 @@ from civ7_modding_tools.nodes.database import (
     ProgressionTreeNodeUnlockNode,
     ProgressionTreeQuoteNode,
     TraditionModifierNode,
+    UnitAbilityNode,
+    UnitClassAbilityNode,
+    UnitAbilityModifierNode,
+    ChargedUnitAbilityNode,
     LeaderUnlockNode,
     LeaderCivilizationBiasNode,
     DistrictFreeConstructibleNode,
@@ -128,6 +132,11 @@ __all__ = [
     "UnitReplaceNode",
     "UnitUpgradeNode",
     "UnitAdvisoryNode",
+    # Unit Abilities
+    "UnitAbilityNode",
+    "UnitClassAbilityNode",
+    "UnitAbilityModifierNode",
+    "ChargedUnitAbilityNode",
     # Constructibles
     "ConstructibleNode",
     "ConstructibleYieldChangeNode",
