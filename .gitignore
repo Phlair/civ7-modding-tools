@@ -6,9 +6,13 @@ Env/
 
 # Python cache files
 __pycache__/
+**/__pycache__/
+*.pyc
 **/*.pyc
 *.py[cod]
 *$py.class
+*.pyo
+*.pyd
 *.so
 .Python
 *.egg-info/
