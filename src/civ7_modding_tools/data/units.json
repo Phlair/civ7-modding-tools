@@ -3,7 +3,8 @@
     {
       "id": "UNIT_ABAMBOWA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_LINE_INFANTRY"
     },
     {
       "id": "UNIT_ABAMBOWA_2",
@@ -12,7 +13,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_RIFLEMAN"
     },
     {
       "id": "UNIT_ABAMBOWA_3",
@@ -21,67 +23,80 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
       "id": "UNIT_ALEXANDER_VON_HUMBOLDT",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_AL_FARABI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_AL_FARGHANI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_AL_JAHIZ",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_AL_JAZARI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_AL_KHWARIZMI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_AL_MAQDISI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_AL_SHAYBANI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_IBN_FADLAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_IBN_SINA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ALIM_RABIA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_ANTIQUARIAN",
@@ -90,7 +105,8 @@
       ],
       "unlocked_by": [
         "NODE_CIVIC_MO_MAIN_NATURAL_HISTORY"
-      ]
+      ],
+      "replaces": "UNIT_EXPLORER"
     },
     {
       "id": "UNIT_ARCHER",
@@ -99,7 +115,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_ARQUEBUSIER",
@@ -108,7 +125,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_ASSAULT_GUN",
@@ -117,7 +135,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_AT_GUN",
@@ -126,19 +145,22 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_BABYLON_SABUM_KIBITTUM",
       "ages": [],
       "unlocked_by": [
         "NODE_CIVICS_BABYLON1"
-      ]
+      ],
+      "replaces": "UNIT_WARRIOR"
     },
     {
       "id": "UNIT_BALIK",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_ARMY_COMMANDER"
     },
     {
       "id": "UNIT_BALLISTA",
@@ -147,7 +169,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_WHEEL"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_BARBARY_CORSAIR",
@@ -156,7 +179,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_STEAM_ENGINE"
-      ]
+      ],
+      "replaces": "UNIT_IRONCLAD"
     },
     {
       "id": "UNIT_BARBARY_CORSAIR_2",
@@ -165,7 +189,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": "UNIT_CRUISER"
     },
     {
       "id": "UNIT_BARBARY_CORSAIR_3",
@@ -174,7 +199,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_MOBILIZATION"
-      ]
+      ],
+      "replaces": "UNIT_DESTROYER"
     },
     {
       "id": "UNIT_BATTLESHIP",
@@ -183,7 +209,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_MOBILIZATION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_BIPLANE",
@@ -192,7 +219,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_FLIGHT"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_BOMBARD",
@@ -201,7 +229,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_BOMBER",
@@ -210,12 +239,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_FLIGHT"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_BOYAR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_COURSER"
     },
     {
       "id": "UNIT_BOYAR_2",
@@ -224,7 +255,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": "UNIT_KNIGHT"
     },
     {
       "id": "UNIT_BOYAR_3",
@@ -233,7 +265,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": "UNIT_LANCER"
     },
     {
       "id": "UNIT_BUCCANEER",
@@ -242,7 +275,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_ASTRONOMY"
-      ]
+      ],
+      "replaces": "UNIT_FLEET_COMMANDER"
     },
     {
       "id": "UNIT_BURNING_ARROW",
@@ -251,7 +285,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
-      ]
+      ],
+      "replaces": "UNIT_SLINGER"
     },
     {
       "id": "UNIT_BURNING_ARROW_2",
@@ -260,7 +295,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_ARCHER"
     },
     {
       "id": "UNIT_CARRACK",
@@ -269,17 +305,20 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_SHIPBUILDING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_CATAPULT",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CETBANG",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_COG"
     },
     {
       "id": "UNIT_CETBANG_2",
@@ -288,7 +327,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_SHIPBUILDING"
-      ]
+      ],
+      "replaces": "UNIT_CARRACK"
     },
     {
       "id": "UNIT_CETBANG_3",
@@ -297,12 +337,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": "UNIT_GALLEON"
     },
     {
       "id": "UNIT_CHANG_BEUN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_FIELD_CANNON"
     },
     {
       "id": "UNIT_CHANG_BEUN_2",
@@ -311,7 +353,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_FIELD_GUN"
     },
     {
       "id": "UNIT_CHANG_BEUN_3",
@@ -320,7 +363,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_AT_GUN"
     },
     {
       "id": "UNIT_CHARIOT",
@@ -329,17 +373,20 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_WHEEL"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_CHASQUI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SCOUT"
     },
     {
       "id": "UNIT_CHEVALER",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_COURSER"
     },
     {
       "id": "UNIT_CHEVALER_2",
@@ -348,7 +395,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": "UNIT_KNIGHT"
     },
     {
       "id": "UNIT_CHEVALER_3",
@@ -357,77 +405,92 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": "UNIT_LANCER"
     },
     {
       "id": "UNIT_COG",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_COLONIST",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SETTLER"
     },
     {
       "id": "UNIT_CONQUISTADOR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_ALVAR_NUNEZ_CABEZA_DE_VACA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_CHRISTOPHER_COLUMBUS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_FERDINAND_MAGELLAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_FRANCISCO_DE_ORELLANA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_FRANCISCO_PIZARRO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_HERNANDO_DE_SOTO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_HERNAN_CORTES",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_JUAN_PONCE_DE_LEON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_MIGUEL_LOPEZ_DE_LEGAZPI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CONQUISTADOR_SUAREZ",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CORSAIR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CORSAIR_2",
@@ -436,7 +499,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_SHIPBUILDING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_CORSAIR_3",
@@ -445,12 +509,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_COSSACK",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_COSSACK_2",
@@ -459,7 +525,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_COSSACK_3",
@@ -468,12 +535,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_COURSER",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_CROSSBOWMAN",
@@ -482,7 +551,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_CASTLES"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_CRUISER",
@@ -491,12 +561,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_CUIRASSIER",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_DANTINAS_TATHA",
@@ -505,7 +577,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_WHEEL"
-      ]
+      ],
+      "replaces": "UNIT_CHARIOT"
     },
     {
       "id": "UNIT_DANTINAS_TATHA_2",
@@ -514,7 +587,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_HORSEMAN"
     },
     {
       "id": "UNIT_DESTROYER",
@@ -523,7 +597,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_MOBILIZATION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_DHOW",
@@ -532,7 +607,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_SAILING"
-      ]
+      ],
+      "replaces": "UNIT_GALLEY"
     },
     {
       "id": "UNIT_DHOW_2",
@@ -541,7 +617,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_NAVIGATION"
-      ]
+      ],
+      "replaces": "UNIT_QUADRIREME"
     },
     {
       "id": "UNIT_DIVEBOMBER",
@@ -550,7 +627,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_AERODYNAMICS"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_DREADNOUGHT",
@@ -559,7 +637,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_EXPLORER",
@@ -568,12 +647,14 @@
       ],
       "unlocked_by": [
         "NODE_CIVIC_MO_MAIN_NATURAL_HISTORY"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_FIELD_CANNON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_FIELD_GUN",
@@ -582,7 +663,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_FIGHTER",
@@ -591,17 +673,20 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_AERODYNAMICS"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_FOEDERATI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_FRIGATE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_GALLEON",
@@ -610,7 +695,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_GALLEY",
@@ -619,12 +705,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_SAILING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_GARDE_IMPERIALE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_LINE_INFANTRY"
     },
     {
       "id": "UNIT_GARDE_IMPERIALE_2",
@@ -633,7 +721,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_RIFLEMAN"
     },
     {
       "id": "UNIT_GARDE_IMPERIALE_3",
@@ -642,12 +731,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
       "id": "UNIT_GHILMAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_CUIRASSIER"
     },
     {
       "id": "UNIT_GHILMAN_2",
@@ -656,7 +747,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": "UNIT_LANDSHIP"
     },
     {
       "id": "UNIT_GHILMAN_3",
@@ -665,12 +757,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_TANK"
     },
     {
       "id": "UNIT_GOLD_BANGLES",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SWORDSMAN"
     },
     {
       "id": "UNIT_GOLD_BANGLES_2",
@@ -679,7 +773,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": "UNIT_MAN_AT_ARMS"
     },
     {
       "id": "UNIT_GOLD_BANGLES_3",
@@ -688,12 +783,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": "UNIT_PIKEMAN"
     },
     {
       "id": "UNIT_GURKHA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_LINE_INFANTRY"
     },
     {
       "id": "UNIT_GURKHA_2",
@@ -702,7 +799,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_RIFLEMAN"
     },
     {
       "id": "UNIT_GURKHA_3",
@@ -711,12 +809,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
       "id": "UNIT_GUSA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_LINE_INFANTRY"
     },
     {
       "id": "UNIT_GUSA_2",
@@ -725,7 +825,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_RIFLEMAN"
     },
     {
       "id": "UNIT_GUSA_3",
@@ -734,12 +835,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
       "id": "UNIT_HANGSHANG",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_MERCHANT"
     },
     {
       "id": "UNIT_HAZARAPATIS",
@@ -748,12 +851,14 @@
       ],
       "unlocked_by": [
         "NODE_CIVIC_AQ_MAIN_DISCIPLINE"
-      ]
+      ],
+      "replaces": "UNIT_ARMY_COMMANDER"
     },
     {
       "id": "UNIT_HEAVY_ARCHER",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_HEAVY_ARTILLERY",
@@ -762,7 +867,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_HEAVY_BOMBER",
@@ -771,17 +877,20 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_AERODYNAMICS"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_HERODOTUS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_HOPLITE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_WARRIOR"
     },
     {
       "id": "UNIT_HOPLITE_2",
@@ -790,7 +899,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_SPEARMAN"
     },
     {
       "id": "UNIT_HOPLITE_3",
@@ -799,7 +909,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_PHALANX"
     },
     {
       "id": "UNIT_HORSEMAN",
@@ -808,7 +919,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_HULCHE",
@@ -817,7 +929,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
-      ]
+      ],
+      "replaces": "UNIT_SLINGER"
     },
     {
       "id": "UNIT_HULCHE_2",
@@ -826,12 +939,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_ARCHER"
     },
     {
       "id": "UNIT_HUSSAR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_HUSSAR_2",
@@ -840,7 +955,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_HUSSAR_3",
@@ -849,7 +965,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_IMMORTAL",
@@ -858,7 +975,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_SPEARMAN"
     },
     {
       "id": "UNIT_IMMORTAL_2",
@@ -867,7 +985,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_PHALANX"
     },
     {
       "id": "UNIT_INFANTRY_COMPANY",
@@ -876,7 +995,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_IRONCLAD",
@@ -885,72 +1005,86 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_STEAM_ENGINE"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_BARRAS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_BILLAUD_VARENNE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_BRISSOT",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_DANTON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_DESMOULINS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_D_AELDERS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_GOUGES",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_MARAT",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_ROBESPIERRE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JACOBIN_SAINT_JUST",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_JAGUAR_SLAYER",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SCOUT"
     },
     {
       "id": "UNIT_JANISSARY",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_LINE_INFANTRY"
     },
     {
       "id": "UNIT_JANISSARY_2",
@@ -959,7 +1093,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_RIFLEMAN"
     },
     {
       "id": "UNIT_JANISSARY_3",
@@ -968,22 +1103,26 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
       "id": "UNIT_JOHN_MAYNARD_KEYNES",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_KAHUNA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_MISSIONARY"
     },
     {
       "id": "UNIT_KALAM",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_COG"
     },
     {
       "id": "UNIT_KALAM_2",
@@ -992,7 +1131,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_SHIPBUILDING"
-      ]
+      ],
+      "replaces": "UNIT_CARRACK"
     },
     {
       "id": "UNIT_KALAM_3",
@@ -1001,7 +1141,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": "UNIT_GALLEON"
     },
     {
       "id": "UNIT_KALIA",
@@ -1010,7 +1151,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_SAILING"
-      ]
+      ],
+      "replaces": "UNIT_GALLEY"
     },
     {
       "id": "UNIT_KALIA_2",
@@ -1019,7 +1161,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_NAVIGATION"
-      ]
+      ],
+      "replaces": "UNIT_QUADRIREME"
     },
     {
       "id": "UNIT_KATYUSHA",
@@ -1028,7 +1171,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_HEAVY_ARTILLERY"
     },
     {
       "id": "UNIT_KATYUSHA_2",
@@ -1037,12 +1181,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_ASSAULT_GUN"
     },
     {
       "id": "UNIT_KESHIG",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_HEAVY_ARCHER"
     },
     {
       "id": "UNIT_KESHIG_2",
@@ -1051,7 +1197,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_CASTLES"
-      ]
+      ],
+      "replaces": "UNIT_CROSSBOWMAN"
     },
     {
       "id": "UNIT_KESHIG_3",
@@ -1060,7 +1207,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": "UNIT_ARQUEBUSIER"
     },
     {
       "id": "UNIT_KNIGHT",
@@ -1069,7 +1217,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_LANCER",
@@ -1078,7 +1227,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_LANDSHIP",
@@ -1087,7 +1237,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_LEGATUS",
@@ -1096,7 +1247,8 @@
       ],
       "unlocked_by": [
         "NODE_CIVIC_AQ_MAIN_DISCIPLINE"
-      ]
+      ],
+      "replaces": "UNIT_ARMY_COMMANDER"
     },
     {
       "id": "UNIT_LEGION",
@@ -1105,7 +1257,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_SPEARMAN"
     },
     {
       "id": "UNIT_LEGION_2",
@@ -1114,12 +1267,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_PHALANX"
     },
     {
       "id": "UNIT_LEIOMANO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SWORDSMAN"
     },
     {
       "id": "UNIT_LEIOMANO_2",
@@ -1128,7 +1283,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": "UNIT_MAN_AT_ARMS"
     },
     {
       "id": "UNIT_LEIOMANO_3",
@@ -1137,67 +1293,80 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": "UNIT_PIKEMAN"
     },
     {
       "id": "UNIT_LINE_INFANTRY",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_ARETE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_ARISTOTLE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_ASPASIA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_HYPATIA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_PLATO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_PYTHAGORAS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_SAPPHO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_SOCRATES",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_THALES",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_LOGIOS_XENOPHON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_MAGARRU",
@@ -1206,7 +1375,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_WHEEL"
-      ]
+      ],
+      "replaces": "UNIT_CHARIOT"
     },
     {
       "id": "UNIT_MAGARRU_2",
@@ -1215,12 +1385,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_HORSEMAN"
     },
     {
       "id": "UNIT_MAMLUK",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_COURSER"
     },
     {
       "id": "UNIT_MAMLUK_2",
@@ -1229,7 +1401,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": "UNIT_KNIGHT"
     },
     {
       "id": "UNIT_MAMLUK_3",
@@ -1238,12 +1411,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": "UNIT_LANCER"
     },
     {
       "id": "UNIT_MANDARIN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_MERCHANT"
     },
     {
       "id": "UNIT_MAN_AT_ARMS",
@@ -1252,7 +1427,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_MARINE",
@@ -1261,7 +1437,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_RIFLEMAN"
     },
     {
       "id": "UNIT_MARINE_2",
@@ -1270,12 +1447,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
       "id": "UNIT_MEDJAY",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_WARRIOR"
     },
     {
       "id": "UNIT_MEDJAY_2",
@@ -1284,7 +1463,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_SPEARMAN"
     },
     {
       "id": "UNIT_MEDJAY_3",
@@ -1293,7 +1473,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_PHALANX"
     },
     {
       "id": "UNIT_MIKASA",
@@ -1302,7 +1483,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": "UNIT_DREADNOUGHT"
     },
     {
       "id": "UNIT_MIKASA_2",
@@ -1311,32 +1493,38 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_MOBILIZATION"
-      ]
+      ],
+      "replaces": "UNIT_BATTLESHIP"
     },
     {
       "id": "UNIT_MISSIONARY",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_MORTAR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_MWAMI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_ARMY_COMMANDER"
     },
     {
       "id": "UNIT_NAGARIKA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SETTLER"
     },
     {
       "id": "UNIT_NOYAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_ARMY_COMMANDER"
     },
     {
       "id": "UNIT_NU",
@@ -1345,7 +1533,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
-      ]
+      ],
+      "replaces": "UNIT_SLINGER"
     },
     {
       "id": "UNIT_NUMIDIAN_CAVALRY",
@@ -1354,7 +1543,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_WHEEL"
-      ]
+      ],
+      "replaces": "UNIT_CHARIOT"
     },
     {
       "id": "UNIT_NUMIDIAN_CAVALRY_2",
@@ -1363,7 +1553,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_HORSEMAN"
     },
     {
       "id": "UNIT_NU_2",
@@ -1372,7 +1563,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_ARCHER"
     },
     {
       "id": "UNIT_OTTRU",
@@ -1381,12 +1573,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_ASTRONOMY"
-      ]
+      ],
+      "replaces": "UNIT_FLEET_COMMANDER"
     },
     {
       "id": "UNIT_PARTISAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_PARTISAN_2",
@@ -1395,7 +1589,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_PARTISAN_3",
@@ -1404,12 +1599,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_PEDANDA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_MISSIONARY"
     },
     {
       "id": "UNIT_PHALANX",
@@ -1418,12 +1615,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_PHYSICIAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_PIKEMAN",
@@ -1432,7 +1631,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_PRIVATEER",
@@ -1441,7 +1641,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_PRIVATEER_2",
@@ -1450,12 +1651,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_PROSPECTOR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_PURABHETTARAH",
@@ -1464,7 +1667,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_WHEEL"
-      ]
+      ],
+      "replaces": "UNIT_CHARIOT"
     },
     {
       "id": "UNIT_PURABHETTARAH_2",
@@ -1473,7 +1677,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_IRON_WORKING"
-      ]
+      ],
+      "replaces": "UNIT_HORSEMAN"
     },
     {
       "id": "UNIT_QUADRIREME",
@@ -1482,7 +1687,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_NAVIGATION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_REVENGE",
@@ -1491,7 +1697,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
-      ]
+      ],
+      "replaces": "UNIT_DREADNOUGHT"
     },
     {
       "id": "UNIT_REVENGE_2",
@@ -1500,62 +1707,74 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_MOBILIZATION"
-      ]
+      ],
+      "replaces": "UNIT_BATTLESHIP"
     },
     {
       "id": "UNIT_REVOLUCIONARIO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_AVILA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_GUERRERO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_HERRERA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_HIDALGO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_JIMENEZ",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_JUAREZ",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_MORELOS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_SANTA_ANNA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_VILLA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_REVOLUCIONARIO_ZAPATA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_RIFLEMAN",
@@ -1564,67 +1783,80 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_EGILL_SKALLAGRIMSSON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_FREYDIS_EIRIKSDOTTIR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_GISLI_SURSSON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_GRETTIR_ASMUNDARSON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_GUDRIDR_THORBJARNARDOTTIR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_GUDRUN_OSVIFRSDOTTIR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_GUNNAR_HAMUNDARSON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_HRAFNKELL_HALLFREDSSON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_KJARTAN_OLAFSSON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SAGA_HERO_NJALL_THORGEIRSSON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SEPOY",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_LINE_INFANTRY"
     },
     {
       "id": "UNIT_SEPOY_2",
@@ -1633,7 +1865,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_RIFLEMAN"
     },
     {
       "id": "UNIT_SEPOY_3",
@@ -1642,67 +1875,80 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
       "id": "UNIT_SHERPA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SCOUT"
     },
     {
       "id": "UNIT_SHI_DAFU",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_BAN_ZHAO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_HAN_FEI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_LAOZI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_MENCIUS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_MOZI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_SHANG_YANG",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_SHEN_BUHAI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_WANG_YANGMING",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_XUN_KUANG",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHI_DAFU_ZHANG_HENG",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SLINGER",
@@ -1711,12 +1957,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_SLOOP",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SLOOP_2",
@@ -1725,7 +1973,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": "UNIT_PRIVATEER"
     },
     {
       "id": "UNIT_SLOOP_3",
@@ -1734,17 +1983,20 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": "UNIT_PRIVATEER_2"
     },
     {
       "id": "UNIT_SOKEMAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SETTLER"
     },
     {
       "id": "UNIT_SOLDADERAS",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_LINE_INFANTRY"
     },
     {
       "id": "UNIT_SOLDADERAS_2",
@@ -1753,7 +2005,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_INDUSTRIALIZATION"
-      ]
+      ],
+      "replaces": "UNIT_RIFLEMAN"
     },
     {
       "id": "UNIT_SOLDADERAS_3",
@@ -1762,12 +2015,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
       "id": "UNIT_SOLTAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_ARMY_COMMANDER"
     },
     {
       "id": "UNIT_SPEARMAN",
@@ -1776,7 +2031,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_STUKA",
@@ -1785,7 +2041,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_FLIGHT"
-      ]
+      ],
+      "replaces": "UNIT_TRENCH_FIGHTER"
     },
     {
       "id": "UNIT_STUKA_2",
@@ -1794,7 +2051,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_AERODYNAMICS"
-      ]
+      ],
+      "replaces": "UNIT_DIVEBOMBER"
     },
     {
       "id": "UNIT_SUBMARINE",
@@ -1803,17 +2061,20 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_MOBILIZATION"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_SWORDSMAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TAJIRO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_MERCHANT"
     },
     {
       "id": "UNIT_TANK",
@@ -1822,22 +2083,26 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_TANKWA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_TRADE_SHIP"
     },
     {
       "id": "UNIT_TEHINA",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SCOUT"
     },
     {
       "id": "UNIT_TERCIO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SWORDSMAN"
     },
     {
       "id": "UNIT_TERCIO_2",
@@ -1846,7 +2111,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": "UNIT_MAN_AT_ARMS"
     },
     {
       "id": "UNIT_TERCIO_3",
@@ -1855,67 +2121,80 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": "UNIT_PIKEMAN"
     },
     {
       "id": "UNIT_TJATY",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_AMHOSE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_APEREL",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_HEMIUNU",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_IMHOTEP",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_KHAY",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_NEBET",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_PASER",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_PTAHHOTEP",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_RAMOSE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TJATY_USERAMEN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TREASURE_FLEET",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_TREBUCHET",
@@ -1924,7 +2203,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METALLURGY"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_TRENCH_FIGHTER",
@@ -1933,7 +2213,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_FLIGHT"
-      ]
+      ],
+      "replaces": null
     },
     {
       "id": "UNIT_TURTANU",
@@ -1943,62 +2224,74 @@
       "unlocked_by": [
         "NODE_CIVIC_AQ_ASSYRIA_TUPSARRUTU",
         "NODE_CIVIC_AQ_MAIN_DISCIPLINE"
-      ]
+      ],
+      "replaces": "UNIT_ARMY_COMMANDER"
     },
     {
       "id": "UNIT_UPARAT",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_CHAKRABONGSE",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_ITSARASUNTHON",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_PHIBUN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_PINKLAO",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_PRIDI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_RASMI",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_SAKDIPHONLASEP",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_SENANURAK",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_VAJRAVUDH",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_UPARAT_WICHAICHAN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_VAISHYA",
@@ -2007,22 +2300,26 @@
       ],
       "unlocked_by": [
         "NODE_CIVIC_AQ_MAIN_CODE_OF_LAWS"
-      ]
+      ],
+      "replaces": "UNIT_MERCHANT"
     },
     {
       "id": "UNIT_VICTORY",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_VIET_KIEU",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SETTLER"
     },
     {
       "id": "UNIT_VIKINGR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_COG"
     },
     {
       "id": "UNIT_VIKINGR_2",
@@ -2031,7 +2328,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_SHIPBUILDING"
-      ]
+      ],
+      "replaces": "UNIT_CARRACK"
     },
     {
       "id": "UNIT_VIKINGR_3",
@@ -2040,12 +2338,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": "UNIT_GALLEON"
     },
     {
       "id": "UNIT_VOI_CHIEN",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_HEAVY_ARCHER"
     },
     {
       "id": "UNIT_VOI_CHIEN_2",
@@ -2054,7 +2354,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_CASTLES"
-      ]
+      ],
+      "replaces": "UNIT_CROSSBOWMAN"
     },
     {
       "id": "UNIT_VOI_CHIEN_3",
@@ -2063,12 +2364,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": "UNIT_ARQUEBUSIER"
     },
     {
       "id": "UNIT_WARAKAQ",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_HEAVY_ARCHER"
     },
     {
       "id": "UNIT_WARAKAQ_2",
@@ -2077,7 +2380,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_CASTLES"
-      ]
+      ],
+      "replaces": "UNIT_CROSSBOWMAN"
     },
     {
       "id": "UNIT_WARAKAQ_3",
@@ -2086,12 +2390,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_GUNPOWDER"
-      ]
+      ],
+      "replaces": "UNIT_ARQUEBUSIER"
     },
     {
       "id": "UNIT_WARRIOR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_WATONATHI",
@@ -2100,12 +2406,14 @@
       ],
       "unlocked_by": [
         "NODE_CIVIC_AQ_MAIN_CODE_OF_LAWS"
-      ]
+      ],
+      "replaces": "UNIT_MERCHANT"
     },
     {
       "id": "UNIT_XUNLEICHONG",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SWORDSMAN"
     },
     {
       "id": "UNIT_XUNLEICHONG_2",
@@ -2114,7 +2422,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_HERALDRY"
-      ]
+      ],
+      "replaces": "UNIT_MAN_AT_ARMS"
     },
     {
       "id": "UNIT_XUNLEICHONG_3",
@@ -2123,12 +2432,14 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_METAL_CASTING"
-      ]
+      ],
+      "replaces": "UNIT_PIKEMAN"
     },
     {
       "id": "UNIT_ZAMINDAR",
       "ages": [],
-      "unlocked_by": []
+      "unlocked_by": [],
+      "replaces": "UNIT_SETTLER"
     },
     {
       "id": "UNIT_ZERO",
@@ -2137,7 +2448,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_FLIGHT"
-      ]
+      ],
+      "replaces": "UNIT_BIPLANE"
     },
     {
       "id": "UNIT_ZERO_2",
@@ -2146,7 +2458,8 @@
       ],
       "unlocked_by": [
         "NODE_TECH_MO_AERODYNAMICS"
-      ]
+      ],
+      "replaces": "UNIT_FIGHTER"
     }
   ]
 }

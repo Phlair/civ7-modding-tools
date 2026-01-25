@@ -603,6 +603,38 @@ function ensureIconImports() {
             });
         }
     }
+    
+    // Check unit icons
+    if (Array.isArray(wizardData.units)) {
+        wizardData.units.forEach((unit, unitIdx) => {
+            const unitIconPath = unit.icon?.path;
+            if (unitIconPath && unitIconPath.trim()) {
+                let sourcePathForImport = unitIconPath;
+                
+                if (!unitIconPath.includes('generated_icons') && !unitIconPath.startsWith('/')) {
+                    const fileName = unitIconPath.split('/').pop();
+                    sourcePathForImport = `generated_icons/${fileName}.png`;
+                }
+                
+                const cleanName = unitIconPath.split('/').pop() || 'unit_icon';
+                
+                // Check if import exists for this specific unit icon
+                const existingImportIdx = wizardData.imports.findIndex(
+                    imp => imp.target_name === cleanName || 
+                           (imp.source_path === sourcePathForImport && imp.id?.includes('unit_icon'))
+                );
+                
+                if (existingImportIdx < 0) {
+                    // Create new import entry only if it doesn't exist
+                    wizardData.imports.push({
+                        id: `unit_icon_${cleanName}_${Date.now()}`,
+                        source_path: sourcePathForImport,
+                        target_name: cleanName,
+                    });
+                }
+            }
+        });
+    }
 }
 
 // ============================================================================

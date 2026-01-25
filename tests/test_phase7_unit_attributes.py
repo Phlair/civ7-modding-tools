@@ -534,3 +534,221 @@ class TestUnitAttributeTypes:
         attrs = unit_row["_attrs"]
         assert attrs["RangedPower"] == "35"
         assert attrs["RangedRange"] == "2"
+
+
+class TestNewUnitProperties:
+    """Test newly added unit properties."""
+
+    def test_unit_builder_with_tier(self):
+        """Test unit can have tier property."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_SPEARMAN"
+        builder.unit = {
+            "unit_type": "UNIT_GONDOR_SPEARMAN",
+            "tier": 2,
+        }
+        builder.localizations = [{"name": "Gondor Spearman"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        units = xml["Database"]["Units"]
+        if isinstance(units, list):
+            unit_row = units[0]
+        else:
+            unit_row = units
+
+        attrs = unit_row["_attrs"]
+        assert attrs["Tier"] == "2"
+
+    def test_unit_builder_with_maintenance(self):
+        """Test unit can have maintenance (upkeep) property."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_CAVALRY"
+        builder.unit = {
+            "unit_type": "UNIT_GONDOR_CAVALRY",
+            "maintenance": 4,
+        }
+        builder.localizations = [{"name": "Gondor Cavalry"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        units = xml["Database"]["Units"]
+        if isinstance(units, list):
+            unit_row = units[0]
+        else:
+            unit_row = units
+
+        attrs = unit_row["_attrs"]
+        assert attrs["Maintenance"] == "4"
+
+    def test_unit_builder_with_zone_of_control(self):
+        """Test unit can have zone of control property."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_WARRIOR"
+        builder.unit = {
+            "unit_type": "UNIT_GONDOR_WARRIOR",
+            "zone_of_control": True,
+        }
+        builder.localizations = [{"name": "Gondor Warrior"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        units = xml["Database"]["Units"]
+        if isinstance(units, list):
+            unit_row = units[0]
+        else:
+            unit_row = units
+
+        attrs = unit_row["_attrs"]
+        assert attrs["ZoneOfControl"] == "true"
+
+    def test_unit_builder_with_cost_progression(self):
+        """Test unit can have cost progression properties."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_SETTLER"
+        builder.unit = {
+            "unit_type": "UNIT_GONDOR_SETTLER",
+            "cost_progression_model": "COST_PROGRESSION_NUM_SETTLEMENTS",
+            "cost_progression_param1": 30,
+        }
+        builder.localizations = [{"name": "Gondor Settler"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        units = xml["Database"]["Units"]
+        if isinstance(units, list):
+            unit_row = units[0]
+        else:
+            unit_row = units
+
+        attrs = unit_row["_attrs"]
+        assert attrs["CostProgressionModel"] == "COST_PROGRESSION_NUM_SETTLEMENTS"
+        assert attrs["CostProgressionParam1"] == "30"
+
+    def test_unit_builder_with_capability_flags(self):
+        """Test unit can have capability flags."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_GREATPERSON"
+        builder.unit = {
+            "unit_type": "UNIT_GONDOR_GREATPERSON",
+            "can_train": False,
+            "can_purchase": False,
+            "can_earn_experience": False,
+        }
+        builder.localizations = [{"name": "Great Person"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        units = xml["Database"]["Units"]
+        if isinstance(units, list):
+            unit_row = units[0]
+        else:
+            unit_row = units
+
+        attrs = unit_row["_attrs"]
+        assert attrs["CanTrain"] == "false"
+        assert attrs["CanPurchase"] == "false"
+        assert attrs["CanEarnExperience"] == "false"
+
+    def test_unit_builder_with_special_capabilities(self):
+        """Test unit can have special capabilities like found_city."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_COLONIST"
+        builder.unit = {
+            "unit_type": "UNIT_GONDOR_COLONIST",
+            "found_city": True,
+            "prereq_population": 5,
+        }
+        builder.localizations = [{"name": "Gondor Colonist"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        units = xml["Database"]["Units"]
+        if isinstance(units, list):
+            unit_row = units[0]
+        else:
+            unit_row = units
+
+        attrs = unit_row["_attrs"]
+        assert attrs["FoundCity"] == "true"
+        assert attrs["PrereqPopulation"] == "5"
+
+    def test_unit_builder_with_promotion_class(self):
+        """Test unit can have promotion class."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_COMMANDER"
+        builder.unit = {
+            "unit_type": "UNIT_GONDOR_COMMANDER",
+            "promotion_class": "PROMOTION_CLASS_LAND_COMMANDER",
+        }
+        builder.localizations = [{"name": "Gondor Commander"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        units = xml["Database"]["Units"]
+        if isinstance(units, list):
+            unit_row = units[0]
+        else:
+            unit_row = units
+
+        attrs = unit_row["_attrs"]
+        assert attrs["PromotionClass"] == "PROMOTION_CLASS_LAND_COMMANDER"
+
+    def test_unit_builder_with_upgrade(self):
+        """Test unit can have upgrade path."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_WARRIOR"
+        builder.unit_upgrade = {
+            "upgrade_unit": "UNIT_GONDOR_SWORDSMAN"
+        }
+        builder.localizations = [{"name": "Gondor Warrior"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        assert "Database" in xml
+        db = xml["Database"]
+        assert "UnitUpgrades" in db
+        upgrades = db["UnitUpgrades"]
+        
+        if isinstance(upgrades, list):
+            upgrade_row = upgrades[0]
+        else:
+            upgrade_row = upgrades
+
+        attrs = upgrade_row["_attrs"]
+        assert attrs["Unit"] == "UNIT_GONDOR_WARRIOR"
+        assert attrs["UpgradeUnit"] == "UNIT_GONDOR_SWORDSMAN"
+
+    def test_unit_builder_with_advisory(self):
+        """Test unit can have advisory classification."""
+        builder = UnitBuilder()
+        builder.unit_type = "UNIT_GONDOR_SCOUT"
+        builder.unit_advisories = [{
+            "advisory_class_type": "ADVISORY_CLASS_MILITARY"
+        }]
+        builder.localizations = [{"name": "Gondor Scout"}]
+
+        builder.migrate()
+        xml = builder._current.to_xml_element()
+
+        assert "Database" in xml
+        db = xml["Database"]
+        assert "Unit_Advisories" in db
+        advisories = db["Unit_Advisories"]
+        
+        if isinstance(advisories, list):
+            advisory_row = advisories[0]
+        else:
+            advisory_row = advisories
+
+        attrs = advisory_row["_attrs"]
+        assert attrs["UnitType"] == "UNIT_GONDOR_SCOUT"
+        assert attrs["AdvisoryClassType"] == "ADVISORY_CLASS_MILITARY"

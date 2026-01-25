@@ -75,6 +75,7 @@ class CivVIIDataExtractor:
         self.civ_era_mapping = {}  # {civ_name: era_id} - maps civs to eras from filenames
         self.unit_ages = defaultdict(set)  # {unit_id: {age_ids}} - tracks which ages unlock each unit
         self.unit_unlocks = defaultdict(set)  # {unit_id: {node_types}} - progression nodes that unlock
+        self.unit_replaces = {}  # {unique_unit_id: replaced_unit_id} - UnitReplaces mappings
         self._tree_ages = {}  # {progression_tree_id: age_id} - maps trees to ages
 
     def scan_files(self) -> None:
@@ -289,6 +290,12 @@ class CivVIIDataExtractor:
                     self.unit_unlocks[target_type].add(node_type)
                     # Infer age from node name pattern
                     self._infer_node_age_from_name(node_type)
+
+            # UnitReplaces - extract unit replacement mappings
+            if tag == 'Row' and 'CivUniqueUnitType' in attribs and 'ReplacesUnitType' in attribs:
+                unique_unit = attribs['CivUniqueUnitType']
+                replaces_unit = attribs['ReplacesUnitType']
+                self.unit_replaces[unique_unit] = replaces_unit
 
             # ResourceClass - infer from resource type patterns
             if tag == 'Row' and 'Type' in attribs and 'Kind' in attribs:
@@ -773,7 +780,8 @@ class CivVIIDataExtractor:
                         else [],
                     'unlocked_by': sorted(list(self.unit_unlocks.get(u, set())))
                         if self.unit_unlocks.get(u)
-                        else []
+                        else [],
+                    'replaces': self.unit_replaces.get(u, None)
                 }
                 for u in sorted(self.data['units'])
             ]

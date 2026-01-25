@@ -15,6 +15,8 @@ from civ7_modding_tools.nodes import (
     UnitCostNode,
     UnitStatNode,
     UnitReplaceNode,
+    UnitUpgradeNode,
+    UnitAdvisoryNode,
     ConstructibleNode,
     ConstructibleYieldChangeNode,
     ConstructibleValidDistrictNode,
@@ -834,6 +836,11 @@ class CivilizationBuilder(BaseBuilder):
                 item_type = item.unit_type
                 kind = 'KIND_UNIT'
                 icon = self._extract_icon_path(item.icon)
+                # Set civilization_type on unit for automatic trait assignment
+                item.civilization_type = self.civilization_type
+                # Skip adding to CivilizationItems if show_in_civ_picker is False
+                if not getattr(item, 'show_in_civ_picker', True):
+                    continue
             elif isinstance(item, ConstructibleBuilder) and item.constructible_type:
                 item_type = item.constructible_type
                 if item.constructible_type.startswith('QUARTER_'):
@@ -939,6 +946,7 @@ class UnitBuilder(BaseBuilder):
         self._visual_remap: Optional[DatabaseNode] = None
         
         self.unit_type: Optional[str] = None
+        self.civilization_type: Optional[str] = None  # Parent civilization for trait assignment
         self.unit: Dict[str, Any] = {}
         self.unit_stats: list[Dict[str, Any]] = []
         self.unit_costs: list[Dict[str, Any]] = []
@@ -952,6 +960,10 @@ class UnitBuilder(BaseBuilder):
         self.icon: Dict[str, Any] = {}
         self.localizations: list[Dict[str, Any]] = []
         self.type_tags: list[str] = []  # Additional type tags (e.g., UNIT_CLASS_RECON)
+        self.unlock_tech: Optional[str] = None  # Tech node that unlocks this unit
+        self.unlock_civic: Optional[str] = None  # Civic node that unlocks this unit
+        self.auto_infer_unlock: bool = True  # Auto-detect unlock from replaced unit
+        self.show_in_civ_picker: bool = True  # Display in civilization selection screen
 
     def fill(self, payload: Dict[str, Any]) -> "UnitBuilder":
         """Fill unit builder from payload."""
@@ -991,6 +1003,10 @@ class UnitBuilder(BaseBuilder):
         if hasattr(self, 'type_tags') and self.type_tags:
             for tag in self.type_tags:
                 type_tags.append(TypeTagNode(type_=self.unit_type, tag=tag))
+        
+        # Auto-generate additional type tags based on unit properties
+        type_tags.extend(self._generate_type_tags())
+        
         self._current.type_tags = type_tags
         
         # Unit definition with full properties and localization
@@ -1002,6 +1018,11 @@ class UnitBuilder(BaseBuilder):
         # Apply all user-provided unit properties
         for key, value in self.unit.items():
             setattr(unit_node, key, value)
+        
+        # Auto-set trait_type from civilization_type if not explicitly set
+        if self.civilization_type and not unit_node.trait_type:
+            unit_node.trait_type = self.civilization_type.replace('CIVILIZATION_', 'TRAIT_')
+        
         self._current.units = [unit_node]
         
         # Unit costs
@@ -1046,13 +1067,56 @@ class UnitBuilder(BaseBuilder):
         
         # Unit upgrade
         if self.unit_upgrade:
-            # TODO: Add UnitUpgradeNode when needed
-            pass
+            upgrade_node = UnitUpgradeNode(
+                unit=self.unit_type,
+                upgrade_unit=self.unit_upgrade.get('upgrade_unit') or self.unit_upgrade.get('upgradeUnit')
+            )
+            self._current.unit_upgrades = [upgrade_node]
         
         # Unit advisories
         if self.unit_advisories:
-            # TODO: Add UnitAdvisoryNode when needed
-            pass
+            advisory_nodes = []
+            for advisory in self.unit_advisories:
+                advisory_node = UnitAdvisoryNode(
+                    unit_type=self.unit_type,
+                    advisory_class_type=advisory.get('advisory_class_type') or advisory.get('advisoryClassType')
+                )
+                advisory_nodes.append(advisory_node)
+            self._current.unit_advisories = advisory_nodes
+        
+        # Progression tree unlocks (tech/civic unlock requirements)
+        unlock_node_type = None
+        
+        # Priority 1: Explicit unlock_civic (takes precedence)
+        if self.unlock_civic:
+            unlock_node_type = self.unlock_civic
+        # Priority 2: Explicit unlock_tech
+        elif self.unlock_tech:
+            unlock_node_type = self.unlock_tech
+        # Priority 3: Auto-infer from replaced unit
+        elif self.auto_infer_unlock and self.unit_replace:
+            unlock_node_type = self._get_unlock_from_replaces()
+        
+        # Generate unlock node if we have a node type
+        if unlock_node_type:
+            from civ7_modding_tools.nodes.database import ProgressionTreeNodeUnlockNode
+            
+            unlock_node = ProgressionTreeNodeUnlockNode(
+                progression_tree_node_type=unlock_node_type,
+                target_kind='KIND_UNIT',
+                target_type=self.unit_type,
+                unlock_depth=1
+            )
+            
+            # Add required_trait_type if unit has trait_type
+            # This ensures civ-specific units only unlock for that civ
+            if self.civilization_type:
+                unlock_node.required_trait_type = self.civilization_type.replace('CIVILIZATION_', 'TRAIT_')
+            
+            # Store in progression_tree_node_unlocks (create list if doesn't exist)
+            if not hasattr(self._current, 'progression_tree_node_unlocks'):
+                self._current.progression_tree_node_unlocks = []
+            self._current.progression_tree_node_unlocks.append(unlock_node)
         
         # ==== POPULATE _icons DATABASE ====
         if self.icon:
@@ -1108,6 +1172,111 @@ class UnitBuilder(BaseBuilder):
             self._visual_remap.visual_remaps = [remap_row]
         
         return self
+
+    def _generate_type_tags(self) -> list:
+        """
+        Auto-generate TypeTag nodes based on unit properties.
+        
+        Maps unit properties to standard classification tags following
+        data-EXAMPLE patterns (e.g., CORE_CLASS_COMBAT → UNIT_CLASS_COMBAT).
+        
+        Returns:
+            List of TypeTagNode instances
+        """
+        from civ7_modding_tools.nodes import TypeTagNode
+        
+        tags = []
+        
+        # Get unit properties (either from self.unit dict or unit_node)
+        core_class = self.unit.get('core_class')
+        formation_class = self.unit.get('formation_class')
+        unit_movement_class = self.unit.get('unit_movement_class')
+        domain = self.unit.get('domain')
+        tier = self.unit.get('tier')
+        
+        # Map CORE_CLASS_* to UNIT_CLASS_* tags
+        if core_class == 'CORE_CLASS_COMBAT':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_COMBAT'))
+        elif core_class == 'CORE_CLASS_CIVILIAN':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_NON_COMBAT'))
+        elif core_class == 'CORE_CLASS_SUPPORT':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_NON_COMBAT'))
+        
+        # Map FORMATION_CLASS_* to specific combat tags
+        if formation_class == 'FORMATION_CLASS_MELEE':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_MELEE'))
+        elif formation_class == 'FORMATION_CLASS_RANGED':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_RANGED'))
+        elif formation_class == 'FORMATION_CLASS_SIEGE':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_SIEGE'))
+        elif formation_class == 'FORMATION_CLASS_RECON':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_RECON'))
+        
+        # Map UNIT_MOVEMENT_CLASS_* to unit type tags
+        if unit_movement_class == 'UNIT_MOVEMENT_CLASS_MOUNTED':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_MOUNTED'))
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_CAVALRY'))
+        elif unit_movement_class == 'UNIT_MOVEMENT_CLASS_FOOT':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_INFANTRY'))
+        elif unit_movement_class == 'UNIT_MOVEMENT_CLASS_WHEELED':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_WHEELED'))
+        
+        # Domain tags
+        if domain == 'DOMAIN_SEA':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_NAVAL'))
+        elif domain == 'DOMAIN_AIR':
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_AIR'))
+        
+        # Tier-based elite tags (tier 3+ for infantry/cavalry)
+        if tier and int(tier) >= 3:
+            if 'UNIT_CLASS_INFANTRY' in [t.tag for t in tags]:
+                tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_ELITE_INFANTRY'))
+            if 'UNIT_CLASS_CAVALRY' in [t.tag for t in tags]:
+                tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_ELITE_CAVALRY'))
+        
+        # Capability-based tags
+        if self.unit.get('found_city'):
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_CREATE_TOWN'))
+        if self.unit.get('make_trade_route'):
+            tags.append(TypeTagNode(type_=self.unit_type, tag='UNIT_CLASS_MAKE_TRADE_ROUTE'))
+        
+        return tags
+
+    def _get_unlock_from_replaces(self) -> Optional[str]:
+        """
+        Auto-detect unlock node from replaced unit.
+        
+        Looks up the replaced unit in units.json reference data
+        and returns the first unlock node.
+        
+        Returns:
+            Progression tree node ID (e.g., 'NODE_TECH_AQ_WHEEL') or None
+        """
+        if not self.unit_replace:
+            return None
+        
+        replaces_unit_type = self.unit_replace.get('replaces_unit_type') or \
+                            self.unit_replace.get('replacesUnitType')
+        
+        if not replaces_unit_type:
+            return None
+        
+        try:
+            from civ7_modding_tools.data import get_units
+            units_data = get_units()
+            
+            # Find the replaced unit
+            for unit in units_data:
+                if unit['id'] == replaces_unit_type:
+                    unlocked_by = unit.get('unlocked_by', [])
+                    if unlocked_by:
+                        return unlocked_by[0]  # Return first unlock node
+                    break
+        except Exception:
+            # If data loading fails, return None
+            pass
+        
+        return None
 
     def build(self) -> list[BaseFile]:
         """Build unit files with multiple variants."""

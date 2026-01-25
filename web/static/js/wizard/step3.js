@@ -18,6 +18,7 @@ export function renderWizardStep3(container) {
     if (typeof window !== 'undefined') {
         window.wizardShowUnitForm = wizardShowUnitForm;
         window.wizardEditUnit = wizardEditUnit;
+        window.wizardDuplicateUnit = wizardDuplicateUnit;
         window.removeWizardUnit = removeWizardUnit;
         window.updateUnitIconPath = updateUnitIconPath;
         window.wizardShowConstructibleForm = wizardShowConstructibleForm;
@@ -33,6 +34,8 @@ export function renderWizardStep3(container) {
         window.removeWizardBuildingYield = removeWizardBuildingYield;
         window.showFieldHelp = showFieldHelp;
         window.populateVisualRemapDropdown = populateVisualRemapDropdown;
+        window.toggleUnitReplacesCustom = toggleUnitReplacesCustom;
+        window.toggleUnitUpgradeCustom = toggleUnitUpgradeCustom;
     }
 
     container.innerHTML = `
@@ -70,6 +73,12 @@ export function renderWizardStep3(container) {
                                         class="px-2 py-1 text-xs bg-blue-600/30 hover:bg-blue-600/50 border border-blue-600 rounded text-blue-300"
                                     >
                                         Edit
+                                    </button>
+                                    <button 
+                                        onclick="window.wizardDuplicateUnit(${idx})"
+                                        class="px-2 py-1 text-xs bg-green-600/30 hover:bg-green-600/50 border border-green-600 rounded text-green-300"
+                                    >
+                                        Duplicate
                                     </button>
                                     <button 
                                         onclick="window.removeWizardUnit(${idx})"
@@ -188,6 +197,42 @@ export function renderWizardStep3(container) {
                                         />
                                     </div>
                                 </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Tier</label>
+                                        <input 
+                                            type="number" 
+                                            id="wizard-unit-tier" 
+                                            placeholder="1"
+                                            min="1"
+                                            max="3"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                        <p class="text-xs text-slate-500 mt-1">Unit tier (1-3)</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Maintenance</label>
+                                        <input 
+                                            type="number" 
+                                            id="wizard-unit-maintenance" 
+                                            placeholder="0"
+                                            min="0"
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        />
+                                        <p class="text-xs text-slate-500 mt-1">Gold per turn</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="flex items-center space-x-2 text-xs font-medium text-slate-300">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-unit-zone-control"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span>Zone of Control</span>
+                                    </label>
+                                    <p class="text-xs text-slate-500 mt-1 ml-6">Restricts enemy movement adjacent to this unit</p>
+                                </div>
                             </div>
                         </div>
                         
@@ -241,6 +286,121 @@ export function renderWizardStep3(container) {
                         </details>
                         
                         <details class="bg-slate-900/50 rounded border border-slate-700">
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Cost Progression (Optional)</summary>
+                            <div class="p-3 pt-0 space-y-2">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Cost Progression Model</label>
+                                    <select 
+                                        id="wizard-unit-cost-progression-model" 
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    >
+                                        <option value="">None</option>
+                                        <option value="">Loading...</option>
+                                    </select>
+                                    <p class="text-xs text-slate-500 mt-1">Controls how costs increase per unit built</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Cost Increase Amount</label>
+                                    <input 
+                                        type="number" 
+                                        id="wizard-unit-cost-progression-param" 
+                                        placeholder="0"
+                                        min="0"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                    <p class="text-xs text-slate-500 mt-1">Amount to increase cost by</p>
+                                </div>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-slate-900/50 rounded border border-slate-700">
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Advanced Properties (Optional)</summary>
+                            <div class="p-3 pt-0 space-y-2">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Promotion Class</label>
+                                    <select 
+                                        id="wizard-unit-promotion-class" 
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    >
+                                        <option value="">None</option>
+                                        <option value="">Loading...</option>
+                                    </select>
+                                    <p class="text-xs text-slate-500 mt-1">Determines available promotions</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Prerequisite Population</label>
+                                    <input 
+                                        type="number" 
+                                        id="wizard-unit-prereq-population" 
+                                        placeholder="0"
+                                        min="0"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                    <p class="text-xs text-slate-500 mt-1">City population required to build this unit</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2 text-xs font-medium text-slate-300">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-unit-can-train"
+                                            checked
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span>Can Train</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 text-xs font-medium text-slate-300">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-unit-can-purchase"
+                                            checked
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span>Can Purchase</span>
+                                    </label>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <label class="flex items-center space-x-2 text-xs font-medium text-slate-300">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-unit-can-earn-xp"
+                                            checked
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span>Can Earn XP</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 text-xs font-medium text-slate-300">
+                                        <input 
+                                            type="checkbox" 
+                                            id="wizard-unit-found-city"
+                                            class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        />
+                                        <span>Found City</span>
+                                    </label>
+                                </div>
+                                <label class="flex items-center space-x-2 text-xs font-medium text-slate-300">
+                                    <input 
+                                        type="checkbox" 
+                                        id="wizard-unit-make-trade-route"
+                                        class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                    <span>Make Trade Route</span>
+                                </label>
+                            </div>
+                            <div class="pt-2 border-t border-slate-700">
+                                <label class="flex items-center space-x-2 text-xs font-medium text-slate-300">
+                                    <input 
+                                        type="checkbox" 
+                                        id="wizard-unit-show-in-civ-picker"
+                                        checked
+                                        class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                    <span>Show in Civ Selection Screen</span>
+                                </label>
+                                <p class="text-xs text-slate-500 mt-1 ml-6">Uncheck to hide this unit from the civilization picker (useful for upgrade tiers)</p>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-slate-900/50 rounded border border-slate-700">
                             <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Combat Stats (Optional)</summary>
                             <div class="p-3 pt-2 space-y-2">
                                 <div class="grid grid-cols-3 gap-2">
@@ -276,14 +436,112 @@ export function renderWizardStep3(container) {
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">Replaces Unit</label>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block text-xs font-medium text-slate-300">Replaces Unit</label>
+                                        <label class="flex items-center space-x-2 text-xs text-slate-400">
+                                            <input 
+                                                type="checkbox" 
+                                                id="wizard-unit-replaces-custom-toggle"
+                                                onchange="window.toggleUnitReplacesCustom(this.checked)"
+                                                class="w-3 h-3 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                            />
+                                            <span>Custom</span>
+                                        </label>
+                                    </div>
+                                    <select 
+                                        id="wizard-unit-replaces" 
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    >
+                                        <option value="">None</option>
+                                        <option value="">Loading...</option>
+                                    </select>
                                     <input 
                                         type="text" 
-                                        id="wizard-unit-replaces" 
-                                        placeholder="UNIT_WARRIOR"
-                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        id="wizard-unit-replaces-custom" 
+                                        placeholder="UNIT_CUSTOM_NAME"
+                                        class="hidden w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
                                     />
                                     <p class="text-xs text-slate-500 mt-1">Base game unit this replaces</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block text-xs font-medium text-slate-300">Upgrades To</label>
+                                        <label class="flex items-center space-x-2 text-xs text-slate-400">
+                                            <input 
+                                                type="checkbox" 
+                                                id="wizard-unit-upgrade-custom-toggle"
+                                                onchange="window.toggleUnitUpgradeCustom(this.checked)"
+                                                class="w-3 h-3 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                            />
+                                            <span>Custom</span>
+                                        </label>
+                                    </div>
+                                    <select 
+                                        id="wizard-unit-upgrade-to" 
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    >
+                                        <option value="">None</option>
+                                        <option value="">Loading...</option>
+                                    </select>
+                                    <input 
+                                        type="text" 
+                                        id="wizard-unit-upgrade-custom" 
+                                        placeholder="UNIT_CUSTOM_NAME"
+                                        class="hidden w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                    <p class="text-xs text-slate-500 mt-1">Next unit in upgrade chain</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Advisory Class</label>
+                                    <select 
+                                        id="wizard-unit-advisory" 
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    >
+                                        <option value="">None</option>
+                                        <option value="">Loading...</option>
+                                    </select>
+                                    <p class="text-xs text-slate-500 mt-1">Advisory category for AI and UI</p>
+                                </div>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-slate-900/50 rounded border border-slate-700">
+                            <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Tech/Civic Unlocks (Optional)</summary>
+                            <div class="p-3 pt-2 space-y-3">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <input 
+                                        type="checkbox" 
+                                        id="wizard-unit-auto-infer-unlock"
+                                        checked
+                                        onchange="window.toggleUnitAutoInferUnlock(!this.checked)"
+                                        class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                    <label class="text-xs font-medium text-slate-300">Auto-infer unlock from replaced unit</label>
+                                </div>
+                                <p class="text-xs text-slate-500 -mt-2">When enabled, this unit will unlock at the same tech/civic as the unit it replaces. Disable to set custom unlock requirements.</p>
+                                <div id="wizard-unit-custom-unlock-fields" class="space-y-2 hidden">
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Unlock Tech</label>
+                                        <select 
+                                            id="wizard-unit-unlock-tech" 
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        >
+                                            <option value="">None</option>
+                                            <option value="">Loading...</option>
+                                        </select>
+                                        <p class="text-xs text-slate-500 mt-1">Technology that unlocks this unit</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Unlock Civic</label>
+                                        <select 
+                                            id="wizard-unit-unlock-civic" 
+                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        >
+                                            <option value="">None</option>
+                                            <option value="">Loading...</option>
+                                        </select>
+                                        <p class="text-xs text-slate-500 mt-1">Civic that unlocks this unit (overrides tech if both set)</p>
+                                    </div>
                                 </div>
                             </div>
                         </details>
@@ -515,6 +773,11 @@ export function wizardShowUnitForm() {
     createWizardDropdown('wizard-unit-formation', 'formation-classes', '', 'Select formation...');
     createWizardDropdown('wizard-unit-movement', 'unit-movement-classes', '', 'Select movement type...');
     createWizardDropdown('wizard-unit-cost-yield', 'yield-types', '', 'Select yield type...');
+    createWizardDropdown('wizard-unit-cost-progression-model', 'cost-progression-models', '', 'None');
+    createWizardDropdown('wizard-unit-promotion-class', 'promotion-classes', '', 'None');
+    createWizardDropdown('wizard-unit-replaces', 'units', '', 'None');
+    createWizardDropdown('wizard-unit-upgrade-to', 'units', '', 'None');
+    createWizardDropdown('wizard-unit-advisory', 'advisory-class-types', '', 'None');
     populateVisualRemapDropdown('');
 
     form.classList.remove('hidden');
@@ -532,6 +795,18 @@ export function wizardCancelUnitForm() {
     document.getElementById('wizard-unit-movement').value = '';
     document.getElementById('wizard-unit-moves').value = '';
     document.getElementById('wizard-unit-sight').value = '';
+    document.getElementById('wizard-unit-tier').value = '';
+    document.getElementById('wizard-unit-maintenance').value = '';
+    document.getElementById('wizard-unit-zone-control').checked = false;
+    document.getElementById('wizard-unit-promotion-class').value = '';
+    document.getElementById('wizard-unit-cost-progression-model').value = '';
+    document.getElementById('wizard-unit-cost-progression-param').value = '';
+    document.getElementById('wizard-unit-prereq-population').value = '';
+    document.getElementById('wizard-unit-can-train').checked = true;
+    document.getElementById('wizard-unit-can-purchase').checked = true;
+    document.getElementById('wizard-unit-can-earn-xp').checked = true;
+    document.getElementById('wizard-unit-found-city').checked = false;
+    document.getElementById('wizard-unit-make-trade-route').checked = false;
     document.getElementById('wizard-unit-name').value = '';
     document.getElementById('wizard-unit-desc').value = '';
     document.getElementById('wizard-unit-icon').value = '';
@@ -541,6 +816,19 @@ export function wizardCancelUnitForm() {
     document.getElementById('wizard-unit-ranged-combat').value = '';
     document.getElementById('wizard-unit-range').value = '';
     document.getElementById('wizard-unit-replaces').value = '';
+    document.getElementById('wizard-unit-replaces-custom').value = '';
+    document.getElementById('wizard-unit-replaces-custom-toggle').checked = false;
+    toggleUnitReplacesCustom(false);
+    document.getElementById('wizard-unit-upgrade-to').value = '';
+    document.getElementById('wizard-unit-upgrade-custom').value = '';
+    document.getElementById('wizard-unit-upgrade-custom-toggle').checked = false;
+    toggleUnitUpgradeCustom(false);
+    document.getElementById('wizard-unit-advisory').value = '';
+    document.getElementById('wizard-unit-auto-infer-unlock').checked = true;
+    document.getElementById('wizard-unit-unlock-tech').value = '';
+    document.getElementById('wizard-unit-unlock-civic').value = '';
+    toggleUnitAutoInferUnlock(false);
+    document.getElementById('wizard-unit-show-in-civ-picker').checked = true;
     document.getElementById('wizard-unit-edit-idx').value = '-1';
 }
 
@@ -568,6 +856,18 @@ export function wizardSaveUnit() {
     const movement = document.getElementById('wizard-unit-movement').value.trim();
     const moves = document.getElementById('wizard-unit-moves').value;
     const sight = document.getElementById('wizard-unit-sight').value;
+    const tier = document.getElementById('wizard-unit-tier').value;
+    const maintenance = document.getElementById('wizard-unit-maintenance').value;
+    const zoneOfControl = document.getElementById('wizard-unit-zone-control').checked;
+    const promotionClass = document.getElementById('wizard-unit-promotion-class').value.trim();
+    const costProgressionModel = document.getElementById('wizard-unit-cost-progression-model').value.trim();
+    const costProgressionParam = document.getElementById('wizard-unit-cost-progression-param').value;
+    const prereqPopulation = document.getElementById('wizard-unit-prereq-population').value;
+    const canTrain = document.getElementById('wizard-unit-can-train').checked;
+    const canPurchase = document.getElementById('wizard-unit-can-purchase').checked;
+    const canEarnXp = document.getElementById('wizard-unit-can-earn-xp').checked;
+    const foundCity = document.getElementById('wizard-unit-found-city').checked;
+    const makeTradeRoute = document.getElementById('wizard-unit-make-trade-route').checked;
     const displayName = document.getElementById('wizard-unit-name').value.trim();
     const description = document.getElementById('wizard-unit-desc').value.trim();
     const icon = document.getElementById('wizard-unit-icon').value.trim();
@@ -576,8 +876,22 @@ export function wizardSaveUnit() {
     const combat = document.getElementById('wizard-unit-combat').value;
     const rangedCombat = document.getElementById('wizard-unit-ranged-combat').value;
     const range = document.getElementById('wizard-unit-range').value;
-    const replacesUnit = document.getElementById('wizard-unit-replaces').value.trim();
+    // Get replaces value from either custom input or dropdown
+    const replacesCustomToggle = document.getElementById('wizard-unit-replaces-custom-toggle').checked;
+    const replacesUnit = replacesCustomToggle 
+        ? document.getElementById('wizard-unit-replaces-custom').value.trim()
+        : document.getElementById('wizard-unit-replaces').value.trim();
+    // Get upgrade value from either custom input or dropdown
+    const upgradeCustomToggle = document.getElementById('wizard-unit-upgrade-custom-toggle').checked;
+    const upgradeToUnit = upgradeCustomToggle
+        ? document.getElementById('wizard-unit-upgrade-custom').value.trim()
+        : document.getElementById('wizard-unit-upgrade-to').value.trim();
+    const advisory = document.getElementById('wizard-unit-advisory').value.trim();
     const visualRemapBase = document.getElementById('wizard-unit-visual-remap').value.trim();
+    const autoInferUnlock = document.getElementById('wizard-unit-auto-infer-unlock').checked;
+    const unlockTech = document.getElementById('wizard-unit-unlock-tech').value.trim();
+    const unlockCivic = document.getElementById('wizard-unit-unlock-civic').value.trim();
+    const showInCivPicker = document.getElementById('wizard-unit-show-in-civ-picker').checked;
 
     const unit = {
         id: id,
@@ -592,6 +906,20 @@ export function wizardSaveUnit() {
     // Always set moves and sight with defaults if not provided
     unit.unit.base_moves = moves ? parseInt(moves, 10) : 2;
     unit.unit.base_sight_range = sight ? parseInt(sight, 10) : 2;
+    
+    // New properties
+    if (tier) unit.unit.tier = parseInt(tier, 10);
+    if (maintenance) unit.unit.maintenance = parseInt(maintenance, 10);
+    if (zoneOfControl) unit.unit.zone_of_control = true;
+    if (promotionClass) unit.unit.promotion_class = promotionClass;
+    if (costProgressionModel) unit.unit.cost_progression_model = costProgressionModel;
+    if (costProgressionParam) unit.unit.cost_progression_param1 = parseInt(costProgressionParam, 10);
+    if (prereqPopulation) unit.unit.prereq_population = parseInt(prereqPopulation, 10);
+    if (!canTrain) unit.unit.can_train = false;
+    if (!canPurchase) unit.unit.can_purchase = false;
+    if (!canEarnXp) unit.unit.can_earn_experience = false;
+    if (foundCity) unit.unit.found_city = true;
+    if (makeTradeRoute) unit.unit.make_trade_route = true;
     
     // Set trait_type from civilization (required for unique units)
     if (wizardData.civilization?.civilization_traits && wizardData.civilization.civilization_traits.length > 0) {
@@ -613,6 +941,34 @@ export function wizardSaveUnit() {
         unit.unit_replace = {
             replaces_unit_type: replacesUnit,
         };
+    }
+
+    if (upgradeToUnit) {
+        unit.unit_upgrade = {
+            upgrade_unit: upgradeToUnit,
+        };
+    }
+
+    if (advisory) {
+        unit.unit_advisories = [{
+            advisory_class_type: advisory,
+        }];
+    }
+
+    // Tech/Civic unlock configuration
+    if (autoInferUnlock !== undefined) {
+        unit.auto_infer_unlock = autoInferUnlock;
+    }
+    if (unlockTech) {
+        unit.unlock_tech = unlockTech;
+    }
+    if (unlockCivic) {
+        unit.unlock_civic = unlockCivic;
+    }
+    
+    // Civ picker visibility
+    if (showInCivPicker !== undefined) {
+        unit.show_in_civ_picker = showInCivPicker;
     }
 
     if (visualRemapBase) {
@@ -657,6 +1013,18 @@ export async function wizardEditUnit(idx) {
     document.getElementById('wizard-unit-type').value = unit.unit_type || '';
     document.getElementById('wizard-unit-moves').value = unit.unit?.base_moves || '';
     document.getElementById('wizard-unit-sight').value = unit.unit?.base_sight_range || '';
+    document.getElementById('wizard-unit-tier').value = unit.unit?.tier || '';
+    document.getElementById('wizard-unit-maintenance').value = unit.unit?.maintenance || '';
+    document.getElementById('wizard-unit-zone-control').checked = unit.unit?.zone_of_control || false;
+    document.getElementById('wizard-unit-promotion-class').value = unit.unit?.promotion_class || '';
+    document.getElementById('wizard-unit-cost-progression-param').value = unit.unit?.cost_progression_param1 || '';
+    document.getElementById('wizard-unit-prereq-population').value = unit.unit?.prereq_population || '';
+    document.getElementById('wizard-unit-can-train').checked = unit.unit?.can_train !== false;
+    document.getElementById('wizard-unit-can-purchase').checked = unit.unit?.can_purchase !== false;
+    document.getElementById('wizard-unit-can-earn-xp').checked = unit.unit?.can_earn_experience !== false;
+    document.getElementById('wizard-unit-found-city').checked = unit.unit?.found_city || false;
+    document.getElementById('wizard-unit-make-trade-route').checked = unit.unit?.make_trade_route || false;
+    document.getElementById('wizard-unit-show-in-civ-picker').checked = unit.show_in_civ_picker !== false;
     document.getElementById('wizard-unit-name').value = unit.localizations?.[0]?.name || '';
     document.getElementById('wizard-unit-desc').value = unit.localizations?.[0]?.description || '';
     document.getElementById('wizard-unit-icon').value = unit.icon?.path || '';
@@ -665,6 +1033,8 @@ export async function wizardEditUnit(idx) {
     document.getElementById('wizard-unit-ranged-combat').value = unit.unit_stat?.ranged_combat || '';
     document.getElementById('wizard-unit-range').value = unit.unit_stat?.range || '';
     document.getElementById('wizard-unit-replaces').value = unit.unit_replace?.replaces_unit_type || '';
+    document.getElementById('wizard-unit-upgrade-to').value = unit.unit_upgrade?.upgrade_unit || '';
+    document.getElementById('wizard-unit-advisory').value = unit.unit_advisories?.[0]?.advisory_class_type || '';
     document.getElementById('wizard-unit-edit-idx').value = idx;
 
     createWizardDropdown('wizard-unit-core-class', 'core-classes', unit.unit?.core_class || '', 'Select core class...');
@@ -672,7 +1042,43 @@ export async function wizardEditUnit(idx) {
     createWizardDropdown('wizard-unit-formation', 'formation-classes', unit.unit?.formation_class || '', 'Select formation...');
     createWizardDropdown('wizard-unit-movement', 'unit-movement-classes', unit.unit?.unit_movement_class || '', 'Select movement type...');
     createWizardDropdown('wizard-unit-cost-yield', 'yield-types', unit.unit_cost?.yield_type || '', 'Select yield type...');
+    createWizardDropdown('wizard-unit-cost-progression-model', 'cost-progression-models', unit.unit?.cost_progression_model || '', 'None');
+    createWizardDropdown('wizard-unit-promotion-class', 'promotion-classes', unit.unit?.promotion_class || '', 'None');
+    
+    // Handle replaces - check if it's a known unit or custom
+    const replacesValue = unit.unit_replace?.replaces_unit_type || '';
+    await createWizardDropdown('wizard-unit-replaces', 'units', replacesValue, 'None');
+    // If value wasn't found in dropdown, it's custom
+    const replacesDropdown = document.getElementById('wizard-unit-replaces');
+    const isReplacesCustom = replacesValue && replacesDropdown.value !== replacesValue;
+    if (isReplacesCustom) {
+        document.getElementById('wizard-unit-replaces-custom').value = replacesValue;
+        document.getElementById('wizard-unit-replaces-custom-toggle').checked = true;
+        toggleUnitReplacesCustom(true);
+    }
+    
+    // Handle upgrade - check if it's a known unit or custom
+    const upgradeValue = unit.unit_upgrade?.upgrade_unit || '';
+    await createWizardDropdown('wizard-unit-upgrade-to', 'units', upgradeValue, 'None');
+    // If value wasn't found in dropdown, it's custom
+    const upgradeDropdown = document.getElementById('wizard-unit-upgrade-to');
+    const isUpgradeCustom = upgradeValue && upgradeDropdown.value !== upgradeValue;
+    if (isUpgradeCustom) {
+        document.getElementById('wizard-unit-upgrade-custom').value = upgradeValue;
+        document.getElementById('wizard-unit-upgrade-custom-toggle').checked = true;
+        toggleUnitUpgradeCustom(true);
+    }
+    
+    createWizardDropdown('wizard-unit-advisory', 'advisory-class-types', unit.unit_advisories?.[0]?.advisory_class_type || '', 'None');
     await populateVisualRemapDropdown(unit.visual_remap?.to || '');
+
+    // Load unlock configuration
+    const autoInferUnlock = unit.auto_infer_unlock !== false; // Default to true
+    document.getElementById('wizard-unit-auto-infer-unlock').checked = autoInferUnlock;
+    createWizardDropdown('wizard-unit-unlock-tech', 'progression-trees', unit.unlock_tech || '', 'None');
+    createWizardDropdown('wizard-unit-unlock-civic', 'progression-trees', unit.unlock_civic || '', 'None');
+    // Show/hide custom unlock fields based on auto-infer setting
+    toggleUnitAutoInferUnlock(!autoInferUnlock);
 
     document.getElementById('wizard-unit-form').classList.remove('hidden');
 }
@@ -684,6 +1090,43 @@ export function removeWizardUnit(idx) {
         markDirty();
         showToast('Unit removed', 'info');
     }
+}
+
+/**
+ * Duplicate an existing unit
+ */
+export function wizardDuplicateUnit(idx) {
+    if (!wizardData.units || !wizardData.units[idx]) return;
+    
+    // Deep clone the unit
+    const originalUnit = wizardData.units[idx];
+    const duplicatedUnit = JSON.parse(JSON.stringify(originalUnit));
+    
+    // Modify IDs to indicate it's a duplicate
+    const originalId = duplicatedUnit.id || 'UNIT';
+    const originalType = duplicatedUnit.unit_type || 'UNIT_TYPE';
+    
+    // Add _2, _3, etc. suffix if not already present
+    const idMatch = originalId.match(/^(.+?)(_(\d+))?$/);
+    const typeMatch = originalType.match(/^(.+?)(_(\d+))?$/);
+    
+    const baseId = idMatch[1];
+    const currentIdNum = idMatch[3] ? parseInt(idMatch[3]) : 1;
+    const newIdNum = currentIdNum + 1;
+    
+    const baseType = typeMatch[1];
+    const currentTypeNum = typeMatch[3] ? parseInt(typeMatch[3]) : 1;
+    const newTypeNum = currentTypeNum + 1;
+    
+    duplicatedUnit.id = `${baseId}_${newIdNum}`;
+    duplicatedUnit.unit_type = `${baseType}_${newTypeNum}`;
+    
+    // Add the duplicated unit after the original
+    wizardData.units.splice(idx + 1, 0, duplicatedUnit);
+    
+    renderWizardStep3(document.getElementById('wizard-step-content'));
+    markDirty();
+    showToast('Unit duplicated successfully', 'success');
 }
 
 /**
@@ -906,3 +1349,69 @@ export async function populateVisualRemapDropdown(selectedValue = '') {
         dropdown.innerHTML = '<option value="">Error loading units</option>';
     }
 }
+
+/**
+ * Toggle between dropdown and custom text input for Replaces Unit field
+ */
+export function toggleUnitReplacesCustom(isCustom) {
+    const dropdown = document.getElementById('wizard-unit-replaces');
+    const customInput = document.getElementById('wizard-unit-replaces-custom');
+    
+    if (isCustom) {
+        dropdown.classList.add('hidden');
+        customInput.classList.remove('hidden');
+        // Transfer value if switching
+        if (dropdown.value) {
+            customInput.value = dropdown.value;
+        }
+    } else {
+        dropdown.classList.remove('hidden');
+        customInput.classList.add('hidden');
+        // Transfer value if switching
+        if (customInput.value) {
+            dropdown.value = customInput.value;
+        }
+    }
+}
+
+/**
+ * Toggle between dropdown and custom text input for Upgrades To field
+ */
+export function toggleUnitUpgradeCustom(isCustom) {
+    const dropdown = document.getElementById('wizard-unit-upgrade-to');
+    const customInput = document.getElementById('wizard-unit-upgrade-custom');
+    
+    if (isCustom) {
+        dropdown.classList.add('hidden');
+        customInput.classList.remove('hidden');
+        // Transfer value if switching
+        if (dropdown.value) {
+            customInput.value = dropdown.value;
+        }
+    } else {
+        dropdown.classList.remove('hidden');
+        customInput.classList.add('hidden');
+        // Transfer value if switching
+        if (customInput.value) {
+            dropdown.value = customInput.value;
+        }
+    }
+}
+
+/**
+ * Toggle between auto-infer unlock and custom unlock fields
+ */
+export function toggleUnitAutoInferUnlock(showCustom) {
+    const customFields = document.getElementById('wizard-unit-custom-unlock-fields');
+    
+    if (showCustom) {
+        customFields.classList.remove('hidden');
+    } else {
+        customFields.classList.add('hidden');
+    }
+}
+
+// Expose toggle functions to window for inline event handlers
+window.toggleUnitReplacesCustom = toggleUnitReplacesCustom;
+window.toggleUnitUpgradeCustom = toggleUnitUpgradeCustom;
+window.toggleUnitAutoInferUnlock = toggleUnitAutoInferUnlock;

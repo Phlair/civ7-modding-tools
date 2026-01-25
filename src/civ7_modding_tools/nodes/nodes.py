@@ -58,6 +58,16 @@ class UnitNode(BaseNode):
     ranged_power: Optional[int] = None
     ranged_range: Optional[int] = None
     origin_boost_modulus: Optional[int] = None
+    tier: Optional[int] = None
+    zone_of_control: Optional[bool] = None
+    cost_progression_model: Optional[str] = None
+    cost_progression_param1: Optional[int] = None
+    can_train: Optional[bool] = None
+    can_purchase: Optional[bool] = None
+    can_earn_experience: Optional[bool] = None
+    found_city: Optional[bool] = None
+    make_trade_route: Optional[bool] = None
+    prereq_population: Optional[int] = None
 
 
 class UnitStatNode(BaseNode):

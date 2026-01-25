@@ -323,6 +323,7 @@ class ProgressionTreeNodeUnlockNode(BaseNode):
     target_kind: Optional[str] = None
     target_type: Optional[str] = None
     unlock_depth: Optional[int] = None
+    required_trait_type: Optional[str] = None
     hidden: Optional[bool] = None
 
 
@@ -405,15 +406,15 @@ class StartBiasResourceNode(BaseNode):
 class UnitUpgradeNode(BaseNode):
     """Represents unit upgrade path."""
     _name: str = "Row"
-    unit_type: Optional[str] = None
-    upgrade_unit_type: Optional[str] = None
+    unit: Optional[str] = None
+    upgrade_unit: Optional[str] = None
 
 
 class UnitAdvisoryNode(BaseNode):
     """Represents unit advisory."""
     _name: str = "Row"
     unit_type: Optional[str] = None
-    advisory_type: Optional[str] = None
+    advisory_class_type: Optional[str] = None
 
 
 # ============================================================================
@@ -813,7 +814,7 @@ class DatabaseNode(BaseNode):
             'unit_stats': 'Unit_Stats',
             'unit_advisories': 'Unit_Advisories',
             'unit_replaces': 'UnitReplaces',
-            'unit_upgrades': 'Unit_Upgrades',
+            'unit_upgrades': 'UnitUpgrades',
             'unlock_rewards': 'Unlock_Rewards',
             'unlock_requirements': 'Unlock_Requirements',
             'unlock_configuration_values': 'Unlock_ConfigurationValues',
