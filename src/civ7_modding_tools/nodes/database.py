@@ -176,6 +176,13 @@ class ConstructiblePlunderNode(BaseNode):
     amount: Optional[int] = None
 
 
+class ConstructibleModifierNode(BaseNode):
+    """Represents constructible-modifier linkage."""
+    _name: str = "Row"
+    constructible_type: Optional[str] = None
+    modifier_id: Optional[str] = None
+
+
 class ConstructibleBuildingCostProgressionNode(BaseNode):
     """Represents building cost progression."""
     _name: str = "Row"
@@ -736,6 +743,7 @@ class DatabaseNode(BaseNode):
     warehouse_yield_changes: list['WarehouseYieldChangeNode'] = []
     constructible_warehouse_yields: list['ConstructibleWarehouseYieldNode'] = []
     constructible_plunders: list['ConstructiblePlunderNode'] = []
+    constructible_modifiers: list['ConstructibleModifierNode'] = []
     constructible_building_cost_progressions: list['ConstructibleBuildingCostProgressionNode'] = []
     constructible_advisories: list['ConstructibleAdvisoryNode'] = []
     

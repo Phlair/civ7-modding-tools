@@ -1608,13 +1608,24 @@ class ConstructibleBuilder(BaseBuilder):
         self._always = DatabaseNode()
         self._icons = DatabaseNode()
         self._localizations = DatabaseNode()
-        self._game_effects: Optional[DatabaseNode] = None
+        self._game_effects: Optional['GameEffectNode'] = None
         
         self.constructible_type: Optional[str] = None
+        self.is_building: bool = True  # Default to building
         self.constructible: Dict[str, Any] = {}
         self.building: Optional[Dict[str, Any]] = None
         self.improvement: Optional[Dict[str, Any]] = None
         self.building_attributes: Dict[str, Any] = {}
+        
+        # Top-level constructible attributes (can also be in constructible dict)
+        self.age: Optional[str] = None
+        self.cost: Optional[int] = None
+        self.population: Optional[int] = None
+        self.repairable: Optional[bool] = None
+        self.adjacent_river: Optional[bool] = None
+        self.adjacent_terrain: Optional[str] = None
+        self.adjacent_district: Optional[str] = None
+        
         self.type_tags: list[str] = []
         self.constructible_valid_districts: list[str] = []
         self.constructible_valid_terrains: list[str] = []
@@ -1639,6 +1650,86 @@ class ConstructibleBuilder(BaseBuilder):
                 setattr(self, key, value)
         return self
 
+    def _generate_unit_healing_modifier(self, amount: int) -> None:
+        """
+        Generate unit healing modifier for improvements following the Pairidaeza pattern.
+        
+        Creates two modifiers:
+        1. Parent modifier attached to cities that have this improvement
+        2. Child modifier that adjusts heal per turn for units in friendly territory
+        
+        Args:
+            amount: Healing amount per turn
+        """
+        from civ7_modding_tools.nodes.nodes import ModifierNode, GameEffectNode
+        from civ7_modding_tools.nodes.database import ConstructibleModifierNode
+        
+        # Generate modifier IDs
+        parent_modifier_id = f"MOD_{self.constructible_type}_SETTLEMENT_HEAL"
+        child_modifier_id = f"ATTACH_MOD_{self.constructible_type}_SETTLEMENT_HEAL"
+        
+        # Initialize game_effects as GameEffectNode if needed
+        if self._game_effects is None:
+            self._game_effects = GameEffectNode()
+        
+        # Ensure modifiers list exists
+        if not hasattr(self._game_effects, 'modifiers'):
+            self._game_effects.modifiers = []
+        
+        # Check if modifier already exists to prevent duplicates
+        existing_ids = [m.id for m in self._game_effects.modifiers]
+        if parent_modifier_id in existing_ids:
+            return  # Already generated, skip
+        
+        # Parent modifier: Attached to cities that have this improvement
+        parent_modifier = ModifierNode(
+            id=parent_modifier_id,
+            collection="COLLECTION_PLAYER_CITIES",
+            effect="EFFECT_ATTACH_MODIFIERS",
+            requirements=[
+                {
+                    'type': 'REQUIREMENT_CITY_HAS_BUILDING',
+                    'arguments': [
+                        {'name': 'BuildingType', 'value': self.constructible_type}
+                    ]
+                }
+            ],
+            arguments=[
+                {'name': 'ModifierId', 'value': child_modifier_id}
+            ]
+        )
+        
+        # Child modifier: Heals units in friendly territory
+        child_modifier = ModifierNode(
+            id=child_modifier_id,
+            collection="COLLECTION_PLAYER_UNITS",
+            effect="EFFECT_UNIT_ADJUST_HEAL_PER_TURN",
+            arguments=[
+                {'name': 'Amount', 'value': str(amount)},
+                {'name': 'TerritoryTypes', 'value': 'FRIENDLY_TERRITORY'}
+            ]
+        )
+        
+        # Add modifiers to GameEffectNode
+        self._game_effects.modifiers.extend([parent_modifier, child_modifier])
+        
+        # Also add to constructible_modifiers table to link improvement to modifier
+        constructible_modifier = ConstructibleModifierNode(
+            constructible_type=self.constructible_type,
+            modifier_id=parent_modifier_id
+        )
+        
+        if not hasattr(self._always, 'constructible_modifiers'):
+            self._always.constructible_modifiers = []
+        
+        # Check for duplicate in constructible_modifiers too
+        existing_constructible_modifiers = [
+            (cm.constructible_type, cm.modifier_id) 
+            for cm in self._always.constructible_modifiers
+        ]
+        if (self.constructible_type, parent_modifier_id) not in existing_constructible_modifiers:
+            self._always.constructible_modifiers.append(constructible_modifier)
+
     def migrate(self) -> "ConstructibleBuilder":
         """Migrate and populate all database variants."""
         from civ7_modding_tools.utils import locale
@@ -1653,6 +1744,16 @@ class ConstructibleBuilder(BaseBuilder):
             elif self.constructible_type.startswith('IMPROVEMENT_'):
                 self.improvement = {}
         
+        # Migrate top-level fields to constructible dict for convenience
+        # Fields like 'age', 'repairable', 'cost', etc. can be at top level in YAML
+        top_level_constructible_fields = ['age', 'cost', 'population', 'repairable', 
+                                           'adjacent_river', 'adjacent_terrain', 'adjacent_district']
+        for field in top_level_constructible_fields:
+            if hasattr(self, field):
+                value = getattr(self, field, None)
+                if value is not None and field not in self.constructible:
+                    self.constructible[field] = value
+        
         # Generate localization keys
         loc_name = locale(self.constructible_type, 'name')
         loc_description = locale(self.constructible_type, 'description')
@@ -1665,10 +1766,23 @@ class ConstructibleBuilder(BaseBuilder):
         ]
         
         # TypeTags
-        if self.type_tags:
+        type_tags = list(self.type_tags) if self.type_tags else []
+        
+        # Auto-add AGELESS tag if age is 'AGELESS'
+        if self.constructible.get('age') == 'AGELESS' and 'AGELESS' not in type_tags:
+            type_tags.append('AGELESS')
+        
+        # Auto-add UNIQUE_IMPROVEMENT tag for improvements with trait_type
+        if not self.is_building:
+            # Check if trait_type is set in improvement dict
+            has_trait = self.improvement and self.improvement.get('trait_type')
+            if has_trait and 'UNIQUE_IMPROVEMENT' not in type_tags:
+                type_tags.append('UNIQUE_IMPROVEMENT')
+        
+        if type_tags:
             self._always.type_tags = [
                 TypeTagNode(type_=self.constructible_type, tag=tag)
-                for tag in self.type_tags
+                for tag in type_tags
             ]
         
         # Building (if this is a building)
@@ -1704,9 +1818,25 @@ class ConstructibleBuilder(BaseBuilder):
             if existing_trait_type is not None:
                 improvement_node.trait_type = existing_trait_type
             
-            for key, value in self.improvement.items():
+            # Set sensible defaults for improvements
+            if 'resource_tier' not in self.improvement:
+                improvement_node.resource_tier = 0
+            if 'city_buildable' not in self.improvement:
+                improvement_node.city_buildable = True
+            
+            # Extract unit_healing for modifier generation (removed from improvement dict)
+            unit_healing_value = None
+            improvement_data = dict(self.improvement)  # Create copy
+            if 'unit_healing' in improvement_data:
+                unit_healing_value = improvement_data.pop('unit_healing')
+            
+            for key, value in improvement_data.items():
                 setattr(improvement_node, key, value)
             self._always.improvements = [improvement_node]
+            
+            # Generate unit healing modifier if specified
+            if unit_healing_value is not None:
+                self._generate_unit_healing_modifier(unit_healing_value)
         
         # Constructible definition with localization
         const_node = ConstructibleNode(
@@ -1715,18 +1845,27 @@ class ConstructibleBuilder(BaseBuilder):
             description=loc_description,
             tooltip=loc_tooltip,
         )
+        # Set constructible_class based on is_building flag
+        if not self.is_building:
+            const_node.constructible_class = "IMPROVEMENT"
+        
         for key, value in self.constructible.items():
             setattr(const_node, key, value)
         self._always.constructibles = [const_node]
         
         # Valid districts
-        if self.constructible_valid_districts:
+        # Auto-add DISTRICT_RURAL for improvements if not specified
+        valid_districts = self.constructible_valid_districts
+        if not valid_districts and not self.is_building:
+            valid_districts = ['DISTRICT_RURAL']
+        
+        if valid_districts:
             self._always.constructible_valid_districts = [
                 ConstructibleValidDistrictNode(
                     constructible_type=self.constructible_type,
                     district_type=district
                 )
-                for district in self.constructible_valid_districts
+                for district in valid_districts
             ]
         
         # Valid terrains

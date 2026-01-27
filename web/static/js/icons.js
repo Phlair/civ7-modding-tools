@@ -17,6 +17,10 @@ const UNIT_REFERENCE_ICONS = {
     MOD: ['britishship', 'corsair', 'cossack', 'frenchguard', 'generic', 'gunelephant', 'gurkha', 'japanship', 'mughalsettler', 'prospector', 'qajarcommander', 'rocketlauncher', 'sepoy', 'sherpa', 'stuka', 'zero']
 };
 
+const IMPROVEMENT_REFERENCE_ICONS = [
+    'baray', 'greatwall', 'hawilt', 'incafarm', 'mongol', 'potkop', 'powerstation', 'prussia', 'stepwell', 'viettheatre'
+];
+
 /**
  * Generate civilization icon
  */
@@ -124,10 +128,33 @@ function showIconGenerationModal(iconType, displayName) {
                 </p>
             </div>
         `;
-    } else {
-        // Building icons (placeholder for now)
+    } else if (iconType === 'building') {
+        // Improvement/Building icons
+        const checkboxes = IMPROVEMENT_REFERENCE_ICONS.map(name => `
+            <label class="flex items-center gap-2 p-2 rounded hover:bg-slate-800 cursor-pointer">
+                <input 
+                    type="checkbox" 
+                    class="reference-checkbox w-4 h-4" 
+                    data-icon="${name}"
+                    data-path="/icons/improvements/imp_${name}.png"
+                    checked
+                    onchange="window.updateUnitSelectionCount()"
+                />
+                <img src="/icons/improvements/imp_${name}.png" alt="${name}" class="w-12 h-12 rounded border border-slate-600" />
+                <span class="text-xs text-slate-300">${name}</span>
+            </label>
+        `).join('');
+        
         referenceIconsHTML = `
-            <p class="text-sm text-slate-400">Building icon references coming soon...</p>
+            <div class="grid grid-cols-5 gap-2 bg-slate-800/50 p-3 rounded-lg border border-slate-700 max-h-64 overflow-y-auto">
+                ${checkboxes}
+            </div>
+            <p id="selection-count" class="text-xs text-slate-400 mt-2">
+                <span id="selected-count">${IMPROVEMENT_REFERENCE_ICONS.length}</span> / ${IMPROVEMENT_REFERENCE_ICONS.length} selected
+            </p>
+            <p class="text-xs text-slate-500">
+                💡 Reference icons help AI match the game's isometric building style. Uncheck to exclude specific styles.
+            </p>
         `;
     }
     

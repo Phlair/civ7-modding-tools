@@ -843,11 +843,12 @@ async def generate_icon(request: IconGenerateRequest) -> dict[str, Any]:
                 f"No text or labels. Match the artistic style of the reference images."
             ),
             'building': (
-                f"Create a minimalist game icon for a building/constructible. "
+                f"Create a minimalist isometric game icon for a building or improvement. "
                 f"Description: {request.prompt}\n"
-                f"Ensure consistency in colour/shade with examples."
-                f"Requirements: 256x256 PNG, isometric or 3/4 view, transparent background, "
-                f"warm earth tones, clean edges, game-ready asset. "
+                f"Ensure consistency in colour/shade with examples. "
+                f"Requirements: 256x256 PNG, isometric or 3/4 view perspective, transparent background, "
+                f"warm earth tones (browns, golds, greens), clean edges, detailed but readable at small size. "
+                f"Style: Match Civilization VII's improvement icons - clear structure, subtle shading, game-ready. "
                 f"No text or labels. Match the artistic style of the reference images."
             ),
         }
