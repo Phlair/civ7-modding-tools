@@ -241,6 +241,12 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_DRUID_SACRED_GROVE",
+      "name": "LOC_ABILITY_DRUID_SACRED_GROVE_NAME",
+      "description": "LOC_ABILITY_DRUID_SACRED_GROVE_DESCRIPTION",
+      "description_text": ""
+    },
+    {
       "id": "ABILITY_ECONOMIC_DARK_AGE",
       "name": "",
       "description": "",

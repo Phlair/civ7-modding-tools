@@ -282,6 +282,12 @@ def get_adjacency_patterns() -> List[Dict[str, Any]]:
     return load_reference_data('adjacency-patterns.json')['values']
 
 
+def get_constructibles() -> List[str]:
+    """Get all available constructible types (buildings, improvements, wonders)."""
+    data = load_reference_data('constructibles.json')
+    return data if isinstance(data, list) else data.get('values', [])
+
+
 __all__ = [
     'load_reference_data',
     # Original types
@@ -327,4 +333,5 @@ __all__ = [
     'get_unit_abilities',
     'get_plunder_types',
     'get_adjacency_patterns',
+    'get_constructibles',
 ]

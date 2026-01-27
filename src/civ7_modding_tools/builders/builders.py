@@ -1609,6 +1609,7 @@ class ConstructibleBuilder(BaseBuilder):
         self._icons = DatabaseNode()
         self._localizations = DatabaseNode()
         self._game_effects: Optional['GameEffectNode'] = None
+        self._visual_remap: Optional[DatabaseNode] = None
         
         self.constructible_type: Optional[str] = None
         self.is_building: bool = True  # Default to building
@@ -1625,6 +1626,9 @@ class ConstructibleBuilder(BaseBuilder):
         self.adjacent_river: Optional[bool] = None
         self.adjacent_terrain: Optional[str] = None
         self.adjacent_district: Optional[str] = None
+        
+        # Visual remapping (same format as units: {to: base_constructible_id})
+        self.visual_remap: Optional[Dict[str, Any]] = None
         
         self.type_tags: list[str] = []
         self.constructible_valid_districts: list[str] = []
@@ -2033,6 +2037,34 @@ class ConstructibleBuilder(BaseBuilder):
         if localization_rows:
             self._localizations.english_text = localization_rows
         
+        # ==== POPULATE _visual_remap DATABASE ====
+        if self.visual_remap:
+            from civ7_modding_tools.nodes import VisualRemapRowNode
+            from civ7_modding_tools.utils import locale
+            from civ7_modding_tools.data import get_constructibles
+            
+            remap_to = self.visual_remap.get('to') if isinstance(self.visual_remap, dict) else self.visual_remap
+            
+            # Validate that the base constructible exists
+            if remap_to:
+                valid_constructibles = set(c['id'] for c in get_constructibles())
+                if remap_to not in valid_constructibles:
+                    raise ValueError(
+                        f"Invalid visual_remap base constructible: {remap_to}. "
+                        f"Must be a valid base game constructible ID."
+                    )
+            
+            remap_id = f"REMAP_{self.constructible_type}"
+            remap_row = VisualRemapRowNode()
+            remap_row.id = remap_id
+            remap_row.display_name = locale(self.constructible_type, 'name')
+            remap_row.kind = 'BUILDING' if self.is_building else 'IMPROVEMENT'
+            remap_row.from_ = self.constructible_type
+            remap_row.to = remap_to
+            
+            self._visual_remap = DatabaseNode()
+            self._visual_remap.visual_remaps = [remap_row]
+        
         # ==== POPULATE _game_effects DATABASE ====
         if self.modifiers:
             self._game_effects = DatabaseNode()
@@ -2080,6 +2112,15 @@ class ConstructibleBuilder(BaseBuilder):
                 name="game-effects.xml",
                 content=self._game_effects,
                 action_group=self.action_group_bundle.current
+            ))
+        
+        # Add visual-remap if present
+        if self._visual_remap:
+            files.append(XmlFile(
+                path=path,
+                name="visual-remap.xml",
+                content=self._visual_remap,
+                action_group=self.action_group_bundle.shell
             ))
         
         # Filter out empty files

@@ -149,14 +149,6 @@
       "replaces": null
     },
     {
-      "id": "UNIT_BABYLON_SABUM_KIBITTUM",
-      "ages": [],
-      "unlocked_by": [
-        "NODE_CIVICS_BABYLON1"
-      ],
-      "replaces": "UNIT_WARRIOR"
-    },
-    {
       "id": "UNIT_BALIK",
       "ages": [],
       "unlocked_by": [],
@@ -638,6 +630,12 @@
       "unlocked_by": [
         "NODE_TECH_MO_COMBUSTION"
       ],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_DRUID",
+      "ages": [],
+      "unlocked_by": [],
       "replaces": null
     },
     {

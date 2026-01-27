@@ -56,6 +56,7 @@ export function renderWizardStep3(container) {
         window.setConstructibleIsBuilding = setConstructibleIsBuilding;
         window.showFieldHelp = showFieldHelp;
         window.populateVisualRemapDropdown = populateVisualRemapDropdown;
+        window.populateConstructibleVisualRemapDropdown = populateConstructibleVisualRemapDropdown;
         window.toggleUnitReplacesCustom = toggleUnitReplacesCustom;
         window.toggleUnitUpgradeCustom = toggleUnitUpgradeCustom;
         window.addWizardBuildingDistrict = addWizardBuildingDistrict;
@@ -902,6 +903,21 @@ export function renderWizardStep3(container) {
                                 >
                                     ✨ AI
                                 </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Visual Remap -->
+                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
+                            <h6 class="text-xs font-semibold text-slate-400 mb-2">Visual Remap (Optional)</h6>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Use Visuals From</label>
+                                <select 
+                                    id="wizard-constructible-visual-remap" 
+                                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                >
+                                    <option value="">None (custom or default visuals)</option>
+                                </select>
+                                <p class="text-xs text-slate-500 mt-1">Use visuals from an existing base game building/improvement</p>
                             </div>
                         </div>
                         
@@ -1846,6 +1862,9 @@ export function wizardShowConstructibleForm() {
     // Populate dropdown fields
     populateConstructibleDropdowns();
     
+    // Populate visual remap dropdown
+    populateConstructibleVisualRemapDropdown();
+    
     document.getElementById('wizard-constructible-id').focus();
 }
 
@@ -2031,6 +2050,12 @@ export function wizardSaveConstructible() {
         constructible.icon = { path: icon };
     }
 
+    // Visual remap - use same format as units
+    const visualRemap = document.getElementById('wizard-constructible-visual-remap').value.trim();
+    if (visualRemap) {
+        constructible.visual_remap = { to: visualRemap };
+    }
+
     // Placement constraints - from arrays
     if (wizardBuildingValidDistricts.length > 0) {
         constructible.constructible_valid_districts = wizardBuildingValidDistricts.filter(d => d.length > 0);
@@ -2175,6 +2200,9 @@ export async function wizardEditConstructible(idx) {
     
     // Populate dropdown fields BEFORE setting values
     await populateConstructibleDropdowns();
+    
+    // Populate visual remap dropdown and set value
+    await populateConstructibleVisualRemapDropdown(building.visual_remap?.to || '');
     
     // Yields
     wizardBuildingYields.length = 0;
@@ -2740,6 +2768,37 @@ export async function populateVisualRemapDropdown(selectedValue = '') {
     } catch (error) {
         console.error('Error populating visual remap dropdown:', error);
         dropdown.innerHTML = '<option value="">Error loading units</option>';
+    }
+}
+
+/**
+ * Populate constructible visual remap dropdown with all available constructibles
+ * @param {string} selectedValue - Currently selected constructible ID
+ */
+export async function populateConstructibleVisualRemapDropdown(selectedValue = '') {
+    const dropdown = document.getElementById('wizard-constructible-visual-remap');
+    if (!dropdown) return;
+
+    try {
+        const response = await fetch('/api/data/constructibles');
+        if (!response.ok) throw new Error('Failed to fetch constructibles');
+        
+        const data = await response.json();
+        const constructibles = data.values || [];
+        
+        // Build options with all constructibles, sorted alphabetically by ID
+        dropdown.innerHTML = '<option value="">None (custom or default visuals)</option>' +
+            constructibles.sort((a, b) => a.id.localeCompare(b.id)).map(item => {
+                return `<option value="${item.id}">${item.id}</option>`;
+            }).join('');
+        
+        // Restore selection
+        if (selectedValue) {
+            dropdown.value = selectedValue;
+        }
+    } catch (error) {
+        console.error('Error populating constructible visual remap dropdown:', error);
+        dropdown.innerHTML = '<option value="">Error loading constructibles</option>';
     }
 }
 

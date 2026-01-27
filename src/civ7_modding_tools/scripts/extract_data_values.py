@@ -70,6 +70,7 @@ class CivVIIDataExtractor:
             'civilizations': set(),
             'civilization_traits': set(),
             'unit_abilities': {},  # {ability_id: {name, description, description_text}}
+            'constructibles': set(),  # All building, improvement, and wonder types
         }
         self.localization_texts = {}  # {LOC_TAG: english_text} - for resolving LOC_ keys
         self.civ_cache = defaultdict(dict)
@@ -319,6 +320,14 @@ class CivVIIDataExtractor:
             if tag == 'Row' and 'Type' in attribs and 'Kind' in attribs:
                 if attribs['Kind'] == 'KIND_UNIT':
                     self.data['units'].add(attribs['Type'])
+            
+            # Constructibles - from ConstructibleType attribute
+            if 'ConstructibleType' in attribs:
+                constructible_type = attribs['ConstructibleType']
+                if (constructible_type.startswith('BUILDING_') or 
+                    constructible_type.startswith('IMPROVEMENT_') or 
+                    constructible_type.startswith('WONDER_')):
+                    self.data['constructibles'].add(constructible_type)
             
             # UnitAbilities - extract ability types from UnitAbilityType attribute
             # This captures abilities from UnitAbilities, UnitClass_Abilities, and UnitAbilityModifiers tables
@@ -890,6 +899,12 @@ class CivVIIDataExtractor:
             ]
         }
         self._write_json('civilizations.json', civilizations)
+
+        # Constructibles (Buildings, Improvements, Wonders)
+        constructibles = {
+            'values': [{'id': c} for c in sorted(self.data['constructibles'])]
+        }
+        self._write_json('constructibles.json', constructibles)
 
 
 def main() -> None:

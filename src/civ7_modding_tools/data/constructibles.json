@@ -1,0 +1,631 @@
+{
+  "values": [
+    {
+      "id": "BUILDING_ACADEMY"
+    },
+    {
+      "id": "BUILDING_ACADEMY_EX"
+    },
+    {
+      "id": "BUILDING_AIRFIELD"
+    },
+    {
+      "id": "BUILDING_ALTAR"
+    },
+    {
+      "id": "BUILDING_AMPHITHEATER"
+    },
+    {
+      "id": "BUILDING_AMPHITHEATER_EX"
+    },
+    {
+      "id": "BUILDING_ANCIENT_BRIDGE"
+    },
+    {
+      "id": "BUILDING_ANCIENT_WALLS"
+    },
+    {
+      "id": "BUILDING_ANJUVANNAM"
+    },
+    {
+      "id": "BUILDING_ARENA"
+    },
+    {
+      "id": "BUILDING_ARMORER"
+    },
+    {
+      "id": "BUILDING_BAILEY"
+    },
+    {
+      "id": "BUILDING_BANK"
+    },
+    {
+      "id": "BUILDING_BARRACKS"
+    },
+    {
+      "id": "BUILDING_BASILICA"
+    },
+    {
+      "id": "BUILDING_BATH"
+    },
+    {
+      "id": "BUILDING_BAZAAR"
+    },
+    {
+      "id": "BUILDING_BLACKSMITH"
+    },
+    {
+      "id": "BUILDING_BRICKYARD"
+    },
+    {
+      "id": "BUILDING_CAMII"
+    },
+    {
+      "id": "BUILDING_CANDI_BENTAR"
+    },
+    {
+      "id": "BUILDING_CANNERY"
+    },
+    {
+      "id": "BUILDING_CASA_CONSISTORIAL"
+    },
+    {
+      "id": "BUILDING_CASA_DE_CONTRATACION"
+    },
+    {
+      "id": "BUILDING_CATEDRAL"
+    },
+    {
+      "id": "BUILDING_CITADEL"
+    },
+    {
+      "id": "BUILDING_CITY_HALL"
+    },
+    {
+      "id": "BUILDING_CITY_PARK"
+    },
+    {
+      "id": "BUILDING_COTHON"
+    },
+    {
+      "id": "BUILDING_DEFENSIVE_FORTIFICATIONS"
+    },
+    {
+      "id": "BUILDING_DEPARTMENT_STORE"
+    },
+    {
+      "id": "BUILDING_DHARAMSHALA"
+    },
+    {
+      "id": "BUILDING_DOCKYARD"
+    },
+    {
+      "id": "BUILDING_DUNGEON"
+    },
+    {
+      "id": "BUILDING_EXAMINATION_HALL"
+    },
+    {
+      "id": "BUILDING_FACTORY"
+    },
+    {
+      "id": "BUILDING_FISHING_QUAY"
+    },
+    {
+      "id": "BUILDING_FORMAL_GARDEN"
+    },
+    {
+      "id": "BUILDING_GARDEN"
+    },
+    {
+      "id": "BUILDING_GHAHVE_KHANE"
+    },
+    {
+      "id": "BUILDING_GINKO"
+    },
+    {
+      "id": "BUILDING_GRANARY"
+    },
+    {
+      "id": "BUILDING_GRISTMILL"
+    },
+    {
+      "id": "BUILDING_GROCER"
+    },
+    {
+      "id": "BUILDING_GUILDHALL"
+    },
+    {
+      "id": "BUILDING_HAMMAM"
+    },
+    {
+      "id": "BUILDING_HARBOR"
+    },
+    {
+      "id": "BUILDING_HOSPITAL"
+    },
+    {
+      "id": "BUILDING_IRONWORKS"
+    },
+    {
+      "id": "BUILDING_JALAW"
+    },
+    {
+      "id": "BUILDING_JUKOGYO"
+    },
+    {
+      "id": "BUILDING_KILN"
+    },
+    {
+      "id": "BUILDING_KUH_NAH"
+    },
+    {
+      "id": "BUILDING_LABORATORY"
+    },
+    {
+      "id": "BUILDING_LANGI"
+    },
+    {
+      "id": "BUILDING_LAUNCH_PAD"
+    },
+    {
+      "id": "BUILDING_LIBRARY"
+    },
+    {
+      "id": "BUILDING_LIGHTHOUSE"
+    },
+    {
+      "id": "BUILDING_MADRASA"
+    },
+    {
+      "id": "BUILDING_MANIGRAMAM"
+    },
+    {
+      "id": "BUILDING_MANUFACTORY"
+    },
+    {
+      "id": "BUILDING_MARKET"
+    },
+    {
+      "id": "BUILDING_MASTABA"
+    },
+    {
+      "id": "BUILDING_MEDIEVAL_BRIDGE"
+    },
+    {
+      "id": "BUILDING_MEDIEVAL_WALLS"
+    },
+    {
+      "id": "BUILDING_MENAGERIE"
+    },
+    {
+      "id": "BUILDING_MERU"
+    },
+    {
+      "id": "BUILDING_MILITARY_ACADEMY"
+    },
+    {
+      "id": "BUILDING_MODERN_BRIDGE"
+    },
+    {
+      "id": "BUILDING_MONEY_SHOP"
+    },
+    {
+      "id": "BUILDING_MONUMENT"
+    },
+    {
+      "id": "BUILDING_MORTUARY_TEMPLE"
+    },
+    {
+      "id": "BUILDING_MOSQUE"
+    },
+    {
+      "id": "BUILDING_MOTTE"
+    },
+    {
+      "id": "BUILDING_MUSEUM"
+    },
+    {
+      "id": "BUILDING_NAVAL_ARSENAL"
+    },
+    {
+      "id": "BUILDING_NAVAL_STATION"
+    },
+    {
+      "id": "BUILDING_OBSERVATORY"
+    },
+    {
+      "id": "BUILDING_ODEON"
+    },
+    {
+      "id": "BUILDING_OPERA_HOUSE"
+    },
+    {
+      "id": "BUILDING_PALACE"
+    },
+    {
+      "id": "BUILDING_PARTHENON"
+    },
+    {
+      "id": "BUILDING_PAVILION"
+    },
+    {
+      "id": "BUILDING_PLAGUE_HOSPITAL"
+    },
+    {
+      "id": "BUILDING_PORT"
+    },
+    {
+      "id": "BUILDING_PORTAL_DE_MERCADERES"
+    },
+    {
+      "id": "BUILDING_RADIO_STATION"
+    },
+    {
+      "id": "BUILDING_RAILYARD"
+    },
+    {
+      "id": "BUILDING_RAIL_STATION"
+    },
+    {
+      "id": "BUILDING_ROYAL_EXCHANGE"
+    },
+    {
+      "id": "BUILDING_ROYAL_LIBRARY"
+    },
+    {
+      "id": "BUILDING_SALON"
+    },
+    {
+      "id": "BUILDING_SAWMILL"
+    },
+    {
+      "id": "BUILDING_SAW_PIT"
+    },
+    {
+      "id": "BUILDING_SCHOOLHOUSE"
+    },
+    {
+      "id": "BUILDING_SHIPYARD"
+    },
+    {
+      "id": "BUILDING_STEEL_MILL"
+    },
+    {
+      "id": "BUILDING_STOCK_EXCHANGE"
+    },
+    {
+      "id": "BUILDING_STONECUTTER"
+    },
+    {
+      "id": "BUILDING_TAKYEH"
+    },
+    {
+      "id": "BUILDING_TAVERN"
+    },
+    {
+      "id": "BUILDING_TEMPLE"
+    },
+    {
+      "id": "BUILDING_TEMPLE_OF_JUPITER"
+    },
+    {
+      "id": "BUILDING_TENEMENT"
+    },
+    {
+      "id": "BUILDING_UNIVERSITY"
+    },
+    {
+      "id": "BUILDING_UNIVERSITY_MO"
+    },
+    {
+      "id": "BUILDING_VAI_KAUKAU"
+    },
+    {
+      "id": "BUILDING_VIHARA"
+    },
+    {
+      "id": "BUILDING_VILLA"
+    },
+    {
+      "id": "BUILDING_WHARF"
+    },
+    {
+      "id": "IMPROVEMENT_ABATTOIR"
+    },
+    {
+      "id": "IMPROVEMENT_BANG"
+    },
+    {
+      "id": "IMPROVEMENT_BARAY"
+    },
+    {
+      "id": "IMPROVEMENT_CARAVANSERAI"
+    },
+    {
+      "id": "IMPROVEMENT_CIRCUS_FAIR"
+    },
+    {
+      "id": "IMPROVEMENT_ENTREPOT"
+    },
+    {
+      "id": "IMPROVEMENT_FARM"
+    },
+    {
+      "id": "IMPROVEMENT_FESTIVAL_GROUNDS"
+    },
+    {
+      "id": "IMPROVEMENT_FISHING_BOAT"
+    },
+    {
+      "id": "IMPROVEMENT_HAN_GREAT_WALL"
+    },
+    {
+      "id": "IMPROVEMENT_HAWAII_FISHING_BOAT"
+    },
+    {
+      "id": "IMPROVEMENT_HAWELT"
+    },
+    {
+      "id": "IMPROVEMENT_HIDDEN_FORTRESS"
+    },
+    {
+      "id": "IMPROVEMENT_HIGHLAND_POWER_STATION"
+    },
+    {
+      "id": "IMPROVEMENT_HILLFORT"
+    },
+    {
+      "id": "IMPROVEMENT_ICE_HOUSE"
+    },
+    {
+      "id": "IMPROVEMENT_INCA_MOUNTAIN"
+    },
+    {
+      "id": "IMPROVEMENT_INSTITUTE"
+    },
+    {
+      "id": "IMPROVEMENT_KABAKAS_LAKE"
+    },
+    {
+      "id": "IMPROVEMENT_KASBAH"
+    },
+    {
+      "id": "IMPROVEMENT_LO_I_KALO"
+    },
+    {
+      "id": "IMPROVEMENT_MEGALITH"
+    },
+    {
+      "id": "IMPROVEMENT_MING_GREAT_WALL"
+    },
+    {
+      "id": "IMPROVEMENT_MINOR_EMBASSY"
+    },
+    {
+      "id": "IMPROVEMENT_MONASTERY"
+    },
+    {
+      "id": "IMPROVEMENT_MOUNTAIN"
+    },
+    {
+      "id": "IMPROVEMENT_OBSHCHINA"
+    },
+    {
+      "id": "IMPROVEMENT_OPEN_AIR_MUSEUM"
+    },
+    {
+      "id": "IMPROVEMENT_ORTOO"
+    },
+    {
+      "id": "IMPROVEMENT_PAIRIDAEZA"
+    },
+    {
+      "id": "IMPROVEMENT_PLANTATION"
+    },
+    {
+      "id": "IMPROVEMENT_POTKOP"
+    },
+    {
+      "id": "IMPROVEMENT_RUINS"
+    },
+    {
+      "id": "IMPROVEMENT_SAQIYA"
+    },
+    {
+      "id": "IMPROVEMENT_SHORE_BATTERY"
+    },
+    {
+      "id": "IMPROVEMENT_SOUQ"
+    },
+    {
+      "id": "IMPROVEMENT_STEPWELL"
+    },
+    {
+      "id": "IMPROVEMENT_STONE_HEAD"
+    },
+    {
+      "id": "IMPROVEMENT_TERRACE_FARM"
+    },
+    {
+      "id": "IMPROVEMENT_THING"
+    },
+    {
+      "id": "IMPROVEMENT_TRADING_FACTORY"
+    },
+    {
+      "id": "IMPROVEMENT_WATER_PUPPET_THEATER"
+    },
+    {
+      "id": "IMPROVEMENT_ZIGGURAT"
+    },
+    {
+      "id": "WONDER_ANGKOR_WAT"
+    },
+    {
+      "id": "WONDER_BATTERSEA_POWER_STATION"
+    },
+    {
+      "id": "WONDER_BOROBUDUR"
+    },
+    {
+      "id": "WONDER_BOUDHANATH"
+    },
+    {
+      "id": "WONDER_BRANDENBURG_GATE"
+    },
+    {
+      "id": "WONDER_BRIHADEESWARAR_TEMPLE"
+    },
+    {
+      "id": "WONDER_BYRSA"
+    },
+    {
+      "id": "WONDER_CHENGDE_MOUNTAIN_RESORT"
+    },
+    {
+      "id": "WONDER_COLOSSEUM"
+    },
+    {
+      "id": "WONDER_COLOSSUS"
+    },
+    {
+      "id": "WONDER_DOGO_ONSEN"
+    },
+    {
+      "id": "WONDER_DOI_SUTHEP"
+    },
+    {
+      "id": "WONDER_DUR_SHARRUKIN"
+    },
+    {
+      "id": "WONDER_EIFFEL_TOWER"
+    },
+    {
+      "id": "WONDER_EL_ESCORIAL"
+    },
+    {
+      "id": "WONDER_EMILE_BELL"
+    },
+    {
+      "id": "WONDER_ERAM_GARDEN"
+    },
+    {
+      "id": "WONDER_ERDENE_ZUU"
+    },
+    {
+      "id": "WONDER_FORBIDDEN_CITY"
+    },
+    {
+      "id": "WONDER_GATE_OF_ALL_NATIONS"
+    },
+    {
+      "id": "WONDER_GREAT_LIBRARY"
+    },
+    {
+      "id": "WONDER_GREAT_STELE"
+    },
+    {
+      "id": "WONDER_HALE_O_KEAWE"
+    },
+    {
+      "id": "WONDER_HANGING_GARDENS"
+    },
+    {
+      "id": "WONDER_HAVANA_HARBOR"
+    },
+    {
+      "id": "WONDER_HA_AMONGA_A_MAUI"
+    },
+    {
+      "id": "WONDER_HERMITAGE"
+    },
+    {
+      "id": "WONDER_HOUSE_OF_WISDOM"
+    },
+    {
+      "id": "WONDER_MACHU_PIKCHU"
+    },
+    {
+      "id": "WONDER_MANHATTAN_PROJECT"
+    },
+    {
+      "id": "WONDER_MAUSOLEUM_OF_THEODORIC"
+    },
+    {
+      "id": "WONDER_MONKS_MOUND"
+    },
+    {
+      "id": "WONDER_MUNDO_PERDIDO"
+    },
+    {
+      "id": "WONDER_MUZIBU_AZAALA_MPANGA"
+    },
+    {
+      "id": "WONDER_NALANDA"
+    },
+    {
+      "id": "WONDER_NOTRE_DAME"
+    },
+    {
+      "id": "WONDER_ORACLE"
+    },
+    {
+      "id": "WONDER_OXFORD_UNIVERSITY"
+    },
+    {
+      "id": "WONDER_PALACIO_DE_BELLAS_ARTES"
+    },
+    {
+      "id": "WONDER_PETRA"
+    },
+    {
+      "id": "WONDER_PYRAMIDS"
+    },
+    {
+      "id": "WONDER_PYRAMID_OF_THE_SUN"
+    },
+    {
+      "id": "WONDER_RED_FORT"
+    },
+    {
+      "id": "WONDER_REYKHOLT"
+    },
+    {
+      "id": "WONDER_RILA_MONASTERY"
+    },
+    {
+      "id": "WONDER_SANCHI_STUPA"
+    },
+    {
+      "id": "WONDER_SHWEDAGON_ZEDI_DAW"
+    },
+    {
+      "id": "WONDER_STATUE_OF_LIBERTY"
+    },
+    {
+      "id": "WONDER_SULTANAHMET_CAMII"
+    },
+    {
+      "id": "WONDER_TAJ_MAHAL"
+    },
+    {
+      "id": "WONDER_TERRACOTTA_ARMY"
+    },
+    {
+      "id": "WONDER_THANH_HUE"
+    },
+    {
+      "id": "WONDER_TOMB_OF_ASKIA"
+    },
+    {
+      "id": "WONDER_WEIYANG_PALACE"
+    },
+    {
+      "id": "WONDER_WHITE_TOWER"
+    },
+    {
+      "id": "WONDER_WORLDS_FAIR"
+    }
+  ]
+}

@@ -17,10 +17,6 @@
       "age": "AGE_ANTIQUITY"
     },
     {
-      "id": "CIVILIZATION_BABYLON",
-      "age": "AGE_ANTIQUITY"
-    },
-    {
       "id": "CIVILIZATION_BUGANDA",
       "age": "AGE_MODERN"
     },
@@ -67,10 +63,6 @@
     {
       "id": "CIVILIZATION_ICELAND",
       "age": "AGE_EXPLORATION"
-    },
-    {
-      "id": "CIVILIZATION_ICENI",
-      "age": "AGE_ANTIQUITY"
     },
     {
       "id": "CIVILIZATION_INCA",

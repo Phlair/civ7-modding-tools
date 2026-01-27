@@ -30597,18 +30597,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "LOC_AUTHORS_BABYLON",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_BABYLON_LOADING_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_BABYLON_LOADING_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
       "id": "LOC_BELIEF_3_COMBAT_PREVIEW",
       "category": "UNCATEGORIZED"
     },
@@ -31066,26 +31054,6 @@
     },
     {
       "id": "LOC_BUILDING_ARMORER_TOOLTIP",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_BUILDING_BABYLON_ACADEMY_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_BUILDING_BABYLON_ACADEMY_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_BUILDING_BABYLON_EDUBBA_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_BUILDING_BABYLON_EDUBBA_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_BUILDING_BABYLON_EDUBBA_TOOLTIP",
       "category": "UNCATEGORIZED"
     },
     {
@@ -42741,150 +42709,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "LOC_CIVILIZATION_BABYLON_ABILITY_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_ABILITY_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_ADJECTIVE",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_1",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_10",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_11",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_12",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_13",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_14",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_15",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_16",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_17",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_18",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_19",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_2",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_20",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_21",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_22",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_23",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_24",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_25",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_26",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_27",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_28",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_29",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_3",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_30",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_4",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_5",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_6",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_7",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_8",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_CITY_NAMES_9",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_FULL_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_BABYLON_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
       "id": "LOC_CIVILIZATION_BUGANDA_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -42994,58 +42818,6 @@
     },
     {
       "id": "LOC_CIVILIZATION_ICELAND_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_ADJECTIVE",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_1",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_10",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_2",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_3",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_4",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_5",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_6",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_7",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_8",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_CITY_NAMES_9",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_ICENI_NAME",
       "category": "UNCATEGORIZED"
     },
     {
@@ -62913,14 +62685,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "LOC_MODULE_BABYLON_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_MODULE_BABYLON_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
       "id": "LOC_MODULE_BULGARIA_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -62958,14 +62722,6 @@
     },
     {
       "id": "LOC_MODULE_ICELAND_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_MODULE_ICENI_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_MODULE_ICENI_NAME",
       "category": "UNCATEGORIZED"
     },
     {
@@ -63654,10 +63410,6 @@
     },
     {
       "id": "LOC_MOD_EX_TECH_WALL_STRENGTH_PREVIEW",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_MOD_F0D77151C3B7454580E5DBAFC50D1F77_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
     {
@@ -70573,14 +70325,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "LOC_QUARTER_BABYLON_ZIGGURAT_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_QUARTER_BABYLON_ZIGGURAT_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
       "id": "LOC_QUARTER_BAQ_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -72262,22 +72006,6 @@
     },
     {
       "id": "LOC_TRADITION_AVANT_GARDE_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_TRADITION_BABYLON_LIBRARY_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_TRADITION_BABYLON_LIBRARY_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_TRADITION_BABYLON_SCRIBES_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_TRADITION_BABYLON_SCRIBES_NAME",
       "category": "UNCATEGORIZED"
     },
     {
@@ -74073,10 +73801,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "LOC_TREE_CIVICS_BABYLON_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
       "id": "LOC_TREE_CIVICS_EX_ABBASID_NAME",
       "category": "UNCATEGORIZED"
     },
@@ -74130,10 +73854,6 @@
     },
     {
       "id": "LOC_TREE_CIVICS_EX_SPAIN_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_TREE_CIVICS_ICENI_NAME",
       "category": "UNCATEGORIZED"
     },
     {
@@ -76921,14 +76641,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "LOC_UNIT_BABYLON_SABUM_KIBITTUM_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_UNIT_BABYLON_SABUM_KIBITTUM_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
       "id": "LOC_UNIT_BALIK_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -77293,6 +77005,10 @@
       "category": "UNCATEGORIZED"
     },
     {
+      "id": "LOC_UNIT_DRUID_DESCRIPTION",
+      "category": "UNCATEGORIZED"
+    },
+    {
       "id": "LOC_UNIT_DRUID_ICENI_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -77302,6 +77018,10 @@
     },
     {
       "id": "LOC_UNIT_DRUID_ICENI_NAME",
+      "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "LOC_UNIT_DRUID_NAME",
       "category": "UNCATEGORIZED"
     },
     {
@@ -80017,10 +79737,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "UNIT_CLASS_BABYLON_SABUM_KIBITTUM",
-      "category": "UNIT_CLASS"
-    },
-    {
       "id": "UNIT_CLASS_BALIK",
       "category": "UNCATEGORIZED"
     },
@@ -80099,6 +79815,10 @@
     {
       "id": "UNIT_CLASS_DHOW",
       "category": "UNCATEGORIZED"
+    },
+    {
+      "id": "UNIT_CLASS_DRUID",
+      "category": "UNIT_CLASS"
     },
     {
       "id": "UNIT_CLASS_DRUID_ICENI",
