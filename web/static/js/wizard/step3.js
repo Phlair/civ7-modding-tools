@@ -1083,15 +1083,13 @@ export function renderWizardStep3(container) {
                             <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">⚙️ Advanced Properties</summary>
                             <div class="p-3 pt-2 space-y-3">
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">Age</label>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Age <span class="text-slate-500 text-xs">(auto-set from civ)</span></label>
                                     <select 
                                         id="wizard-constructible-age" 
-                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                        disabled
+                                        class="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded text-sm text-slate-400 cursor-not-allowed"
                                     >
-                                        <option value="">Default</option>
-                                        <option value="AGE_ANTIQUITY">Antiquity</option>
-                                        <option value="AGE_EXPLORATION">Exploration</option>
-                                        <option value="AGE_MODERN">Modern</option>
+                                        <option value="">Auto</option>
                                     </select>
                                 </div>
                                 <div>
@@ -1180,13 +1178,14 @@ export function renderWizardStep3(container) {
                                 <div id="wizard-constructible-improvement-section" class="hidden space-y-2 pt-2 border-t border-slate-700">
                                     <h6 class="text-xs font-semibold text-slate-400">Improvement-Specific</h6>
                                     <div>
-                                        <label class="block text-xs font-medium text-slate-300 mb-1">Trait Type</label>
-                                        <select 
+                                        <label class="block text-xs font-medium text-slate-300 mb-1">Trait Type <span class="text-slate-500 text-xs">(auto-set from civ)</span></label>
+                                        <input 
+                                            type="text"
                                             id="wizard-constructible-trait-type"
-                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                                        >
-                                            <option value="">No trait requirement</option>
-                                        </select>
+                                            disabled
+                                            placeholder="Auto"
+                                            class="w-full px-2 py-1 bg-slate-800 border border-slate-600 rounded text-sm text-slate-400 cursor-not-allowed"
+                                        />
                                     </div>
                                     <div>
                                         <label class="block text-xs font-medium text-slate-300 mb-1">Unit Healing Bonus</label>
@@ -1228,7 +1227,7 @@ export function renderWizardStep3(container) {
                                             id="wizard-constructible-ageless"
                                             class="w-4 h-4 bg-slate-700 border border-slate-600 rounded focus:ring-2 focus:ring-blue-400"
                                         />
-                                        <span class="text-xs text-slate-300">Ageless (Available in all ages)</span>
+                                        <span class="text-xs text-slate-300">Ageless <span class="text-slate-500">(available in all ages + adds AGELESS tag)</span></span>
                                     </label>
                                 </div>
                             </div>
@@ -1903,23 +1902,6 @@ async function populateConstructibleDropdowns() {
     } catch (error) {
         console.error('Error loading cost progression models:', error);
     }
-    
-    // Populate trait type dropdown
-    const traitSelect = document.getElementById('wizard-constructible-trait-type');
-    if (traitSelect) {
-        const currentValue = traitSelect.value;
-        const traits = [
-            { id: 'TRAIT_ECONOMIC', label: 'Economic' },
-            { id: 'TRAIT_CULTURAL', label: 'Cultural' },
-            { id: 'TRAIT_MILITARY', label: 'Military' },
-            { id: 'TRAIT_DIPLOMATIC', label: 'Diplomatic' },
-            { id: 'TRAIT_SCIENTIFIC', label: 'Scientific' },
-            { id: 'TRAIT_RELIGIOUS', label: 'Religious' },
-        ];
-        traitSelect.innerHTML = '<option value="">No trait requirement</option>' +
-            traits.map(t => `<option value="${t.id}">${t.label} (${t.id})</option>`).join('');
-        traitSelect.value = currentValue;
-    }
 }
 
 export function wizardCancelConstructibleForm() {
@@ -1961,7 +1943,10 @@ export function wizardCancelConstructibleForm() {
     document.getElementById('wizard-constructible-cost-progression').value = '';
     
     // Clear advanced properties
-    document.getElementById('wizard-constructible-age').value = '';
+    const autoAge = wizardData.action_group?.action_group_id || 'AGE_ANTIQUITY';
+    const ageSelect = document.getElementById('wizard-constructible-age');
+    ageSelect.innerHTML = `<option value="${autoAge}">${autoAge.replace('AGE_', '')}</option>`;
+    
     document.getElementById('wizard-constructible-cost-model').value = '';
     document.getElementById('wizard-constructible-district-defense').value = '';
     document.getElementById('wizard-constructible-requires-unlock').checked = false;
@@ -1974,7 +1959,10 @@ export function wizardCancelConstructibleForm() {
     document.getElementById('wizard-constructible-town').value = '';
     
     // Clear improvement-specific
-    document.getElementById('wizard-constructible-trait-type').value = '';
+    const civType = wizardData.civilization?.civilization_type || '';
+    const autoTrait = civType ? civType.replace('CIVILIZATION_', 'TRAIT_') : '';
+    document.getElementById('wizard-constructible-trait-type').value = autoTrait;
+    
     document.getElementById('wizard-constructible-unit-healing').value = '';
     document.getElementById('wizard-constructible-city-buildable').checked = false;
     document.getElementById('wizard-constructible-one-per-settlement').checked = false;
@@ -2024,7 +2012,8 @@ export function wizardSaveConstructible() {
     const costProgression = document.getElementById('wizard-constructible-cost-progression').value.trim();
     
     // Advanced properties
-    const age = document.getElementById('wizard-constructible-age').value.trim();
+    // Auto-populate age from civilization's action_group
+    const age = wizardData.action_group?.action_group_id || 'AGE_ANTIQUITY';
     const costModel = document.getElementById('wizard-constructible-cost-model').value.trim();
     const districtDefense = document.getElementById('wizard-constructible-district-defense').value.trim();
     const requiresUnlock = document.getElementById('wizard-constructible-requires-unlock').checked;
@@ -2123,7 +2112,10 @@ export function wizardSaveConstructible() {
         if (town) constructible.building = { ...constructible.building, town: town };
     } else {
         // Improvement-specific properties
-        const traitType = document.getElementById('wizard-constructible-trait-type').value.trim();
+        // Auto-generate trait from civilization type (e.g., CIVILIZATION_ICENI -> TRAIT_ICENI)
+        const civType = wizardData.civilization?.civilization_type || '';
+        const traitType = civType ? civType.replace('CIVILIZATION_', 'TRAIT_') : '';
+        
         const unitHealing = document.getElementById('wizard-constructible-unit-healing').value.trim();
         const cityBuildable = document.getElementById('wizard-constructible-city-buildable').checked;
         const onePerSettlement = document.getElementById('wizard-constructible-one-per-settlement').checked;
@@ -2141,7 +2133,13 @@ export function wizardSaveConstructible() {
             same_adjacent_valid: sameAdjacentValid
         };
         
-        if (ageless) constructible.age = 'AGELESS';
+        // Handle AGELESS as a type_tag, not an age
+        if (ageless) {
+            constructible.type_tags = constructible.type_tags || [];
+            if (!constructible.type_tags.includes('AGELESS')) {
+                constructible.type_tags.push('AGELESS');
+            }
+        }
     }
 
     if (editIdx >= 0) {
@@ -2227,7 +2225,11 @@ export async function wizardEditConstructible(idx) {
     document.getElementById('wizard-constructible-cost-progression').value = building.cost_progressions?.[0]?.percent || '';
     
     // Advanced properties - set AFTER dropdowns are populated
-    document.getElementById('wizard-constructible-age').value = building.age === 'AGELESS' ? '' : (building.age || '');
+    // Display auto-generated age
+    const autoAge = wizardData.action_group?.action_group_id || 'AGE_ANTIQUITY';
+    const ageSelect = document.getElementById('wizard-constructible-age');
+    ageSelect.innerHTML = `<option value="${autoAge}">${autoAge.replace('AGE_', '')}</option>`;
+    
     document.getElementById('wizard-constructible-cost-model').value = building.cost_progression_model || '';
     document.getElementById('wizard-constructible-district-defense').value = building.district_defense || '';
     document.getElementById('wizard-constructible-requires-unlock').checked = building.requires_unlock || false;
@@ -2240,13 +2242,19 @@ export async function wizardEditConstructible(idx) {
         document.getElementById('wizard-constructible-multiple-per-city').checked = building.building?.multiple_per_city || false;
         document.getElementById('wizard-constructible-town').value = building.building?.town || '';
     } else {
-        // Improvement-specific - set AFTER dropdowns are populated
-        document.getElementById('wizard-constructible-trait-type').value = building.improvement?.trait_type || '';
+        // Improvement-specific - display auto-generated trait
+        const civType = wizardData.civilization?.civilization_type || '';
+        const autoTrait = civType ? civType.replace('CIVILIZATION_', 'TRAIT_') : '';
+        document.getElementById('wizard-constructible-trait-type').value = autoTrait;
+        
         document.getElementById('wizard-constructible-unit-healing').value = building.improvement?.unit_healing || '';
         document.getElementById('wizard-constructible-city-buildable').checked = building.improvement?.city_buildable || false;
         document.getElementById('wizard-constructible-one-per-settlement').checked = building.improvement?.one_per_settlement || false;
         document.getElementById('wizard-constructible-same-adjacent-valid').checked = building.improvement?.same_adjacent_valid || false;
-        document.getElementById('wizard-constructible-ageless').checked = building.age === 'AGELESS';
+        
+        // Check AGELESS from type_tags instead of age
+        const hasAgeless = building.type_tags && building.type_tags.includes('AGELESS');
+        document.getElementById('wizard-constructible-ageless').checked = hasAgeless;
     }
     
     document.getElementById('wizard-constructible-edit-idx').value = idx;

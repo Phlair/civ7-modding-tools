@@ -1772,9 +1772,12 @@ class ConstructibleBuilder(BaseBuilder):
         # TypeTags
         type_tags = list(self.type_tags) if self.type_tags else []
         
-        # Auto-add AGELESS tag if age is 'AGELESS'
-        if self.constructible.get('age') == 'AGELESS' and 'AGELESS' not in type_tags:
-            type_tags.append('AGELESS')
+        # Handle AGELESS: It's a TAG, not an Age. Convert age='AGELESS' to tag
+        if self.constructible.get('age') == 'AGELESS':
+            if 'AGELESS' not in type_tags:
+                type_tags.append('AGELESS')
+            # Remove age field - AGELESS is not a valid age value
+            self.constructible.pop('age', None)
         
         # Auto-add UNIQUE_IMPROVEMENT tag for improvements with trait_type
         if not self.is_building:
@@ -1817,6 +1820,17 @@ class ConstructibleBuilder(BaseBuilder):
             existing_trait_type = None
             if self._always.improvements:
                 existing_trait_type = self._always.improvements[0].trait_type
+            
+            # Auto-correct trait_type if needed
+            if 'trait_type' in self.improvement:
+                trait = self.improvement['trait_type']
+                # Fix common incorrect patterns: TRAIT_CULTURAL -> TRAIT_ATTRIBUTE_CULTURAL
+                if trait and trait.startswith('TRAIT_') and not trait.startswith('TRAIT_ATTRIBUTE_'):
+                    # Check if it's a simple attribute name that needs ATTRIBUTE prefix
+                    simple_attrs = ['CULTURAL', 'ECONOMIC', 'SCIENTIFIC', 'MILITARISTIC', 'POLITICAL', 'EXPANSIONIST']
+                    trait_suffix = trait.replace('TRAIT_', '')
+                    if trait_suffix in simple_attrs:
+                        self.improvement['trait_type'] = f'TRAIT_ATTRIBUTE_{trait_suffix}'
             
             improvement_node = ImprovementNode(constructible_type=self.constructible_type)
             if existing_trait_type is not None:
