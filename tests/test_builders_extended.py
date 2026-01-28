@@ -15,7 +15,7 @@ from civ7_modding_tools.builders import (
     CivilizationUnlockBuilder,
 )
 from civ7_modding_tools.constants import Trait, District, Yield
-from civ7_modding_tools.nodes import GameModifierNode
+from civ7_modding_tools.nodes import GameModifierNode, DatabaseNode
 
 
 # ============================================================================
@@ -323,6 +323,10 @@ class TestUnitBuilderAdvancedScenarios:
         unit.migrate()
         files = unit.build()
         assert any(f.name == 'visual-remap.xml' for f in files)
+        
+        # Verify visual-remap uses current (game) scope, not shell
+        visual_remap_file = next(f for f in files if f.name == 'visual-remap.xml')
+        assert unit.action_group_bundle.current in visual_remap_file.action_groups
 
 
 # ============================================================================
@@ -331,6 +335,33 @@ class TestUnitBuilderAdvancedScenarios:
 
 class TestConstructibleBuilderAdvancedScenarios:
     """Tests for ConstructibleBuilder advanced scenarios."""
+    
+    def test_constructible_with_visual_remap(self):
+        """Test constructible with visual remap uses correct action group scope."""
+        building = ConstructibleBuilder().fill({
+            'constructible_type': 'IMPROVEMENT_CUSTOM_FARM',
+            'is_building': False,
+            'visual_remap': {'to': 'IMPROVEMENT_FARM'}
+        })
+        
+        building.migrate()
+        files = building.build()
+        
+        # Verify visual-remap file exists
+        assert any(f.name == 'visual-remap.xml' for f in files)
+        
+        # Verify visual-remap uses correct Kind value (KIND_CONSTRUCTIBLE)
+        visual_remap_file = next(f for f in files if f.name == 'visual-remap.xml')
+        assert building.action_group_bundle.current in visual_remap_file.action_groups
+        assert building.action_group_bundle.shell not in visual_remap_file.action_groups
+        
+        # Verify the Kind field is set to CONSTRUCTIBLE (not BUILDING/IMPROVEMENT or KIND_CONSTRUCTIBLE)
+        if visual_remap_file.content:
+            from civ7_modding_tools.nodes.nodes import VisualRemapRootNode
+            if isinstance(visual_remap_file.content, DatabaseNode):
+                # If DatabaseNode, check the visual_remaps property
+                if hasattr(visual_remap_file.content, 'visual_remaps') and visual_remap_file.content.visual_remaps:
+                    assert visual_remap_file.content.visual_remaps[0].kind == 'CONSTRUCTIBLE'
     
     def test_constructible_with_multiple_yield_types(self):
         """Test constructible with various yield modifications."""

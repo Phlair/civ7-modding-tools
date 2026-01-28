@@ -2134,7 +2134,7 @@ class ConstructibleBuilder(BaseBuilder):
                 path=path,
                 name="visual-remap.xml",
                 content=self._visual_remap,
-                action_group=self.action_group_bundle.shell
+                action_group=self.action_group_bundle.current
             ))
         
         # Filter out empty files
