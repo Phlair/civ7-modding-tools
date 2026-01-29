@@ -13,6 +13,7 @@ from civ7_modding_tools.nodes.nodes import (
     ConstructibleYieldChangeNode,
     EnglishTextNode,
     CityNameNode,
+    CivilizationCitizenNameNode,
     ProgressionTreeNode,
     ProgressionTreeNodeNode,
     ProgressionTreePrereqNode,
@@ -163,6 +164,7 @@ __all__ = [
     # Text/Icons
     "EnglishTextNode",
     "CityNameNode",
+    "CivilizationCitizenNameNode",
     "IconDefinitionNode",
     "VisualRemapNode",
     "VisualRemapRowNode",

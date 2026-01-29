@@ -29,6 +29,7 @@ class CivilizationLocalization(BaseLocalization):
     full_name: Optional[str] = None
     adjective: Optional[str] = None
     city_names: Optional[List[str]] = None
+    citizen_names: Optional[dict[str, List[str]]] = None
     
     def get_nodes(self, entity_id: str) -> list[dict]:
         """Generate nodes for civilization localization."""
@@ -52,6 +53,19 @@ class CivilizationLocalization(BaseLocalization):
                 nodes.append({
                     "tag": locale(prefix, f"cityNames_{i}"),
                     "text": city_name,
+                })
+        if self.citizen_names:
+            male_names = self.citizen_names.get('male', [])
+            female_names = self.citizen_names.get('female', [])
+            for i, male_name in enumerate(male_names, 1):
+                nodes.append({
+                    "tag": locale(prefix, f"citizenNames_male_{i}"),
+                    "text": male_name,
+                })
+            for i, female_name in enumerate(female_names, 1):
+                nodes.append({
+                    "tag": locale(prefix, f"citizenNames_female_{i}"),
+                    "text": female_name,
                 })
         return nodes
 

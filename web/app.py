@@ -146,7 +146,23 @@ async def get_reference_data(data_type: str) -> dict[str, Any]:
         /api/data/effects
         /api/data/tags
         /api/data/unit-movement-classes
+        /api/data/wonders  # Filtered from constructibles
+        /api/data/leaders
     """
+    # Special case: wonders - filter from constructibles
+    if data_type == "wonders":
+        try:
+            constructibles = load_reference_data("constructibles")
+            wonders = {
+                "values": [
+                    item for item in constructibles.get("values", [])
+                    if item.get("id", "").startswith("WONDER_")
+                ]
+            }
+            return wonders
+        except FileNotFoundError:
+            raise HTTPException(status_code=404, detail="Constructibles data not found")
+    
     try:
         return load_reference_data(data_type)
     except FileNotFoundError:
@@ -1067,6 +1083,162 @@ async def upload_icon(file: UploadFile = File(...), icon_type: str = Form("civil
         raise HTTPException(
             status_code=500,
             detail=f"Failed to upload icon: {str(e)}"
+        )
+
+
+class CitizenNamesGenerateRequest(BaseModel):
+    """Request to generate citizen names using OpenAI."""
+    civilization_name: str
+    adjective: str
+    count: int = 10
+    api_key: str
+
+
+@app.post("/api/citizens/generate")
+async def generate_citizen_names(request: CitizenNamesGenerateRequest) -> dict[str, list[str]]:
+    """
+    Generate culturally appropriate citizen names using OpenAI GPT.
+    
+    Args:
+        request: Citizen names generation parameters
+        
+    Returns:
+        Lists of male and female names
+    """
+    try:
+        from openai import OpenAI
+        
+        # Initialize OpenAI client
+        client = OpenAI(api_key=request.api_key)
+        
+        prompt = f"""Generate {request.count} culturally appropriate male and {request.count} female citizen names for the {request.civilization_name} civilization ({request.adjective} people).
+
+Requirements:
+- Names should be historically accurate or inspired by the culture
+- Use authentic {request.adjective} naming conventions
+- Mix common and uncommon names for variety
+- Avoid modern Western names unless culturally appropriate
+- Return ONLY a JSON object with two arrays: "male_names" and "female_names"
+- Each array should contain exactly {request.count} strings
+- Example format: {{"male_names": ["Name1", "Name2"], "female_names": ["Name1", "Name2"]}}
+
+Generate the names now:"""
+        
+        response = client.chat.completions.create(
+            model="gpt-5-nano",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a historical naming expert. Return ONLY valid JSON with no additional text."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+        
+        # Parse JSON response
+        content = response.choices[0].message.content
+        # Strip markdown code fences if present
+        if content.startswith("```"):
+            content = content.split("\n", 1)[1].rsplit("\n", 1)[0]
+            if content.startswith("json"):
+                content = content[4:].strip()
+        
+        import json
+        names_data = json.loads(content)
+        
+        return {
+            "male_names": names_data.get("male_names", []),
+            "female_names": names_data.get("female_names", [])
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate citizen names: {str(e)}"
+        )
+
+
+class NamedPlacesGenerateRequest(BaseModel):
+    """Request to generate named places using OpenAI."""
+    civilization_name: str
+    adjective: str
+    place_type: str  # 'rivers' or 'volcanoes'
+    count: int = 5
+    api_key: str
+
+
+@app.post("/api/named-places/generate")
+async def generate_named_places(request: NamedPlacesGenerateRequest) -> dict[str, list[dict[str, str]]]:
+    """
+    Generate culturally appropriate river or volcano names using OpenAI GPT.
+    
+    Args:
+        request: Named places generation parameters
+        
+    Returns:
+        List of named places with type IDs and display names
+    """
+    try:
+        from openai import OpenAI
+        
+        # Initialize OpenAI client
+        client = OpenAI(api_key=request.api_key)
+        
+        place_desc = "rivers" if request.place_type == "rivers" else "volcanoes"
+        prefix = "RIVER" if request.place_type == "rivers" else "VOLCANO"
+        additional_info = "Use relevant local hills and/or mountains if there aren't geographical volcanoes" if request.place_type == "volcanoes" else ""
+        
+        prompt = f"""Generate {request.count} culturally appropriate {place_desc} names for the {request.civilization_name} civilization ({request.adjective} region).
+
+Requirements:
+- Names should be historically accurate or geographically plausible for the {request.adjective} region
+- Use authentic {request.adjective} naming conventions and language
+- Mix well-known and lesser-known {place_desc}. {additional_info}
+- Each entry needs both a TYPE_ID and a display name
+- TYPE_ID format: {prefix}_NAME_IN_CAPS (e.g., {prefix}_THAMES, {prefix}_MOUNT_VESUVIUS)
+- Display name: The actual name as shown to players (e.g., "Thames", "Mount Vesuvius")
+- Return ONLY a JSON object with one array: "places"
+- Each place has "type_id" and "name" fields
+- Example format: {{"places": [{{"type_id": "{prefix}_THAMES", "name": "Thames"}}, {{"type_id": "{prefix}_SEVERN", "name": "Severn"}}]}}
+
+Generate the {place_desc} names now:"""
+        
+        response = client.chat.completions.create(
+            model="gpt-5-nano",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a geographic and historical naming expert. Return ONLY valid JSON with no additional text."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+        
+        # Parse JSON response
+        content = response.choices[0].message.content
+        # Strip markdown code fences if present
+        if content.startswith("```"):
+            content = content.split("\n", 1)[1].rsplit("\n", 1)[0]
+            if content.startswith("json"):
+                content = content[4:].strip()
+        
+        import json
+        places_data = json.loads(content)
+        
+        return {
+            "places": places_data.get("places", [])
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate named places: {str(e)}"
         )
 
 

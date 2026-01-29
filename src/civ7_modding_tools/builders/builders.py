@@ -47,6 +47,7 @@ from civ7_modding_tools.nodes import (
     NamedPlaceNode,
     NamedPlaceYieldChangeNode,
     CityNameNode,
+    CivilizationCitizenNameNode,
     DatabaseNode,
     KindNode,
     TypeNode,
@@ -199,6 +200,8 @@ class CivilizationBuilder(BaseBuilder):
         self.leader_civ_priorities: List[Dict[str, Any]] = []
         self.loading_info_civilizations: List[Dict[str, Any]] = []
         self.civilization_favored_wonders: List[Dict[str, Any]] = []
+        self.named_rivers: List[Dict[str, Any]] = []
+        self.named_volcanoes: List[Dict[str, Any]] = []
         
         # Visual Art Configuration
         self.vis_art_building_cultures: List[str] = []
@@ -379,6 +382,35 @@ class CivilizationBuilder(BaseBuilder):
                 )
             self._current.city_names = city_name_nodes
         
+        # Citizen names - extract from localizations
+        citizen_name_nodes = []
+        for loc in self.localizations:
+            if isinstance(loc, dict) and 'citizen_names' in loc:
+                citizen_names = loc['citizen_names']
+                if isinstance(citizen_names, dict):
+                    male_names = citizen_names.get('male', [])
+                    female_names = citizen_names.get('female', [])
+                    for i, male_name in enumerate(male_names, 1):
+                        loc_key = locale(self.civilization_type, f'citizenNames_male_{i}')
+                        citizen_name_nodes.append(
+                            CivilizationCitizenNameNode(
+                                civilization_type=self.civilization_type,
+                                citizen_name=loc_key,
+                                female=False
+                            )
+                        )
+                    for i, female_name in enumerate(female_names, 1):
+                        loc_key = locale(self.civilization_type, f'citizenNames_female_{i}')
+                        citizen_name_nodes.append(
+                            CivilizationCitizenNameNode(
+                                civilization_type=self.civilization_type,
+                                citizen_name=loc_key,
+                                female=True
+                            )
+                        )
+        if citizen_name_nodes:
+            self._current.civilization_citizen_names = citizen_name_nodes
+        
         # Requirements & Requirement Sets
         requirement_set_nodes = [
             RequirementSetNode(
@@ -441,19 +473,34 @@ class CivilizationBuilder(BaseBuilder):
         self._current.ai_favored_items = ai_favored_item_nodes
         
         # AI Configuration - leader civilization priorities
+        # Auto-generate from leader_civilization_biases if not explicitly provided
         leader_civ_priority_nodes = []
-        for config in self.leader_civ_priorities:
-            node = LeaderCivPriorityNode(civilization=self.civilization_type)
-            for key, value in config.items():
-                if key != 'civilization_type':
-                    # Map civilization_type to civilization, leader_type to leader
-                    if key == 'civilization_type':
-                        setattr(node, 'civilization', value)
-                    elif key == 'leader_type':
-                        setattr(node, 'leader', value)
-                    else:
-                        setattr(node, key, value)
-            leader_civ_priority_nodes.append(node)
+        if self.leader_civ_priorities:
+            # Use explicitly provided priorities
+            for config in self.leader_civ_priorities:
+                node = LeaderCivPriorityNode(civilization=self.civilization_type)
+                for key, value in config.items():
+                    if key != 'civilization_type':
+                        # Map civilization_type to civilization, leader_type to leader
+                        if key == 'civilization_type':
+                            setattr(node, 'civilization', value)
+                        elif key == 'leader_type':
+                            setattr(node, 'leader', value)
+                        else:
+                            setattr(node, key, value)
+                leader_civ_priority_nodes.append(node)
+        elif self.leader_civilization_biases:
+            # Auto-generate from leader_civilization_biases
+            for bias in self.leader_civilization_biases:
+                leader_type = bias.get('leader_type')
+                bias_value = bias.get('bias', 2)
+                if leader_type:
+                    node = LeaderCivPriorityNode(
+                        leader=leader_type,
+                        civilization=self.civilization_type,
+                        priority=bias_value
+                    )
+                    leader_civ_priority_nodes.append(node)
         self._current.leader_civ_priorities = leader_civ_priority_nodes
         
         # Loading Info - Civilizations
@@ -479,6 +526,34 @@ class CivilizationBuilder(BaseBuilder):
                         setattr(node, key, value)
             favored_wonder_nodes.append(node)
         self._current.civilization_favored_wonders = favored_wonder_nodes
+        
+        # Named Places (Rivers & Volcanoes)
+        named_place_nodes = []
+        
+        # Process named rivers
+        for river_config in self.named_rivers:
+            named_place_type = river_config.get('named_place_type')
+            if named_place_type:
+                named_place_nodes.append(
+                    NamedPlaceNode(
+                        named_place_type=named_place_type,
+                        civilization_type=self.civilization_type
+                    )
+                )
+        
+        # Process named volcanoes
+        for volcano_config in self.named_volcanoes:
+            named_place_type = volcano_config.get('named_place_type')
+            if named_place_type:
+                named_place_nodes.append(
+                    NamedPlaceNode(
+                        named_place_type=named_place_type,
+                        civilization_type=self.civilization_type
+                    )
+                )
+        
+        if named_place_nodes:
+            self._current.named_places = named_place_nodes
         
         # Visual Art Configuration - Building Cultures
         # Expand building_culture_base into all 3 ages if provided
@@ -690,6 +765,42 @@ class CivilizationBuilder(BaseBuilder):
                         localization_rows.append(EnglishTextNode(
                             tag=locale(prefix, f"cityNames_{i}"),
                             text=city_name
+                        ))
+                if "citizen_names" in loc:
+                    citizen_names = loc["citizen_names"]
+                    if isinstance(citizen_names, dict):
+                        male_names = citizen_names.get('male', [])
+                        female_names = citizen_names.get('female', [])
+                        for i, male_name in enumerate(male_names, 1):
+                            localization_rows.append(EnglishTextNode(
+                                tag=locale(prefix, f"citizenNames_male_{i}"),
+                                text=male_name
+                            ))
+                        for i, female_name in enumerate(female_names, 1):
+                            localization_rows.append(EnglishTextNode(
+                                tag=locale(prefix, f"citizenNames_female_{i}"),
+                                text=female_name
+                            ))
+        
+        # Named Places Localizations (Rivers & Volcanoes)
+        for river_config in self.named_rivers:
+            named_place_type = river_config.get('named_place_type')
+            if named_place_type and 'localizations' in river_config:
+                for loc in river_config['localizations']:
+                    if isinstance(loc, dict) and 'name' in loc:
+                        localization_rows.append(EnglishTextNode(
+                            tag=locale(named_place_type, 'name'),
+                            text=loc['name']
+                        ))
+        
+        for volcano_config in self.named_volcanoes:
+            named_place_type = volcano_config.get('named_place_type')
+            if named_place_type and 'localizations' in volcano_config:
+                for loc in volcano_config['localizations']:
+                    if isinstance(loc, dict) and 'name' in loc:
+                        localization_rows.append(EnglishTextNode(
+                            tag=locale(named_place_type, 'name'),
+                            text=loc['name']
                         ))
         
         if localization_rows:

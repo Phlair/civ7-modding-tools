@@ -30,6 +30,37 @@ export function showToast(message, type = 'info') {
 }
 
 /**
+ * Show a persistent loading toast with spinner that stays until dismissed
+ * @param {string} message - Loading message to display
+ * @returns {Function} Function to dismiss the loading toast
+ */
+export function showLoadingToast(message) {
+    const toast = document.getElementById('toast');
+    if (!toast) return () => {};
+    
+    // Clear any existing timeout
+    if (toast.dismissTimeout) {
+        clearTimeout(toast.dismissTimeout);
+        delete toast.dismissTimeout;
+    }
+    
+    toast.className = 'fixed bottom-4 right-4 px-4 py-3 rounded-lg shadow-lg bg-blue-600 text-white z-50 animate-fade-in';
+    toast.innerHTML = `
+        <div class="flex items-center gap-3">
+            <div class="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+            <span>${message}</span>
+        </div>
+    `;
+    toast.classList.remove('hidden');
+    
+    // Return dismiss function
+    return () => {
+        toast.classList.add('hidden');
+        toast.innerHTML = '';
+    };
+}
+
+/**
  * Show loading spinner overlay
  * Replaces editor content with spinner
  */

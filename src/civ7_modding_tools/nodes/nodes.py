@@ -169,6 +169,14 @@ class CityNameNode(BaseNode):
     city_name: Optional[str] = None
 
 
+class CivilizationCitizenNameNode(BaseNode):
+    """Represents a citizen name for a civilization."""
+    _name: str = "Row"
+    civilization_type: Optional[str] = None
+    citizen_name: Optional[str] = None
+    female: Optional[bool] = None
+
+
 # Progression Tree Nodes
 class ProgressionTreeNode(BaseNode):
     """Represents a progression tree."""

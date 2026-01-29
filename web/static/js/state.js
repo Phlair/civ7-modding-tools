@@ -63,6 +63,8 @@ export const AUTOCOMPLETE_MAPPINGS = {
     constructible_type: 'constructible-classes',
     unit_type: 'units',
     visual_remap_base: 'units',
+    leader_type: 'leaders',
+    favored_wonder_type: 'constructibles', // Will filter for WONDER_ prefix
 };
 
 /**
@@ -534,6 +536,11 @@ export function populateWizardFromData(loadedData) {
                 loadedData.civilization.civilization_unlocks_resources || [],
             loading_info_civilizations:
                 loadedData.civilization.loading_info_civilizations || [],
+            leader_civilization_biases: loadedData.civilization.leader_civilization_biases || [],
+            civilization_favored_wonders: loadedData.civilization.civilization_favored_wonders || [],
+            named_rivers: loadedData.civilization.named_rivers || [],
+            named_volcanoes: loadedData.civilization.named_volcanoes || [],
+            bindings: loadedData.civilization.bindings || [],
         };
     }
 
