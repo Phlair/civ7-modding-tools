@@ -803,6 +803,47 @@ class CivilizationBuilder(BaseBuilder):
                             text=loc['name']
                         ))
         
+        # Leader Civilization Bias Localizations (reason tooltips)
+        for bias in self.leader_civilization_biases:
+            reason_type = bias.get('reason_type')
+            leader_type = bias.get('leader_type', '')
+            if reason_type:
+                # Generate a default tooltip if not provided in bias config
+                # Extract leader name from LEADER_XXX format
+                leader_name = leader_type.replace('LEADER_', '').replace('_', ' ').title() if leader_type else 'this leader'
+                civ_name = self.civilization_type.replace('CIVILIZATION_', '').replace('_', ' ').title()
+                
+                # Check if there's a custom tooltip text in the bias config
+                tooltip_text = bias.get('reason_text')
+                if not tooltip_text:
+                    # Generate default tooltip based on choice type
+                    choice_type = bias.get('choice_type', '')
+                    if 'GEOGRAPHIC' in choice_type:
+                        tooltip_text = f"{leader_name} has a geographic affinity for {civ_name}."
+                    elif 'HISTORICAL' in choice_type:
+                        tooltip_text = f"{leader_name} has a historical connection to {civ_name}."
+                    elif 'STRATEGIC' in choice_type:
+                        tooltip_text = f"{leader_name}'s playstyle aligns well with {civ_name}."
+                    else:
+                        tooltip_text = f"{leader_name} favors {civ_name}."
+                
+                localization_rows.append(EnglishTextNode(
+                    tag=reason_type,
+                    text=tooltip_text
+                ))
+        
+        # Civilization Favored Wonders Localizations
+        for wonder_config in self.civilization_favored_wonders:
+            favored_wonder_name_key = wonder_config.get('favored_wonder_name')
+            favored_wonder_type = wonder_config.get('favored_wonder_type', '')
+            if favored_wonder_name_key:
+                # Extract wonder name from WONDER_XXX format for display
+                wonder_display_name = favored_wonder_type.replace('WONDER_', '').replace('_', ' ').title()
+                localization_rows.append(EnglishTextNode(
+                    tag=favored_wonder_name_key,
+                    text=wonder_display_name
+                ))
+        
         if localization_rows:
             self._localizations.english_text = localization_rows
         
