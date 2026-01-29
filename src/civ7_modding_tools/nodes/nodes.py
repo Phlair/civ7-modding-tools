@@ -493,6 +493,34 @@ class NamedPlaceNode(BaseNode):
     description: Optional[str] = None
 
 
+class NamedRiverNode(BaseNode):
+    """Represents a named river definition."""
+    _name: str = "Row"
+    named_river_type: Optional[str] = None
+    name: Optional[str] = None
+
+
+class NamedVolcanoNode(BaseNode):
+    """Represents a named volcano definition."""
+    _name: str = "Row"
+    named_volcano_type: Optional[str] = None
+    name: Optional[str] = None
+
+
+class NamedRiverCivilizationNode(BaseNode):
+    """Links a named river to a civilization."""
+    _name: str = "Row"
+    named_river_type: Optional[str] = None
+    civilization_type: Optional[str] = None
+
+
+class NamedVolcanoCivilizationNode(BaseNode):
+    """Links a named volcano to a civilization."""
+    _name: str = "Row"
+    named_volcano_type: Optional[str] = None
+    civilization_type: Optional[str] = None
+
+
 class UnitTierVariantNode(BaseNode):
     """Represents a unit tier variant (e.g., Veteran, Elite)."""
     _name: str = "Row"

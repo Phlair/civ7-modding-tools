@@ -771,6 +771,10 @@ class DatabaseNode(BaseNode):
     # Named Places
     named_places: list['BaseNode'] = []
     named_place_yields: list['BaseNode'] = []
+    named_rivers: list['BaseNode'] = []
+    named_volcanoes: list['BaseNode'] = []
+    named_river_civilizations: list['BaseNode'] = []
+    named_volcano_civilizations: list['BaseNode'] = []
     
     # Advanced Unit & Building Features (Phase 5)
     unit_tier_variants: list['BaseNode'] = []
@@ -943,7 +947,12 @@ class DatabaseNode(BaseNode):
             'leader_civ_priorities': 'LeaderCivPriorities',
             'loading_info_civilizations': 'LoadingInfo_Civilizations',
             'civilization_favored_wonders': 'CivilizationFavoredWonders',
+            'named_places': 'NamedPlaces',
             'named_place_yields': 'NamedPlace_Yields',
+            'named_rivers': 'NamedRivers',
+            'named_volcanoes': 'NamedVolcanoes',
+            'named_river_civilizations': 'NamedRiverCivilizations',
+            'named_volcano_civilizations': 'NamedVolcanoCivilizations',
         }
         
         # Preferred table order to match game schema expectations

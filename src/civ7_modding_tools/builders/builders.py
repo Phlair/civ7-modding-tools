@@ -46,6 +46,10 @@ from civ7_modding_tools.nodes import (
     GreatPersonNode,
     NamedPlaceNode,
     NamedPlaceYieldChangeNode,
+    NamedRiverNode,
+    NamedVolcanoNode,
+    NamedRiverCivilizationNode,
+    NamedVolcanoCivilizationNode,
     CityNameNode,
     CivilizationCitizenNameNode,
     DatabaseNode,
@@ -528,15 +532,38 @@ class CivilizationBuilder(BaseBuilder):
         self._current.civilization_favored_wonders = favored_wonder_nodes
         
         # Named Places (Rivers & Volcanoes)
-        named_place_nodes = []
+        # Generate separate definition and association tables per game schema
+        named_river_definition_nodes = []
+        named_river_civilization_nodes = []
+        named_volcano_definition_nodes = []
+        named_volcano_civilization_nodes = []
         
         # Process named rivers
         for river_config in self.named_rivers:
             named_place_type = river_config.get('named_place_type')
             if named_place_type:
-                named_place_nodes.append(
-                    NamedPlaceNode(
-                        named_place_type=named_place_type,
+                # Extract localization from config
+                loc_key = None
+                if 'localizations' in river_config:
+                    for loc in river_config['localizations']:
+                        if isinstance(loc, dict) and 'name' in loc:
+                            # Use the civ-specific localization key we generate
+                            civ_short_name = self.civilization_type.replace('CIVILIZATION_', '')
+                            loc_key = f'LOC_{civ_short_name}_{named_place_type}_NAME'
+                            break
+                
+                # Definition table entry
+                named_river_definition_nodes.append(
+                    NamedRiverNode(
+                        named_river_type=named_place_type,
+                        name=loc_key
+                    )
+                )
+                
+                # Association table entry
+                named_river_civilization_nodes.append(
+                    NamedRiverCivilizationNode(
+                        named_river_type=named_place_type,
                         civilization_type=self.civilization_type
                     )
                 )
@@ -545,15 +572,41 @@ class CivilizationBuilder(BaseBuilder):
         for volcano_config in self.named_volcanoes:
             named_place_type = volcano_config.get('named_place_type')
             if named_place_type:
-                named_place_nodes.append(
-                    NamedPlaceNode(
-                        named_place_type=named_place_type,
+                # Extract localization from config
+                loc_key = None
+                if 'localizations' in volcano_config:
+                    for loc in volcano_config['localizations']:
+                        if isinstance(loc, dict) and 'name' in loc:
+                            # Use the civ-specific localization key we generate
+                            civ_short_name = self.civilization_type.replace('CIVILIZATION_', '')
+                            loc_key = f'LOC_{civ_short_name}_{named_place_type}_NAME'
+                            break
+                
+                # Definition table entry
+                named_volcano_definition_nodes.append(
+                    NamedVolcanoNode(
+                        named_volcano_type=named_place_type,
+                        name=loc_key
+                    )
+                )
+                
+                # Association table entry
+                named_volcano_civilization_nodes.append(
+                    NamedVolcanoCivilizationNode(
+                        named_volcano_type=named_place_type,
                         civilization_type=self.civilization_type
                     )
                 )
         
-        if named_place_nodes:
-            self._current.named_places = named_place_nodes
+        # Assign to database nodes
+        if named_river_definition_nodes:
+            self._current.named_rivers = named_river_definition_nodes
+        if named_river_civilization_nodes:
+            self._current.named_river_civilizations = named_river_civilization_nodes
+        if named_volcano_definition_nodes:
+            self._current.named_volcanoes = named_volcano_definition_nodes
+        if named_volcano_civilization_nodes:
+            self._current.named_volcano_civilizations = named_volcano_civilization_nodes
         
         # Visual Art Configuration - Building Cultures
         # Expand building_culture_base into all 3 ages if provided
@@ -783,13 +836,17 @@ class CivilizationBuilder(BaseBuilder):
                             ))
         
         # Named Places Localizations (Rivers & Volcanoes)
+        # Include civilization name in tag for uniqueness: LOC_ICENI_RIVER_XXX_NAME
+        civ_short_name = self.civilization_type.replace('CIVILIZATION_', '')
+        
         for river_config in self.named_rivers:
             named_place_type = river_config.get('named_place_type')
             if named_place_type and 'localizations' in river_config:
                 for loc in river_config['localizations']:
                     if isinstance(loc, dict) and 'name' in loc:
+                        # Insert civ name: LOC_ICENI_RIVER_XXX_NAME instead of LOC_RIVER_XXX_NAME
                         localization_rows.append(EnglishTextNode(
-                            tag=locale(named_place_type, 'name'),
+                            tag=f'LOC_{civ_short_name}_{named_place_type}_NAME',
                             text=loc['name']
                         ))
         
@@ -798,8 +855,9 @@ class CivilizationBuilder(BaseBuilder):
             if named_place_type and 'localizations' in volcano_config:
                 for loc in volcano_config['localizations']:
                     if isinstance(loc, dict) and 'name' in loc:
+                        # Insert civ name: LOC_ICENI_VOLCANO_XXX_NAME instead of LOC_VOLCANO_XXX_NAME
                         localization_rows.append(EnglishTextNode(
-                            tag=locale(named_place_type, 'name'),
+                            tag=f'LOC_{civ_short_name}_{named_place_type}_NAME',
                             text=loc['name']
                         ))
         

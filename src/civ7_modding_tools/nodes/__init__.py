@@ -33,6 +33,10 @@ from civ7_modding_tools.nodes.nodes import (
     GreatPersonNode,
     NamedPlaceNode,
     NamedPlaceYieldChangeNode,
+    NamedRiverNode,
+    NamedVolcanoNode,
+    NamedRiverCivilizationNode,
+    NamedVolcanoCivilizationNode,
     UnitTierVariantNode,
     AdjacencyBonusNode,
     MultiTileBuildingNode,
@@ -208,6 +212,10 @@ __all__ = [
     # Named Places
     "NamedPlaceNode",
     "NamedPlaceYieldChangeNode",
+    "NamedRiverNode",
+    "NamedVolcanoNode",
+    "NamedRiverCivilizationNode",
+    "NamedVolcanoCivilizationNode",
     # Advanced Unit & Building Features (Phase 5)
     "UnitTierVariantNode",
     "AdjacencyBonusNode",
