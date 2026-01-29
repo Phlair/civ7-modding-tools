@@ -337,31 +337,41 @@ class TestConstructibleBuilderAdvancedScenarios:
     """Tests for ConstructibleBuilder advanced scenarios."""
     
     def test_constructible_with_visual_remap(self):
-        """Test constructible with visual remap uses correct action group scope."""
+        """Test buildings with visual remap generate XML, improvements do not."""
+        # Test: Building with visual remap should generate XML
         building = ConstructibleBuilder().fill({
-            'constructible_type': 'IMPROVEMENT_CUSTOM_FARM',
-            'is_building': False,
-            'visual_remap': {'to': 'IMPROVEMENT_FARM'}
+            'constructible_type': 'BUILDING_CUSTOM_TEST',
+            'is_building': True,
+            'visual_remap': {'to': 'BUILDING_ACADEMY'}
         })
         
         building.migrate()
         files = building.build()
         
-        # Verify visual-remap file exists
-        assert any(f.name == 'visual-remap.xml' for f in files)
+        # Verify visual-remap file exists for buildings
+        assert any(f.name == 'visual-remap.xml' for f in files), \
+            "Buildings with visual_remap should generate visual-remap.xml"
         
-        # Verify visual-remap uses correct Kind value (KIND_CONSTRUCTIBLE)
+        # Verify visual-remap uses correct action group scope
         visual_remap_file = next(f for f in files if f.name == 'visual-remap.xml')
         assert building.action_group_bundle.current in visual_remap_file.action_groups
         assert building.action_group_bundle.shell not in visual_remap_file.action_groups
         
-        # Verify the Kind field is set to CONSTRUCTIBLE (not BUILDING/IMPROVEMENT or KIND_CONSTRUCTIBLE)
-        if visual_remap_file.content:
-            from civ7_modding_tools.nodes.nodes import VisualRemapRootNode
-            if isinstance(visual_remap_file.content, DatabaseNode):
-                # If DatabaseNode, check the visual_remaps property
-                if hasattr(visual_remap_file.content, 'visual_remaps') and visual_remap_file.content.visual_remaps:
-                    assert visual_remap_file.content.visual_remaps[0].kind == 'CONSTRUCTIBLE'
+        # Test: Improvement with visual remap should NOT generate XML
+        # (it uses JavaScript model placement instead)
+        improvement = ConstructibleBuilder().fill({
+            'constructible_type': 'IMPROVEMENT_CUSTOM_SACRED_STONES',
+            'is_building': False,
+            'visual_remap': {'to': 'IMPROVEMENT_FARM'}
+        })
+        
+        improvement.migrate()
+        files = improvement.build()
+        
+        # Verify visual-remap file does NOT exist for improvements
+        assert not any(f.name == 'visual-remap.xml' for f in files), \
+            "Improvements with visual_remap should NOT generate visual-remap.xml " \
+            "(they use JavaScript model placement instead)"
     
     def test_constructible_with_multiple_yield_types(self):
         """Test constructible with various yield modifications."""

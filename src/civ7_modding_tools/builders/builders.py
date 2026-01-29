@@ -2128,8 +2128,8 @@ class ConstructibleBuilder(BaseBuilder):
                 action_group=self.action_group_bundle.current
             ))
         
-        # Add visual-remap if present
-        if self._visual_remap:
+        # Add visual-remap if present (but skip for improvements - they use JS instead)
+        if self._visual_remap and self.is_building:
             files.append(XmlFile(
                 path=path,
                 name="visual-remap.xml",
