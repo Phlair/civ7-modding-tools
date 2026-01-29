@@ -20,7 +20,7 @@ from civ7_modding_tools.builders import (
     ImportFileBuilder,
 )
 from civ7_modding_tools.nodes import BaseNode
-from civ7_modding_tools.files import BaseFile, XmlFile, ImportFile
+from civ7_modding_tools.files import BaseFile, XmlFile, ImportFile, JsFile
 from civ7_modding_tools.localizations import BaseLocalization
 
 __all__ = [
@@ -47,6 +47,7 @@ __all__ = [
     "BaseFile",
     "XmlFile",
     "ImportFile",
+    "JsFile",
     # Localizations
     "BaseLocalization",
 ]

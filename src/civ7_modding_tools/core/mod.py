@@ -327,6 +327,11 @@ class Mod:
         if module_text_file:
             builder_files.insert(0, module_text_file)
         
+        # Generate improvement model script if any improvements have visual_remap
+        improvement_model_file = self._generate_improvement_model_script()
+        if improvement_model_file:
+            builder_files.append(improvement_model_file)
+        
         # Combine all files
         all_files = builder_files + self.files
         
@@ -419,6 +424,270 @@ class Mod:
         )
         
         return module_file
+    
+    def _generate_improvement_model_script(self) -> Optional[BaseFile]:
+        """
+        Generate JavaScript UI script for placing 3D models on improvements.
+        
+        Scans all ConstructibleBuilders for improvements with visual_remap configuration.
+        Generates a single JavaScript file that dynamically places models when improvements
+        are built and removes them when pillaged/removed.
+        
+        Returns:
+            JsFile with model placement script, or None if no improvements have visual_remap
+        """
+        from civ7_modding_tools.builders.builders import ConstructibleBuilder
+        from civ7_modding_tools.files import JsFile
+        
+        # Collect all improvements with visual_remap
+        improvement_configs = []
+        
+        for builder in self.builders:
+            if isinstance(builder, ConstructibleBuilder):
+                # Only process improvements (not buildings) with visual_remap
+                if not builder.is_building and builder.visual_remap:
+                    constructible_type = builder.constructible_type
+                    
+                    # Get the model asset name from visual_remap
+                    if isinstance(builder.visual_remap, dict):
+                        model_asset = builder.visual_remap.get('to')
+                    else:
+                        model_asset = builder.visual_remap
+                    
+                    if constructible_type and model_asset:
+                        improvement_configs.append({
+                            'constructible_type': constructible_type,
+                            'model_asset': model_asset
+                        })
+        
+        # If no improvements with visual_remap, don't generate script
+        if not improvement_configs:
+            return None
+        
+        # Generate JavaScript class name from mod ID
+        class_name = self._generate_js_class_name()
+        model_group_name = self._generate_js_model_group_name()
+        
+        # Build the JavaScript content
+        js_content = self._build_improvement_model_script(
+            class_name=class_name,
+            model_group_name=model_group_name,
+            improvements=improvement_configs
+        )
+        
+        # Create JsFile with UIScripts action group
+        js_file = JsFile(
+            path="/ui/",
+            name=f"{self.id}-improvement-models.js",
+            content=js_content,
+            action_groups=[{
+                "id": f"{self.mod_id}-improvement-models",
+                "scope": "game",
+                "criteria": "always",
+            }]
+        )
+        
+        return js_file
+    
+    def _generate_js_class_name(self) -> str:
+        """
+        Generate JavaScript class name from mod ID.
+        
+        Converts mod ID to PascalCase for class naming.
+        Example: "iceni" -> "IceniImprovementModels"
+        
+        Returns:
+            PascalCase class name
+        """
+        # Split on hyphens and underscores, capitalize each part
+        parts = self.id.replace('_', '-').split('-')
+        pascal_case = ''.join(part.capitalize() for part in parts)
+        return f"{pascal_case}ImprovementModels"
+    
+    def _generate_js_model_group_name(self) -> str:
+        """
+        Generate model group name from mod ID.
+        
+        Converts mod ID to camelCase for model group naming.
+        Example: "iceni" -> "iceniImprovements"
+        
+        Returns:
+            camelCase model group name
+        """
+        # Split on hyphens and underscores
+        parts = self.id.replace('_', '-').split('-')
+        # First part lowercase, rest capitalized
+        camel_case = parts[0].lower() + ''.join(part.capitalize() for part in parts[1:])
+        return f"{camel_case}Improvements"
+    
+    def _build_improvement_model_script(
+        self,
+        class_name: str,
+        model_group_name: str,
+        improvements: list[dict[str, str]]
+    ) -> str:
+        """
+        Build the JavaScript source code for improvement model placement.
+        
+        Args:
+            class_name: JavaScript class name (PascalCase)
+            model_group_name: Model group identifier (camelCase)
+            improvements: List of dicts with 'constructible_type' and 'model_asset' keys
+            
+        Returns:
+            Complete JavaScript source code as string
+        """
+        # Build constructible type checks for event handlers
+        improvement_checks = []
+        for imp in improvements:
+            improvement_checks.append(
+                f'    if (def.ConstructibleType === "{imp["constructible_type"]}") {{\n'
+                f'      this.modelGroup.addModelAtPlot(\n'
+                f'        "{imp["model_asset"]}",\n'
+                f'        loc,\n'
+                f'        {{ x: 0, y: 0, z: 0 }},\n'
+                f'        {{ angle: 0, scale: 1 }}\n'
+                f'      );\n'
+                f'      this.trackedImprovements.add(key);\n'
+                f'      return;\n'
+                f'    }}'
+            )
+        
+        improvement_check_code = '\n'.join(improvement_checks)
+        
+        # Build scan loop for existing improvements
+        scan_checks = []
+        for imp in improvements:
+            scan_checks.append(
+                f'        if (constructDef && constructDef.ConstructibleType === "{imp["constructible_type"]}") {{\n'
+                f'          const loc = construct.location;\n'
+                f'          const key = loc.x + "_" + loc.y;\n'
+                f'          \n'
+                f'          if (!this.trackedImprovements.has(key)) {{\n'
+                f'            this.trackedImprovements.add(key);\n'
+                f'            this.modelGroup.addModelAtPlot(\n'
+                f'              "{imp["model_asset"]}",\n'
+                f'              loc,\n'
+                f'              {{ x: 0, y: 0, z: 0 }},\n'
+                f'              {{ angle: 0, scale: 1 }}\n'
+                f'            );\n'
+                f'          }}\n'
+                f'        }}'
+            )
+        
+        scan_check_code = '\n'.join(scan_checks)
+        
+        # Build removal checks
+        removal_checks = []
+        for imp in improvements:
+            removal_checks.append(
+                f'    if (def.ConstructibleType === "{imp["constructible_type"]}") {{\n'
+                f'      const loc = data.location;\n'
+                f'      const key = loc.x + "_" + loc.y;\n'
+                f'      \n'
+                f'      if (!this.trackedImprovements.has(key)) return;\n'
+                f'      this.trackedImprovements.delete(key);\n'
+                f'      \n'
+                f'      // Clear and rebuild all models\n'
+                f'      this.modelGroup.clear();\n'
+                f'      \n'
+                f'      // Re-add all remaining tracked improvements\n'
+                f'      for (const trackedKey of this.trackedImprovements) {{\n'
+                f'        const parts = trackedKey.split("_");\n'
+                f'        const x = parseInt(parts[0]);\n'
+                f'        const y = parseInt(parts[1]);\n'
+                f'        \n'
+                f'        this.modelGroup.addModelAtPlot(\n'
+                f'          "{imp["model_asset"]}",\n'
+                f'          {{ x: x, y: y }},\n'
+                f'          {{ x: 0, y: 0, z: 0 }},\n'
+                f'          {{ angle: 0, scale: 1 }}\n'
+                f'        );\n'
+                f'      }}\n'
+                f'      \n'
+                f'      return;\n'
+                f'    }}'
+            )
+        
+        removal_check_code = '\n'.join(removal_checks)
+        
+        # Generate complete JavaScript
+        script = f'''// {class_name} - Auto-generated improvement model manager
+class {class_name} {{
+  static instance = null;
+  modelGroup = null;
+  trackedImprovements = new Set();
+  
+  constructor() {{
+    if ({class_name}.instance) {{
+      console.warn("{class_name}: Duplicate instance attempted");
+      return;
+    }}
+    {class_name}.instance = this;
+    engine.whenReady.then(() => {{
+      this.onReady();
+    }});
+  }}
+  
+  onReady() {{
+    this.modelGroup = WorldUI.createModelGroup("{model_group_name}");
+    
+    engine.on("ConstructibleAddedToMap", this.onConstructibleAddedToMap, this);
+    engine.on("ConstructibleRemovedFromMap", this.onConstructibleRemovedFromMap, this);
+    engine.on("GameStarted", this.onGameStarted, this);
+    
+    // Also scan after a short delay in case we're loading into a game
+    setTimeout(() => this.scanForExistingImprovements(), 2000);
+  }}
+  
+  onGameStarted() {{
+    this.scanForExistingImprovements();
+  }}
+  
+  scanForExistingImprovements() {{
+    if (!Players) {{
+      console.warn("{class_name}: Players not available");
+      return;
+    }}
+    
+    const alivePlayers = Players.getAlive();
+    if (!alivePlayers) {{
+      console.warn("{class_name}: No alive players found");
+      return;
+    }}
+    
+    alivePlayers.forEach((player) => {{
+      player.Constructibles?.getConstructibles().forEach((construct) => {{
+        const constructDef = GameInfo.Constructibles.lookup(construct.type);
+{scan_check_code}
+      }});
+    }});
+  }}
+  
+  onConstructibleAddedToMap(data) {{
+    const def = GameInfo.Constructibles.lookup(data.constructibleType);
+    if (def == null) return;
+    
+    const loc = data.location;
+    const key = loc.x + "_" + loc.y;
+    
+    if (this.trackedImprovements.has(key)) return;
+    
+{improvement_check_code}
+  }}
+  
+  onConstructibleRemovedFromMap(data) {{
+    const def = GameInfo.Constructibles.lookup(data.constructibleType);
+    if (def == null) return;
+    
+{removal_check_code}
+  }}
+}}
+
+const {class_name.replace('ImprovementModels', 'Models')} = new {class_name}();
+'''
+        
+        return script
     
     def _merge_duplicate_files(self, files: list[BaseFile]) -> list[BaseFile]:
         """
@@ -893,6 +1162,7 @@ class Mod:
             "import": "ImportFiles",
             "sql": "ImportFiles",
             "lua": "ImportFiles",
+            "js": "UIScripts",
         }
         
         for group_id, group_info in action_groups_map.items():
@@ -919,6 +1189,7 @@ class Mod:
                     "UpdateIcons",
                     "UpdateText",
                     "ImportFiles",
+                    "UIScripts",
                 ]
                 ordered_actions = {
                     action_name: actions[action_name]
@@ -996,7 +1267,7 @@ class Mod:
             file: The file to categorize
             
         Returns:
-            File type string (xml, png, dds, localization, visual-remap, icons, import, sql, lua)
+            File type string (xml, png, dds, localization, visual-remap, icons, import, sql, lua, js)
         """
         filename_lower = file.name.lower()
         path_lower = file.path.lower()
@@ -1004,6 +1275,10 @@ class Mod:
         # Imports should always map to ImportFiles, regardless of extension
         if "import" in path_lower:
             return "import"
+        
+        # Check for JavaScript files (they need UIScripts action)
+        if filename_lower.endswith(".js"):
+            return "js"
         
         # Check for visual-remap files first (they need UpdateVisualRemaps action)
         if "visual-remap" in filename_lower or "visual_remap" in filename_lower:

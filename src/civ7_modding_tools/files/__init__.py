@@ -352,6 +352,61 @@ class XmlFile(BaseFile):
             return ""
 
 
+class JsFile(BaseFile):
+    """
+    JavaScript file generator for UI scripts.
+    
+    Generates JavaScript files that can be loaded via UIScripts in modinfo.
+    Used for dynamic model placement and other UI-layer modifications.
+    """
+
+    def __init__(
+        self,
+        path: str = "/ui/",
+        name: str = "script.js",
+        content: str = "",
+        action_group: Optional[dict] = None,
+        action_groups: Optional[list] = None,
+    ) -> None:
+        """
+        Initialize a JavaScript file.
+        
+        Args:
+            path: Directory path relative to mod root (e.g., "/ui/")
+            name: Filename (e.g., "improvement-models.js")
+            content: JavaScript source code as string
+            action_group: Single action group (dict with id, scope, criteria info)
+            action_groups: List of action groups this file belongs to
+        """
+        super().__init__(path, name, content, action_group, action_groups)
+
+    @property
+    def is_empty(self) -> bool:
+        """Check if this file is empty and should not be written."""
+        return not self.content or (isinstance(self.content, str) and not self.content.strip())
+
+    def write(self, dist: str) -> None:
+        """
+        Write JavaScript file to disk.
+        
+        Args:
+            dist: Absolute path to distribution directory
+        """
+        if self.is_empty:
+            return
+        
+        # Build output directory
+        output_dir = Path(dist) / self.path.strip("/")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Build output file path
+        output_file = output_dir / self.name
+        
+        # Write to file
+        with open(output_file, "w", encoding="UTF-8") as f:
+            f.write(self.content)
+
+
 class ImportFile(BaseFile):
     """
     Import file handler for copying assets into the mod.
