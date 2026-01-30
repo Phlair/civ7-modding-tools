@@ -749,6 +749,7 @@ class DatabaseNode(BaseNode):
     
     # Cities
     city_names: list['BaseNode'] = []
+    civilization_citizen_names: list['BaseNode'] = []
     
     # Districts
     district_free_constructibles: list['DistrictFreeConstructibleNode'] = []
@@ -933,6 +934,7 @@ class DatabaseNode(BaseNode):
             'visual_remaps': 'VisualRemaps',
             'english_text': 'EnglishText',
             'city_names': 'CityNames',
+            'civilization_citizen_names': 'CivilizationCitizenNames',
             'start_bias_biomes': 'StartBiasBiomes',
             'start_bias_resources': 'StartBiasResources',
             'start_bias_terrains': 'StartBiasTerrains',

@@ -399,8 +399,8 @@ class CivilizationBuilder(BaseBuilder):
                         citizen_name_nodes.append(
                             CivilizationCitizenNameNode(
                                 civilization_type=self.civilization_type,
-                                citizen_name=loc_key,
-                                female=False
+                                citizen_name=loc_key
+                                # Male entries: omit Female attribute entirely (game schema requirement)
                             )
                         )
                     for i, female_name in enumerate(female_names, 1):
@@ -409,7 +409,7 @@ class CivilizationBuilder(BaseBuilder):
                             CivilizationCitizenNameNode(
                                 civilization_type=self.civilization_type,
                                 citizen_name=loc_key,
-                                female=True
+                                female=True  # Only set Female="true" for female entries
                             )
                         )
         if citizen_name_nodes:
@@ -542,14 +542,18 @@ class CivilizationBuilder(BaseBuilder):
         for river_config in self.named_rivers:
             named_place_type = river_config.get('named_place_type')
             if named_place_type:
+                # Ensure uniqueness by prepending civ name if not already present
+                civ_short_name = self.civilization_type.replace('CIVILIZATION_', '')
+                if not named_place_type.startswith(f'{civ_short_name}_'):
+                    named_place_type = f'{civ_short_name}_{named_place_type}'
+                
                 # Extract localization from config
                 loc_key = None
                 if 'localizations' in river_config:
                     for loc in river_config['localizations']:
                         if isinstance(loc, dict) and 'name' in loc:
-                            # Use the civ-specific localization key we generate
-                            civ_short_name = self.civilization_type.replace('CIVILIZATION_', '')
-                            loc_key = f'LOC_{civ_short_name}_{named_place_type}_NAME'
+                            # Use the civ-specific localization key (civ name already in named_place_type)
+                            loc_key = f'LOC_{named_place_type}_NAME'
                             break
                 
                 # Definition table entry
@@ -572,14 +576,18 @@ class CivilizationBuilder(BaseBuilder):
         for volcano_config in self.named_volcanoes:
             named_place_type = volcano_config.get('named_place_type')
             if named_place_type:
+                # Ensure uniqueness by prepending civ name if not already present
+                civ_short_name = self.civilization_type.replace('CIVILIZATION_', '')
+                if not named_place_type.startswith(f'{civ_short_name}_'):
+                    named_place_type = f'{civ_short_name}_{named_place_type}'
+                
                 # Extract localization from config
                 loc_key = None
                 if 'localizations' in volcano_config:
                     for loc in volcano_config['localizations']:
                         if isinstance(loc, dict) and 'name' in loc:
-                            # Use the civ-specific localization key we generate
-                            civ_short_name = self.civilization_type.replace('CIVILIZATION_', '')
-                            loc_key = f'LOC_{civ_short_name}_{named_place_type}_NAME'
+                            # Use the civ-specific localization key (civ name already in named_place_type)
+                            loc_key = f'LOC_{named_place_type}_NAME'
                             break
                 
                 # Definition table entry
@@ -599,12 +607,14 @@ class CivilizationBuilder(BaseBuilder):
                 )
         
         # Assign to database nodes
+        # Definitions go in "always" (they're map features that exist regardless of age)
+        # Associations go in "current" (they reference CIVILIZATION_X which is defined there)
         if named_river_definition_nodes:
-            self._current.named_rivers = named_river_definition_nodes
+            self._always.named_rivers = named_river_definition_nodes
         if named_river_civilization_nodes:
             self._current.named_river_civilizations = named_river_civilization_nodes
         if named_volcano_definition_nodes:
-            self._current.named_volcanoes = named_volcano_definition_nodes
+            self._always.named_volcanoes = named_volcano_definition_nodes
         if named_volcano_civilization_nodes:
             self._current.named_volcano_civilizations = named_volcano_civilization_nodes
         
@@ -842,22 +852,30 @@ class CivilizationBuilder(BaseBuilder):
         for river_config in self.named_rivers:
             named_place_type = river_config.get('named_place_type')
             if named_place_type and 'localizations' in river_config:
+                # Ensure uniqueness by prepending civ name if not already present
+                if not named_place_type.startswith(f'{civ_short_name}_'):
+                    named_place_type = f'{civ_short_name}_{named_place_type}'
+                
                 for loc in river_config['localizations']:
                     if isinstance(loc, dict) and 'name' in loc:
-                        # Insert civ name: LOC_ICENI_RIVER_XXX_NAME instead of LOC_RIVER_XXX_NAME
+                        # LOC key format: LOC_ICENI_RIVER_XXX_NAME (civ name already in named_place_type)
                         localization_rows.append(EnglishTextNode(
-                            tag=f'LOC_{civ_short_name}_{named_place_type}_NAME',
+                            tag=f'LOC_{named_place_type}_NAME',
                             text=loc['name']
                         ))
         
         for volcano_config in self.named_volcanoes:
             named_place_type = volcano_config.get('named_place_type')
             if named_place_type and 'localizations' in volcano_config:
+                # Ensure uniqueness by prepending civ name if not already present
+                if not named_place_type.startswith(f'{civ_short_name}_'):
+                    named_place_type = f'{civ_short_name}_{named_place_type}'
+                
                 for loc in volcano_config['localizations']:
                     if isinstance(loc, dict) and 'name' in loc:
-                        # Insert civ name: LOC_ICENI_VOLCANO_XXX_NAME instead of LOC_VOLCANO_XXX_NAME
+                        # LOC key format: LOC_ICENI_VOLCANO_XXX_NAME (civ name already in named_place_type)
                         localization_rows.append(EnglishTextNode(
-                            tag=f'LOC_{civ_short_name}_{named_place_type}_NAME',
+                            tag=f'LOC_{named_place_type}_NAME',
                             text=loc['name']
                         ))
         

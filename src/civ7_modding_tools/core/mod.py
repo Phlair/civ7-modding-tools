@@ -1183,14 +1183,26 @@ const {class_name.replace('ImprovementModels', 'Models')} = new {class_name}();
             
             # Only add action group if it has content
             if actions:
-                action_order = [
-                    "UpdateDatabase",
-                    "UpdateVisualRemaps",
-                    "UpdateIcons",
-                    "UpdateText",
-                    "ImportFiles",
-                    "UIScripts",
-                ]
+                # UpdateText must come before UpdateDatabase for "always" groups
+                # so localization keys exist before database references them
+                if group_info["criteria"] == "always":
+                    action_order = [
+                        "UpdateText",
+                        "UpdateDatabase",
+                        "UpdateVisualRemaps",
+                        "UpdateIcons",
+                        "ImportFiles",
+                        "UIScripts",
+                    ]
+                else:
+                    action_order = [
+                        "UpdateDatabase",
+                        "UpdateVisualRemaps",
+                        "UpdateIcons",
+                        "UpdateText",
+                        "ImportFiles",
+                        "UIScripts",
+                    ]
                 ordered_actions = {
                     action_name: actions[action_name]
                     for action_name in action_order
