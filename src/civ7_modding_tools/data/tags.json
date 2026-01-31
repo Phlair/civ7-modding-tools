@@ -42977,18 +42977,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "LOC_CIVILIZATION_TEST_ADJECTIVE",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_TEST_CITY_NAMES_1",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_CIVILIZATION_TEST_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
       "id": "LOC_CIVILIZATION_TEST_NAME",
       "category": "UNCATEGORIZED"
     },
@@ -77005,26 +76993,6 @@
       "category": "UNCATEGORIZED"
     },
     {
-      "id": "LOC_UNIT_DRUID_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_UNIT_DRUID_ICENI_DESCRIPTION",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_UNIT_DRUID_ICENI_HISTORICAL_CONTEXT",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_UNIT_DRUID_ICENI_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "LOC_UNIT_DRUID_NAME",
-      "category": "UNCATEGORIZED"
-    },
-    {
       "id": "LOC_UNIT_EXPLORER_DESCRIPTION",
       "category": "UNCATEGORIZED"
     },
@@ -79815,14 +79783,6 @@
     {
       "id": "UNIT_CLASS_DHOW",
       "category": "UNCATEGORIZED"
-    },
-    {
-      "id": "UNIT_CLASS_DRUID",
-      "category": "UNIT_CLASS"
-    },
-    {
-      "id": "UNIT_CLASS_DRUID_ICENI",
-      "category": "UNIT_CLASS"
     },
     {
       "id": "UNIT_CLASS_ELITE_AIR_ATTACK",

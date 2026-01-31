@@ -235,18 +235,6 @@
       "description_text": "+{1_Amount} Combat Strength on Coast."
     },
     {
-      "id": "ABILITY_DRUID_ICENI",
-      "name": "LOC_ABILITY_DRUID_ICENI_NAME",
-      "description": "LOC_ABILITY_DRUID_ICENI_DESCRIPTION",
-      "description_text": ""
-    },
-    {
-      "id": "ABILITY_DRUID_SACRED_GROVE",
-      "name": "LOC_ABILITY_DRUID_SACRED_GROVE_NAME",
-      "description": "LOC_ABILITY_DRUID_SACRED_GROVE_DESCRIPTION",
-      "description_text": ""
-    },
-    {
       "id": "ABILITY_ECONOMIC_DARK_AGE",
       "name": "",
       "description": "",
