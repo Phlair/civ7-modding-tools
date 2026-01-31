@@ -72,6 +72,7 @@ class CivVIIDataExtractor:
             'unit_abilities': {},  # {ability_id: {name, description, description_text}}
             'constructibles': set(),  # All building, improvement, and wonder types
             'traditions': {},  # {tradition_id: {name, description, age, trait_type, is_crisis, modifiers}}
+            'modifiers': {},  # {modifier_id: {effect, collection, tooltip_loc, description, arguments}}
         }
         self.localization_texts = {}  # {LOC_TAG: english_text} - for resolving LOC_ keys
         self.civ_cache = defaultdict(dict)
@@ -94,6 +95,9 @@ class CivVIIDataExtractor:
         
         # Resolve LOC_ keys to English text for abilities
         self._resolve_ability_descriptions()
+        
+        # Resolve LOC_ keys to English text for modifiers
+        self._resolve_modifier_descriptions()
 
     def _scan_directory(self, directory: Path, is_example: bool = False) -> None:
         """Scan a directory for XML files."""
@@ -125,6 +129,24 @@ class CivVIIDataExtractor:
                 ability_data['description_text'] = self.localization_texts[loc_key]
             else:
                 ability_data['description_text'] = ''
+
+    def _resolve_modifier_descriptions(self) -> None:
+        """Resolve LOC_ tooltip and description keys to actual English text for modifiers."""
+        for modifier_id, modifier_data in self.data['modifiers'].items():
+            # Try tooltip_loc first (most common for modifiers)
+            loc_key = modifier_data.get('tooltip_loc', '')
+            if loc_key and loc_key in self.localization_texts:
+                modifier_data['description'] = self.localization_texts[loc_key]
+                continue
+            
+            # Try description_loc (String context="Description")
+            loc_key = modifier_data.get('description_loc', '')
+            if loc_key and loc_key in self.localization_texts:
+                modifier_data['description'] = self.localization_texts[loc_key]
+                continue
+            
+            # No localization found - leave description empty
+            modifier_data['description'] = ''
     
     def _resolve_tradition_localizations(self) -> None:
         """Resolve LOC_ keys to actual English text for traditions."""
@@ -157,6 +179,73 @@ class CivVIIDataExtractor:
             text_elem = row.find('Text')
             if tag and text_elem is not None and text_elem.text:
                 self.localization_texts[tag] = text_elem.text
+
+    def _extract_modifiers_from_file(self, file_path: Path) -> None:
+        """Extract modifiers with full metadata including arguments and descriptions."""
+        try:
+            tree = ET.parse(file_path)
+            root = tree.getroot()
+        except ET.ParseError:
+            return
+        
+        # Handle XML namespaces - GameEffects files use xmlns="GameEffects"
+        namespace = ''
+        if '}' in root.tag:
+            namespace = root.tag.split('}')[0] + '}'
+        
+        # Extract all Modifier elements with their children
+        # Use namespace-aware search if namespace exists
+        if namespace:
+            modifiers_found = root.findall(f'.//{namespace}Modifier')
+        else:
+            modifiers_found = root.findall('.//Modifier')
+        
+        for modifier_elem in modifiers_found:
+            modifier_id = modifier_elem.get('id')
+            if not modifier_id:
+                continue
+            
+            # Initialize modifier data if not exists
+            if modifier_id not in self.data['modifiers']:
+                self.data['modifiers'][modifier_id] = {
+                    'effect': '',
+                    'collection': '',
+                    'permanent': False,
+                    'tooltip_loc': '',
+                    'description_loc': '',
+                    'description': '',
+                    'arguments': {}
+                }
+            
+            # Extract attributes
+            self.data['modifiers'][modifier_id]['effect'] = modifier_elem.get('effect', '')
+            self.data['modifiers'][modifier_id]['collection'] = modifier_elem.get('collection', '')
+            self.data['modifiers'][modifier_id]['permanent'] = modifier_elem.get('permanent', '').lower() == 'true'
+            
+            # Extract Argument elements (including Tooltip)
+            if namespace:
+                arg_elements = modifier_elem.findall(f'./{namespace}Argument')
+            else:
+                arg_elements = modifier_elem.findall('./Argument')
+            
+            for arg_elem in arg_elements:
+                arg_name = arg_elem.get('name', '')
+                arg_value = arg_elem.text or ''
+                if arg_name:
+                    if arg_name == 'Tooltip':
+                        self.data['modifiers'][modifier_id]['tooltip_loc'] = arg_value
+                    else:
+                        self.data['modifiers'][modifier_id]['arguments'][arg_name] = arg_value
+            
+            # Extract String elements with context="Description"
+            if namespace:
+                string_elements = modifier_elem.findall(f'./{namespace}String')
+            else:
+                string_elements = modifier_elem.findall('./String')
+            
+            for string_elem in string_elements:
+                if string_elem.get('context') == 'Description':
+                    self.data['modifiers'][modifier_id]['description_loc'] = string_elem.text or ''
     
     def _extract_from_file(self, file_path: Path) -> None:
         """Extract values from a single XML file."""
@@ -169,6 +258,11 @@ class CivVIIDataExtractor:
         # Extract English text if this is a localization file
         if 'text' in str(file_path).lower() or 'localization' in str(file_path).lower():
             self._extract_english_text(file_path)
+        
+        # Extract modifiers from GameEffects files
+        file_path_str = str(file_path).lower()
+        if 'gameeffects' in file_path_str:
+            self._extract_modifiers_from_file(file_path)
 
         # Get civilization name from folder structure if available
         civ_name = self._get_civ_name_from_path(file_path)
@@ -989,6 +1083,26 @@ class CivVIIDataExtractor:
         }
         self._write_json('traditions.json', traditions)
 
+        # Modifiers (game effects)
+        modifiers = {
+            'name': 'modifiers',
+            'description': 'Base game modifiers available across all game elements',
+            'values': [
+                {
+                    'id': modifier_id,
+                    'effect': modifier_data.get('effect', ''),
+                    'collection': modifier_data.get('collection', ''),
+                    'description': modifier_data.get('description', ''),
+                    'permanent': modifier_data.get('permanent', False),
+                    'arguments': modifier_data.get('arguments', {})
+                }
+                for modifier_id, modifier_data in sorted(self.data['modifiers'].items())
+                # Only include modifiers with descriptions for cleaner UI
+                if modifier_data.get('description', '')
+            ]
+        }
+        self._write_json('modifiers.json', modifiers)
+
 
 def main() -> None:
     """Run the extractor."""
@@ -1002,7 +1116,7 @@ def main() -> None:
     extractor.export_json_files()
 
     print()
-    print("✓ Data extraction complete!")
+    print("Data extraction complete!")
 
 
 if __name__ == '__main__':
