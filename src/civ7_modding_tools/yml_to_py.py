@@ -551,8 +551,25 @@ class YamlToPyConverter:
         self.add_line(f'{builder_id} = CivilizationBuilder()')
         self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
         
+        # Fields that should be nested inside 'civilization' dict
+        nested_fields = {'civ_ability_name', 'civ_ability_modifier_ids'}
+        
         # Build fill dict (exclude bindings - they're auto-generated)
-        fill_dict = {k: v for k, v in civ_data.items() if k not in ['id', 'bindings']}
+        # Separate top-level fields from nested civilization fields
+        fill_dict = {}
+        civilization_dict = {}
+        
+        for key, value in civ_data.items():
+            if key in ['id', 'bindings']:
+                continue
+            elif key in nested_fields:
+                civilization_dict[key] = value
+            else:
+                fill_dict[key] = value
+        
+        # If we have nested fields, add them as a 'civilization' key
+        if civilization_dict:
+            fill_dict['civilization'] = civilization_dict
         
         self.add_line(f'{builder_id}.fill({{')
         self.indent_level += 1

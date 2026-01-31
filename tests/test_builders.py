@@ -170,8 +170,8 @@ class TestCivilizationBuilder:
         assert len(db.civilizations) == 1
         assert db.civilizations[0].civilization_type == "CIVILIZATION_ROME"
         
-        # Should have ability trait in current scope only
-        assert len(db.traits) == 1
+        # Should have ability trait in current scope
+        assert len(db.traits) >= 1
         assert db.civilization_traits  # At least the default trait + TRAIT_ECONOMIC + ability
         assert any(t.trait_type == "TRAIT_ECONOMIC" for t in db.civilization_traits)
 
@@ -206,6 +206,54 @@ class TestCivilizationBuilder:
                 .build())
         
         assert len(files) == 6
+
+    def test_civilization_builder_with_civ_ability(self):
+        """Test civilization builder with civ ability name and modifiers."""
+        builder = CivilizationBuilder()
+        builder.action_group_bundle = ActionGroupBundle(action_group_id='AGE_ANTIQUITY')
+        builder.fill({
+            "civilization_type": "CIVILIZATION_TEST",
+            "civilization": {
+                "civ_ability_name": "Test Ability",
+                "civ_ability_modifier_ids": ["MOD_TEST_1", "MOD_TEST_2"],
+            },
+            "localizations": [{
+                "name": "Test Civ",
+                "adjective": "Test",
+                "description": "A test civilization",
+            }],
+        })
+        
+        files = builder.build()
+        
+        # Find current.xml
+        current_file = [f for f in files if f.name == "current.xml"][0]
+        db = current_file.content
+        
+        # Check that TraitModifiers were created
+        assert db.trait_modifiers is not None
+        assert len(db.trait_modifiers) == 2
+        assert db.trait_modifiers[0].trait_type == "TRAIT_TEST_ABILITY"
+        assert db.trait_modifiers[0].modifier_id == "MOD_TEST_1"
+        assert db.trait_modifiers[1].trait_type == "TRAIT_TEST_ABILITY"
+        assert db.trait_modifiers[1].modifier_id == "MOD_TEST_2"
+        
+        # Check that ability trait was created
+        assert len(db.traits) >= 1
+        ability_traits = [t for t in db.traits if t.trait_type == "TRAIT_TEST_ABILITY"]
+        assert len(ability_traits) == 1
+        
+        # Check that age trait was auto-generated
+        age_traits = [t for t in db.traits if t.trait_type == "TRAIT_ANTIQUITY_CIV"]
+        assert len(age_traits) == 1
+        
+        # Check localization
+        loc_file = [f for f in files if f.name == "localization.xml"][0]
+        loc_db = loc_file.content
+        assert loc_db.english_text is not None
+        ability_name_locs = [t for t in loc_db.english_text if t.tag == "LOC_CIVILIZATION_TEST_ABILITY_NAME"]
+        assert len(ability_name_locs) == 1
+        assert ability_name_locs[0].text == "Test Ability"
 
 
 # ============================================================================

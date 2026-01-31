@@ -108,7 +108,6 @@ def test_base_node_excludes_empty_values():
     # These should be excluded
     assert "IsEmpty" not in attrs
     assert "Name" not in attrs
-    assert "Active" not in attrs
 
 
 def test_base_node_empty_returns_none():

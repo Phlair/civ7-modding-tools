@@ -5,6 +5,10 @@
 import { wizardData, markDirty } from '../state.js';
 import { showToast } from '../ui.js';
 import { createWizardDropdown } from './wizard.js';
+import { fetchReferenceData } from '../data/loader.js';
+
+// Cache for traditions reference data
+let cachedTraditions = null;
 
 /**
  * Render Step 4: Modifiers & Traditions
@@ -30,6 +34,8 @@ export function renderWizardStep4(container) {
         window.wizardRemoveRequirement = wizardRemoveRequirement;
         window.wizardAddRequirementArg = wizardAddRequirementArg;
         window.wizardRemoveRequirementArg = wizardRemoveRequirementArg;
+        window.wizardSetTraditionMode = wizardSetTraditionMode;
+        window.wizardOnExistingTraditionSelect = wizardOnExistingTraditionSelect;
     }
 
     container.innerHTML = `
@@ -151,6 +157,21 @@ export function renderWizardStep4(container) {
                             </div>
                         </div>
                         
+                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
+                            <label class="flex items-center space-x-2 text-xs text-slate-300">
+                                <input
+                                    type="checkbox"
+                                    id="wizard-modifier-bind-to-civ"
+                                    class="rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-blue-500"
+                                />
+                                <span>Bind to civilization (always active)</span>
+                            </label>
+                            <p class="text-xs text-slate-400 mt-1 ml-6">
+                                If checked, this modifier will be always active for the civilization.
+                                If unchecked, you can link it to specific abilities via the Civ Ability section in Step 2.
+                            </p>
+                        </div>
+                        
                         <details class="bg-slate-900/50 rounded border border-slate-700">
                             <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">+ Requirements (Optional)</summary>
                             <div class="p-3 pt-2">
@@ -211,96 +232,177 @@ export function renderWizardStep4(container) {
                         onclick="window.wizardShowTraditionForm()"
                         class="px-3 py-1 bg-pink-600 hover:bg-pink-700 rounded text-sm font-medium"
                     >
-                        + Tradition
+                        + Add Tradition
                     </button>
                 </div>
                 
+                <p class="text-xs text-slate-400 mb-4">
+                    Add traditions (policies) for your civilization. You can use existing base game traditions or create custom ones. Attach modifiers from the Game Modifiers section above.
+                </p>
+                
                 ${hasTraditions ? `
                     <div class="space-y-2 mb-4">
-                        ${wizardData.traditions.map((trad, idx) => `
-                            <div class="p-3 bg-slate-800/50 rounded border border-slate-600 flex items-center justify-between">
-                                <div>
-                                    <p class="font-medium text-sm">${trad.id || 'Unnamed Tradition'}</p>
-                                    <p class="text-xs text-slate-400">${trad.tradition_type || '—'}</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button 
-                                        onclick="window.wizardEditTradition(${idx})"
-                                        class="px-2 py-1 text-xs bg-blue-600/30 hover:bg-blue-600/50 border border-blue-600 rounded text-blue-300"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button 
-                                        onclick="window.removeWizardTradition(${idx})"
-                                        class="px-2 py-1 text-xs bg-red-600/30 hover:bg-red-600/50 border border-red-600 rounded text-red-300"
-                                    >
-                                        Remove
-                                    </button>
+                        ${wizardData.traditions.map((trad, idx) => {
+                            const modifierCount = trad.modifier_ids?.length || 0;
+                            const isExisting = trad.is_existing_tradition;
+                            return `
+                            <div class="p-3 bg-slate-800/50 rounded border border-slate-600">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2">
+                                            <p class="font-medium text-sm">${trad.localizations?.[0]?.name || trad.id || 'Unnamed Tradition'}</p>
+                                            ${isExisting ? '<span class="px-1.5 py-0.5 text-xs bg-blue-600/30 text-blue-300 rounded">Base Game</span>' : '<span class="px-1.5 py-0.5 text-xs bg-pink-600/30 text-pink-300 rounded">Custom</span>'}
+                                        </div>
+                                        <p class="text-xs text-slate-400 mt-1">${trad.id}</p>
+                                        ${trad.localizations?.[0]?.description ? `<p class="text-xs text-slate-500 mt-1 line-clamp-2">${trad.localizations[0].description}</p>` : ''}
+                                        ${modifierCount > 0 ? `<p class="text-xs text-green-400 mt-1">📎 ${modifierCount} modifier${modifierCount > 1 ? 's' : ''} attached</p>` : ''}
+                                    </div>
+                                    <div class="flex gap-2 ml-4">
+                                        <button 
+                                            onclick="window.wizardEditTradition(${idx})"
+                                            class="px-2 py-1 text-xs bg-blue-600/30 hover:bg-blue-600/50 border border-blue-600 rounded text-blue-300"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button 
+                                            onclick="window.removeWizardTradition(${idx})"
+                                            class="px-2 py-1 text-xs bg-red-600/30 hover:bg-red-600/50 border border-red-600 rounded text-red-300"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        `).join('')}
+                        `}).join('')}
                     </div>
-                ` : '<p class="text-slate-400 text-sm py-4">No traditions added yet</p>'}
+                ` : '<p class="text-slate-400 text-sm py-4">No traditions added yet. Click "+ Add Tradition" to get started.</p>'}
                 
                 <div id="wizard-tradition-form" class="hidden bg-slate-800 p-4 rounded border border-slate-600 mt-4">
                     <div class="space-y-3">
                         <input type="hidden" id="wizard-tradition-edit-idx" value="-1" />
                         
-                        <h5 class="text-sm font-semibold text-pink-400 border-b border-slate-600 pb-2 mb-3">Basic Information</h5>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-1">Tradition ID *</label>
-                            <input 
-                                type="text" 
-                                id="wizard-tradition-id" 
-                                placeholder="TRADITION_CIVILIZATION_NAME"
-                                class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                            />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-1">Tradition Type *</label>
-                            <input 
-                                type="text" 
-                                id="wizard-tradition-type" 
-                                placeholder="TRADITION_TYPE_ID"
-                                class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                            />
+                        <h5 class="text-sm font-semibold text-pink-400 border-b border-slate-600 pb-2 mb-3">Tradition Configuration</h5>
+                        
+                        <!-- Toggle: Use Existing vs Create Custom -->
+                        <div class="flex gap-2 mb-4">
+                            <button 
+                                type="button"
+                                id="wizard-tradition-mode-existing"
+                                onclick="window.wizardSetTraditionMode('existing')"
+                                class="flex-1 px-3 py-2 rounded text-sm font-medium border transition-colors"
+                            >
+                                📚 Use Existing Tradition
+                            </button>
+                            <button 
+                                type="button"
+                                id="wizard-tradition-mode-custom"
+                                onclick="window.wizardSetTraditionMode('custom')"
+                                class="flex-1 px-3 py-2 rounded text-sm font-medium border transition-colors"
+                            >
+                                ✨ Create Custom Tradition
+                            </button>
                         </div>
                         
-                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
-                            <h6 class="text-xs font-semibold text-slate-400 mb-2">Localization</h6>
-                            <div class="space-y-2">
+                        <!-- Existing Tradition Selection -->
+                        <div id="wizard-tradition-existing-section" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Select Base Game Tradition</label>
+                                <select 
+                                    id="wizard-tradition-existing-select"
+                                    onchange="window.wizardOnExistingTraditionSelect()"
+                                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                >
+                                    <option value="">Loading traditions...</option>
+                                </select>
+                            </div>
+                            <div id="wizard-tradition-existing-preview" class="hidden bg-slate-900/50 p-3 rounded border border-slate-700">
+                                <p class="text-xs text-slate-400 mb-1">Description:</p>
+                                <p id="wizard-tradition-existing-desc" class="text-sm text-slate-200"></p>
+                                <p class="text-xs text-slate-400 mt-2">Base Modifiers: <span id="wizard-tradition-existing-mods" class="text-slate-300"></span></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Custom Tradition Creation -->
+                        <div id="wizard-tradition-custom-section" class="hidden space-y-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Tradition ID *</label>
+                                <input 
+                                    type="text" 
+                                    id="wizard-tradition-id" 
+                                    placeholder="TRADITION_MY_CIVILIZATION_ABILITY"
+                                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                />
+                                <p class="text-xs text-slate-500 mt-1">Unique identifier for your tradition</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">Display Name</label>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Display Name *</label>
                                     <input 
                                         type="text" 
                                         id="wizard-tradition-name" 
-                                        placeholder="Tradition Name"
+                                        placeholder="My Tradition"
                                         class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
                                     />
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">Description</label>
-                                    <textarea 
-                                        id="wizard-tradition-desc" 
-                                        placeholder="Brief description of the tradition"
-                                        rows="2"
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Age</label>
+                                    <select 
+                                        id="wizard-tradition-age"
                                         class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                                    ></textarea>
+                                    >
+                                        <option value="">Any Age</option>
+                                        <option value="AGE_ANTIQUITY">Antiquity</option>
+                                        <option value="AGE_EXPLORATION">Exploration</option>
+                                        <option value="AGE_MODERN">Modern</option>
+                                    </select>
                                 </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Description</label>
+                                <textarea 
+                                    id="wizard-tradition-desc" 
+                                    placeholder="Describe what this tradition does..."
+                                    rows="2"
+                                    class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                ></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Modifier Attachment Section (shared between modes) -->
+                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700 mt-4">
+                            <h6 class="text-xs font-semibold text-green-400 mb-2">📎 Attach Modifiers</h6>
+                            <p class="text-xs text-slate-400 mb-2">Select modifiers from the Game Modifiers section above to attach to this tradition.</p>
+                            
+                            <div id="wizard-tradition-modifiers-list" class="space-y-1 max-h-40 overflow-y-auto">
+                                ${(wizardData.modifiers && wizardData.modifiers.length > 0) ? 
+                                    wizardData.modifiers.map((mod, idx) => `
+                                        <label class="flex items-center gap-2 p-2 rounded hover:bg-slate-800/50 cursor-pointer">
+                                            <input 
+                                                type="checkbox" 
+                                                class="wizard-tradition-modifier-checkbox rounded"
+                                                value="${mod.id}"
+                                                data-modifier-idx="${idx}"
+                                            />
+                                            <span class="text-sm text-slate-200">${mod.id}</span>
+                                            <span class="text-xs text-slate-400">${mod.modifier?.effect || ''}</span>
+                                        </label>
+                                    `).join('') :
+                                    '<p class="text-xs text-slate-500 italic">No modifiers created yet. Add modifiers in the Game Modifiers section first.</p>'
+                                }
                             </div>
                         </div>
                         
                         <div class="flex gap-2 mt-4">
                             <button 
                                 onclick="window.wizardSaveTradition()"
-                                id="wizard-tradition-form-save"
                                 class="flex-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm font-medium"
                             >
-                                Save
+                                Save Tradition
                             </button>
                             <button 
                                 onclick="window.wizardCancelTraditionForm()"
-                                id="wizard-tradition-form-cancel"
                                 class="flex-1 px-3 py-1 bg-slate-700 hover:bg-slate-600 rounded text-sm font-medium"
                             >
                                 Cancel
@@ -312,7 +414,7 @@ export function renderWizardStep4(container) {
             
             <div class="bg-blue-900/20 border border-blue-700 rounded-lg p-4">
                 <p class="text-sm text-blue-300">
-                    <strong>💡 Tip:</strong> You can add basic modifiers and traditions here. For advanced configuration and progression trees, use Expert Mode.
+                    <strong>💡 Tip:</strong> Create modifiers first, then attach them to traditions. Traditions define which policy slot they appear in; modifiers define the actual gameplay effects.
                 </p>
             </div>
         </div>
@@ -358,6 +460,7 @@ export function wizardCancelModifierForm() {
     document.getElementById('wizard-modifier-permanent').checked = false;
     document.getElementById('wizard-modifier-runonce').checked = false;
     document.getElementById('wizard-modifier-desc').value = '';
+    document.getElementById('wizard-modifier-bind-to-civ').checked = false;
     document.getElementById('wizard-modifier-args').value = '';
     document.getElementById('wizard-modifier-edit-idx').value = '-1';
     
@@ -376,6 +479,7 @@ export function wizardSaveModifier() {
     const permanent = document.getElementById('wizard-modifier-permanent').checked;
     const runOnce = document.getElementById('wizard-modifier-runonce').checked;
     const description = document.getElementById('wizard-modifier-desc').value.trim();
+    const bindToCiv = document.getElementById('wizard-modifier-bind-to-civ').checked;
     const argsText = document.getElementById('wizard-modifier-args').value.trim();
     const editIdx = parseInt(document.getElementById('wizard-modifier-edit-idx').value, 10);
 
@@ -474,6 +578,10 @@ export function wizardSaveModifier() {
     if (description) {
         modifier.localizations = [{ description: description }];
     }
+    
+    if (bindToCiv) {
+        modifier.bind_to_civilization = true;
+    }
 
     if (editIdx >= 0) {
         wizardData.modifiers[editIdx] = modifier;
@@ -495,6 +603,7 @@ export function wizardEditModifier(idx) {
     document.getElementById('wizard-modifier-permanent').checked = modifier.modifier?.permanent || false;
     document.getElementById('wizard-modifier-runonce').checked = modifier.modifier?.run_once || false;
     document.getElementById('wizard-modifier-desc').value = modifier.localizations?.[0]?.description || '';
+    document.getElementById('wizard-modifier-bind-to-civ').checked = modifier.bind_to_civilization === true;
 
     if (modifier.modifier?.arguments) {
         const argsText = modifier.modifier.arguments
@@ -578,60 +687,304 @@ export function removeWizardModifier(idx) {
     }
 }
 
-export function wizardShowTraditionForm() {
+/**
+ * Set the tradition creation mode (existing vs custom)
+ * @param {string} mode - 'existing' or 'custom'
+ */
+export function wizardSetTraditionMode(mode) {
+    const existingBtn = document.getElementById('wizard-tradition-mode-existing');
+    const customBtn = document.getElementById('wizard-tradition-mode-custom');
+    const existingSection = document.getElementById('wizard-tradition-existing-section');
+    const customSection = document.getElementById('wizard-tradition-custom-section');
+    
+    if (mode === 'existing') {
+        existingBtn.classList.add('bg-blue-600', 'border-blue-600', 'text-white');
+        existingBtn.classList.remove('bg-slate-700', 'border-slate-600', 'text-slate-300');
+        customBtn.classList.remove('bg-pink-600', 'border-pink-600', 'text-white');
+        customBtn.classList.add('bg-slate-700', 'border-slate-600', 'text-slate-300');
+        existingSection.classList.remove('hidden');
+        customSection.classList.add('hidden');
+    } else {
+        customBtn.classList.add('bg-pink-600', 'border-pink-600', 'text-white');
+        customBtn.classList.remove('bg-slate-700', 'border-slate-600', 'text-slate-300');
+        existingBtn.classList.remove('bg-blue-600', 'border-blue-600', 'text-white');
+        existingBtn.classList.add('bg-slate-700', 'border-slate-600', 'text-slate-300');
+        customSection.classList.remove('hidden');
+        existingSection.classList.add('hidden');
+    }
+    
+    // Store current mode
+    document.getElementById('wizard-tradition-form').dataset.mode = mode;
+}
+
+/**
+ * Handle selection of existing tradition from dropdown
+ */
+export async function wizardOnExistingTraditionSelect() {
+    const select = document.getElementById('wizard-tradition-existing-select');
+    const preview = document.getElementById('wizard-tradition-existing-preview');
+    const descEl = document.getElementById('wizard-tradition-existing-desc');
+    const modsEl = document.getElementById('wizard-tradition-existing-mods');
+    
+    const selectedId = select.value;
+    if (!selectedId) {
+        preview.classList.add('hidden');
+        return;
+    }
+    
+    // Find the selected tradition in cache
+    const traditions = await loadTraditionsData();
+    const tradition = traditions.find(t => t.id === selectedId);
+    
+    if (tradition) {
+        descEl.textContent = tradition.description || 'No description available';
+        modsEl.textContent = tradition.modifiers?.length > 0 
+            ? tradition.modifiers.join(', ') 
+            : 'None';
+        preview.classList.remove('hidden');
+    }
+}
+
+/**
+ * Load traditions reference data with caching
+ */
+async function loadTraditionsData() {
+    if (cachedTraditions) {
+        return cachedTraditions;
+    }
+    
+    try {
+        const data = await fetchReferenceData('traditions');
+        cachedTraditions = data.values || [];
+        return cachedTraditions;
+    } catch (e) {
+        console.error('Failed to load traditions:', e);
+        return [];
+    }
+}
+
+/**
+ * Populate the existing traditions dropdown
+ */
+async function populateTraditionsDropdown() {
+    const select = document.getElementById('wizard-tradition-existing-select');
+    if (!select) return;
+    
+    const traditions = await loadTraditionsData();
+    
+    // Group by age
+    const byAge = {
+        'AGE_ANTIQUITY': [],
+        'AGE_EXPLORATION': [],
+        'AGE_MODERN': [],
+        '': []  // No age restriction
+    };
+    
+    traditions.forEach(t => {
+        const age = t.age || '';
+        if (byAge[age]) {
+            byAge[age].push(t);
+        } else {
+            byAge[''].push(t);
+        }
+    });
+    
+    select.innerHTML = '<option value="">-- Select a Tradition --</option>';
+    
+    // Add Antiquity traditions
+    if (byAge['AGE_ANTIQUITY'].length > 0) {
+        const group = document.createElement('optgroup');
+        group.label = '🏛️ Antiquity';
+        byAge['AGE_ANTIQUITY'].forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t.id;
+            opt.textContent = `${t.name || t.id}`;
+            group.appendChild(opt);
+        });
+        select.appendChild(group);
+    }
+    
+    // Add Exploration traditions
+    if (byAge['AGE_EXPLORATION'].length > 0) {
+        const group = document.createElement('optgroup');
+        group.label = '🧭 Exploration';
+        byAge['AGE_EXPLORATION'].forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t.id;
+            opt.textContent = `${t.name || t.id}`;
+            group.appendChild(opt);
+        });
+        select.appendChild(group);
+    }
+    
+    // Add Modern traditions
+    if (byAge['AGE_MODERN'].length > 0) {
+        const group = document.createElement('optgroup');
+        group.label = '🏭 Modern';
+        byAge['AGE_MODERN'].forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t.id;
+            opt.textContent = `${t.name || t.id}`;
+            group.appendChild(opt);
+        });
+        select.appendChild(group);
+    }
+    
+    // Add traditions without age
+    if (byAge[''].length > 0) {
+        const group = document.createElement('optgroup');
+        group.label = '🌐 All Ages';
+        byAge[''].forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t.id;
+            opt.textContent = `${t.name || t.id}`;
+            group.appendChild(opt);
+        });
+        select.appendChild(group);
+    }
+}
+
+export async function wizardShowTraditionForm() {
     const form = document.getElementById('wizard-tradition-form');
     const idxInput = document.getElementById('wizard-tradition-edit-idx');
 
-    document.getElementById('wizard-tradition-id').value = '';
-    document.getElementById('wizard-tradition-type').value = '';
-    document.getElementById('wizard-tradition-name').value = '';
-    document.getElementById('wizard-tradition-desc').value = '';
+    // Reset form
+    const idField = document.getElementById('wizard-tradition-id');
+    const nameField = document.getElementById('wizard-tradition-name');
+    const descField = document.getElementById('wizard-tradition-desc');
+    const ageField = document.getElementById('wizard-tradition-age');
+    const existingSelect = document.getElementById('wizard-tradition-existing-select');
+    
+    if (idField) idField.value = '';
+    if (nameField) nameField.value = '';
+    if (descField) descField.value = '';
+    if (ageField) ageField.value = '';
+    if (existingSelect) existingSelect.value = '';
     idxInput.value = '-1';
+    
+    // Reset modifier checkboxes
+    document.querySelectorAll('.wizard-tradition-modifier-checkbox').forEach(cb => {
+        cb.checked = false;
+    });
+    
+    // Hide existing tradition preview
+    const preview = document.getElementById('wizard-tradition-existing-preview');
+    if (preview) preview.classList.add('hidden');
 
+    // Populate dropdowns
+    await populateTraditionsDropdown();
+    
+    // Default to existing mode
+    wizardSetTraditionMode('existing');
+    
     form.classList.remove('hidden');
-    document.getElementById('wizard-tradition-id').focus();
 }
 
 export function wizardCancelTraditionForm() {
     const form = document.getElementById('wizard-tradition-form');
     form.classList.add('hidden');
-    document.getElementById('wizard-tradition-id').value = '';
-    document.getElementById('wizard-tradition-type').value = '';
-    document.getElementById('wizard-tradition-name').value = '';
-    document.getElementById('wizard-tradition-desc').value = '';
+    
+    // Reset all form fields
+    const idField = document.getElementById('wizard-tradition-id');
+    const nameField = document.getElementById('wizard-tradition-name');
+    const descField = document.getElementById('wizard-tradition-desc');
+    const ageField = document.getElementById('wizard-tradition-age');
+    const existingSelect = document.getElementById('wizard-tradition-existing-select');
+    
+    if (idField) idField.value = '';
+    if (nameField) nameField.value = '';
+    if (descField) descField.value = '';
+    if (ageField) ageField.value = '';
+    if (existingSelect) existingSelect.value = '';
     document.getElementById('wizard-tradition-edit-idx').value = '-1';
+    
+    // Reset modifier checkboxes
+    document.querySelectorAll('.wizard-tradition-modifier-checkbox').forEach(cb => {
+        cb.checked = false;
+    });
 }
 
-export function wizardSaveTradition() {
-    const id = document.getElementById('wizard-tradition-id').value.trim();
-    const type = document.getElementById('wizard-tradition-type').value.trim();
-    const displayName = document.getElementById('wizard-tradition-name').value.trim();
-    const description = document.getElementById('wizard-tradition-desc').value.trim();
+export async function wizardSaveTradition() {
+    const form = document.getElementById('wizard-tradition-form');
+    const mode = form.dataset.mode || 'existing';
     const editIdx = parseInt(document.getElementById('wizard-tradition-edit-idx').value, 10);
-
-    if (!id) {
-        showToast('Tradition ID is required', 'error');
-        return;
-    }
-    if (!type) {
-        showToast('Tradition Type is required', 'error');
-        return;
+    
+    // Collect selected modifier IDs
+    const selectedModifierIds = [];
+    document.querySelectorAll('.wizard-tradition-modifier-checkbox:checked').forEach(cb => {
+        selectedModifierIds.push(cb.value);
+    });
+    
+    let tradition;
+    
+    if (mode === 'existing') {
+        // Using an existing base game tradition
+        const existingSelect = document.getElementById('wizard-tradition-existing-select');
+        const selectedId = existingSelect.value;
+        
+        if (!selectedId) {
+            showToast('Please select an existing tradition', 'error');
+            return;
+        }
+        
+        // Find the tradition in cache to get its details
+        const traditions = await loadTraditionsData();
+        const existingTradition = traditions.find(t => t.id === selectedId);
+        
+        tradition = {
+            id: selectedId,
+            is_existing_tradition: true,
+            age: existingTradition?.age || '',
+            trait_type: existingTradition?.trait_type || '',
+            localizations: [{
+                name: existingTradition?.name || selectedId,
+                description: existingTradition?.description || ''
+            }],
+            modifier_ids: selectedModifierIds,
+            // Preserve original modifiers from base game
+            base_modifiers: existingTradition?.modifiers || []
+        };
+        
+    } else {
+        // Creating a custom tradition
+        const id = document.getElementById('wizard-tradition-id').value.trim();
+        const displayName = document.getElementById('wizard-tradition-name').value.trim();
+        const description = document.getElementById('wizard-tradition-desc').value.trim();
+        const age = document.getElementById('wizard-tradition-age').value;
+        
+        if (!id) {
+            showToast('Tradition ID is required', 'error');
+            return;
+        }
+        
+        if (!displayName) {
+            showToast('Tradition name is required', 'error');
+            return;
+        }
+        
+        // Auto-derive trait from civilization data
+        let traitType = '';
+        if (wizardData.civilization_type) {
+            // Extract civ name from CIVILIZATION_XXX and create TRAIT_XXX_ABILITY
+            const civName = wizardData.civilization_type.replace('CIVILIZATION_', '');
+            traitType = `TRAIT_${civName}_ABILITY`;
+        }
+        
+        tradition = {
+            id: id,
+            is_existing_tradition: false,
+            age: age,
+            trait_type: traitType,
+            localizations: [{
+                name: displayName,
+                description: description
+            }],
+            modifier_ids: selectedModifierIds
+        };
     }
 
     if (!wizardData.traditions) {
         wizardData.traditions = [];
-    }
-
-    const tradition = {
-        id: id,
-        tradition_type: type,
-        tradition: {},
-    };
-
-    if (displayName || description) {
-        tradition.localizations = [{}];
-        if (displayName) tradition.localizations[0].name = displayName;
-        if (description) tradition.localizations[0].description = description;
     }
 
     if (editIdx >= 0) {
@@ -647,14 +1000,46 @@ export function wizardSaveTradition() {
     markDirty();
 }
 
-export function wizardEditTradition(idx) {
+export async function wizardEditTradition(idx) {
     const tradition = wizardData.traditions[idx];
-    document.getElementById('wizard-tradition-id').value = tradition.id || '';
-    document.getElementById('wizard-tradition-type').value = tradition.tradition_type || '';
-    document.getElementById('wizard-tradition-name').value = tradition.localizations?.[0]?.name || '';
-    document.getElementById('wizard-tradition-desc').value = tradition.localizations?.[0]?.description || '';
+    const form = document.getElementById('wizard-tradition-form');
+    
+    // Populate dropdowns first
+    await populateTraditionsDropdown();
+    
+    // Determine mode based on tradition type
+    if (tradition.is_existing_tradition) {
+        // Existing tradition mode
+        wizardSetTraditionMode('existing');
+        
+        const existingSelect = document.getElementById('wizard-tradition-existing-select');
+        if (existingSelect) existingSelect.value = tradition.id;
+        
+        // Trigger preview update
+        await wizardOnExistingTraditionSelect();
+    } else {
+        // Custom tradition mode
+        wizardSetTraditionMode('custom');
+        
+        const idField = document.getElementById('wizard-tradition-id');
+        
+        if (idField) idField.value = tradition.id || '';
+        if (nameField) nameField.value = tradition.localizations?.[0]?.name || '';
+        if (descField) descField.value = tradition.localizations?.[0]?.description || '';
+        if (ageField) ageField.value = tradition.agns?.[0]?.name || '';
+        if (descField) descField.value = tradition.localizations?.[0]?.description || '';
+        if (ageField) ageField.value = tradition.age || '';
+        if (traitField) traitField.value = tradition.trait_type || '';
+    }
+    
+    // Check the modifier checkboxes that are attached to this tradition
+    const attachedModifierIds = tradition.modifier_ids || [];
+    document.querySelectorAll('.wizard-tradition-modifier-checkbox').forEach(cb => {
+        cb.checked = attachedModifierIds.includes(cb.value);
+    });
+    
     document.getElementById('wizard-tradition-edit-idx').value = idx;
-    document.getElementById('wizard-tradition-form').classList.remove('hidden');
+    form.classList.remove('hidden');
 }
 
 export function removeWizardTradition(idx) {

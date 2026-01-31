@@ -18,6 +18,9 @@ export function renderWizardStep2(container) {
     if (typeof window !== 'undefined') {
         window.addWizardTerrainBias = addWizardTerrainBias;
         window.addWizardCivUnlock = addWizardCivUnlock;
+        window.updateWizardAttributeTrait = updateWizardAttributeTrait;
+        window.updateWizardCivAbilityName = updateWizardCivAbilityName;
+        window.updateCivAbilityModifiers = updateCivAbilityModifiers;
     }
 
     // Check for open details to preserve state during re-renders (before innerHTML wipe)
@@ -139,34 +142,75 @@ export function renderWizardStep2(container) {
                 <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
                     <h4 class="font-semibold text-slate-200 mb-4">
                         Civilization Traits <span class="text-red-400">*</span>
-                        <button onclick="import('./wizard.js').then(m => m.showFieldHelp('trait_type'))" class="ml-1 text-blue-400 hover:text-blue-300">ⓘ</button>
                     </h4>
-                    <div id="wizard-traits-container" class="space-y-2">
-                        ${selectedTraits.map((trait, idx) => `
-                            <div class="flex items-center gap-2" data-trait-idx="${idx}">
-                                <select 
-                                    id="wizard-trait-${idx}"
-                                    onchange="window.updateWizardTraitAt(${idx}, this.value)"
-                                    class="flex-1 px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm"
-                                >
-                                    <option value="">Loading...</option>
-                                </select>
-                                <button 
-                                    onclick="window.removeWizardTrait(${idx})"
-                                    class="px-3 py-2 bg-red-600/20 hover:bg-red-600/30 border border-red-600 rounded-lg text-red-400 text-sm"
-                                >
-                                    Remove
-                                </button>
+                    <p class="text-xs text-slate-500 mb-4">Your civilization automatically gets an age trait (e.g., TRAIT_ANTIQUITY_CIV) based on your starting age. Select two attribute traits to define your civilization's strengths.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="p-3 bg-blue-900/30 border border-blue-700 rounded">
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Auto-Generated Age Trait</label>
+                            <div class="px-3 py-2 bg-slate-800/50 border border-slate-600 rounded text-sm text-slate-400 font-mono">
+                                TRAIT_${(wizardData.action_group?.action_group_id || 'AGE').replace('AGE_', '')}_CIV
                             </div>
-                        `).join('')}
+                            <p class="text-xs text-slate-500 mt-1">Automatically created based on your starting age</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-1">Attribute Trait 1 <span class="text-red-400">*</span></label>
+                                <select 
+                                    id="wizard-attribute-trait-1"
+                                    onchange="window.updateWizardAttributeTrait(0, this.value)"
+                                    class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm"
+                                >
+                                    <option value="">Select trait...</option>
+                                    <option value="TRAIT_ATTRIBUTE_ECONOMIC">Economic</option>
+                                    <option value="TRAIT_ATTRIBUTE_MILITARISTIC">Militaristic</option>
+                                    <option value="TRAIT_ATTRIBUTE_SCIENTIFIC">Scientific</option>
+                                    <option value="TRAIT_ATTRIBUTE_CULTURAL">Cultural</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-1">Attribute Trait 2 <span class="text-red-400">*</span></label>
+                                <select 
+                                    id="wizard-attribute-trait-2"
+                                    onchange="window.updateWizardAttributeTrait(1, this.value)"
+                                    class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm"
+                                >
+                                    <option value="">Select trait...</option>
+                                    <option value="TRAIT_ATTRIBUTE_ECONOMIC">Economic</option>
+                                    <option value="TRAIT_ATTRIBUTE_MILITARISTIC">Militaristic</option>
+                                    <option value="TRAIT_ATTRIBUTE_SCIENTIFIC">Scientific</option>
+                                    <option value="TRAIT_ATTRIBUTE_CULTURAL">Cultural</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <button 
-                        onclick="window.addWizardTrait()"
-                        class="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium"
-                    >
-                        + Add Trait
-                    </button>
-                    <p class="text-xs text-slate-500 mt-2">Defines your civilization's strengths and bonuses</p>
+                </div>
+                
+                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                    <h4 class="font-semibold text-slate-200 mb-4">Civilization Ability</h4>
+                    <p class="text-xs text-slate-500 mb-4">Define your civilization's unique ability by attaching game modifiers from Step 4. This creates your TRAIT_{CIV_NAME}_ABILITY trait.</p>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Ability Name</label>
+                        <input 
+                            type="text" 
+                            id="wizard-civ-ability-name"
+                            value="${wizardData.civilization?.civ_ability_name || ''}"
+                            onchange="window.updateWizardCivAbilityName(this.value)"
+                            placeholder="e.g., Druidic Heritage, Maritime Dominance"
+                            class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-400"
+                        />
+                        <p class="text-xs text-slate-500 mt-1">Descriptive name for your civilization's unique ability</p>
+                    </div>
+                    
+                    <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
+                        <h6 class="text-xs font-semibold text-green-400 mb-2">📎 Attach Modifiers to Civ Ability</h6>
+                        <p class="text-xs text-slate-400 mb-2">Select modifiers from Step 4 to define what your civilization's unique ability does.</p>
+                        
+                        <div id="wizard-civ-ability-modifiers-list" class="space-y-1 max-h-40 overflow-y-auto">
+                            <!-- Populated dynamically from wizardData.modifiers -->
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
@@ -648,6 +692,36 @@ export function renderWizardStep2(container) {
         </div>
     `;
 
+    // Populate attribute trait dropdowns with TRAIT_ATTRIBUTE_* options
+    const attributeTraitOptions = [
+        { value: '', label: 'None' },
+        { value: 'TRAIT_ATTRIBUTE_CULTURAL', label: 'Cultural' },
+        { value: 'TRAIT_ATTRIBUTE_ECONOMIC', label: 'Economic' },
+        { value: 'TRAIT_ATTRIBUTE_EXPANSIONIST', label: 'Expansionist' },
+        { value: 'TRAIT_ATTRIBUTE_MILITARISTIC', label: 'Militaristic' },
+        { value: 'TRAIT_ATTRIBUTE_POLITICAL', label: 'Political' },
+        { value: 'TRAIT_ATTRIBUTE_SCIENTIFIC', label: 'Scientific' }
+    ];
+    
+    const attributeTraits = wizardData.civilization?.civilization_traits || ['', ''];
+    const attrTrait1 = document.getElementById('wizard-attribute-trait-1');
+    const attrTrait2 = document.getElementById('wizard-attribute-trait-2');
+    
+    if (attrTrait1) {
+        attrTrait1.innerHTML = attributeTraitOptions.map(opt => 
+            `<option value="${opt.value}" ${attributeTraits[0] === opt.value ? 'selected' : ''}>${opt.label}</option>`
+        ).join('');
+    }
+    
+    if (attrTrait2) {
+        attrTrait2.innerHTML = attributeTraitOptions.map(opt => 
+            `<option value="${opt.value}" ${attributeTraits[1] === opt.value ? 'selected' : ''}>${opt.label}</option>`
+        ).join('');
+    }
+    
+    // Populate civ ability modifiers checkboxes
+    populateCivAbilityModifiersList();
+
     selectedTraits.forEach((trait, idx) => {
         createWizardDropdown(`wizard-trait-${idx}`, 'civilization-traits', trait, 'Select trait...');
     });
@@ -836,6 +910,75 @@ export async function handleCivIconUpload(inputElement) {
     }
 }
 
+/**
+ * Update attribute trait at index (0 or 1)
+ */
+export function updateWizardAttributeTrait(idx, value) {
+    if (!wizardData.civilization) wizardData.civilization = {};
+    if (!wizardData.civilization.civilization_traits) wizardData.civilization.civilization_traits = ['', ''];
+    wizardData.civilization.civilization_traits[idx] = value;
+    markDirty();
+}
+
+/**
+ * Update civilization ability name
+ */
+export function updateWizardCivAbilityName(name) {
+    if (!wizardData.civilization) wizardData.civilization = {};
+    wizardData.civilization.civ_ability_name = name;
+    markDirty();
+}
+
+/**
+ * Populate the civ ability modifiers checkbox list from Step 4 modifiers
+ */
+function populateCivAbilityModifiersList() {
+    const container = document.getElementById('wizard-civ-ability-modifiers-list');
+    if (!container) return;
+    
+    // Get modifiers from Step 4
+    const modifiers = wizardData.modifiers || [];
+    
+    if (modifiers.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-500 italic">No modifiers created yet. Add modifiers in Step 4 (Modifiers & Traditions) first.</p>';
+        return;
+    }
+    
+    // Get currently selected modifiers
+    const selectedModifiers = wizardData.civilization?.civ_ability_modifier_ids || [];
+    
+    container.innerHTML = modifiers.map((mod, idx) => `
+        <label class="flex items-center gap-2 p-2 rounded hover:bg-slate-800/50 cursor-pointer">
+            <input 
+                type="checkbox" 
+                class="wizard-civ-ability-modifier-checkbox rounded"
+                value="${mod.id}"
+                data-modifier-idx="${idx}"
+                ${selectedModifiers.includes(mod.id) ? 'checked' : ''}
+                onchange="window.updateCivAbilityModifiers()"
+            />
+            <span class="text-sm text-slate-200">${mod.id}</span>
+            <span class="text-xs text-slate-400">${mod.modifier?.effect || ''}</span>
+        </label>
+    `).join('');
+}
+
+/**
+ * Update civ ability modifiers based on checkbox selections
+ */
+export function updateCivAbilityModifiers() {
+    if (!wizardData.civilization) wizardData.civilization = {};
+    
+    const selectedModifierIds = [];
+    document.querySelectorAll('.wizard-civ-ability-modifier-checkbox:checked').forEach(cb => {
+        selectedModifierIds.push(cb.value);
+    });
+    
+    wizardData.civilization.civ_ability_modifier_ids = selectedModifierIds;
+    markDirty();
+}
+
+// Old trait functions - keeping for now but deprecated
 export function addWizardTrait() {
     if (!wizardData.civilization) wizardData.civilization = {};
     if (!wizardData.civilization.civilization_traits) wizardData.civilization.civilization_traits = [];

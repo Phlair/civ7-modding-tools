@@ -257,6 +257,14 @@ class CivilizationBuilder(BaseBuilder):
         if not self.civilization_type:
             self.civilization_type = self.civilization.get('civilization_type', 'CIVILIZATION_CUSTOM')
         
+        # Auto-generate age trait from action_group_bundle
+        age_trait_type = None
+        if hasattr(self, 'action_group_bundle') and self.action_group_bundle:
+            action_group_id = self.action_group_bundle.action_group_id
+            if action_group_id and action_group_id.startswith('AGE_'):
+                age = action_group_id.replace('AGE_', '')
+                age_trait_type = f"TRAIT_{age}_CIV"
+        
         # Generate trait types from civilization type if not provided
         if not self.trait:
             trait_base = self.civilization_type.replace('CIVILIZATION_', '')
@@ -306,6 +314,9 @@ class CivilizationBuilder(BaseBuilder):
             internal_only=True
         )
         
+        # Get civ ability name from civilization dict (set in wizard Step 2)
+        civ_ability_name = self.civilization.get('civ_ability_name', '')
+        
         trait_ability_node = TraitNode(
             trait_type=trait_ability_type,
             name=locale(self.civilization_type + '_ABILITY', 'name'),
@@ -313,10 +324,44 @@ class CivilizationBuilder(BaseBuilder):
             internal_only=True
         )
         
-        # ==== POPULATE _current DATABASE ====
-        # Types section - empty (types moved to always scope)
+        # Create age trait node if auto-generated
+        age_trait_node = None
+        if age_trait_type:
+            age_trait_node = TraitNode(
+                trait_type=age_trait_type,
+                internal_only=True
+            )
         
-        # Traits section - empty (traits moved to always scope)
+        # ==== POPULATE _current DATABASE ====
+        # Types section
+        types_list = [TypeNode(type_=trait_ability_type, kind="KIND_TRAIT")]
+        # Add age trait type if auto-generated
+        if age_trait_type:
+            types_list.append(TypeNode(type_=age_trait_type, kind="KIND_TRAIT"))
+        self._current.types = types_list
+        
+        # Traits section
+        # Civilization ability trait with localization
+        traits_list = [trait_ability_node]
+        # Add age trait definition if auto-generated
+        if age_trait_node:
+            traits_list.append(age_trait_node)
+        self._current.traits = traits_list
+        
+        # Handle civ_ability_modifier_ids from wizard Step 2
+        # These link the TRAIT_{CIV}_ABILITY to the modifiers selected in the UI
+        civ_ability_modifier_ids = self.civilization.get('civ_ability_modifier_ids', [])
+        if civ_ability_modifier_ids:
+            from civ7_modding_tools.nodes import TraitModifierNode
+            if not self._current.trait_modifiers:
+                self._current.trait_modifiers = []
+            for modifier_id in civ_ability_modifier_ids:
+                self._current.trait_modifiers.append(
+                    TraitModifierNode(
+                        trait_type=trait_ability_type,
+                        modifier_id=modifier_id
+                    )
+                )
         
         # Civilizations section
         self._current.civilizations = [civ_node]
@@ -332,7 +377,15 @@ class CivilizationBuilder(BaseBuilder):
                 trait_type=trait_ability_type
             ),
         ]
-        # Add additional traits specified by user
+        # Add age trait if auto-generated
+        if age_trait_type:
+            civ_trait_nodes.append(
+                CivilizationTraitNode(
+                    civilization_type=self.civilization_type,
+                    trait_type=age_trait_type
+                )
+            )
+        # Add additional traits specified by user (attribute traits)
         for trait in self.civilization_traits:
             civ_trait_nodes.append(
                 CivilizationTraitNode(
@@ -759,12 +812,11 @@ class CivilizationBuilder(BaseBuilder):
         
         self._always.types = [
             TypeNode(type_=trait_type, kind="KIND_TRAIT"),
-            TypeNode(type_=trait_ability_type, kind="KIND_TRAIT"),
         ]
         
-        # Both base trait and ability trait definitions (must be in always scope)
+        # Base trait only (must be in always scope)
         always_trait = TraitNode(trait_type=trait_type, internal_only=True)
-        self._always.traits = [always_trait, trait_ability_node]
+        self._always.traits = [always_trait]
         
         # ==== POPULATE _legacy DATABASE ====
         # Legacy system uses regular Row elements (game convention)
@@ -844,6 +896,21 @@ class CivilizationBuilder(BaseBuilder):
                                 tag=locale(prefix, f"citizenNames_female_{i}"),
                                 text=female_name
                             ))
+        
+        # Add civilization ability localization if civ_ability_name is provided
+        if civ_ability_name:
+            ability_loc_prefix = self.civilization_type + '_ABILITY'
+            localization_rows.append(EnglishTextNode(
+                tag=locale(ability_loc_prefix, 'name'),
+                text=civ_ability_name
+            ))
+            # Add description if civ_ability_description is provided
+            civ_ability_description = self.civilization.get('civ_ability_description', '')
+            if civ_ability_description:
+                localization_rows.append(EnglishTextNode(
+                    tag=locale(ability_loc_prefix, 'description'),
+                    text=civ_ability_description
+                ))
         
         # Named Places Localizations (Rivers & Volcanoes)
         # Include civilization name in tag for uniqueness: LOC_ICENI_RIVER_XXX_NAME
@@ -949,13 +1016,14 @@ class CivilizationBuilder(BaseBuilder):
                         
                         # Link modifiers to trait (if not detached)
                         # TraitModifiers must be in always scope since modifiers are loaded in always action group
+                        # Bind to base TRAIT_{CIV}, not TRAIT_{CIV}_ABILITY
                         if not getattr(item, 'is_detached', False):
                             if not self._always.trait_modifiers:
                                 self._always.trait_modifiers = []
                             for modifier in item._game_effects.modifiers:
                                 self._always.trait_modifiers.append(
                                     TraitModifierNode(
-                                        trait_type=trait_ability_type,
+                                        trait_type=trait_type,  # Use base trait, not ability trait
                                         modifier_id=modifier.id
                                     )
                                 )
@@ -1855,6 +1923,9 @@ class ConstructibleBuilder(BaseBuilder):
         self.adjacent_terrain: Optional[str] = None
         self.adjacent_district: Optional[str] = None
         
+        # Cost structure from wizard (will be converted to cost in migrate)
+        self.constructible_cost: Optional[Dict[str, Any]] = None
+        
         # Visual remapping (same format as units: {to: base_constructible_id})
         self.visual_remap: Optional[Dict[str, Any]] = None
         
@@ -1975,6 +2046,14 @@ class ConstructibleBuilder(BaseBuilder):
                 self.building = {}
             elif self.constructible_type.startswith('IMPROVEMENT_'):
                 self.improvement = {}
+        
+        # Handle constructible_cost structure (from wizard)
+        # Convert {yield_type: "YIELD_PRODUCTION", cost: 30} to just cost: 30
+        if hasattr(self, 'constructible_cost') and self.constructible_cost:
+            if isinstance(self.constructible_cost, dict):
+                cost_value = self.constructible_cost.get('cost')
+                if cost_value is not None and 'cost' not in self.constructible:
+                    self.constructible['cost'] = cost_value
         
         # Migrate top-level fields to constructible dict for convenience
         # Fields like 'age', 'repairable', 'cost', etc. can be at top level in YAML

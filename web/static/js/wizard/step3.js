@@ -698,15 +698,13 @@ export function renderWizardStep3(container) {
                                         <p class="text-xs text-slate-500 mt-1">Number of turns between ability uses</p>
                                     </div>
                                     
-                                    <div id="wizard-ability-modifiers-div">
-                                        <label class="block text-xs font-medium text-slate-300 mb-1">Modifier IDs (comma-separated)</label>
-                                        <input 
-                                            type="text" 
-                                            id="wizard-ability-modifiers" 
-                                            placeholder="HOPLITE_MOD_COMBAT_FROM_ADJACENT"
-                                            class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
-                                        />
-                                        <p class="text-xs text-slate-500 mt-1" id="wizard-ability-modifiers-help">Optional: Only needed for custom abilities. Existing abilities already have their effects defined.</p>
+                                    <div id="wizard-ability-modifiers-div" class="bg-slate-900/50 p-3 rounded border border-slate-700">
+                                        <h6 class="text-xs font-semibold text-green-400 mb-2">📎 Attach Modifiers</h6>
+                                        <p class="text-xs text-slate-400 mb-2" id="wizard-ability-modifiers-help">Select modifiers from Step 4 (Game Modifiers section) to attach to this ability.</p>
+                                        
+                                        <div id="wizard-ability-modifiers-list" class="space-y-1 max-h-40 overflow-y-auto">
+                                            <!-- Populated dynamically from wizardData.modifiers -->
+                                        </div>
                                     </div>
                                     
                                     <div class="flex gap-2 mt-3">
@@ -1051,6 +1049,16 @@ export function renderWizardStep3(container) {
                         <details class="bg-slate-900/50 rounded border border-slate-700">
                             <summary class="px-3 py-2 cursor-pointer text-xs font-semibold text-slate-400 hover:text-slate-300">💰 Plunder & Costs</summary>
                             <div class="p-3 pt-2 space-y-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Production Cost</label>
+                                    <input 
+                                        type="number" 
+                                        id="wizard-constructible-cost" 
+                                        placeholder="0"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    />
+                                    <p class="text-xs text-slate-500 mt-1">Base production cost to build</p>
+                                </div>
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <label class="block text-xs font-medium text-slate-300">Plunder Rewards</label>
@@ -1939,7 +1947,8 @@ export function wizardCancelConstructibleForm() {
     document.getElementById('wizard-constructible-maintenance-gold').value = '';
     document.getElementById('wizard-constructible-maintenance-happiness').value = '';
     
-    // Clear cost progression
+    // Clear costs
+    document.getElementById('wizard-constructible-cost').value = '';
     document.getElementById('wizard-constructible-cost-progression').value = '';
     
     // Clear advanced properties
@@ -2009,6 +2018,7 @@ export function wizardSaveConstructible() {
     const maintenanceHappiness = document.getElementById('wizard-constructible-maintenance-happiness').value.trim();
     
     // Costs
+    const cost = document.getElementById('wizard-constructible-cost').value.trim();
     const costProgression = document.getElementById('wizard-constructible-cost-progression').value.trim();
     
     // Advanced properties
@@ -2084,6 +2094,14 @@ export function wizardSaveConstructible() {
     // Plunders
     if (wizardBuildingPlunders.length > 0) {
         constructible.plunders = wizardBuildingPlunders.filter(p => p.plunder_type && p.amount);
+    }
+
+    // Cost
+    if (cost) {
+        constructible.constructible_cost = {
+            yield_type: 'YIELD_PRODUCTION',
+            cost: parseInt(cost, 10)
+        };
     }
 
     // Cost progression
@@ -2220,6 +2238,9 @@ export async function wizardEditConstructible(idx) {
     wizardBuildingPlunders.length = 0;
     wizardBuildingPlunders.push(...(building.plunders || []));
     renderWizardBuildingPlunders();
+    
+    // Cost
+    document.getElementById('wizard-constructible-cost').value = building.constructible_cost?.cost || '';
     
     // Cost progression
     document.getElementById('wizard-constructible-cost-progression').value = building.cost_progressions?.[0]?.percent || '';
@@ -2919,6 +2940,35 @@ export function renderWizardUnitAbilitiesList() {
 
 let wizardUnitCurrentAbilities = [];
 
+/**
+ * Populate the ability modifiers checkbox list from Step 4 modifiers
+ */
+function populateAbilityModifiersList() {
+    const container = document.getElementById('wizard-ability-modifiers-list');
+    if (!container) return;
+    
+    // Get modifiers from Step 4
+    const modifiers = wizardData.modifiers || [];
+    
+    if (modifiers.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-500 italic">No modifiers created yet. Add modifiers in Step 4 (Modifiers & Traditions) first.</p>';
+        return;
+    }
+    
+    container.innerHTML = modifiers.map((mod, idx) => `
+        <label class="flex items-center gap-2 p-2 rounded hover:bg-slate-800/50 cursor-pointer">
+            <input 
+                type="checkbox" 
+                class="wizard-ability-modifier-checkbox rounded"
+                value="${mod.id}"
+                data-modifier-idx="${idx}"
+            />
+            <span class="text-sm text-slate-200">${mod.id}</span>
+            <span class="text-xs text-slate-400">${mod.modifier?.effect || ''}</span>
+        </label>
+    `).join('');
+}
+
 export function wizardShowAbilityForm() {
     const form = document.getElementById('wizard-ability-form');
     const editIdx = document.getElementById('wizard-ability-edit-idx');
@@ -2935,11 +2985,16 @@ export function wizardShowAbilityForm() {
     document.getElementById('wizard-ability-inactive').checked = false;
     document.getElementById('wizard-ability-charged').checked = false;
     document.getElementById('wizard-ability-recharge-turns').value = '';
-    document.getElementById('wizard-ability-modifiers').value = '';
     document.getElementById('wizard-ability-recharge-div').classList.add('hidden');
     document.getElementById('wizard-ability-type-help').textContent = 'Select an existing game ability or create a custom one';
-    document.getElementById('wizard-ability-modifiers-help').textContent = 'Optional: Only needed for custom abilities. Existing abilities already have their effects defined.';
+    document.getElementById('wizard-ability-modifiers-help').textContent = 'Select modifiers from Step 4 (Game Modifiers section) to attach to this ability.';
     editIdx.value = '-1';
+    
+    // Populate modifiers checkboxes and clear selection
+    populateAbilityModifiersList();
+    document.querySelectorAll('.wizard-ability-modifier-checkbox').forEach(cb => {
+        cb.checked = false;
+    });
     
     // Load ability options if not already loaded
     loadAbilityOptions();
@@ -2963,7 +3018,12 @@ export function wizardSaveAbility() {
     const inactive = document.getElementById('wizard-ability-inactive').checked;
     const charged = document.getElementById('wizard-ability-charged').checked;
     const rechargeTurns = document.getElementById('wizard-ability-recharge-turns').value;
-    const modifiersText = document.getElementById('wizard-ability-modifiers').value.trim();
+    
+    // Collect checked modifier IDs
+    const selectedModifierIds = [];
+    document.querySelectorAll('.wizard-ability-modifier-checkbox:checked').forEach(cb => {
+        selectedModifierIds.push(cb.value);
+    });
 
     if (!abilityId || !abilityType || !name || !description) {
         showToast('Ability ID, type, name, and description are required', 'error');
@@ -2976,7 +3036,7 @@ export function wizardSaveAbility() {
         name: name,
         description: description,
         inactive: inactive || undefined,
-        modifiers: modifiersText ? modifiersText.split(',').map(m => m.trim()).filter(m => m) : [],
+        modifiers: selectedModifierIds,
     };
 
     if (charged && rechargeTurns) {
@@ -3038,7 +3098,16 @@ export function wizardEditAbility(idx) {
         document.getElementById('wizard-ability-inactive').checked = ability.inactive || false;
         document.getElementById('wizard-ability-charged').checked = !!ability.charged_config;
         document.getElementById('wizard-ability-recharge-turns').value = ability.charged_config?.recharge_turns || '';
-        document.getElementById('wizard-ability-modifiers').value = ability.modifiers?.join(', ') || '';
+        
+        // Populate modifiers checkboxes
+        populateAbilityModifiersList();
+        
+        // Check the modifiers that are attached to this ability
+        const attachedModifiers = ability.modifiers || [];
+        document.querySelectorAll('.wizard-ability-modifier-checkbox').forEach(cb => {
+            cb.checked = attachedModifiers.includes(cb.value);
+        });
+        
         document.getElementById('wizard-ability-edit-idx').value = idx;
         
         // Show/hide recharge field

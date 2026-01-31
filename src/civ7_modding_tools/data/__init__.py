@@ -288,6 +288,21 @@ def get_constructibles() -> List[str]:
     return data if isinstance(data, list) else data.get('values', [])
 
 
+def get_traditions() -> List[Dict[str, Any]]:
+    """
+    Get all available tradition types (policies) with descriptions.
+
+    Returns a list of traditions with id, name, age, description, and
+    optionally ideology for Modern age ideology-specific traditions.
+    """
+    return load_reference_data('traditions.json')['values']
+
+
+def get_civilization_traits() -> List[Dict[str, str]]:
+    """Get all available civilization trait types."""
+    return load_reference_data('civilization-traits.json')['values']
+
+
 __all__ = [
     'load_reference_data',
     # Original types
@@ -334,4 +349,6 @@ __all__ = [
     'get_plunder_types',
     'get_adjacency_patterns',
     'get_constructibles',
+    'get_traditions',
+    'get_civilization_traits',
 ]

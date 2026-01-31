@@ -71,6 +71,7 @@ class CivVIIDataExtractor:
             'civilization_traits': set(),
             'unit_abilities': {},  # {ability_id: {name, description, description_text}}
             'constructibles': set(),  # All building, improvement, and wonder types
+            'traditions': {},  # {tradition_id: {name, description, age, trait_type, is_crisis, modifiers}}
         }
         self.localization_texts = {}  # {LOC_TAG: english_text} - for resolving LOC_ keys
         self.civ_cache = defaultdict(dict)
@@ -124,6 +125,24 @@ class CivVIIDataExtractor:
                 ability_data['description_text'] = self.localization_texts[loc_key]
             else:
                 ability_data['description_text'] = ''
+    
+    def _resolve_tradition_localizations(self) -> None:
+        """Resolve LOC_ keys to actual English text for traditions."""
+        for tradition_id, tradition_data in self.data['traditions'].items():
+            # Resolve name
+            name_loc = tradition_data.get('name_loc', '')
+            if name_loc and name_loc in self.localization_texts:
+                tradition_data['name'] = self.localization_texts[name_loc]
+            else:
+                # Fallback: generate name from ID
+                tradition_data['name'] = tradition_id.replace('TRADITION_', '').replace('_', ' ').title()
+            
+            # Resolve description
+            desc_loc = tradition_data.get('description_loc', '')
+            if desc_loc and desc_loc in self.localization_texts:
+                tradition_data['description'] = self.localization_texts[desc_loc]
+            else:
+                tradition_data['description'] = ''
     def _extract_english_text(self, file_path: Path) -> None:
         """Extract English localization text from EnglishText or LocalizedText nodes."""
         try:
@@ -364,6 +383,48 @@ class CivVIIDataExtractor:
                     # Infer age from node name pattern
                     self._infer_node_age_from_name(node_type)
 
+            # Traditions - extract from Traditions table
+            if tag == 'Row' and 'TraditionType' in attribs:
+                tradition_type = attribs['TraditionType']
+                # Only add if this row has Name attribute (Traditions table, not TraditionModifiers)
+                if 'Name' in attribs:
+                    name_loc = attribs.get('Name', '')
+                    desc_loc = attribs.get('Description', '')
+                    is_crisis = attribs.get('IsCrisis', 'false').lower() == 'true'
+                    age_type = attribs.get('AgeType', '')
+                    trait_type = attribs.get('TraitType', '')
+                    
+                    # Store tradition data
+                    self.data['traditions'][tradition_type] = {
+                        'name_loc': name_loc,
+                        'description_loc': desc_loc,
+                        'is_crisis': is_crisis,
+                        'age': age_type if age_type else era_id,  # Use file-inferred era if not explicit
+                        'trait_type': trait_type,
+                        'modifiers': []
+                    }
+            
+            # TraditionModifiers - track which modifiers are attached to traditions
+            if tag == 'Row' and 'TraditionType' in attribs and 'ModifierId' in attribs:
+                tradition_type = attribs['TraditionType']
+                modifier_id = attribs['ModifierId']
+                # Add modifier to tradition if it exists
+                if tradition_type in self.data['traditions']:
+                    self.data['traditions'][tradition_type]['modifiers'].append(modifier_id)
+                # Otherwise create a placeholder (modifier-only reference)
+                elif not any(k in attribs for k in ['Name', 'Description']):
+                    if tradition_type not in self.data['traditions']:
+                        self.data['traditions'][tradition_type] = {
+                            'name_loc': '',
+                            'description_loc': '',
+                            'is_crisis': False,
+                            'age': era_id,
+                            'trait_type': '',
+                            'modifiers': [modifier_id]
+                        }
+                    else:
+                        self.data['traditions'][tradition_type]['modifiers'].append(modifier_id)
+
             # UnitReplaces - extract unit replacement mappings
             if tag == 'Row' and 'CivUniqueUnitType' in attribs and 'ReplacesUnitType' in attribs:
                 unique_unit = attribs['CivUniqueUnitType']
@@ -569,6 +630,8 @@ class CivVIIDataExtractor:
         """Export all extracted data to JSON files."""
         # Resolve unit ages before exporting
         self._resolve_unit_ages()
+        # Resolve tradition localizations
+        self._resolve_tradition_localizations()
         
         # BuildingCulture split into two categories:
         # 1. Palace/Premium styles (BUILDING_CULTURE_XXX)
@@ -905,6 +968,26 @@ class CivVIIDataExtractor:
             'values': [{'id': c} for c in sorted(self.data['constructibles'])]
         }
         self._write_json('constructibles.json', constructibles)
+
+        # Traditions (policies)
+        traditions = {
+            'name': 'traditions',
+            'description': 'Base game traditions (policies) available across all ages',
+            'values': [
+                {
+                    'id': tradition_id,
+                    'name': tradition_data.get('name', ''),
+                    'description': tradition_data.get('description', ''),
+                    'age': tradition_data.get('age', ''),
+                    'trait_type': tradition_data.get('trait_type', ''),
+                    'is_crisis': tradition_data.get('is_crisis', False),
+                    'modifiers': tradition_data.get('modifiers', [])
+                }
+                for tradition_id, tradition_data in sorted(self.data['traditions'].items())
+                if not tradition_data.get('is_crisis', False)  # Exclude crisis policies for cleaner UI
+            ]
+        }
+        self._write_json('traditions.json', traditions)
 
 
 def main() -> None:

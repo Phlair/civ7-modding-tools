@@ -1,0 +1,1398 @@
+{
+  "name": "traditions",
+  "description": "Base game traditions (policies) available across all ages",
+  "values": [
+    {
+      "id": "TRADITION_AMBASSADORS",
+      "name": "Ambassadors",
+      "description": "+6[icon:YIELD_DIPLOMACY] Influence per turn.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "MOD_AMBASSADORS_DIPLOMACY"
+      ]
+    },
+    {
+      "id": "TRADITION_ASSEMBLY_LINE",
+      "name": "Assembly Line",
+      "description": "+2 [icon:YIELD_PRODUCTION] Production from [icon:SPECIALIST] Specialists. -2 [icon:YIELD_FOOD] Food in [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "ASSEMBLY_LINE_MOD_MILITARY_ATTRIBUTE_PRODUCTION",
+        "ASSEMBLY_LINE_MOD_DECREASE_FOOD_IN_TOWNS"
+      ]
+    },
+    {
+      "id": "TRADITION_AVANT_GARDE",
+      "name": "Avant Garde",
+      "description": "+2 [icon:YIELD_CULTURE] Culture and [icon:YIELD_HAPPINESS] Happiness on displayed [icon:NAR_REW_GREATWORK] Great Works.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "AVANT_GARDE_MOD_CULTURE_HAPPINESS_PER_GREAT_WORK",
+        "AVANT_GARDE_MOD_CULTURE_PER_GREAT_WORK"
+      ]
+    },
+    {
+      "id": "TRADITION_BLACK_FLAG",
+      "name": "Black Flag",
+      "description": "+100% [icon:YIELD_GOLD] Gold from [icon:Action_Pillage] Plundering Trade Routes. ",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_PIRATE_REPUBLIC",
+      "is_crisis": false,
+      "modifiers": [
+        "BLACK_FLAG_PLUNDER"
+      ]
+    },
+    {
+      "id": "TRADITION_BOURGEOISIE",
+      "name": "Bourgeoisie",
+      "description": "+4 [icon:YIELD_CULTURE] Culture and [icon:YIELD_GOLD] Gold in [icon:YIELD_CITIES] Cities in your Homelands.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "BOURGEOISIE_MOD_CULTURE_GOLD_CITIES"
+      ]
+    },
+    {
+      "id": "TRADITION_CAM_BINH",
+      "name": "C\u1ea5m Binh",
+      "description": "+2[icon:YIELD_GOLD] Gold on [icon:Action_Fortify] Fortifications in Settlements with at least 1 Garrisoned Unit.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_DAI_VIET",
+      "is_crisis": false,
+      "modifiers": [
+        "CAM_BINH_MOD_GARRISONED_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_CASTES",
+      "name": "Castes",
+      "description": "+2[icon:YIELD_FOOD] Food in all Settlements.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CASTES_MOD_TOWN_FOOD"
+      ]
+    },
+    {
+      "id": "TRADITION_CHARISMATIC_LEADER",
+      "name": "Charismatic Leader",
+      "description": "+2[icon:YIELD_CULTURE] Culture on the Palace.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CHARISMATIC_LEADER_MOD_PALACE_CULTURE"
+      ]
+    },
+    {
+      "id": "TRADITION_CHARTERS",
+      "name": "Charters",
+      "description": "+1 [icon:YIELD_GOLD] Gold Adjacency for [icon:YIELD_GOLD] Gold Buildings.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CHARTERS_MOD_GOLD_ADJACENCY"
+      ]
+    },
+    {
+      "id": "TRADITION_CHIVALRY",
+      "name": "Chivalry",
+      "description": "+30%[icon:YIELD_PRODUCTION] Production towards training Cavalry Units.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CHIVALRY_MOD_MOUNTED_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_CITY_GUARD",
+      "name": "City Guard",
+      "description": "+3 [icon:NAR_REW_COMBAT] Combat Strength for [icon:CITY_FORTIFIED] Fortified Districts.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CITY_GUARD_MOD_FORTIFIED_COMBAT_STRENGTH"
+      ]
+    },
+    {
+      "id": "TRADITION_CIVIL_ENGINEERING",
+      "name": "Civil Engineering",
+      "description": "+30%[icon:YIELD_PRODUCTION] Production towards Overbuilding.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CIVIL_ENGINEERING_MOD_OVERBUILDING_PRODUCTION_RATE"
+      ]
+    },
+    {
+      "id": "TRADITION_CLAN_NETWORKS",
+      "name": "Clan Networks",
+      "description": "+20% [icon:GROWTH_RATE] Growth Rate in [icon:YIELD_TOWNS] Towns with a [icon:PROJECT_GROWTH] Growing Focus.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CLAN_NETWORKS_MOD_CITY_TOWN_FOOD"
+      ]
+    },
+    {
+      "id": "TRADITION_COINAGE",
+      "name": "Coinage",
+      "description": "+1 [icon:YIELD_GOLD] Gold for each imported [icon:RADIAL_RESOURCES] Resource.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "COINAGE_MOD_IMPORTED_RESOURCE_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_COLLECTIVIZATION",
+      "name": "Collectivization",
+      "description": "[icon:YIELD_TOWNS] Towns gain [icon:YIELD_FOOD] Food equal to your [icon:ATTRIBUTE_EXPANSIONIST] Expansionist Attribute. -5 [icon:YIELD_HAPPINESS] Happiness in [icon:YIELD_CITIES] Cities.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "COLLECTIVIZATION_MOD_TOWN_FOOD_EQUAL_TO_EXPANSIONIST_ATTRIBUTE",
+        "COLLECTIVIZATION_MOD_DECREASE_CITY_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_COLONIAL_SURPLUS",
+      "name": "Colonial Surplus",
+      "description": "+1 [icon:YIELD_PRODUCTION] Production Adjacency for [icon:YIELD_PRODUCTION] Production Buildings.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "COLONIAL_SURPLUS_MOD_PRODUCTION_ADJACENCY"
+      ]
+    },
+    {
+      "id": "TRADITION_COMMISSIONED_OFFICERS",
+      "name": "Commissioned Officers",
+      "description": "+30% Commander Experience. +1 [icon:Action_Move] Movement for Fleets and Armies.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "COMMISSIONED_OFFICERS_MOD_COMMANDER_MOVEMENT",
+        "COMMISSIONED_OFFICERS_MOD_COMMANDER_XP"
+      ]
+    },
+    {
+      "id": "TRADITION_COMMODITIES",
+      "name": "Commodities",
+      "description": "+1 [icon:RADIAL_RESOURCES] Resource Capacity in [icon:YIELD_CITIES] Cities.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "COMMODITIES_MOD_RESOURCE_CAP"
+      ]
+    },
+    {
+      "id": "TRADITION_COMMUNE",
+      "name": "Commune",
+      "description": "+20% [icon:YIELD_PRODUCTION] Production towards Overbuilding. +3 [icon:NAR_REW_COMBAT] Combat Strength for [icon:CITY_FORTIFIED] Fortified Districts.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "COMMUNE_MOD_FORTIFIED_DISTRICT_COMBAT_STRENGTH",
+        "COMMUNE_MOD_OVERBUILDING_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_CONSCRIPTION",
+      "name": "Conscription",
+      "description": "-1 [icon:YIELD_GOLD] Gold Maintenance for Units.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CONSCRIPTION_MOD_UNIT_MAINTENANCE"
+      ]
+    },
+    {
+      "id": "TRADITION_CONSTITUTION",
+      "name": "Constitution",
+      "description": "+25% [icon:YIELD_FOOD] Food and [icon:YIELD_HAPPINESS] Happiness towards maintaining [icon:SPECIALIST] Specialists.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CONSTITUTION_MOD_WORKER_MAINTENANCE"
+      ]
+    },
+    {
+      "id": "TRADITION_CON_KENH",
+      "name": "Con K\u00eanh",
+      "description": "+2 [icon:YIELD_CULTURE] Culture on [icon:YIELD_FOOD] Food Buildings and +2 [icon:YIELD_FOOD] Food on [icon:YIELD_CULTURE] Culture Buildings.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_DAI_VIET",
+      "is_crisis": false,
+      "modifiers": [
+        "CON_KENH_MOD_FOOD_BUILDING_CULTURE",
+        "CON_KENH_MOD_CULTURE_BUILDING_FOOD"
+      ]
+    },
+    {
+      "id": "TRADITION_CULTURAL_IMPERIALISM",
+      "name": "Cultural Imperialism",
+      "description": "+6 [icon:YIELD_CULTURE] Culture and [icon:YIELD_GOLD] Gold for every [icon:CITYSTATE] City-State you are Suzerain of.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "CULTURAL_IMPERIALISM_MOD_SUZERAINS_CULTURE",
+        "CULTURAL_IMPERIALISM_MOD_SUZERAINS_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_DEFENSE_OF_THE_MOTHERLAND",
+      "name": "Defense of the Motherland",
+      "description": "+3 [icon:NAR_REW_COMBAT] Combat Strength for all Land Units in your own territory.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DEFENSE_OF_THE_MOTHERLAND_COMBAT_STRENGTH_IN_TERRITORY"
+      ]
+    },
+    {
+      "id": "TRADITION_DEMAGOGY",
+      "name": "Demagogy",
+      "description": "Gain [icon:YIELD_HAPPINESS] Happiness on the Palace equal to your [icon:ATTRIBUTE_CULTURAL] Cultural Attribute.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DEMAGOGY_MOD_PALACE_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_DE_FACTO",
+      "name": "De Facto",
+      "description": "+3 [icon:NAR_REW_COMBAT] Combat Strength for all Units in Distant Lands. Units gain +5 [icon:Action_Heal] Healing.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DE_FACTO_MOD_HEALING",
+        "DE_FACTO_MOD_UNIT_COMBAT_STRENGTH_DISTANT_LANDS"
+      ]
+    },
+    {
+      "id": "TRADITION_DE_JURE",
+      "name": "De Jure",
+      "description": "+3 [icon:NAR_REW_COMBAT] Combat Strength for all Units in Homelands.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DE_JURE_MOD_COMBAT_STRENGTH_HOMELANDS"
+      ]
+    },
+    {
+      "id": "TRADITION_DIRIGISME",
+      "name": "Dirigisme",
+      "description": "+4 [icon:YIELD_GOLD] Gold from [icon:SPECIALIST] Specialists. -3 [icon:YIELD_HAPPINESS] Happiness in [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DIRIGISME_MOD_GOLD_FROM_SPECAILIST_PER_ECON_ATTRIBUTES",
+        "DIRIGISME_MOD_DECREASE_TOWN_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_DIVINE_RIGHT",
+      "name": "Divine Right",
+      "description": "+10[icon:YIELD_HAPPINESS] Happiness and +4[icon:YIELD_DIPLOMACY] Influence on the Palace.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DIVINE_RIGHT_MOD_PALACE_DIPLOMACY",
+        "DIVINE_RIGHT_MOD_PALACE_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_DRAFT",
+      "name": "Draft",
+      "description": "+25%[icon:YIELD_GOLD] Gold towards purchasing Units and -1[icon:YIELD_GOLD] Gold maintenance for Units.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DRAFT_MOD_UNIT_PURCHASE_COST",
+        "DRAFT_MOD_UNIT_GOLD_MAINTENANCE"
+      ]
+    },
+    {
+      "id": "TRADITION_DRAMA_AND_POETRY",
+      "name": "Drama and Poetry",
+      "description": "+2 [icon:YIELD_CULTURE] Culture on [icon:YIELD_CULTURE] Culture Buildings. +20% [icon:YIELD_PRODUCTION] Production towards constructing [icon:YIELD_CULTURE] Culture Buildings.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DRAMA_AND_POETRY_MOD_CULTURE_BUILDING_RATE",
+        "DRAMA_AND_POETRY_MOD_CULTURE_BUILDING_YIELD"
+      ]
+    },
+    {
+      "id": "TRADITION_DREKAHOFUD",
+      "name": "Drekah\u00f6fu\u00f0",
+      "description": "Training a Naval Unit grants [icon:YIELD_CULTURE] Culture equal to 25% of the Unit's base [icon:YIELD_Production] Production cost.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_ICELAND",
+      "is_crisis": false,
+      "modifiers": [
+        "DREKAHOFUD_NAVAL_UNIT_CULTURE"
+      ]
+    },
+    {
+      "id": "TRADITION_DRILLS",
+      "name": "Drills",
+      "description": "+30%[icon:YIELD_PRODUCTION] Production towards training Infantry and Ranged Units.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "DRILLS_MOD_RANGED_PRODUCTION",
+        "DRILLS_MOD_INFANTRY_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_DROTTKVAETT",
+      "name": "Dr\u00f3ttkv\u00e6tt",
+      "description": "[icon:Action_Pillage] Coastal Raiding grants [icon:YIELD_CULTURE] Culture equal to 50% the [icon:YIELD_GOLD] Gold gained.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_ICELAND",
+      "is_crisis": false,
+      "modifiers": [
+        "MOD_DROTTKVAETT_COASTAL_RAID_CULTURE"
+      ]
+    },
+    {
+      "id": "TRADITION_DURANI",
+      "name": "D\u016br\u0101ni",
+      "description": "+1 [icon:YIELD_SCIENCE] Science on [icon:Action_Fortify] Fortification Buildings.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_ASSYRIA",
+      "is_crisis": false,
+      "modifiers": [
+        "DURANI_MOD_SCIENCE_FORTIFICATION"
+      ]
+    },
+    {
+      "id": "TRADITION_EAST_INDIA_COMPANY",
+      "name": "East India Company",
+      "description": "+5 [icon:YIELD_GOLD] Gold in [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_GREAT_BRITAIN",
+      "is_crisis": false,
+      "modifiers": [
+        "EAST_INDIA_COMPANY_GOLD_TOWN_BUILDINGS"
+      ]
+    },
+    {
+      "id": "TRADITION_ENLIGHTENMENT",
+      "name": "Enlightenment",
+      "description": "+1 [icon:YIELD_SCIENCE] Science Adjacency for [icon:YIELD_SCIENCE] Science Buildings.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "ENLIGHTENMENT_MOD_SCIENCE_ADJACENCY"
+      ]
+    },
+    {
+      "id": "TRADITION_ERKAN_I_HARBIYE_MEKTEBI",
+      "name": "Erk\u00e2n-\u0131 Harbiye Mektebi",
+      "description": "Land Military Units fight as though they were at full [icon:NAR_REW_COMBAT] Combat Strength even when damaged.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_OTTOMANS",
+      "is_crisis": false,
+      "modifiers": [
+        "ERKAN_I_HARBIYE_MEKTEBI_MOD_UNIT_NO_REDUCTION_DAMAGE"
+      ]
+    },
+    {
+      "id": "TRADITION_ETHICS",
+      "name": "Ethics",
+      "description": "+1 [icon:YIELD_CULTURE] Culture from [icon:SPECIALIST] Specialists.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "ETHICS_MOD_WORKER_CULTURE"
+      ]
+    },
+    {
+      "id": "TRADITION_EVANGELISM",
+      "name": "Evangelism",
+      "description": "+1 [icon:Action_Move] Movement for Civilian Units. +1 charge for [icon:UNIT_MISSIONARY] Missionaries.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "EVANGELISM_MOD_CIVILIAN_MOVEMENT",
+        "EVANGELISM_MOD_SPREAD_CHARGES"
+      ]
+    },
+    {
+      "id": "TRADITION_FALSE_RETREAT",
+      "name": "False Retreat",
+      "description": "[icon:Action_Pillage] Pillaging Improvements grants [icon:YIELD_FOOD] Food in all [icon:YIELD_TOWNS] Towns equal to 50% of the yield or [icon:Action_Heal] HP gained. -3 [icon:NAR_REW_COMBAT] Combat Strength for all Military Units against [icon:CITY_FORTIFIED] Fortified Districts.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_BULGARIA",
+      "is_crisis": false,
+      "modifiers": [
+        "FALSE_RETREAT_FOOD_PILLAGE_IMPROVEMENT",
+        "FALSE_RETREAT_COMBAT_MODIFIER"
+      ]
+    },
+    {
+      "id": "TRADITION_FIRESIDE_CHATS",
+      "name": "Fireside Chats",
+      "description": "+4 [icon:YIELD_HAPPINESS] Happiness from [icon:SPECIALIST] Specialists. -3 [icon:YIELD_GOLD] Gold in [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "FIRESIDE_CHATS_MOD_HAPPINESS_PER_POL_ATTRIBUTES",
+        "FIRESIDE_CHATS_MOD_DECREASE_GOLD_IN_TOWNS"
+      ]
+    },
+    {
+      "id": "TRADITION_FREE_PRESS",
+      "name": "Free Press",
+      "description": "[icon:YIELD_TOWNS] Towns gain [icon:YIELD_CULTURE] Culture equal to your [icon:ATTRIBUTE_CULTURAL] Cultural Attribute. -5 [icon:YIELD_SCIENCE] Science in [icon:YIELD_CITIES] Cities.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "FREE_PRESS_MOD_TOWN_CULTURE_CULTURAL_ATTRIBUTE",
+        "FREE_PRESS_MOD_DECREASE_SCIENCE_IN_CITIES"
+      ]
+    },
+    {
+      "id": "TRADITION_FREE_SPEECH",
+      "name": "Free Speech",
+      "description": "+50% [icon:YIELD_FOOD] Food and [icon:YIELD_HAPPINESS] Happiness towards maintaining [icon:SPECIALIST] Specialists.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "FREE_SPEECH_MOD_SPECIALIST_HAPPINESS_MAINTENANCE"
+      ]
+    },
+    {
+      "id": "TRADITION_GAULOS",
+      "name": "Gaulos",
+      "description": "+25% [icon:YIELD_GOLD] Gold towards purchasing [icon:CITY_BUILDING_LIST] Buildings on Coast or Navigable Rivers.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_CARTHAGE",
+      "is_crisis": false,
+      "modifiers": [
+        "GAULOS_MOD_PURCHASE_RATE_BUILDINGS"
+      ]
+    },
+    {
+      "id": "TRADITION_GIRRU",
+      "name": "Girru",
+      "description": "+3 [icon:YIELD_PRODUCTION] Production and [icon:YIELD_FOOD] Food in Settlements not founded by you.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_ASSYRIA",
+      "is_crisis": false,
+      "modifiers": [
+        "GIRRU_MOD_CONQUERED_FOOD_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_HEQIN",
+      "name": "Heqin",
+      "description": "+5 [icon:YIELD_CULTURE] Culture per [icon:PLAYER_RELATIONSHIP_ALLIANCE] Alliance.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "HEQIN_MOD_CULTURE_ALLIANCES"
+      ]
+    },
+    {
+      "id": "TRADITION_HIMAL",
+      "name": "Him\u0101l",
+      "description": " +4 [icon:YIELD_CULTURE] Culture on [icon:CITY_UNIMPROVED] Mountain tiles in your [icon:NOTIFICATION_SELECT_CAPITAL] Capital, +2 [icon:YIELD_CULTURE] Culture on [icon:CITY_UNIMPROVED] Mountain tiles in other Settlements.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_NEPAL",
+      "is_crisis": false,
+      "modifiers": [
+        "HIMAL_MOD_MOUNTAIN_CULTURE"
+      ]
+    },
+    {
+      "id": "TRADITION_HONOR",
+      "name": "Honor",
+      "description": "+3 [icon:NAR_REW_COMBAT] Combat Strength against [icon:INDEPENDENT_POWER] Independent Powers.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "HONOR_MOD_INDEPENDENT_COMBAT"
+      ]
+    },
+    {
+      "id": "TRADITION_HOSPITALITY",
+      "name": "Hospitality",
+      "description": "+3 [icon:YIELD_CULTURE] Culture for every [icon:CITYSTATE] City-State you are Suzerain of.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "HOSPITALITY_MOD_SUZERAINS"
+      ]
+    },
+    {
+      "id": "TRADITION_HUMANISM",
+      "name": "Humanism",
+      "description": "+2 [icon:YIELD_CULTURE] Culture from [icon:SPECIALIST] Specialists, but +50% Specialist [icon:YIELD_HAPPINESS] Happiness Maintenance.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "HUMANISM_MOD_CULTURE_PER_SPECIALIST",
+        "HUMANISM_MOD_HAPPINESS_MAINTENANCE_PER_SPECIALIST"
+      ]
+    },
+    {
+      "id": "TRADITION_ICONOLATRY",
+      "name": "Iconolatry",
+      "description": "+1 [icon:YIELD_HAPPINESS] Happiness and [icon:YIELD_GOLD] Gold from [icon:NAR_REW_GREATWORK] Great Works.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_BULGARIA",
+      "is_crisis": false,
+      "modifiers": [
+        "ICONOLATRY_GREAT_WORKS_HAPPINESS",
+        "ICONOLATRY_GREAT_WORKS_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_INDENTURE",
+      "name": "Indenture",
+      "description": "+1 [icon:YIELD_FOOD] Food Adjacency for [icon:YIELD_FOOD] Food Buildings.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "INDENTURE_MOD_FOOD_ADJACENCY"
+      ]
+    },
+    {
+      "id": "TRADITION_LAISSEZ_FAIRE",
+      "name": "Laissez-Faire",
+      "description": "+2 [icon:YIELD_GOLD] Gold and +1 [icon:YIELD_HAPPINESS] Happiness for every imported [icon:RADIAL_RESOURCES] Resource.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "LAISSEZ_FAIRE_MOD_IMPORTED_RESOURCE_GOLD",
+        "LAISSEZ_FAIRE_MOD_IMPORTED_RESOURCE_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_LAND_HERITAGE",
+      "name": "Land Heritage",
+      "description": "+2 [icon:YIELD_HAPPINESS] Happiness on [icon:CITY_UNIMPROVED] Mountains. +6[icon:YIELD_CULTURE] Culture on [icon:NOTIFICATION_DISCOVER_NATURAL_WONDER] Natural Wonders.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "LAND_HERTIAGE_MOD_MOUNTAIN_HAPPINESS",
+        "LAND_HERTIAGE_MOD_NATURAL_WONDER_CULTURE"
+      ]
+    },
+    {
+      "id": "TRADITION_LEVIES",
+      "name": "Levies",
+      "description": "+25% [icon:YIELD_GOLD] Gold towards purchasing Military Units. -1 [icon:YIELD_GOLD] Gold Maintenance for Units.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "LEVIES_MOD_REDUCED_MAINTENANCE",
+        "LEVIES_MOD_UNIT_PURCHASE"
+      ]
+    },
+    {
+      "id": "TRADITION_LITERATURE",
+      "name": "Literature",
+      "description": "+2 [icon:YIELD_SCIENCE] Science on [icon:YIELD_SCIENCE] Science Buildings. +20% [icon:YIELD_PRODUCTION] Production towards constructing [icon:YIELD_SCIENCE] Science Buildings.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "LITERATURE_MOD_SCIENCE_BUILDING_RATE",
+        "LITERATURE_MOD_SCIENCE_BUILDING_YIELD"
+      ]
+    },
+    {
+      "id": "TRADITION_LIVING_STANDARDS",
+      "name": "Living Standards",
+      "description": "+25% [icon:YIELD_GOLD] Gold and [icon:YIELD_HAPPINESS] Happiness towards maintaining [icon:CITY_BUILDING_LIST] Buildings.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "LIVING_STANDARDS_MOD_BUILDING_MAINTENANCE"
+      ]
+    },
+    {
+      "id": "TRADITION_LYFSTEINN",
+      "name": "Lyfsteinn ",
+      "description": "+10 [icon:Action_Heal] Healing for Naval Units outside friendly territory.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_ICELAND",
+      "is_crisis": false,
+      "modifiers": [
+        "MOD_LYFSTEINN_HEAL_NAVAL"
+      ]
+    },
+    {
+      "id": "TRADITION_MAITRI_SANADHI",
+      "name": "Maitri Sanadhi",
+      "description": "+50% [icon:YIELD_DIPLOMACY] Influence towards initiating [icon:ENDEAVOR] Endeavors if you have the least amount of Settlements, +20% otherwise.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_NEPAL",
+      "is_crisis": false,
+      "modifiers": [
+        "MAITRI_SANADHI_MOD_ENDEAVOR_DISCOUNT",
+        "MAITRI_SANADHI_MOD_ENDEAVOR_DISCOUNT_FEWEST_SETTLEMENTS"
+      ]
+    },
+    {
+      "id": "TRADITION_MARITIME_LAW",
+      "name": "Maritime Law",
+      "description": "+30%[icon:YIELD_PRODUCTION] Production towards training Naval Units.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "MARITIME_LAW_MOD_NAVAL_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_MARTIAL_LAW",
+      "name": "Martial Law",
+      "description": "[icon:YIELD_TOWNS] Towns gain [icon:YIELD_PRODUCTION] Production equal to your [icon:ATTRIBUTE_MILITARISTIC] Militaristic Attribute. -5 [icon:YIELD_HAPPINESS] Happiness in [icon:YIELD_CITIES] Cities.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "MARITAL_LAW_MOD_TOWN_PRODUCTION_PER_MILITARY_ATTRIBUTE",
+        "MARTIAL_LAW_MOD_DECREASE_HAPPINESS_IN_CITIES"
+      ]
+    },
+    {
+      "id": "TRADITION_MATERIEL",
+      "name": "Materiel",
+      "description": "+10 [icon:Action_Heal] Healing for Units. +1 [icon:Action_Move] Movement for Armies and Fleets.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "MATERIEL_MOD_UNIT_HEALING_RATE",
+        "MATERIEL_MOD_ARMY_MOVEMENT"
+      ]
+    },
+    {
+      "id": "TRADITION_MEDICINE",
+      "name": "Medicine",
+      "description": "Units gain +5 [icon:Action_Heal] Healing.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "MEDICINE_MOD_UNIT_HEAL"
+      ]
+    },
+    {
+      "id": "TRADITION_MERRY_LIFE_AND_A_SHORT_ONE",
+      "name": "Merry Life and a Short One",
+      "description": "When you defeat a Support Unit, gain [icon:YIELD_GOLD] Gold equal to the Unit\u2019s [icon:YIELD_PRODUCTION] Production cost. When you defeat a Naval Unit, gain [icon:YIELD_GOLD] Gold equal to 25% of the Unit\u2019s [icon:YIELD_PRODUCTION] Production cost.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_PIRATE_REPUBLIC",
+      "is_crisis": false,
+      "modifiers": [
+        "MERRY_LIFE_AND_A_SHORT_ONE_SUPPORT_UNIT_GOLD",
+        "MERRY_LIFE_AND_A_SHORT_ONE_NAVAL_UNIT_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_METROPOLE",
+      "name": "Metropole",
+      "description": "+1 [icon:RADIAL_RESOURCES] Resource Capacity in all [icon:YIELD_CITIES] Cities in Homelands. +10 Range for all [icon:TRADE_ROUTE] Trade Routes.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "METROPOLE_MOD_RESOURCE_CAPACITY",
+        "METROPOLE_MOD_TRADE_ROUTE_RANGE_LAND",
+        "METROPOLE_MOD_TRADE_ROUTE_RANGE_SEA"
+      ]
+    },
+    {
+      "id": "TRADITION_MIHISTU",
+      "name": "Mi\u1e2bi\u1e63tu",
+      "description": "+25% [icon:YIELD_PRODUCTION] Production towards constructing [icon:CITY_BUILDING_LIST] Buildings and [icon:WONDER] Wonders with a [icon:NAR_REW_GREATWORK] Great Work slot.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_ASSYRIA",
+      "is_crisis": false,
+      "modifiers": [
+        "MIHISTU_MOD_GREATWORK_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_MILITARY_INDUSTRIAL_COMPLEX",
+      "name": "Military-Industrial Complex",
+      "description": "+50% [icon:YIELD_PRODUCTION] Production towards training all Military Units, but +1 [icon:YIELD_GOLD] Gold Maintenance for all Units.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "MILITARY_INDUSTRIAL_COMPLEX_MOD_UNIT_PRODUCTION_RATE",
+        "MILITARY_INDUSTRIAL_COMPLEX_MOD_UNIT_GOLD_MAINTENANCE"
+      ]
+    },
+    {
+      "id": "TRADITION_MONOPOLIES",
+      "name": "Monopolies",
+      "description": "+5 [icon:YIELD_GOLD] Gold and +1 [icon:RADIAL_RESOURCES] Resource Capacity in Settlements with a Factory.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "MONOPOLIES_MOD_RESOURCE_GOLD",
+        "MONOPOLIES_RESOURCE_CAP"
+      ]
+    },
+    {
+      "id": "TRADITION_NAUKOGRAD",
+      "name": "Naukograd",
+      "description": "[icon:YIELD_TOWNS] Towns gain [icon:YIELD_SCIENCE] Science equal to your [icon:ATTRIBUTE_SCIENTIFIC] Scientific Attribute. -5 [icon:YIELD_CULTURE] Culture in [icon:YIELD_CITIES] Cities.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "NAUKOGRAD_MOD_TOWN_SCIENCE_PER_SCIENCE_ATTRIBUTE",
+        "NAUKOGRAD_MOD_DECREASE_CITY_CULTURE"
+      ]
+    },
+    {
+      "id": "TRADITION_NEW_DEAL",
+      "name": "New Deal",
+      "description": "+30% [icon:YIELD_PRODUCTION] Production towards constructing [icon:WONDER] Wonders.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "NEW_DEAL_MOD_WONDER_PRODUCTION_RATE"
+      ]
+    },
+    {
+      "id": "TRADITION_NGATU",
+      "name": "Ngatu",
+      "description": "+1 [icon:YIELD_CULTURE] Culture on [icon:YIELD_WAREHOUSE] Warehouse Buildings.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_TONGA",
+      "is_crisis": false,
+      "modifiers": [
+        "NGATU_MOD_CULTURE_WAREHOUSE_BUILDINGS"
+      ]
+    },
+    {
+      "id": "TRADITION_NO_ETERNAL_ALLIES",
+      "name": "No Eternal Allies",
+      "description": "+10% [icon:YIELD_FOOD] Food and [icon:YIELD_GOLD] Gold in [icon:YIELD_TOWNS] Towns, but -5% [icon:YIELD_GOLD] Gold in the [icon:NOTIFICATION_SELECT_CAPITAL] Capital for every [icon:PLAYER_RELATIONSHIP_ALLIANCE] Alliance.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_GREAT_BRITAIN",
+      "is_crisis": false,
+      "modifiers": [
+        "NO_ETERNAL_ALLIES_POSITIVE_GOLD",
+        "NO_ETERNAL_ALLIES_NEGATIVE_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_ORATORY",
+      "name": "Oratory",
+      "description": "+2[icon:YIELD_DIPLOMACY] Influence per turn.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "ORATORY_MOD_DIPLOMACY_YIELD"
+      ]
+    },
+    {
+      "id": "TRADITION_OSMANLI_BAROK",
+      "name": "Osmanl\u0131 Barok",
+      "description": "+3[icon:YIELD_HAPPINESS] Happiness from displayed Great Works.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_OTTOMANS",
+      "is_crisis": false,
+      "modifiers": [
+        "OSMANLI_BAROK_GREAT_WORKS_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_PATRONAGE",
+      "name": "Patronage",
+      "description": "+1 [icon:YIELD_CULTURE] Culture Adjacency for [icon:YIELD_CULTURE] Culture Buildings.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PATRONAGE_MOD_CULTURE_ADJACENCY"
+      ]
+    },
+    {
+      "id": "TRADITION_PEOPLES_ARMY",
+      "name": "People's Army",
+      "description": "+25%[icon:YIELD_PRODUCTION] Production towards training Land Military Units, but +1[icon:YIELD_GOLD] Gold Maintenance for Land Military Units.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PEOPLES_ARMY_MOD_UNIT_PRODUCTION_RATE",
+        "PEOPLES_ARMY_MOD_UNIT_MAINTENANCE"
+      ]
+    },
+    {
+      "id": "TRADITION_POLICE_STATE",
+      "name": "Police State",
+      "description": "+8 [icon:YIELD_HAPPINESS] Happiness in [icon:YIELD_CITIES] Cities while at [icon:WAR] War.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "POLICE_STATE_MOD_HAPPINESS_AT_WAR_IN_CITIES"
+      ]
+    },
+    {
+      "id": "TRADITION_PRESERVATION_SOCIETIES",
+      "name": "Preservation Societies",
+      "description": "+3 [icon:YIELD_SCIENCE] Science from displayed [icon:NAR_REW_GREATWORK] Great Works.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PRESERVATION_SOCIETIES_MOD_SCIENCE_PER_EPIC_GREAT_WORK"
+      ]
+    },
+    {
+      "id": "TRADITION_PRESS_GANGS",
+      "name": "Press Gangs",
+      "description": "+50%[icon:YIELD_PRODUCTION] Production towards Naval Units for every [icon:UNIT_FLEET_COMMANDER] Fleet Commander you have.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_PIRATE_REPUBLIC",
+      "is_crisis": false,
+      "modifiers": [
+        "PRESS_GANGS_PRODUCTION_NAVAL_UNITS_FOR_EACH_FLEET_COMMANDER"
+      ]
+    },
+    {
+      "id": "TRADITION_PRIESTHOOD",
+      "name": "Priesthood",
+      "description": "+2[icon:YIELD_GOLD] Gold in all Settlements.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PRIESTHOOD_MOD_CITY_TOWN_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_PROCEEDINGS",
+      "name": "Proceedings",
+      "description": "+4 [icon:YIELD_CULTURE] Culture and [icon:YIELD_SCIENCE] Science in [icon:YIELD_CITIES] Cities with both a [icon:NAR_REW_GREATWORK] Great Work and a [icon:RADIAL_RESOURCES] Resource slotted.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_GREAT_BRITAIN",
+      "is_crisis": false,
+      "modifiers": [
+        "PROCEEDINGS_RESOURCE_AND_GREATWORK_CITY_CULTURE_AND_SCIENCE"
+      ]
+    },
+    {
+      "id": "TRADITION_PRODUCTIVE_FORCES_DETERMINISM",
+      "name": "Productive Forces Determinism",
+      "description": "+3 [icon:YIELD_SCIENCE] Science from [icon:SPECIALIST] Specialists. -3 [icon:YIELD_GOLD] Gold in [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PRODUCTIVE_FORCES_DETERMINISM_MOD_SCIENCE_PER_SCIENTIFIC_ATTRIBUTES",
+        "PRODUCTIVE_FORCES_DETERMINISM_MOD_DECREASE_TOWN_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_PROJECTION_OF_FORCE",
+      "name": "Projection of Force",
+      "description": "+50%[icon:YIELD_PRODUCTION] Production towards training Naval Units, but +1[icon:YIELD_GOLD] Gold Maintenance for Naval Units.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PROJECTION_OF_FORCE_MOD_NAVAL_PRODUCTION",
+        "PROJECTION_OF_FORCE_MOD_NAVAL_MAINTENANCE_COST"
+      ]
+    },
+    {
+      "id": "TRADITION_PROLETARIAT",
+      "name": "Proletariat",
+      "description": "+4 [icon:YIELD_FOOD] Food from [icon:SPECIALIST] Specialists. -3 [icon:YIELD_HAPPINESS] Happiness in [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PROLETARIAT_MOD_SPECIALIST_FOOD_PER_EXPANSIONIST_ATTRIBUTE",
+        "PROLETARIAT_MOD_TOWN_HAPPINESS_PENALTY"
+      ]
+    },
+    {
+      "id": "TRADITION_PROPAGANDA",
+      "name": "Propaganda",
+      "description": "[icon:YIELD_TOWNS] Towns gain [icon:YIELD_GOLD] Gold equal to your [icon:ATTRIBUTE_ECONOMIC] Economic Attribute. -5 [icon:YIELD_CULTURE] Culture in [icon:YIELD_CITIES] Cities.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PROPAGANDA_MOD_GOLD_EQUAL_TO_ECON_ATTRIBUTE",
+        "PROPAGANDA_MOD_CITY_CULTURE_PENALTY"
+      ]
+    },
+    {
+      "id": "TRADITION_PUBLIC_WORKS",
+      "name": "Public Works",
+      "description": "+30% [icon:YIELD_PRODUCTION] Production towards completing [icon:DEFAULT_PROJECT] Projects.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "PUBLIC_WORKS_MOD_PROJECT_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_QUINQUEREME",
+      "name": "Quinquereme",
+      "description": "+25% [icon:YIELD_GOLD] Gold towards purchasing Naval Units. -1 [icon:YIELD_GOLD] Gold Maintenance for Naval Units.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_CARTHAGE",
+      "is_crisis": false,
+      "modifiers": [
+        "QUINQUEREME_MOD_NAVAL_MAINTENANCE",
+        "QUINQUEREME_MOD_PURCHASE_RATE_UNITS"
+      ]
+    },
+    {
+      "id": "TRADITION_QULLARAQASI",
+      "name": "Qullar\u0101q\u0101si",
+      "description": "+15 [icon:YIELD_HAPPINESS] Happiness in Settlements for every [icon:UNIT_ARMY_COMMANDER] Commander stationed on a [icon:CITY_URBAN] District there.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_QAJAR",
+      "is_crisis": false,
+      "modifiers": [
+        "QULLARAQASI_COMMANDER_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_RATIONALISM",
+      "name": "Rationalism",
+      "description": "+15% [icon:YIELD_GOLD] Gold and [icon:YIELD_SCIENCE] Science in your own [icon:YIELD_CITIES] Cities that are converted to your [icon:NAR_REW_RELIGION] Religion.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "RATIONALISM_MOD_CITY_FOLLOWS_RELIGION_GOLD",
+        "RATIONALISM_MOD_CITY_FOLLOWS_RELIGION_SCIENCE"
+      ]
+    },
+    {
+      "id": "TRADITION_REGULARS",
+      "name": "Regulars",
+      "description": "+30%[icon:YIELD_PRODUCTION] Production towards training Infantry and Ranged Units.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "REGULARS_MOD_MELEE_PRODUCTION",
+        "REGULARS_MOD_RANGED_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_REIDI_GUDANNA",
+      "name": "Rei\u00f0i Gu\u00f0anna",
+      "description": "All [icon:CITY_BUILDING_LIST] Buildings gain a +1 [icon:YIELD_CULTURE] Cultural and [icon:YIELD_PRODUCTION] Production Adjacency from Volcanoes and [icon:NOTIFICATION_DISCOVER_NATURAL_WONDER] Natural Wonders. (Natural Wonder Volcanoes do not count twice) +25% [icon:YIELD_GOLD] Gold towards purchasing [icon:ACTION_IMPROVE] Repairs.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_ICELAND",
+      "is_crisis": false,
+      "modifiers": [
+        "REIDI_GUDANNA_MOD_VOLCANO_ADJACENCY",
+        "REIDI_GUDANNA_MOD_REPAIR_DISCOUNT"
+      ]
+    },
+    {
+      "id": "TRADITION_RELIGIOUS_ORDERS",
+      "name": "Religious Orders",
+      "description": "+15% [icon:YIELD_CULTURE] Culture and [icon:YIELD_HAPPINESS] Happiness in your own [icon:YIELD_CITIES] Cities that are converted to your [icon:NAR_REW_RELIGION] Religion.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "RELIGIOUS_ORDERS_MOD_CITY_FOLLOWS_RELIGION_CULTURE",
+        "RELIGIOUS_ORDERS_MOD_CITY_FOLLOWS_RELIGION_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_RENAISSANCE",
+      "name": "Renaissance",
+      "description": "+10% [icon:YIELD_PRODUCTION] Production towards constructing [icon:WONDER] Wonders. +2 [icon:YIELD_CULTURE] Culture on displayed [icon:NAR_REW_GREATWORK] Great Works.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "RENAISSANCE_MOD_GREAT_WORK_CULTURE",
+        "RENAISSANCE_MOD_WONDER_PRODUCTION_RATE"
+      ]
+    },
+    {
+      "id": "TRADITION_RITES_AND_RITUALS",
+      "name": "Rites and Rituals",
+      "description": "+2[icon:YIELD_HAPPINESS] Happiness in all Settlements.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "RITES_AND_RITUALS_MOD_CITY_TOWN_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_RUONG_LANG_XA",
+      "name": "Ru\u1ed9ng L\u00e0ng X\u00e3",
+      "description": "+10% [icon:GROWTH_RATE] Growth Rate in [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_DAI_VIET",
+      "is_crisis": false,
+      "modifiers": [
+        "RUONG_LANG_XA_MOD_TOWN_GROWTH"
+      ]
+    },
+    {
+      "id": "TRADITION_SCHOLARS",
+      "name": "Scholars",
+      "description": "+1 [icon:YIELD_SCIENCE] Science from [icon:SPECIALIST] Specialists.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "SCHOLARS_MOD_WORKER_SCIENCE"
+      ]
+    },
+    {
+      "id": "TRADITION_SCORCHED_EARTH",
+      "name": "Scorched Earth",
+      "description": "+3 [icon:NAR_REW_COMBAT] Combat Strength for all Units when attacking. +25% yields and HP from [icon:Action_Pillage] Pillaging.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "SCORCHED_EARTH_MOD_PILLAGING_YIELDS_BUILDINGS",
+        "SCORCHED_EARTH_MOD_PILLAGING_YIELDS_IMPROVEMENTS",
+        "SCORCHED_EARTH_MOD_COMBAT_STRENGTH"
+      ]
+    },
+    {
+      "id": "TRADITION_SEDEF_KAKMA",
+      "name": "Sedef Kakma",
+      "description": "+3 [icon:YIELD_CULTURE] Culture on [icon:CITY_UNIQUE_QUARTER] Quarters with at least 1 [icon:YIELD_HAPPINESS] Happiness Building. +3 [icon:YIELD_HAPPINESS] Happiness on [icon:CITY_UNIQUE_QUARTER] Quarters with at least 1 [icon:YIELD_CULTURE] Culture Building.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_OTTOMANS",
+      "is_crisis": false,
+      "modifiers": [
+        "SEDEF_KAKMA_MOD_CULTURE_HAPPINESS_QUARTERS"
+      ]
+    },
+    {
+      "id": "TRADITION_SIEGE_TRAIN",
+      "name": "Siege Train",
+      "description": "When a unit destroys a [icon:CITY_FORTIFIED] Fortified District's defenses, all other Land Siege and Infantry Units have their [icon:Action_Move] Movement restored.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_OTTOMANS",
+      "is_crisis": false,
+      "modifiers": [
+        "SIEGE_TRAIN_RESTORE_MOVEMENT"
+      ]
+    },
+    {
+      "id": "TRADITION_SOCIAL_SCIENCE",
+      "name": "Social Science",
+      "description": "+2 [icon:YIELD_SCIENCE] Science from [icon:SPECIALIST] Specialists, but +50% Specialist [icon:YIELD_FOOD] Food Maintenance.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "SOCIAL_SCIENCE_MOD_SCIENCE_PER_SPECIALIST",
+        "SOCIAL_SCIENCE_MOD_FOOD_MAINTENANCE_PER_SPECIALIST"
+      ]
+    },
+    {
+      "id": "TRADITION_SOLEYMANIYEH_PALACE",
+      "name": "Soleymaniyeh Palace",
+      "description": "+0.5 [icon:YIELD_DIPLOMACY] Influence for every [icon:YIELD_POPULATION] Population in the [icon:NOTIFICATION_SELECT_CAPITAL] Capital.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_QAJAR",
+      "is_crisis": false,
+      "modifiers": [
+        "SOLEYMANIYEH_PALACE_YIELD_CAPITAL_POP"
+      ]
+    },
+    {
+      "id": "TRADITION_SPHERE_OF_INFLUENCE",
+      "name": "Sphere of Influence",
+      "description": "Gain [icon:YIELD_CULTURE] Culture equal to your [icon:ATTRIBUTE_POLITICAL] Diplomatic Attribute for every [icon:PLAYER_RELATIONSHIP_ALLIANCE] Alliance you have.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "SPHERE_OF_INFLUENCE_MOD_CULTURE_ALLIANCES"
+      ]
+    },
+    {
+      "id": "TRADITION_STRATAGEMS",
+      "name": "Stratagems",
+      "description": "+50% yields and [icon:Action_Heal] HP from [icon:Action_Pillage] Pillaging.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "TRAIT_BULGARIA",
+      "is_crisis": false,
+      "modifiers": [
+        "STRATAGEMS_PILLAGE_BUILDINGS_MODIFIER",
+        "STRATAGEMS_PILLAGE_IMPROVEMENTS_MODIFIER"
+      ]
+    },
+    {
+      "id": "TRADITION_STRATEGIC_RAILWAYS",
+      "name": "Strategic Railways",
+      "description": "+20% [icon:YIELD_PRODUCTION] Production towards constructing [icon:CITY_BUILDING_LIST] Buildings and [icon:CITY_RURAL] Improvements in [icon:YIELD_CITIES] Cities with a Rail Station.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "STRATEGIC_RAILWAYS_MOD_CITY_PRODUCTION_RAILROAD"
+      ]
+    },
+    {
+      "id": "TRADITION_SUFFETES",
+      "name": "Suffetes",
+      "description": "+20% [icon:YIELD_GOLD] Gold in Mining [icon:YIELD_TOWNS] Towns. +20% [icon:YIELD_FOOD] Food in Fishing or Farming [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_CARTHAGE",
+      "is_crisis": false,
+      "modifiers": [
+        "SUFFETES_FARM_TOWNS_FOOD",
+        "SUFFETES_FISHING_TOWNS_FOOD",
+        "SUFFETES_MINING_TOWNS_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_SUFFRAGE",
+      "name": "Suffrage",
+      "description": "+3 [icon:YIELD_CULTURE] Culture from [icon:SPECIALIST] Specialists. -3 [icon:YIELD_PRODUCTION] Production in [icon:YIELD_TOWNS] Towns.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "SUFFRAGE_MOD_CULTURE_ON_SPECIALISTS_PER_CULTURAL_ATTRIBUTE",
+        "SUFFRAGE_MOD_DECREASE_TOWN_PRODUCTION"
+      ]
+    },
+    {
+      "id": "TRADITION_SURVEY",
+      "name": "Survey",
+      "description": "Scouts gain +1 [icon:Action_Move] Movement and [icon:Action_Showall] Sight.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "SURVEY_MOD_RECON_MOVEMENT",
+        "SURVEY_MOD_RECON_SIGHT"
+      ]
+    },
+    {
+      "id": "TRADITION_TAKUAKA",
+      "name": "Takuaka",
+      "description": "+1 [icon:YIELD_PRODUCTION] Production on Fishing Boats in [icon:YIELD_CITIES] Cities. +2 [icon:YIELD_SCIENCE] Science on Fishing Boats on Reefs in all Settlements.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_TONGA",
+      "is_crisis": false,
+      "modifiers": [
+        "TAKUAKA_MOD_CITY_WAREHOUSE_BONUS",
+        "TAKUAKA_MOD_REEF_WAREHOUSE_BONUS"
+      ]
+    },
+    {
+      "id": "TRADITION_TARIFFS",
+      "name": "Tariffs",
+      "description": "+50% [icon:TRADE_INCOME] Trade Income, but -3 [icon:YIELD_HAPPINESS] Happiness in [icon:YIELD_CITIES] Cities.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "TARIFFS_MOD_CITY_HAPPINESS",
+        "TARIFFS_MOD_TRADE_INCOME"
+      ]
+    },
+    {
+      "id": "TRADITION_THEIR_FINEST_HOUR",
+      "name": "Their Finest Hour",
+      "description": "+25% [icon:YIELD_PRODUCTION] Production towards training Air Units. +5 [icon:NAR_REW_COMBAT] Combat Strength for Air Units in your own territory.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "THEIR_FINEST_HOUR_MOD_AIR_UNIT_PRODUCTION",
+        "THEIR_FINEST_HOUR_MOD_AIR_UNIT_COMBAT_STRENGTH"
+      ]
+    },
+    {
+      "id": "TRADITION_TONGIAKI",
+      "name": "Tongiaki",
+      "description": "+10 [icon:TRADE_ROUTE] Naval Trade Route Range.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "TRAIT_TONGA",
+      "is_crisis": false,
+      "modifiers": [
+        "TONGIAKI_MOD_TRADE_ROUTE_RANGE"
+      ]
+    },
+    {
+      "id": "TRADITION_TOOL_MAKING",
+      "name": "Tool Making",
+      "description": "+1[icon:YIELD_PRODUCTION] Production and[icon:YIELD_SCIENCE] Science on the Palace.",
+      "age": "AGE_ANTIQUITY",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "TOOL_MAKING_MOD_PALACE_PRODUCTION",
+        "TOOL_MAKING_MOD_PALACE_SCIENCE"
+      ]
+    },
+    {
+      "id": "TRADITION_TRADE_WINDS",
+      "name": "Trade Winds",
+      "description": "+1 [icon:YIELD_GOLD] Gold and [icon:YIELD_HAPPINESS] Happiness for every imported [icon:RADIAL_RESOURCES] Resource.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "TRADE_WINDS_IMPORTED_RESOURCE_GOLD",
+        "TRADE_WINDS_IMPORTED_RESOURCE_HAPPINESS"
+      ]
+    },
+    {
+      "id": "TRADITION_TRENCHWORKS",
+      "name": "Trenchworks",
+      "description": "+3 [icon:NAR_REW_COMBAT] Combat Strength for [icon:Action_Fortify] Fortified Units and [icon:CITY_FORTIFIED] Districts.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "TRENCHWORKS_MOD_FORTIFIED_DISTRICT",
+        "TRENCHWORKS_MOD_FORTIFIED_UNIT"
+      ]
+    },
+    {
+      "id": "TRADITION_TUNDIKHEL",
+      "name": "Tundikhel",
+      "description": "+3 [icon:NAR_REW_COMBAT] Combat Strength for all Units adjacent to [icon:CITY_UNIMPROVED] Mountains. This is doubled if the Unit is also in your territory.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_NEPAL",
+      "is_crisis": false,
+      "modifiers": [
+        "TUNDIKHEL_MOD_MOUNTAIN_COMBAT_NOT_TERRITORY",
+        "TUNDIKHEL_MOD_MOUNTAIN_COMBAT_TERRITORY"
+      ]
+    },
+    {
+      "id": "TRADITION_UPOSATHA",
+      "name": "Uposatha",
+      "description": "+1 [icon:YIELD_HAPPINESS] Happiness Adjacency for [icon:YIELD_HAPPINESS] Happiness Buildings.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "UPOSATHA_MOD_HAPPINESS_ADJACENCY"
+      ]
+    },
+    {
+      "id": "TRADITION_VASSALAGE",
+      "name": "Vassalage",
+      "description": "+3 [icon:YIELD_CULTURE] Culture and [icon:YIELD_GOLD] Gold for every [icon:CITYSTATE] City-State you are Suzerain of.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "VASSALAGE_MOD_SUZERAINS_CULTURE",
+        "VASSALAGE_MOD_SUZERAINS_GOLD"
+      ]
+    },
+    {
+      "id": "TRADITION_WAQAYE_E_ETTEFAQIYA",
+      "name": "Waq\u0101ye'-e Ettef\u0101qiya",
+      "description": "+10 [icon:YIELD_SCIENCE] Science and [icon:YIELD_CULTURE] Culture in the [icon:NOTIFICATION_SELECT_CAPITAL] Capital for every Settlement under the [icon:SETTLEMENT_LIMIT] Settlement Limit.",
+      "age": "AGE_MODERN",
+      "trait_type": "TRAIT_QAJAR",
+      "is_crisis": false,
+      "modifiers": [
+        "WAQAYE_E_ETTEFAQIYA_YIELD_UNDER_CAP"
+      ]
+    },
+    {
+      "id": "TRADITION_WELFARE_STATE",
+      "name": "Welfare State",
+      "description": "[icon:YIELD_TOWNS] Towns gain [icon:YIELD_HAPPINESS] Happiness equal to your [icon:ATTRIBUTE_POLITICAL] Diplomatic Attribute. -5 [icon:YIELD_PRODUCTION] Production in [icon:YIELD_CITIES] Cities.",
+      "age": "AGE_MODERN",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "WELFARE_STATE_MOD_TOWN_HAPPINESS_PER_POL_ATTRIBUTE",
+        "WELFARE_STATE_MOD_DECREASE_PRODUCTION_IN_CITIES"
+      ]
+    },
+    {
+      "id": "TRADITION_YEOMANRY",
+      "name": "Yeomanry",
+      "description": "+4 [icon:YIELD_FOOD] Food and [icon:YIELD_PRODUCTION] Production in [icon:YIELD_TOWNS] Towns in Distant Lands.",
+      "age": "AGE_EXPLORATION",
+      "trait_type": "",
+      "is_crisis": false,
+      "modifiers": [
+        "YEOMANRY_MOD_FOOD_PRODUCTION_TOWNS"
+      ]
+    }
+  ]
+}

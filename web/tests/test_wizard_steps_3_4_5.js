@@ -617,44 +617,62 @@ describe('Wizard Step 4 - Modifiers & Traditions', () => {
     describe('Tradition CRUD operations', () => {
         beforeEach(() => {
             document.body.innerHTML = `
-                <div id="wizard-tradition-form" class="hidden">
+                <div id="wizard-tradition-form" class="hidden" data-mode="custom">
                     <input id="wizard-tradition-id" />
-                    <input id="wizard-tradition-type" />
                     <input id="wizard-tradition-name" />
                     <textarea id="wizard-tradition-desc"></textarea>
+                    <select id="wizard-tradition-age"></select>
+                    <select id="wizard-tradition-trait"></select>
+                    <select id="wizard-tradition-existing-select"></select>
+                    <div id="wizard-tradition-existing-preview" class="hidden">
+                        <p id="wizard-tradition-existing-desc"></p>
+                        <span id="wizard-tradition-existing-mods"></span>
+                    </div>
                     <input id="wizard-tradition-edit-idx" value="-1" />
                 </div>
                 <div id="wizard-step-content"></div>
             `;
         });
 
-        it('should save new tradition', () => {
+        it('should save new custom tradition', async () => {
+            // Set form to custom mode
+            const form = document.getElementById('wizard-tradition-form');
+            form.dataset.mode = 'custom';
+            
             document.getElementById('wizard-tradition-id').value = 'TRAD_NEW';
-            document.getElementById('wizard-tradition-type').value = 'TRADITION_TYPE';
-            step4.wizardSaveTradition();
+            document.getElementById('wizard-tradition-name').value = 'My Tradition';
+            await step4.wizardSaveTradition();
             expect(state.wizardData.traditions.length).toBe(1);
             expect(state.wizardData.traditions[0].id).toBe('TRAD_NEW');
+            expect(state.wizardData.traditions[0].is_existing_tradition).toBe(false);
             expect(ui.showToast).toHaveBeenCalledWith('Tradition added', 'success');
         });
 
-        it('should require tradition ID', () => {
-            document.getElementById('wizard-tradition-type').value = 'TRADITION_TYPE';
-            step4.wizardSaveTradition();
+        it('should require tradition ID for custom tradition', async () => {
+            const form = document.getElementById('wizard-tradition-form');
+            form.dataset.mode = 'custom';
+            document.getElementById('wizard-tradition-id').value = '';
+            document.getElementById('wizard-tradition-name').value = 'Name';
+            await step4.wizardSaveTradition();
             expect(ui.showToast).toHaveBeenCalledWith('Tradition ID is required', 'error');
         });
 
-        it('should require tradition type', () => {
+        it('should require tradition name for custom tradition', async () => {
+            const form = document.getElementById('wizard-tradition-form');
+            form.dataset.mode = 'custom';
             document.getElementById('wizard-tradition-id').value = 'TRAD_NEW';
-            step4.wizardSaveTradition();
-            expect(ui.showToast).toHaveBeenCalledWith('Tradition Type is required', 'error');
+            document.getElementById('wizard-tradition-name').value = '';
+            await step4.wizardSaveTradition();
+            expect(ui.showToast).toHaveBeenCalledWith('Tradition name is required', 'error');
         });
 
-        it('should save tradition with localization', () => {
+        it('should save custom tradition with localization', async () => {
+            const form = document.getElementById('wizard-tradition-form');
+            form.dataset.mode = 'custom';
             document.getElementById('wizard-tradition-id').value = 'TRAD_WITH_LOC';
-            document.getElementById('wizard-tradition-type').value = 'TRADITION_TYPE';
             document.getElementById('wizard-tradition-name').value = 'My Tradition';
             document.getElementById('wizard-tradition-desc').value = 'Tradition description';
-            step4.wizardSaveTradition();
+            await step4.wizardSaveTradition();
             const trad = state.wizardData.traditions[0];
             expect(trad.localizations[0].name).toBe('My Tradition');
             expect(trad.localizations[0].description).toBe('Tradition description');
