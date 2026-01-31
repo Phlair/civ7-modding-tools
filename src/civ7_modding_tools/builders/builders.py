@@ -254,6 +254,9 @@ class CivilizationBuilder(BaseBuilder):
 
     def migrate(self) -> "CivilizationBuilder":
         """Migrate and populate all database variants with full localization."""
+        from civ7_modding_tools.utils import locale
+        from civ7_modding_tools.nodes import EnglishTextNode
+        
         if not self.civilization_type:
             self.civilization_type = self.civilization.get('civilization_type', 'CIVILIZATION_CUSTOM')
         
@@ -317,10 +320,12 @@ class CivilizationBuilder(BaseBuilder):
         # Get civ ability name from civilization dict (set in wizard Step 2)
         civ_ability_name = self.civilization.get('civ_ability_name', '')
         
+        # Use trait_ability_type for LOC tags (e.g., TRAIT_ICENI_ABILITY)
+        # This matches base game format: LOC_TRAIT_ASSYRIA_ABILITY_NAME/DESCRIPTION
         trait_ability_node = TraitNode(
             trait_type=trait_ability_type,
-            name=locale(self.civilization_type + '_ABILITY', 'name'),
-            description=locale(self.civilization_type + '_ABILITY', 'description'),
+            name=locale(trait_ability_type, 'name'),
+            description=locale(trait_ability_type, 'description'),
             internal_only=True
         )
         
@@ -333,19 +338,13 @@ class CivilizationBuilder(BaseBuilder):
             )
         
         # ==== POPULATE _current DATABASE ====
-        # Types section
+        # Types section (only civ ability trait; base/age traits come from base game)
         types_list = [TypeNode(type_=trait_ability_type, kind="KIND_TRAIT")]
-        # Add age trait type if auto-generated
-        if age_trait_type:
-            types_list.append(TypeNode(type_=age_trait_type, kind="KIND_TRAIT"))
         self._current.types = types_list
         
         # Traits section
         # Civilization ability trait with localization
         traits_list = [trait_ability_node]
-        # Add age trait definition if auto-generated
-        if age_trait_node:
-            traits_list.append(age_trait_node)
         self._current.traits = traits_list
         
         # Handle civ_ability_modifier_ids from wizard Step 2
@@ -714,9 +713,20 @@ class CivilizationBuilder(BaseBuilder):
         # ==== POPULATE _shell DATABASE ====
         self._shell.civilizations = [shell_civ_node]
         
+        # Auto-convert attribute traits to shell tags
+        # TRAIT_ATTRIBUTE_CULTURAL -> TAG_TRAIT_CULTURAL
+        # TRAIT_ATTRIBUTE_MILITARISTIC -> TAG_TRAIT_MILITARISTIC
+        shell_tag_types = list(self.civilization_tags)  # Start with explicit tags
+        for trait in self.civilization_traits:
+            if trait.startswith('TRAIT_ATTRIBUTE_'):
+                # Convert TRAIT_ATTRIBUTE_X to TAG_TRAIT_X
+                tag_type = trait.replace('TRAIT_ATTRIBUTE_', 'TAG_TRAIT_')
+                if tag_type not in shell_tag_types:
+                    shell_tag_types.append(tag_type)
+        
         # Civilization tags for shell
         civ_tag_nodes = []
-        for tag_type in self.civilization_tags:
+        for tag_type in shell_tag_types:
             civ_tag_nodes.append(
                 CivilizationTagNode(
                     civilization_domain=shell_domain,
@@ -870,6 +880,13 @@ class CivilizationBuilder(BaseBuilder):
                         tag=locale(prefix, "fullName"),
                         text=loc["full_name"]
                     ))
+                else:
+                    # Auto-generate full_name from name if not provided
+                    if "name" in loc:
+                        localization_rows.append(EnglishTextNode(
+                            tag=locale(prefix, "fullName"),
+                            text=loc["name"]
+                        ))
                 if "adjective" in loc:
                     localization_rows.append(EnglishTextNode(
                         tag=locale(prefix, "adjective"),
@@ -899,18 +916,24 @@ class CivilizationBuilder(BaseBuilder):
         
         # Add civilization ability localization if civ_ability_name is provided
         if civ_ability_name:
-            ability_loc_prefix = self.civilization_type + '_ABILITY'
+            # Generate BOTH sets of LOC keys:
+            # 1. TRAIT_* keys for database (Traits table uses these)
+            # 2. CIVILIZATION_* keys for shell UI (CivilizationItems uses these)
+            ability_trait_prefix = trait_ability_type  # TRAIT_ICENI_ABILITY
+            ability_civ_prefix = self.civilization_type + '_ABILITY'  # CIVILIZATION_ICENI_ABILITY
+            
+            # Database keys
             localization_rows.append(EnglishTextNode(
-                tag=locale(ability_loc_prefix, 'name'),
+                tag=locale(ability_trait_prefix, 'name'),
                 text=civ_ability_name
             ))
-            # Add description if civ_ability_description is provided
-            civ_ability_description = self.civilization.get('civ_ability_description', '')
-            if civ_ability_description:
-                localization_rows.append(EnglishTextNode(
-                    tag=locale(ability_loc_prefix, 'description'),
-                    text=civ_ability_description
-                ))
+            
+            # Shell UI keys  
+            localization_rows.append(EnglishTextNode(
+                tag=locale(ability_civ_prefix, 'name'),
+                text=civ_ability_name
+            ))
+            # Note: Description is auto-generated later after bound items are processed
         
         # Named Places Localizations (Rivers & Volcanoes)
         # Include civilization name in tag for uniqueness: LOC_ICENI_RIVER_XXX_NAME
@@ -1092,6 +1115,67 @@ class CivilizationBuilder(BaseBuilder):
                             modifier_id=reveal_modifier.id
                         )
                     )
+        
+        # ==== GENERATE ABILITY DESCRIPTION (after bound items are processed) ====
+        # Now that all modifiers have been migrated and their localizations merged,
+        # we can auto-generate the ability description from modifier descriptions
+        civ_ability_name = self.civilization.get('civ_ability_name', '')
+        if civ_ability_name:
+            civ_ability_description = self.civilization.get('civ_ability_description', '')
+            
+            # Auto-generate description from civ_ability_modifier_ids if not provided
+            if not civ_ability_description:
+                civ_ability_modifier_ids = self.civilization.get('civ_ability_modifier_ids', [])
+                if civ_ability_modifier_ids:
+                    # Build list of modifier descriptions from localization entries
+                    modifier_descriptions = []
+                    if self._localizations.english_text:
+                        for modifier_id in civ_ability_modifier_ids:
+                            # Look for LOC_{MODIFIER_ID}_DESCRIPTION in localizations
+                            desc_tag = f'LOC_{modifier_id}_DESCRIPTION'
+                            for loc_node in self._localizations.english_text:
+                                if hasattr(loc_node, 'tag') and loc_node.tag == desc_tag:
+                                    if hasattr(loc_node, 'text'):
+                                        modifier_descriptions.append(loc_node.text)
+                                    break
+                    
+                    # Format as bullet list like base game: [BLIST][LI]item1[LI]item2[/LIST]
+                    if modifier_descriptions:
+                        civ_ability_description = '[BLIST]' + ''.join(
+                            f'[LI]{desc}' for desc in modifier_descriptions
+                        ) + '[/LIST]'
+            
+            # Add ability description to localizations if we have one
+            if civ_ability_description:
+                trait_ability_type = self.trait_ability.get("trait_type", "TRAIT_CUSTOM_ABILITY")
+                ability_civ_prefix = self.civilization_type + '_ABILITY'
+                
+                if not self._localizations.english_text:
+                    self._localizations.english_text = []
+                
+                # Add TRAIT_* key for database
+                desc_trait_tag = locale(trait_ability_type, 'description')
+                has_trait_desc = any(
+                    hasattr(node, 'tag') and node.tag == desc_trait_tag
+                    for node in self._localizations.english_text
+                )
+                if not has_trait_desc:
+                    self._localizations.english_text.append(EnglishTextNode(
+                        tag=desc_trait_tag,
+                        text=civ_ability_description
+                    ))
+                
+                # Add CIVILIZATION_* key for shell UI
+                desc_civ_tag = locale(ability_civ_prefix, 'description')
+                has_civ_desc = any(
+                    hasattr(node, 'tag') and node.tag == desc_civ_tag
+                    for node in self._localizations.english_text
+                )
+                if not has_civ_desc:
+                    self._localizations.english_text.append(EnglishTextNode(
+                        tag=desc_civ_tag,
+                        text=civ_ability_description
+                    ))
         
         return self
 
@@ -2930,11 +3014,11 @@ class ModifierBuilder(BaseBuilder):
     
     def build(self) -> list[BaseFile]:
         """
-        Build modifier files with preview strings in current.xml.
+        Build modifier files.
         
         Note: ModifierBuilder typically doesn't generate standalone files.
         Modifiers are usually bound to other builders (CivilizationBuilder, etc.)
-        and their content is merged into the parent builder's files.
+        and their content is merged into the parent builder's files via .bind().
         Returns empty list as modifiers are merged into parent builders.
         """
         # ModifierBuilder content is merged into parent builders via bind()

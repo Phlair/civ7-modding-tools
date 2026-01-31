@@ -596,7 +596,7 @@ export function wizardSaveModifier() {
     markDirty();
 }
 
-export function wizardEditModifier(idx) {
+export async function wizardEditModifier(idx) {
     const modifier = wizardData.modifiers[idx];
     document.getElementById('wizard-modifier-id').value = modifier.id || '';
     document.getElementById('wizard-modifier-type').value = modifier.modifier_type || '';
@@ -617,61 +617,101 @@ export function wizardEditModifier(idx) {
     createWizardDropdown('wizard-modifier-effect', 'effects', modifier.modifier?.effect || '', 'Select effect...');
     createWizardDropdown('wizard-modifier-collection', 'collection-types', modifier.modifier?.collection || '', 'Select collection...');
 
-    // Clear and populate requirements
+    // Clear requirements container completely
     const requirementsContainer = document.getElementById('wizard-modifier-requirements-container');
     requirementsContainer.innerHTML = '';
     
+    // Load requirement types data once
+    const { fetchReferenceData } = await import('../data/loader.js');
+    const requirementTypesData = await fetchReferenceData('requirement-types');
+    
     if (modifier.modifier?.requirements && Array.isArray(modifier.modifier.requirements)) {
-        modifier.modifier.requirements.forEach((req, reqIdx) => {
-            wizardAddRequirement();
+        // Add and populate each requirement synchronously
+        for (const req of modifier.modifier.requirements) {
+            // Add the requirement div
+            const actualReqIdx = requirementsContainer.children.length;
+            const reqDiv = document.createElement('div');
+            reqDiv.className = 'p-2 bg-slate-800/50 rounded border border-slate-600';
+            reqDiv.dataset.reqIdx = actualReqIdx;
+            reqDiv.innerHTML = `
+                <div class="flex items-start gap-2 mb-2">
+                    <div class="flex-1">
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Requirement Type *</label>
+                        <select 
+                            class="wizard-req-type w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100 focus:outline-none focus:border-blue-400"
+                            data-req-idx="${actualReqIdx}"
+                        >
+                            <option value="">Select requirement type...</option>
+                        </select>
+                    </div>
+                    <button 
+                        onclick="window.wizardRemoveRequirement(${actualReqIdx})"
+                        type="button"
+                        class="mt-5 px-2 py-1 bg-red-600/30 hover:bg-red-600/50 border border-red-600 rounded text-red-300 text-xs"
+                    >
+                        Remove
+                    </button>
+                </div>
+                <div class="wizard-req-args-container" data-req-idx="${actualReqIdx}">
+                    <!-- Arguments will be added here -->
+                </div>
+                <button 
+                    onclick="window.wizardAddRequirementArg(${actualReqIdx})"
+                    type="button"
+                    class="px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded text-xs font-medium text-slate-300 border border-slate-600 mt-2"
+                >
+                    + Add Argument
+                </button>
+            `;
+            requirementsContainer.appendChild(reqDiv);
             
-            // Wait for the requirement to be added, then populate it
-            setTimeout(() => {
-                const reqDiv = requirementsContainer.querySelector(`[data-req-idx="${reqIdx}"]`);
-                if (reqDiv) {
-                    const typeSelect = reqDiv.querySelector('.wizard-req-type');
-                    
-                    // Load and set the requirement type
-                    import('../data/loader.js').then(loader => {
-                        loader.loadReferenceData('requirement-types').then(data => {
-                            typeSelect.innerHTML = '<option value="">Select requirement type...</option>';
-                            if (data && data.values) {
-                                data.values.forEach(item => {
-                                    const option = document.createElement('option');
-                                    option.value = item.id;
-                                    option.textContent = item.id;
-                                    if (item.id === req.type) {
-                                        option.selected = true;
-                                    }
-                                    typeSelect.appendChild(option);
-                                });
-                            }
-                        });
-                    });
-                    
-                    // Populate requirement arguments
-                    if (req.arguments && Array.isArray(req.arguments)) {
-                        req.arguments.forEach(arg => {
-                            wizardAddRequirementArg(reqIdx);
-                            
-                            setTimeout(() => {
-                                const argsContainer = reqDiv.querySelector('.wizard-req-args-container');
-                                const argDivs = argsContainer.querySelectorAll('[data-arg-idx]');
-                                const lastArgDiv = argDivs[argDivs.length - 1];
-                                
-                                if (lastArgDiv) {
-                                    const nameInput = lastArgDiv.querySelector('.wizard-req-arg-name');
-                                    const valueInput = lastArgDiv.querySelector('.wizard-req-arg-value');
-                                    
-                                    if (nameInput) nameInput.value = arg.name || '';
-                                    if (valueInput) valueInput.value = arg.value || '';
-                                }
-                            }, 50);
-                        });
+            // Populate the requirement type dropdown
+            const typeSelect = reqDiv.querySelector('.wizard-req-type');
+            if (requirementTypesData && requirementTypesData.values) {
+                requirementTypesData.values.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.id;
+                    if (item.id === req.type) {
+                        option.selected = true;
                     }
-                }
-            }, 100);
-        });
+                    typeSelect.appendChild(option);
+                });
+            }
+            
+            // Add requirement arguments
+            if (req.arguments && Array.isArray(req.arguments)) {
+                const argsContainer = reqDiv.querySelector('.wizard-req-args-container');
+                req.arguments.forEach(arg => {
+                    const argIdx = argsContainer.children.length;
+                    const argDiv = document.createElement('div');
+                    argDiv.className = 'flex gap-2 items-center mt-2';
+                    argDiv.dataset.argIdx = argIdx;
+                    argDiv.innerHTML = `
+                        <input 
+                            type="text" 
+                            placeholder="Name" 
+                            class="wizard-req-arg-name flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100 focus:outline-none focus:border-blue-400"
+                            value="${arg.name || ''}"
+                        />
+                        <input 
+                            type="text" 
+                            placeholder="Value" 
+                            class="wizard-req-arg-value flex-1 px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100 focus:outline-none focus:border-blue-400"
+                            value="${arg.value || ''}"
+                        />
+                        <button 
+                            onclick="window.wizardRemoveRequirementArg(${actualReqIdx}, ${argIdx})"
+                            type="button"
+                            class="px-2 py-1 bg-red-600/30 hover:bg-red-600/50 border border-red-600 rounded text-red-300 text-xs"
+                        >
+                            ×
+                        </button>
+                    `;
+                    argsContainer.appendChild(argDiv);
+                });
+            }
+        }
     }
 
     document.getElementById('wizard-modifier-edit-idx').value = idx;
@@ -1054,7 +1094,7 @@ export function removeWizardTradition(idx) {
 /**
  * Add a new requirement to the modifier form
  */
-export function wizardAddRequirement() {
+export async function wizardAddRequirement() {
     const container = document.getElementById('wizard-modifier-requirements-container');
     const reqIdx = container.children.length;
     
@@ -1095,30 +1135,64 @@ export function wizardAddRequirement() {
     container.appendChild(reqDiv);
     
     // Load requirement types dropdown
-    import('../data/loader.js').then(loader => {
-        loader.fetchReferenceData('requirement-types').then(data => {
-            const select = reqDiv.querySelector('.wizard-req-type');
-            select.innerHTML = '<option value="">Select requirement type...</option>';
-            if (data && data.values) {
-                data.values.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = item.id;
-                    select.appendChild(option);
-                });
-            }
+    const { fetchReferenceData } = await import('../data/loader.js');
+    const data = await fetchReferenceData('requirement-types');
+    const select = reqDiv.querySelector('.wizard-req-type');
+    select.innerHTML = '<option value="">Select requirement type...</option>';
+    if (data && data.values) {
+        data.values.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.id;
+            option.textContent = item.id;
+            select.appendChild(option);
         });
-    });
+    }
 }
 
 /**
- * Remove a requirement from the modifier form
+ * Remove a requirement from the modifier form and re-index remaining requirements
  */
 export function wizardRemoveRequirement(reqIdx) {
     const container = document.getElementById('wizard-modifier-requirements-container');
     const reqDiv = container.querySelector(`[data-req-idx="${reqIdx}"]`);
     if (reqDiv) {
         reqDiv.remove();
+        
+        // Re-index all remaining requirements to avoid gaps
+        const remainingReqs = container.querySelectorAll('[data-req-idx]');
+        remainingReqs.forEach((div, newIdx) => {
+            // Update the requirement div index
+            div.dataset.reqIdx = newIdx;
+            
+            // Update the select data attribute
+            const select = div.querySelector('.wizard-req-type');
+            if (select) {
+                select.dataset.reqIdx = newIdx;
+            }
+            
+            // Update the args container data attribute
+            const argsContainer = div.querySelector('.wizard-req-args-container');
+            if (argsContainer) {
+                argsContainer.dataset.reqIdx = newIdx;
+            }
+            
+            // Update onclick handlers
+            const removeBtn = div.querySelector('button[onclick^="window.wizardRemoveRequirement"]');
+            if (removeBtn) {
+                removeBtn.setAttribute('onclick', `window.wizardRemoveRequirement(${newIdx})`);
+            }
+            
+            const addArgBtn = div.querySelector('button[onclick^="window.wizardAddRequirementArg"]');
+            if (addArgBtn) {
+                addArgBtn.setAttribute('onclick', `window.wizardAddRequirementArg(${newIdx})`);
+            }
+            
+            // Update argument remove buttons
+            const argRemoveBtns = div.querySelectorAll('button[onclick*="wizardRemoveRequirementArg"]');
+            argRemoveBtns.forEach((btn, argIdx) => {
+                btn.setAttribute('onclick', `window.wizardRemoveRequirementArg(${newIdx}, ${argIdx})`);
+            });
+        });
     }
 }
 
@@ -1157,7 +1231,7 @@ export function wizardAddRequirementArg(reqIdx) {
 }
 
 /**
- * Remove an argument from a requirement
+ * Remove an argument from a requirement and re-index remaining arguments
  */
 export function wizardRemoveRequirementArg(reqIdx, argIdx) {
     const argsContainer = document.querySelector(`.wizard-req-args-container[data-req-idx="${reqIdx}"]`);
@@ -1166,5 +1240,17 @@ export function wizardRemoveRequirementArg(reqIdx, argIdx) {
     const argDiv = argsContainer.querySelector(`[data-arg-idx="${argIdx}"]`);
     if (argDiv) {
         argDiv.remove();
+        
+        // Re-index remaining arguments
+        const remainingArgs = argsContainer.querySelectorAll('[data-arg-idx]');
+        remainingArgs.forEach((div, newArgIdx) => {
+            div.dataset.argIdx = newArgIdx;
+            
+            // Update the remove button onclick
+            const removeBtn = div.querySelector('button[onclick*="wizardRemoveRequirementArg"]');
+            if (removeBtn) {
+                removeBtn.setAttribute('onclick', `window.wizardRemoveRequirementArg(${reqIdx}, ${newArgIdx})`);
+            }
+        });
     }
 }

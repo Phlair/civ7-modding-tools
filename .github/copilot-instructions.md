@@ -36,7 +36,7 @@ Mod → Builders → Nodes → Files → .modinfo + XML
 - `ConstructibleBuilder` - Buildings/improvements
 - `ProgressionTreeBuilder` - Civic/tech trees
 - `ProgressionTreeNodeBuilder` - Tree nodes
-- `ModifierBuilder` - Game modifiers
+- `ModifierBuilder` - Game modifiers (returns `[]`, content merged via `bind()`)
 - `TraditionBuilder` - Traditions
 - `UniqueQuarterBuilder` - Unique districts
 - `LeaderUnlockBuilder` - Leader age transitions
@@ -62,7 +62,11 @@ Mod → Builders → Nodes → Files → .modinfo + XML
 - Path: `src/civ7_modding_tools/localizations/__init__.py`
 - Pydantic BaseModel subclasses
 - Method: `get_nodes(entity_id) -> list[dict]`
-- One per builder type
+- `full_name` auto-generated from `name` if not provided
+
+**LOC key formats:**
+- Civs: `LOC_CIVILIZATION_{ID}_NAME`, `LOC_CIVILIZATION_{ID}_FULL_NAME`
+- Abilities: `LOC_TRAIT_{ID}_ABILITY_NAME`, `LOC_CIVILIZATION_{ID}_ABILITY_NAME` (both needed)
 
 **6. Constants (21 Enums)**
 - Path: `src/civ7_modding_tools/constants/__init__.py`
@@ -99,25 +103,34 @@ builder = CivilizationBuilder().fill({
 builder = CivilizationBuilder({...})
 ```
 
-### Action Groups
+### Binding (Merging Content)
+Modifiers, units, buildings merge into parent civilizations:
+```python
+civ = CivilizationBuilder().fill({...})
+modifier = ModifierBuilder().fill({...})
+civ.bind(modifier)  # Merges modifier into civ's game-effects.xml
+mod.add(civ)        # Only add parent - bound items included automatically
+```
+- `bind()` links content to `TRAIT_{CIV}` in always.xml
+- `civ_ability_modifier_ids` links to `TRAIT_{CIV}_ABILITY` in current.xml (use `is_detached=True`)
+
+### Action Groups & XML Scopes
 Controls when content loads (by age):
 ```python
 from civ7_modding_tools import ActionGroupBundle
-
-# Age-specific
-AGE_ANTIQUITY = ActionGroupBundle(action_group_id='AGE_ANTIQUITY')
-
-# Always loaded
-ALWAYS = ActionGroupBundle(action_group_id='ALWAYS')
-
-builder.action_group_bundle = AGE_ANTIQUITY
+builder.action_group_bundle = ActionGroupBundle(action_group_id='AGE_ANTIQUITY')
 ```
 
-Creates 4 action group variants:
-- `shell` - UI scope
-- `always` - Always loaded
-- `current` - Current age only
-- `persist` - Age + future ages
+**4 output scopes** (each generates separate XML):
+- `always.xml` - Modifiers, game effects (loaded immediately)
+- `current.xml` - Age-specific content (civ, units, traits)
+- `persist.xml` - Content that carries forward to future ages
+- `shell.xml` - UI tables (Civilizations, CivilizationItems for pedia)
+
+**Trait scoping** (critical for civs):
+- `TRAIT_{CIV}` → always.xml (bound modifiers go here via TraitModifiers)
+- `TRAIT_{CIV}_ABILITY` → current.xml (age-specific ability, defined in Types/Traits)
+- `TRAIT_ANTIQUITY_CIV`, `TRAIT_ATTRIBUTE_*` → base game (never redefine these)
 
 ### Path Generation
 Two-step process:
@@ -385,7 +398,7 @@ src/civ7_modding_tools/
 - **pydantic** (≥2.0.0) - Data validation
 - **xmltodict** (≥0.13.0) - XML generation
 
-## Web Editor (Optional)
+## Web Editor
 
 ### Overview
 
@@ -523,51 +536,13 @@ npx vitest web/tests/test_wizard_steps_3_4_5.js  # Specific file
 - Test exports (functions, not implementation)
 - Use `beforeEach()` to reset DOM, mocks, state
 
-**Test file mapping:**
-| Test File | Covers | Test Count |
-|-----------|--------|------------|
-| `test_state.js` | State management, dirty tracking | 46 tests |
-| `test_ui.js` | Toast, loading, dirty indicator | 23 tests |
-| `test_api.js` | Load, save, export, validate | 17 tests |
-| `test_form_fields.js` | All field creators | 15 tests |
-| `test_form_arrays.js` | Array add, remove, rerender | 11 tests |
-| `test_wizard.js` | Wizard flow, mode switching | 16 tests |
-| `test_expert_navigation.js` | Section navigation | 6 tests |
-| `test_wizard_steps_3_4_5.js` | Steps 3, 4, 5 rendering & CRUD | 47 tests |
-| **Total** | | **181 tests** |
+**Test files:** 8 files in `web/tests/` covering state, UI, API, forms, wizard steps
 
 **Test patterns:**
-1. **Mocking modules:** Use `vi.mock()` to mock entire module; override specific exports if needed
-2. **DOM testing:** Create elements with `document.createElement()`, append to body in `beforeEach()`, clean up in `afterEach()`
-3. **Async testing:** Use `async/await`, mock `fetch()` or dynamic imports
-4. **State isolation:** Call `state.resetXyz()` in `beforeEach()` to isolate tests
-5. **Inline handlers:** Test via direct function call (handlers exposed to window are tested via DOM simulation)
-6. **String array testing:** Create container with id `array-container-${fieldName}` to test array operations
-
-**Example test:**
-```javascript
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import * as arrays from '../form/arrays.js';
-
-describe('Form Arrays Module', () => {
-    beforeEach(() => {
-        document.body.innerHTML = '';
-        vi.clearAllMocks();
-    });
-
-    it('should add new item to array', () => {
-        const container = document.createElement('div');
-        container.id = 'array-container-cities';  // Pattern: array-container-${fieldName}
-        document.body.appendChild(container);
-
-        arrays.addArrayItem('cities');
-
-        expect(container.children).toHaveLength(1);
-        expect(container.querySelector('input')).toBeTruthy();
-        expect(container.querySelector('button')).toBeTruthy();  // Remove button
-    });
-});
-```
+- Mock modules with `vi.mock()`, fetch with `global.fetch = vi.fn().mockResolvedValue(...)`
+- DOM: create elements in `beforeEach()`, clean up `document.body.innerHTML = ''`
+- State isolation: call `state.resetXyz()` in `beforeEach()`
+- Array containers use ID pattern: `array-container-${fieldName}`
 
 ### Dependencies
 

@@ -257,11 +257,22 @@ class YamlToPyConverter:
         if not modifiers:
             return
         
+        # Get civ_ability_modifier_ids for special handling
+        civ_ability_modifier_ids = set()
+        civilization = self.data.get('civilization', {})
+        if civilization and 'civ_ability_modifier_ids' in civilization:
+            civ_ability_modifier_ids = set(civilization['civ_ability_modifier_ids'])
+        
         self.add_line('# Modifiers')
         for modifier_data in modifiers:
             builder_id = modifier_data['id']
             self.add_line(f'{builder_id} = ModifierBuilder()')
             self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
+            
+            # Mark civ_ability modifiers as detached so they don't get linked to TRAIT_{CIV} in always.xml
+            # They'll be linked to TRAIT_{CIV}_ABILITY in current.xml by CivilizationBuilder
+            if builder_id in civ_ability_modifier_ids:
+                self.add_line(f'{builder_id}.is_detached = True')
             
             # Build fill dict
             fill_dict = {}
@@ -552,7 +563,7 @@ class YamlToPyConverter:
         self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
         
         # Fields that should be nested inside 'civilization' dict
-        nested_fields = {'civ_ability_name', 'civ_ability_modifier_ids'}
+        nested_fields = {'civ_ability_name', 'civ_ability_modifier_ids', 'civ_ability_description'}
         
         # Build fill dict (exclude bindings - they're auto-generated)
         # Separate top-level fields from nested civilization fields
@@ -566,6 +577,27 @@ class YamlToPyConverter:
                 civilization_dict[key] = value
             else:
                 fill_dict[key] = value
+        
+        # Auto-generate civ_ability_description from civ_ability_modifier_ids if not provided
+        if 'civ_ability_modifier_ids' in civilization_dict and 'civ_ability_description' not in civilization_dict:
+            modifier_ids = civilization_dict['civ_ability_modifier_ids']
+            modifier_descriptions = []
+            
+            # Look up descriptions from modifier definitions
+            for modifier in self.data.get('modifiers', []):
+                modifier_id = modifier.get('id')
+                if modifier_id in modifier_ids:
+                    # Get description from localizations
+                    for loc in modifier.get('localizations', []):
+                        if isinstance(loc, dict) and 'description' in loc:
+                            modifier_descriptions.append(loc['description'])
+                            break
+            
+            # Format as bullet list: [BLIST][LI]item1[LI]item2[/LIST]
+            if modifier_descriptions:
+                civilization_dict['civ_ability_description'] = (
+                    '[BLIST]' + ''.join(f'[LI]{desc}' for desc in modifier_descriptions) + '[/LIST]'
+                )
         
         # If we have nested fields, add them as a 'civilization' key
         if civilization_dict:
@@ -622,6 +654,19 @@ class YamlToPyConverter:
     def collect_bound_modifiers(self) -> set[str]:
         """Collect modifier IDs that are already bound to other entities."""
         bound = set()
+        
+        # Modifiers bound directly to civilization (from bindings only)
+        civilization = self.data.get('civilization', {})
+        if civilization:
+            # Modifiers in bindings (bound to TRAIT_{CIV} in always scope)
+            if 'bindings' in civilization:
+                for binding in civilization['bindings']:
+                    bound.add(binding)
+            
+            # NOTE: civ_ability_modifier_ids are NOT marked as bound here.
+            # They need to be bound via .bind() so their Modifier XML definitions
+            # are generated. CivilizationBuilder creates the TraitModifiers link,
+            # but the actual Modifier definition comes from binding.
         
         # Modifiers bound to progression tree nodes
         for node in self.data.get('progression_tree_nodes', []):
@@ -680,6 +725,11 @@ class YamlToPyConverter:
         # Progression trees
         for tree in self.data.get('progression_trees', []):
             to_bind.append(tree['id'])
+        
+        # Modifiers explicitly listed in civilization.bindings
+        if civilization and 'bindings' in civilization:
+            for modifier_id in civilization['bindings']:
+                to_bind.append(modifier_id)
         
         # Top-level modifiers (not bound to other entities)
         for modifier in self.data.get('modifiers', []):
