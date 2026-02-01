@@ -9,7 +9,8 @@ import {
     skipWizard,
     wizardPrevStep,
     wizardNextStep,
-    createNewMod
+    createNewMod,
+    saveWizardStepData
 } from './wizard/wizard.js';
 import { 
     healthCheck, 
@@ -118,9 +119,10 @@ Object.defineProperty(window, 'saveFile', {
             return;
         }
         try {
-            // Sync wizard data to currentData before saving
+            // First save current DOM values to wizardData, then sync to currentData
+            saveWizardStepData();
             state.syncWizardToCurrentData();
-            await saveFile(state.currentFilePath, state.currentData);
+            await saveFile(state.currentFilePath, state.getCurrentData());
             state.isDirty = false;
             showToast('File saved successfully', 'success');
         } catch (error) {
@@ -134,7 +136,8 @@ Object.defineProperty(window, 'saveFile', {
 Object.defineProperty(window, 'exportYAML', {
     value: async () => {
         try {
-            // Sync wizard data to currentData before exporting
+            // First save current DOM values to wizardData, then sync to currentData
+            saveWizardStepData();
             state.syncWizardToCurrentData();
             
             const settings = state.getSettings();
@@ -143,16 +146,18 @@ Object.defineProperty(window, 'exportYAML', {
             
             if (useDiskPath && downloadPath) {
                 // Save to disk via backend
-                await exportYAMLToDisk(state.currentData, downloadPath);
-                const modId = state.currentData?.metadata?.id || 'mod';
+                const data = state.getCurrentData();
+                await exportYAMLToDisk(data, downloadPath);
+                const modId = data?.metadata?.id || 'mod';
                 showToast(`YAML exported to ${downloadPath}/${modId}.yml`, 'success');
             } else {
                 // Browser download
-                const blob = await exportYAML(state.currentData);
+                const data = state.getCurrentData();
+                const blob = await exportYAML(data);
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                const modId = state.currentData?.metadata?.id || 'mod';
+                const modId = data?.metadata?.id || 'mod';
                 a.download = `${modId}.yml`;
                 a.click();
                 URL.revokeObjectURL(url);
@@ -169,23 +174,25 @@ Object.defineProperty(window, 'exportYAML', {
 Object.defineProperty(window, 'exportBuiltMod', {
     value: async () => {
         try {
-            // Sync wizard data to currentData before exporting
+            // First save current DOM values to wizardData, then sync to currentData
+            saveWizardStepData();
             state.syncWizardToCurrentData();
             
             const settings = state.getSettings();
             const useDiskPath = settings.export?.useDiskPath || false;
             const downloadPath = settings.export?.downloadPath || '';
-            const modId = state.currentData?.metadata?.id || 'mod';
+            const data = state.getCurrentData();
+            const modId = data?.metadata?.id || 'mod';
             
             showToast('Building mod... please wait', 'info');
             
             if (useDiskPath && downloadPath) {
                 // Save to disk via backend
-                const result = await exportBuiltModToDisk(state.currentData, downloadPath);
+                const result = await exportBuiltModToDisk(data, downloadPath);
                 showToast(`Mod exported to ${downloadPath}`, 'success');
             } else {
                 // Browser download
-                const blob = await exportBuiltMod(state.currentData);
+                const blob = await exportBuiltMod(data);
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -194,7 +201,7 @@ Object.defineProperty(window, 'exportBuiltMod', {
                 URL.revokeObjectURL(url);
                 
                 // Also download the YAML config
-                const yamlBlob = await exportYAML(state.currentData);
+                const yamlBlob = await exportYAML(data);
                 const yamlUrl = URL.createObjectURL(yamlBlob);
                 const yamlA = document.createElement('a');
                 yamlA.href = yamlUrl;
@@ -327,14 +334,16 @@ function setupEventListeners() {
     if (saveBtn) {
         saveBtn.addEventListener('click', async () => {
             const { saveFile } = await import('./api.js');
+            const { saveWizardStepData: saveStep } = await import('./wizard/wizard.js');
             if (!state.currentFilePath) {
                 showToast('Please load or specify a file path first', 'error');
                 return;
             }
             try {
-                // Sync wizard data to currentData before saving
+                // First save current DOM values to wizardData, then sync to currentData
+                saveStep();
                 state.syncWizardToCurrentData();
-                await saveFile(state.currentFilePath, state.currentData);
+                await saveFile(state.currentFilePath, state.getCurrentData());
                 state.isDirty = false;
                 showToast('File saved successfully', 'success');
             } catch (error) {

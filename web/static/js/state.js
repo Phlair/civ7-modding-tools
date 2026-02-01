@@ -363,9 +363,11 @@ export function syncWizardToCurrentData() {
     
     // Merge other fields (but exclude imports to avoid confusion)
     const { imports: _, ...wizardDataWithoutImports } = wizardData;
-    currentData = { ...currentData, ...wizardDataWithoutImports };
+    const mergedData = { ...currentData, ...wizardDataWithoutImports };
     // Always set imports to our determined value
-    currentData.imports = finalImports;
+    mergedData.imports = finalImports;
+    // Use setter to properly update the exported binding
+    setCurrentData(mergedData);
 }
 
 /**

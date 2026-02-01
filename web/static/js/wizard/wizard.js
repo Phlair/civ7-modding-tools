@@ -231,6 +231,52 @@ function updateWizardIndicators(indicator) {
  * Called when moving between steps to persist form changes
  */
 export function saveWizardStepData() {
+    // Read all visible input fields and update wizardData
+    const currentStep = getCurrentWizardStep();
+    
+    if (currentStep === 1) {
+        // Step 1: Metadata, Module Localization, Action Group
+        const metadataId = document.getElementById('wizard-metadata-id')?.value;
+        const metadataVersion = document.getElementById('wizard-metadata-version')?.value;
+        const metadataName = document.getElementById('wizard-metadata-name')?.value;
+        const metadataDescription = document.getElementById('wizard-metadata-description')?.value;
+        const metadataAuthors = document.getElementById('wizard-metadata-authors')?.value;
+        
+        if (metadataId !== undefined) {
+            if (!wizardData.metadata) wizardData.metadata = {};
+            wizardData.metadata.id = metadataId;
+            wizardData.metadata.version = metadataVersion || '1.0.0';
+            wizardData.metadata.name = metadataName;
+            wizardData.metadata.description = metadataDescription;
+            wizardData.metadata.authors = metadataAuthors;
+            
+            // Auto-generate package from ID
+            if (metadataId) {
+                const pascalCase = metadataId
+                    .split('-')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                    .join('');
+                wizardData.metadata.package = pascalCase || metadataId;
+            }
+        }
+        
+        const moduleName = document.getElementById('wizard-module-name')?.value;
+        const moduleDescription = document.getElementById('wizard-module-description')?.value;
+        
+        if (moduleName !== undefined) {
+            if (!wizardData.module_localization) wizardData.module_localization = {};
+            wizardData.module_localization.name = moduleName;
+            wizardData.module_localization.description = moduleDescription;
+            wizardData.module_localization.authors = '';
+        }
+        
+        const actionGroupId = document.getElementById('wizard-age-type')?.value;
+        if (actionGroupId !== undefined) {
+            if (!wizardData.action_group) wizardData.action_group = {};
+            wizardData.action_group.action_group_id = actionGroupId;
+        }
+    }
+    
     markDirty();
 }
 
