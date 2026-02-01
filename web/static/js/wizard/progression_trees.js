@@ -11,6 +11,7 @@ import { fetchReferenceData } from '../data/loader.js';
 // Cache for reference data
 let cachedQuotes = null;
 let cachedAdvisoryTypes = null;
+let cachedAgeProgressionModifiers = null; // {AGE_ANTIQUITY: {...}, AGE_EXPLORATION: {...}, AGE_MODERN: {...}}
 
 /**
  * Render progression tree section for Step 4
@@ -572,24 +573,55 @@ export function wizardAddUnlock() {
 }
 
 /**
- * Common modifier presets for quick selection
+ * Load and cache age-progression modifiers from modifiers.json
+ * Filters for MOD_AQ_*, MOD_EX_*, and MOD_MO_* prefixes and groups by age
  */
-const COMMON_MODIFIERS = {
-    'MOD_AQ_SETTLEMENT_CAP_INCREASE': '+1 Settlement Cap',
-    'MOD_AQ_SETTLEMENT_CAP_INCREASE_2': '+2 Settlement Cap',
-    'MOD_CITY_PRODUCTION_BONUS': 'City Production Bonus',
-    'MOD_CITY_SCIENCE_BONUS': 'City Science Bonus',
-    'MOD_CITY_GOLD_BONUS': 'City Gold Bonus',
-    'MOD_CITY_CULTURE_BONUS': 'City Culture Bonus',
-    'MOD_CITY_FAITH_BONUS': 'City Faith Bonus',
-    'MOD_UNIT_COMBAT_BONUS': 'Unit Combat Bonus',
-    'MOD_UNIT_MOVEMENT_BONUS': 'Unit Movement Bonus',
-};
+async function loadAgeProgressionModifiers() {
+    if (cachedAgeProgressionModifiers) {
+        return cachedAgeProgressionModifiers;
+    }
+    
+    try {
+        const modifiersData = await fetchReferenceData('modifiers');
+        const ageModifiers = {
+            'AGE_ANTIQUITY': {},
+            'AGE_EXPLORATION': {},
+            'AGE_MODERN': {}
+        };
+        
+        // Filter modifiers by age-specific prefix
+        // modifiersData is {name, description, values: []}
+        const allModifiers = modifiersData.values || modifiersData;
+        if (Array.isArray(allModifiers)) {
+            allModifiers.forEach(mod => {
+                if (mod.id) {
+                    if (mod.id.startsWith('MOD_AQ_')) {
+                        ageModifiers['AGE_ANTIQUITY'][mod.id] = mod.description || mod.id;
+                    } else if (mod.id.startsWith('MOD_EX_')) {
+                        ageModifiers['AGE_EXPLORATION'][mod.id] = mod.description || mod.id;
+                    } else if (mod.id.startsWith('MOD_MO_')) {
+                        ageModifiers['AGE_MODERN'][mod.id] = mod.description || mod.id;
+                    }
+                }
+            });
+        }
+        
+        cachedAgeProgressionModifiers = ageModifiers;
+        return ageModifiers;
+    } catch (error) {
+        console.error('Error loading age progression modifiers:', error);
+        return {
+            'AGE_ANTIQUITY': {},
+            'AGE_EXPLORATION': {},
+            'AGE_MODERN': {}
+        };
+    }
+}
 
 /**
  * Add an unlock row with optional data
  */
-function addUnlockRow(unlockIdx, unlock = null) {
+async function addUnlockRow(unlockIdx, unlock = null) {
     const container = document.getElementById('wizard-tree-node-unlocks-container');
     if (!container) return;
     
@@ -597,37 +629,64 @@ function addUnlockRow(unlockIdx, unlock = null) {
     unlockDiv.className = 'flex gap-2 items-end';
     unlockDiv.dataset.unlockIdx = unlockIdx;
     
-    // Build common modifier options
-    const commonModOptions = Object.entries(COMMON_MODIFIERS)
-        .map(([modId, label]) => `<option value="${modId}" ${unlock?.target_type === modId ? 'selected' : ''}>${label}</option>`)
+    // Determine the age from the node type field
+    let nodeAge = 'AGE_ANTIQUITY';
+    const nodeTypeField = document.getElementById('wizard-tree-node-id');
+    const nodeType = nodeTypeField?.value || '';
+    if (nodeType.includes('_EX_') || nodeType.includes('_EXPLORATION')) {
+        nodeAge = 'AGE_EXPLORATION';
+    } else if (nodeType.includes('_MO_') || nodeType.includes('_MODERN')) {
+        nodeAge = 'AGE_MODERN';
+    }
+    console.log(`addUnlockRow: nodeType="${nodeType}", detected nodeAge="${nodeAge}"`);
+    
+    // Load modifiers for this age
+    const ageModifiers = await loadAgeProgressionModifiers();
+    const ageMods = ageModifiers[nodeAge] || {};
+    console.log(`addUnlockRow: ${nodeAge} has ${Object.keys(ageMods).length} modifiers`);
+    
+    const modOptions = Object.entries(ageMods)
+        .map(([modId, desc]) => `<option value="${modId}" ${unlock?.target_type === modId ? 'selected' : ''}>${modId}: ${desc.substring(0, 50)}</option>`)
         .join('');
+    
+    // Normalize target_kind: if old KIND_MODIFIER, determine if it's common or custom
+    let targetKind = unlock?.target_kind;
+    if (targetKind === 'KIND_MODIFIER') {
+        // Legacy support: check if target_type is in common modifiers
+        targetKind = (ageMods[unlock?.target_type]) ? 'KIND_MODIFIER_COMMON' : 'KIND_MODIFIER_CUSTOM';
+    }
     
     unlockDiv.innerHTML = `
         <div class="flex-1">
             <label class="block text-xs font-medium text-slate-300 mb-1">Kind</label>
-            <select class="wizard-unlock-kind w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100" onchange="window.wizardToggleModifierPreset(${unlockIdx})">
-                <option value="KIND_MODIFIER" ${unlock?.target_kind === 'KIND_MODIFIER' ? 'selected' : ''}>Modifier</option>
-                <option value="KIND_CONSTRUCTIBLE" ${unlock?.target_kind === 'KIND_CONSTRUCTIBLE' ? 'selected' : ''}>Building/Improvement</option>
-                <option value="KIND_UNIT" ${unlock?.target_kind === 'KIND_UNIT' ? 'selected' : ''}>Unit</option>
-                <option value="KIND_TRADITION" ${unlock?.target_kind === 'KIND_TRADITION' ? 'selected' : ''}>Tradition</option>
+            <select class="wizard-unlock-kind w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100" onchange="window.wizardToggleModifierPreset(${unlockIdx}).catch(e => console.error('Error toggling modifier:', e))">
+                <option value="KIND_MODIFIER_COMMON" ${targetKind === 'KIND_MODIFIER_COMMON' ? 'selected' : ''}>Modifier (Common)</option>
+                <option value="KIND_MODIFIER_CUSTOM" ${targetKind === 'KIND_MODIFIER_CUSTOM' ? 'selected' : ''}>Modifier (Custom)</option>
+                <option value="KIND_CONSTRUCTIBLE" ${targetKind === 'KIND_CONSTRUCTIBLE' ? 'selected' : ''}>Building/Improvement</option>
+                <option value="KIND_UNIT" ${targetKind === 'KIND_UNIT' ? 'selected' : ''}>Unit</option>
+                <option value="KIND_TRADITION" ${targetKind === 'KIND_TRADITION' ? 'selected' : ''}>Tradition</option>
             </select>
         </div>
         <div class="flex-1" id="wizard-unlock-type-${unlockIdx}">
-            ${unlock?.target_kind === 'KIND_MODIFIER' ? `
-                <label class="block text-xs font-medium text-slate-300 mb-1">
-                    Modifier 
-                    <button type="button" onclick="window.wizardToggleModifierInput(${unlockIdx})" class="text-blue-400 hover:text-blue-300 ml-1" title="Switch to custom input">⇄</button>
-                </label>
+            ${targetKind === 'KIND_MODIFIER_COMMON' ? `
+                <label class="block text-xs font-medium text-slate-300 mb-1">Modifier</label>
                 <select class="wizard-unlock-type-select w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100">
-                    <option value="">-- Select Common Modifier --</option>
-                    ${commonModOptions}
-                    <option value="_custom_" ${unlock?.target_type && !COMMON_MODIFIERS[unlock.target_type] ? 'selected' : ''}>Custom Modifier ID...</option>
+                    <option value="">-- Select ${nodeAge} Modifier --</option>
+                    ${modOptions}
                 </select>
+            ` : targetKind === 'KIND_MODIFIER_CUSTOM' ? `
+                <label class="block text-xs font-medium text-slate-300 mb-1">Custom Modifier ID</label>
+                <input 
+                    type="text" 
+                    placeholder="MOD_YOUR_CUSTOM_MODIFIER"
+                    value="${unlock?.target_type || ''}"
+                    class="wizard-unlock-type w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100"
+                />
             ` : `
                 <label class="block text-xs font-medium text-slate-300 mb-1">Type/ID</label>
                 <input 
                     type="text" 
-                    placeholder="${unlock?.target_kind === 'KIND_UNIT' ? 'UNIT_TYPE' : unlock?.target_kind === 'KIND_CONSTRUCTIBLE' ? 'BUILDING_TYPE' : 'TYPE_ID'}"
+                    placeholder="${targetKind === 'KIND_UNIT' ? 'UNIT_TYPE' : targetKind === 'KIND_CONSTRUCTIBLE' ? 'BUILDING_TYPE' : 'TYPE_ID'}"
                     value="${unlock?.target_type || ''}"
                     class="wizard-unlock-type w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100"
                 />
@@ -662,7 +721,7 @@ function addUnlockRow(unlockIdx, unlock = null) {
     container.appendChild(unlockDiv);
     
     // If custom modifier selected initially, show input
-    if (unlock?.target_kind === 'KIND_MODIFIER' && unlock?.target_type && !COMMON_MODIFIERS[unlock.target_type]) {
+    if (unlock?.target_kind === 'KIND_MODIFIER' && unlock?.target_type && !ageMods[unlock.target_type]) {
         wizardToggleModifierInput(unlockIdx, unlock.target_type);
     }
 }
@@ -901,38 +960,56 @@ export function wizardToggleModifierInput(unlockIdx, customValue = '') {
 /**
  * Toggle unlock type input when kind changes
  */
-export function wizardToggleModifierPreset(unlockIdx) {
+export async function wizardToggleModifierPreset(unlockIdx) {
     const unlockDiv = document.querySelector(`[data-unlock-idx="${unlockIdx}"]`);
     if (!unlockDiv) return;
     
     const kindSelect = unlockDiv.querySelector('.wizard-unlock-kind');
-    const isModifier = kindSelect.value === 'KIND_MODIFIER';
+    const kind = kindSelect.value;
     const typeContainer = document.getElementById(`wizard-unlock-type-${unlockIdx}`);
     
     if (!typeContainer) return;
     
-    if (isModifier) {
-        // Show modifier preset dropdown
-        const commonModOptions = Object.entries(COMMON_MODIFIERS)
-            .map(([modId, label]) => `<option value="${modId}">${label}</option>`)
+    // Determine the age from the node type field
+    let nodeAge = 'AGE_ANTIQUITY';
+    const nodeTypeField = document.getElementById('wizard-tree-node-id');
+    const nodeType = nodeTypeField?.value || '';
+    if (nodeType.includes('_EX_') || nodeType.includes('_EXPLORATION')) {
+        nodeAge = 'AGE_EXPLORATION';
+    } else if (nodeType.includes('_MO_') || nodeType.includes('_MODERN')) {
+        nodeAge = 'AGE_MODERN';
+    }
+    
+    if (kind === 'KIND_MODIFIER_COMMON') {
+        // Load modifiers for this age
+        const ageModifiers = await loadAgeProgressionModifiers();
+        const ageMods = ageModifiers[nodeAge] || {};
+        const modOptions = Object.entries(ageMods)
+            .map(([modId, desc]) => `<option value="${modId}">${modId}: ${desc.substring(0, 50)}</option>`)
             .join('');
         
         typeContainer.innerHTML = `
-            <label class="block text-xs font-medium text-slate-300 mb-1">
-                Modifier 
-                <button type="button" onclick="window.wizardToggleModifierInput(${unlockIdx})" class="text-blue-400 hover:text-blue-300 ml-1" title="Switch to custom input">⇄</button>
-            </label>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Modifier</label>
             <select class="wizard-unlock-type-select w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100">
-                <option value="">-- Select Common Modifier --</option>
-                ${commonModOptions}
-                <option value="_custom_">Custom Modifier ID...</option>
+                <option value="">-- Select ${nodeAge} Modifier --</option>
+                ${modOptions}
             </select>
         `;
+    } else if (kind === 'KIND_MODIFIER_CUSTOM') {
+        typeContainer.innerHTML = `
+            <label class="block text-xs font-medium text-slate-300 mb-1">Custom Modifier ID</label>
+            <input 
+                type="text" 
+                placeholder="MOD_YOUR_CUSTOM_MODIFIER"
+                value=""
+                class="wizard-unlock-type w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs text-slate-100"
+            />
+        `;
     } else {
-        // Show regular text input
-        const placeholder = kindSelect.value === 'KIND_UNIT' ? 'UNIT_TYPE' : 
-                          kindSelect.value === 'KIND_CONSTRUCTIBLE' ? 'BUILDING_TYPE' : 
-                          kindSelect.value === 'KIND_TRADITION' ? 'TRADITION_TYPE' : 'TYPE_ID';
+        // Show regular text input for other kinds
+        const placeholder = kind === 'KIND_UNIT' ? 'UNIT_TYPE' : 
+                          kind === 'KIND_CONSTRUCTIBLE' ? 'BUILDING_TYPE' : 
+                          kind === 'KIND_TRADITION' ? 'TRADITION_TYPE' : 'TYPE_ID';
         
         typeContainer.innerHTML = `
             <label class="block text-xs font-medium text-slate-300 mb-1">Type/ID</label>

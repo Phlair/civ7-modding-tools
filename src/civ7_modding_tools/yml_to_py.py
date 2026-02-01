@@ -659,11 +659,37 @@ class YamlToPyConverter:
         if civilization and 'civ_ability_modifier_ids' in civilization:
             civ_ability_modifier_ids = set(civilization['civ_ability_modifier_ids'])
         
+        # Collect modifiers unlocked via progression tree nodes with their ages
+        prog_tree_modifier_ages = {}
+        for node in self.data.get('progression_tree_nodes', []):
+            node_type = node.get('progression_tree_node_type', '')
+            # Detect age from node type pattern
+            if '_EX_' in node_type or '_EXPLORATION' in node_type:
+                node_age = 'AGE_EXPLORATION'
+            elif '_MO_' in node_type or '_MODERN' in node_type:
+                node_age = 'AGE_MODERN'
+            else:
+                node_age = 'AGE_ANTIQUITY'
+            
+            # Collect modifier IDs from unlocks with KIND_MODIFIER or KIND_MODIFIER_CUSTOM
+            for unlock in node.get('unlocks', []):
+                if unlock.get('target_kind') in ('KIND_MODIFIER', 'KIND_MODIFIER_CUSTOM', 'KIND_MODIFIER_COMMON'):
+                    target_type = unlock.get('target_type')
+                    if target_type:
+                        prog_tree_modifier_ages[target_type] = node_age
+        
         self.add_line('# Modifiers')
         for modifier_data in modifiers:
             builder_id = modifier_data['id']
             self.add_line(f'{builder_id} = ModifierBuilder()')
-            self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
+            
+            # Check if modifier is unlocked via progression tree node - use that age
+            if builder_id in prog_tree_modifier_ages:
+                prog_tree_age = prog_tree_modifier_ages[builder_id]
+                self.add_line(f'{builder_id}.action_group_bundle = ActionGroupBundle(action_group_id=\'{prog_tree_age}\')')
+            else:
+                # Use global action group
+                self.add_line(f'{builder_id}.action_group_bundle = {self.action_group_var_name}')
             
             # Mark civ_ability modifiers as detached so they don't get linked to TRAIT_{CIV} in always.xml
             # They'll be linked to TRAIT_{CIV}_ABILITY in current.xml by CivilizationBuilder
@@ -896,6 +922,9 @@ class YamlToPyConverter:
         if not nodes:
             return
         
+        # Collect custom modifier IDs (defined in YAML)
+        custom_modifier_ids = {mod['id'] for mod in self.data.get('modifiers', [])}
+        
         self.add_line('# Progression tree nodes')
         
         for node_data in nodes:
@@ -914,9 +943,23 @@ class YamlToPyConverter:
             self.indent_level -= 1
             self.add_line('})')
             
-            # Handle bindings
-            if 'bindings' in node_data:
-                bindings = node_data['bindings']
+            # Collect CUSTOM modifiers from unlocks to bind them (so they generate game-effects.xml)
+            # Only bind modifiers that are defined in this mod's YAML
+            modifiers_to_bind = []
+            for unlock in node_data.get('unlocks', []):
+                if unlock.get('target_kind') in ('KIND_MODIFIER', 'KIND_MODIFIER_CUSTOM', 'KIND_MODIFIER_COMMON'):
+                    target_type = unlock.get('target_type')
+                    if target_type and target_type in custom_modifier_ids:
+                        modifiers_to_bind.append(target_type)
+            
+            # Handle explicit bindings
+            bindings = list(node_data.get('bindings', []))
+            
+            # Add custom modifier unlocks to bindings
+            bindings.extend(modifiers_to_bind)
+            
+            # Generate bind call if we have any bindings
+            if bindings:
                 binding_list = ', '.join(bindings)
                 self.add_line(f'{builder_id}.bind([{binding_list}])')
             
@@ -1102,6 +1145,14 @@ class YamlToPyConverter:
                     if 'modifiers' in ability:
                         for modifier_id in ability['modifiers']:
                             bound.add(modifier_id)
+        
+        # Modifiers unlocked via progression tree nodes (these are handled by the tree's unlock system)
+        for node in self.data.get('progression_tree_nodes', []):
+            for unlock in node.get('unlocks', []):
+                if unlock.get('target_kind') in ('KIND_MODIFIER', 'KIND_MODIFIER_CUSTOM', 'KIND_MODIFIER_COMMON'):
+                    target_type = unlock.get('target_type')
+                    if target_type:
+                        bound.add(target_type)
         
         return bound
     

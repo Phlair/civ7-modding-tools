@@ -2876,9 +2876,15 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
             if not self._current.progression_tree_node_unlocks:
                 self._current.progression_tree_node_unlocks = []
             for unlock in self.unlocks:
+                # Normalize KIND_MODIFIER_COMMON and KIND_MODIFIER_CUSTOM back to KIND_MODIFIER
+                # The frontend uses _COMMON/_CUSTOM for UX, but the game expects KIND_MODIFIER
+                target_kind = unlock.get('target_kind')
+                if target_kind in ('KIND_MODIFIER_COMMON', 'KIND_MODIFIER_CUSTOM'):
+                    target_kind = 'KIND_MODIFIER'
+                
                 unlock_node = ProgressionTreeNodeUnlockNode(
                     progression_tree_node_type=self.progression_tree_node_type,
-                    target_kind=unlock.get('target_kind'),
+                    target_kind=target_kind,
                     target_type=unlock.get('target_type'),
                     unlock_depth=unlock.get('unlock_depth', 1),
                     hidden=unlock.get('hidden'),
@@ -2916,7 +2922,11 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
                 ))
         
         if localization_rows:
-            self._localizations.english_text = localization_rows
+            if self._localizations.english_text:
+                # Preserve any localizations that were merged in from bound modifiers
+                self._localizations.english_text = localization_rows + self._localizations.english_text
+            else:
+                self._localizations.english_text = localization_rows
         
         return self
 
@@ -2928,6 +2938,14 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
             unlock_depth: Depth of unlock (default 1)
             hidden: Whether unlock is hidden (optional)
         """
+        # Collect existing unlock target types to avoid duplicates
+        existing_unlocks = set()
+        if self.unlocks:
+            for unlock in self.unlocks:
+                target_type = unlock.get('target_type')
+                if target_type:
+                    existing_unlocks.add(target_type)
+        
         for item in items:
             # Check for ModifierBuilder (has 'modifier' dict attribute)
             if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
@@ -2942,16 +2960,17 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
                     # Add modifiers directly to game effects
                     self._game_effects.modifiers.extend(item._game_effects.modifiers)
                     
-                    # Add unlocks for each modifier
+                    # Add unlocks for each modifier (skip if already in unlocks list)
                     for modifier in item._game_effects.modifiers:
-                        if not self._current.progression_tree_node_unlocks:
-                            self._current.progression_tree_node_unlocks = []
-                        self._current.progression_tree_node_unlocks.append(
-                            ProgressionTreeNodeUnlockNode(
-                                progression_tree_node_type=self.progression_tree_node_type,
-                                target_kind="KIND_MODIFIER",
-                                target_type=modifier.id,
-                                unlock_depth=unlock_depth,
+                        if modifier.id not in existing_unlocks:
+                            if not self._current.progression_tree_node_unlocks:
+                                self._current.progression_tree_node_unlocks = []
+                            self._current.progression_tree_node_unlocks.append(
+                                ProgressionTreeNodeUnlockNode(
+                                    progression_tree_node_type=self.progression_tree_node_type,
+                                    target_kind="KIND_MODIFIER",
+                                    target_type=modifier.id,
+                                    unlock_depth=unlock_depth,
                                 hidden=hidden
                             )
                         )
@@ -3087,9 +3106,19 @@ class ModifierBuilder(BaseBuilder):
         modifier_node.requirements = self.modifier.get('requirements', [])
         modifier_node.arguments = self.modifier.get('arguments', [])
         
-        # Do not populate strings in the modifier node; localizations should
-        # only appear in the localization.xml file, not in game-effects.xml
-        modifier_node.strings = []
+        # Add String elements for localizations (needed for progression tree unlocks)
+        # These reference the LOC_ keys that will be in localization.xml
+        modifier_strings = []
+        for loc in self.localizations:
+            if isinstance(loc, dict):
+                for key, _text in loc.items():
+                    # Generate LOC key and add String element inside modifier
+                    loc_key = locale(modifier_node.id, key)
+                    modifier_strings.append({
+                        'context': key.title(),  # 'description' -> 'Description'
+                        'value': loc_key  # Use 'value' to match ModifierNode.to_xml_element()
+                    })
+        modifier_node.strings = modifier_strings
         
         # Populate game_effects with modifier
         self._game_effects = GameEffectNode()
