@@ -254,7 +254,7 @@ export function renderWizardStep4(container) {
                                             <p class="font-medium text-sm">${trad.localizations?.[0]?.name || trad.id || 'Unnamed Tradition'}</p>
                                             ${isExisting ? '<span class="px-1.5 py-0.5 text-xs bg-blue-600/30 text-blue-300 rounded">Base Game</span>' : '<span class="px-1.5 py-0.5 text-xs bg-pink-600/30 text-pink-300 rounded">Custom</span>'}
                                         </div>
-                                        <p class="text-xs text-slate-400 mt-1">${trad.id}</p>
+                                        <p class="text-xs text-slate-400 mt-1">${isExisting ? (trad.base_tradition_id || trad.id) : (trad.tradition_type || trad.id)}</p>
                                         ${trad.localizations?.[0]?.description ? `<p class="text-xs text-slate-500 mt-1 line-clamp-2">${trad.localizations[0].description}</p>` : ''}
                                         ${modifierCount > 0 ? `<p class="text-xs text-green-400 mt-1">📎 ${modifierCount} modifier${modifierCount > 1 ? 's' : ''} attached</p>` : ''}
                                     </div>
@@ -977,6 +977,8 @@ export async function wizardSaveTradition() {
         tradition = {
             id: selectedId,
             is_existing_tradition: true,
+            // Store original base game tradition ID for round-trip persistence
+            base_tradition_id: selectedId,
             age: existingTradition?.age || '',
             trait_type: existingTradition?.trait_type || '',
             localizations: [{
@@ -1056,7 +1058,8 @@ export async function wizardEditTradition(idx) {
         wizardSetTraditionMode('existing');
         
         const existingSelect = document.getElementById('wizard-tradition-existing-select');
-        if (existingSelect) existingSelect.value = tradition.id;
+        // Use base_tradition_id if available, otherwise fall back to id
+        if (existingSelect) existingSelect.value = tradition.base_tradition_id || tradition.id;
         
         // Trigger preview update
         await wizardOnExistingTraditionSelect();
@@ -1065,14 +1068,14 @@ export async function wizardEditTradition(idx) {
         wizardSetTraditionMode('custom');
         
         const idField = document.getElementById('wizard-tradition-id');
+        const nameField = document.getElementById('wizard-tradition-name');
+        const descField = document.getElementById('wizard-tradition-desc');
+        const ageField = document.getElementById('wizard-tradition-age');
         
-        if (idField) idField.value = tradition.id || '';
+        if (idField) idField.value = tradition.tradition_type || tradition.id || '';
         if (nameField) nameField.value = tradition.localizations?.[0]?.name || '';
         if (descField) descField.value = tradition.localizations?.[0]?.description || '';
-        if (ageField) ageField.value = tradition.agns?.[0]?.name || '';
-        if (descField) descField.value = tradition.localizations?.[0]?.description || '';
-        if (ageField) ageField.value = tradition.age || '';
-        if (traitField) traitField.value = tradition.trait_type || '';
+        if (ageField) ageField.value = tradition.age || tradition.tradition?.age_type || '';
     }
     
     // Check the modifier checkboxes that are attached to this tradition

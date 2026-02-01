@@ -555,10 +555,57 @@ export function populateWizardFromData(loadedData) {
     }
 
     // Populate traditions (Step 4)
+    // Normalize traditions for round-trip: detect base game traditions and restore original IDs
     if (Array.isArray(loadedData.traditions)) {
-        wizardData.traditions = loadedData.traditions.map(tradition => ({
-            ...tradition,
-        }));
+        wizardData.traditions = loadedData.traditions.map(tradition => {
+            const normalized = { ...tradition };
+            
+            // Detect base game traditions by presence of base_modifiers
+            const hasBaseModifiers = Array.isArray(tradition.base_modifiers) && tradition.base_modifiers.length > 0;
+            
+            // If is_existing_tradition is explicitly set, use it
+            // Otherwise, infer from base_modifiers presence
+            if (tradition.is_existing_tradition === undefined && hasBaseModifiers) {
+                normalized.is_existing_tradition = true;
+            }
+            
+            // For base game traditions, we need to restore/preserve the original base ID
+            // If base_tradition_id is set, use it as the display id
+            // Otherwise, try to extract from tradition_type (e.g., TRADITION_AUXILIA_ICENI -> TRADITION_AUXILIA)
+            if (normalized.is_existing_tradition) {
+                if (tradition.base_tradition_id) {
+                    // Already have the original ID stored
+                    normalized.id = tradition.base_tradition_id;
+                } else if (tradition.tradition_type) {
+                    // Try to extract base tradition ID from derived tradition_type
+                    // Pattern: TRADITION_BASENAME_CIVNAME or TRADITION_BASENAME_CIVNAME_CIVNAME
+                    const civType = loadedData.civilization?.civilization_type || '';
+                    const civName = civType.replace('CIVILIZATION_', '');
+                    if (civName && tradition.tradition_type.includes(`_${civName}`)) {
+                        // Strip the _CIVNAME suffix(es) to get original
+                        let baseTraditionId = tradition.tradition_type;
+                        // Remove all occurrences of _CIVNAME from the end
+                        while (baseTraditionId.endsWith(`_${civName}`)) {
+                            baseTraditionId = baseTraditionId.slice(0, -(`_${civName}`.length));
+                        }
+                        normalized.id = baseTraditionId;
+                        normalized.base_tradition_id = baseTraditionId;
+                    }
+                }
+            }
+
+            // Restore modifier attachments for custom traditions converted to builder format
+            // Builder-format custom traditions use `bindings` for modifiers
+            if (!normalized.is_existing_tradition) {
+                if (!Array.isArray(normalized.modifier_ids) || normalized.modifier_ids.length === 0) {
+                    if (Array.isArray(tradition.bindings) && tradition.bindings.length > 0) {
+                        normalized.modifier_ids = [...tradition.bindings];
+                    }
+                }
+            }
+            
+            return normalized;
+        });
     }
 
     // Populate progression tree nodes (Step 5)
