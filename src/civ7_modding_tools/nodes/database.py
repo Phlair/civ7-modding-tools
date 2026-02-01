@@ -333,8 +333,8 @@ class GameModifierNode(BaseNode):
 class ModifierStringNode(BaseNode):
     """Represents a modifier preview string for UI display."""
     _name: str = "Row"
-    modifier_type: Optional[str] = None
-    string_type: Optional[str] = None
+    modifier_id: Optional[str] = None
+    context: Optional[str] = None
     text: Optional[str] = None
 
 

@@ -889,6 +889,72 @@ function renderModifiersSection(container, data) {
             itemDiv.appendChild(createAutocompleteField(`modifiers.${i}.modifier.collection`, "Collection", modifier.modifier.collection, false, "Scope of effect"));
             itemDiv.appendChild(createAutocompleteField(`modifiers.${i}.modifier.effect`, "Effect", modifier.modifier.effect, false, "Game action"));
         }
+
+        const previewValue = (modifier.modifier_strings || []).find(
+            s => s.string_type === 'PREVIEW_DESCRIPTION'
+        )?.text || '';
+        const tooltipValue = (modifier.modifier_strings || []).find(
+            s => s.string_type === 'TOOLTIP'
+        )?.text || '';
+
+        const stringsWrapper = document.createElement('div');
+        stringsWrapper.className = 'mt-4 p-3 bg-slate-900/50 border border-slate-700 rounded';
+
+        const stringsTitle = document.createElement('h5');
+        stringsTitle.className = 'text-sm font-semibold text-slate-300 mb-2';
+        stringsTitle.textContent = 'Battle Tooltip (Optional)';
+        stringsWrapper.appendChild(stringsTitle);
+
+        const previewField = document.createElement('div');
+        previewField.className = 'mb-3';
+        previewField.innerHTML = `
+            <label class="block text-sm font-medium text-slate-300 mb-2">Preview Description</label>
+            <input
+                type="text"
+                value="${previewValue.replace(/"/g, '&quot;')}"
+                class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded text-slate-100 text-sm focus:outline-none focus:border-blue-400 transition-colors"
+                placeholder="Shows in combat preview"
+            />
+        `;
+        const previewInput = previewField.querySelector('input');
+        previewInput.addEventListener('input', (e) => {
+            const text = e.target.value.trim();
+            if (!modifier.modifier_strings) modifier.modifier_strings = [];
+            modifier.modifier_strings = modifier.modifier_strings.filter(
+                s => s.string_type !== 'PREVIEW_DESCRIPTION'
+            );
+            if (text) {
+                modifier.modifier_strings.push({ string_type: 'PREVIEW_DESCRIPTION', text: text });
+            }
+            markDirty();
+        });
+        stringsWrapper.appendChild(previewField);
+
+        const tooltipField = document.createElement('div');
+        tooltipField.innerHTML = `
+            <label class="block text-sm font-medium text-slate-300 mb-2">Tooltip Text</label>
+            <input
+                type="text"
+                value="${tooltipValue.replace(/"/g, '&quot;')}"
+                class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded text-slate-100 text-sm focus:outline-none focus:border-blue-400 transition-colors"
+                placeholder="Shows in unit tooltip"
+            />
+        `;
+        const tooltipInput = tooltipField.querySelector('input');
+        tooltipInput.addEventListener('input', (e) => {
+            const text = e.target.value.trim();
+            if (!modifier.modifier_strings) modifier.modifier_strings = [];
+            modifier.modifier_strings = modifier.modifier_strings.filter(
+                s => s.string_type !== 'TOOLTIP'
+            );
+            if (text) {
+                modifier.modifier_strings.push({ string_type: 'TOOLTIP', text: text });
+            }
+            markDirty();
+        });
+        stringsWrapper.appendChild(tooltipField);
+
+        itemDiv.appendChild(stringsWrapper);
         
         container.appendChild(itemDiv);
     });

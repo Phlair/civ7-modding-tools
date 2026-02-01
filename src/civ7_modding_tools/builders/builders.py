@@ -1051,6 +1051,13 @@ class CivilizationBuilder(BaseBuilder):
                                     )
                                 )
                     
+                    # Merge modifier_strings (for battle tooltips)
+                    if hasattr(item, '_current') and item._current:
+                        if hasattr(item._current, 'modifier_strings') and item._current.modifier_strings:
+                            if not self._current.modifier_strings:
+                                self._current.modifier_strings = []
+                            self._current.modifier_strings.extend(item._current.modifier_strings)
+                    
                     # Merge localizations
                     if hasattr(item, '_localizations') and item._localizations:
                         if item._localizations.english_text:
@@ -1532,6 +1539,13 @@ class UnitBuilder(BaseBuilder):
                     if not hasattr(self._current._game_effects, 'modifiers'):
                         self._current._game_effects.modifiers = []
                     self._current._game_effects.modifiers.extend(ability_builder._game_effects.modifiers)
+                
+                # Merge modifier_strings
+                if hasattr(ability_builder, '_current') and ability_builder._current:
+                    if hasattr(ability_builder._current, 'modifier_strings') and ability_builder._current.modifier_strings:
+                        if not self._current.modifier_strings:
+                            self._current.modifier_strings = []
+                        self._current.modifier_strings.extend(ability_builder._current.modifier_strings)
                 
                 # Merge localizations
                 if ability_builder._localizations.english_text:
@@ -3118,6 +3132,36 @@ class ModifierBuilder(BaseBuilder):
                         'context': key.title(),  # 'description' -> 'Description'
                         'value': loc_key  # Use 'value' to match ModifierNode.to_xml_element()
                     })
+        
+        # Add String elements for battle tooltips (from modifier_strings)
+        # These are direct text strings that appear in battle preview UI
+        for string_info in self.modifier_strings:
+            context_value = None
+            text_value = None
+            
+            if isinstance(string_info, dict):
+                # Map YAML string_type to game context values
+                string_type = string_info.get('string_type', '')
+                if string_type == 'PREVIEW_DESCRIPTION':
+                    context_value = 'Preview'
+                elif string_type == 'TOOLTIP':
+                    context_value = 'Tooltip'
+                text_value = string_info.get('text', '')
+            elif isinstance(string_info, ModifierStringNode):
+                # Handle ModifierStringNode instances (though these won't be used in game-effects)
+                context_attr = getattr(string_info, 'context', None)
+                if context_attr == 'PREVIEW_DESCRIPTION':
+                    context_value = 'Preview'
+                elif context_attr == 'TOOLTIP':
+                    context_value = 'Tooltip'
+                text_value = getattr(string_info, 'text', '')
+            
+            if context_value and text_value:
+                modifier_strings.append({
+                    'context': context_value,
+                    'value': text_value
+                })
+        
         modifier_node.strings = modifier_strings
         
         # Populate game_effects with modifier
@@ -3125,19 +3169,7 @@ class ModifierBuilder(BaseBuilder):
         self._game_effects.modifiers = [modifier_node]
         
         # ==== POPULATE _current DATABASE ====
-        # Populate modifier_strings if provided
-        if self.modifier_strings:
-            modifier_string_nodes = []
-            for string_info in self.modifier_strings:
-                if isinstance(string_info, dict):
-                    string_node = ModifierStringNode(
-                        modifier_type=modifier_type_or_id,
-                        string_type=string_info.get('string_type'),
-                        text=string_info.get('text')
-                    )
-                    modifier_string_nodes.append(string_node)
-            if modifier_string_nodes:
-                self._current.modifier_strings = modifier_string_nodes
+        # (No database rows needed - modifier_strings are in game-effects.xml as <String> elements)
         
         # ==== POPULATE _localizations DATABASE ====
         # Populate localizations
@@ -3160,14 +3192,20 @@ class ModifierBuilder(BaseBuilder):
         """
         Build modifier files.
         
-        Note: ModifierBuilder typically doesn't generate standalone files.
         Modifiers are usually bound to other builders (CivilizationBuilder, etc.)
         and their content is merged into the parent builder's files via .bind().
-        Returns empty list as modifiers are merged into parent builders.
+        Battle tooltip strings (<String context="Preview">) are included in the
+        modifier definition in game-effects.xml, not in a separate file.
         """
-        # ModifierBuilder content is merged into parent builders via bind()
-        # No standalone files should be generated
-        return []
+        files = []
+        
+        # Ensure migrate() has been called
+        self.migrate()
+        
+        # Modifiers output their content via game-effects.xml which gets merged
+        # into parent builders. No standalone files needed.
+        
+        return files
 
 
 class GameModifierBuilder(BaseBuilder):
@@ -3201,19 +3239,8 @@ class GameModifierBuilder(BaseBuilder):
             return self
         
         # ==== POPULATE _current DATABASE ====
-        # Populate modifier_strings if provided
-        if self.modifier_strings:
-            modifier_string_nodes = []
-            for string_info in self.modifier_strings:
-                if isinstance(string_info, dict):
-                    string_node = ModifierStringNode(
-                        modifier_type=modifier_type,
-                        string_type=string_info.get('string_type'),
-                        text=string_info.get('text')
-                    )
-                    modifier_string_nodes.append(string_node)
-            if modifier_string_nodes:
-                self._current.modifier_strings = modifier_string_nodes
+        # NOTE: modifier_strings are NOT included in _current when merging into parent builders.
+        # They are only output to /modifiers/current.xml by ModifierBuilder
         
         # ==== POPULATE _localizations DATABASE ====
         localization_rows = []
@@ -3331,6 +3358,7 @@ class UnitAbilityBuilder(BaseBuilder):
         if self._bound_modifiers:
             ability_modifier_nodes = []
             all_game_effect_modifiers = []
+            all_modifier_strings = []
             
             for modifier_builder in self._bound_modifiers:
                 # Ensure modifier is migrated
@@ -3350,6 +3378,11 @@ class UnitAbilityBuilder(BaseBuilder):
                 # Collect game effect modifiers from bound builders
                 if modifier_builder._game_effects and hasattr(modifier_builder._game_effects, 'modifiers'):
                     all_game_effect_modifiers.extend(modifier_builder._game_effects.modifiers)
+                
+                # Collect modifier_strings from bound builders
+                if hasattr(modifier_builder, '_current') and modifier_builder._current:
+                    if hasattr(modifier_builder._current, 'modifier_strings') and modifier_builder._current.modifier_strings:
+                        all_modifier_strings.extend(modifier_builder._current.modifier_strings)
             
             self._current.unit_ability_modifiers = ability_modifier_nodes
             
@@ -3359,6 +3392,12 @@ class UnitAbilityBuilder(BaseBuilder):
                     from civ7_modding_tools.nodes.nodes import GameEffectNode
                     self._game_effects = GameEffectNode()
                 self._game_effects.modifiers = all_game_effect_modifiers
+            
+            # Merge all modifier_strings
+            if all_modifier_strings:
+                if not self._current.modifier_strings:
+                    self._current.modifier_strings = []
+                self._current.modifier_strings.extend(all_modifier_strings)
         
         # ==== POPULATE _localizations DATABASE ====
         localization_rows = []

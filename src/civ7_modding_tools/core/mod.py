@@ -768,7 +768,7 @@ const {class_name.replace('ImprovementModels', 'Models')} = new {class_name}();
             'constructibles', 'constructible_yield_changes', 'constructible_valid_districts',
             'constructible_maintenances', 'constructible_adjacency_bonuses',
             'buildings', 'improvements', 'building_attributes',
-            'modifiers', 'modifier_arguments', 'game_modifiers',
+            'modifiers', 'modifier_arguments', 'modifier_strings', 'game_modifiers',
             'requirement_sets', 'requirement_set_requirements', 'requirements',
             'requirement_arguments', 'english_text', 'icon_definitions',
             'progression_trees', 'progression_tree_nodes', 'progression_tree_prereqs',
@@ -895,6 +895,7 @@ const {class_name.replace('ImprovementModels', 'Models')} = new {class_name}();
         unique_fields_map = {
             'modifiers': ['modifier_id'],
             'modifier_arguments': ['modifier_id', 'name'],
+            'modifier_strings': ['modifier_id', 'context'],
             'types': ['type_'],
             'units': ['unit_type'],
             'unit_abilities': ['unit_ability_type'],

@@ -157,6 +157,30 @@ export function renderWizardStep4(container) {
                                 ></textarea>
                             </div>
                         </div>
+
+                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
+                            <h6 class="text-xs font-semibold text-slate-400 mb-2">Battle Tooltip (Optional)</h6>
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Preview Description</label>
+                                    <textarea 
+                                        id="wizard-modifier-preview" 
+                                        placeholder="Shows in combat preview (e.g. +4 Combat Strength in Forest)"
+                                        rows="2"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    ></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Tooltip Text</label>
+                                    <textarea 
+                                        id="wizard-modifier-tooltip" 
+                                        placeholder="Shows in unit tooltip (optional)"
+                                        rows="2"
+                                        class="w-full px-2 py-1 bg-slate-700 border border-slate-600 rounded text-sm text-slate-100 focus:outline-none focus:border-blue-400"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
                         
                         <div class="bg-slate-900/50 p-3 rounded border border-slate-700">
                             <label class="flex items-center space-x-2 text-xs text-slate-300">
@@ -437,6 +461,8 @@ export function wizardShowModifierForm() {
     document.getElementById('wizard-modifier-permanent').checked = false;
     document.getElementById('wizard-modifier-runonce').checked = false;
     document.getElementById('wizard-modifier-desc').value = '';
+    document.getElementById('wizard-modifier-preview').value = '';
+    document.getElementById('wizard-modifier-tooltip').value = '';
     document.getElementById('wizard-modifier-args').value = '';
     idxInput.value = '-1';
 
@@ -463,6 +489,8 @@ export function wizardCancelModifierForm() {
     document.getElementById('wizard-modifier-permanent').checked = false;
     document.getElementById('wizard-modifier-runonce').checked = false;
     document.getElementById('wizard-modifier-desc').value = '';
+    document.getElementById('wizard-modifier-preview').value = '';
+    document.getElementById('wizard-modifier-tooltip').value = '';
     document.getElementById('wizard-modifier-bind-to-civ').checked = false;
     document.getElementById('wizard-modifier-args').value = '';
     document.getElementById('wizard-modifier-edit-idx').value = '-1';
@@ -482,6 +510,8 @@ export function wizardSaveModifier() {
     const permanent = document.getElementById('wizard-modifier-permanent').checked;
     const runOnce = document.getElementById('wizard-modifier-runonce').checked;
     const description = document.getElementById('wizard-modifier-desc').value.trim();
+    const previewText = document.getElementById('wizard-modifier-preview').value.trim();
+    const tooltipText = document.getElementById('wizard-modifier-tooltip').value.trim();
     const bindToCiv = document.getElementById('wizard-modifier-bind-to-civ').checked;
     const argsText = document.getElementById('wizard-modifier-args').value.trim();
     const editIdx = parseInt(document.getElementById('wizard-modifier-edit-idx').value, 10);
@@ -581,6 +611,23 @@ export function wizardSaveModifier() {
     if (description) {
         modifier.localizations = [{ description: description }];
     }
+
+    const existingStrings = editIdx >= 0
+        ? (wizardData.modifiers?.[editIdx]?.modifier_strings || []).filter(
+            s => s.string_type !== 'PREVIEW_DESCRIPTION' && s.string_type !== 'TOOLTIP'
+        )
+        : [];
+
+    const modifierStrings = [...existingStrings];
+    if (previewText) {
+        modifierStrings.push({ string_type: 'PREVIEW_DESCRIPTION', text: previewText });
+    }
+    if (tooltipText) {
+        modifierStrings.push({ string_type: 'TOOLTIP', text: tooltipText });
+    }
+    if (modifierStrings.length > 0) {
+        modifier.modifier_strings = modifierStrings;
+    }
     
     if (bindToCiv) {
         modifier.bind_to_civilization = true;
@@ -606,6 +653,10 @@ export async function wizardEditModifier(idx) {
     document.getElementById('wizard-modifier-permanent').checked = modifier.modifier?.permanent || false;
     document.getElementById('wizard-modifier-runonce').checked = modifier.modifier?.run_once || false;
     document.getElementById('wizard-modifier-desc').value = modifier.localizations?.[0]?.description || '';
+    const previewString = modifier.modifier_strings?.find(s => s.string_type === 'PREVIEW_DESCRIPTION');
+    const tooltipString = modifier.modifier_strings?.find(s => s.string_type === 'TOOLTIP');
+    document.getElementById('wizard-modifier-preview').value = previewString?.text || '';
+    document.getElementById('wizard-modifier-tooltip').value = tooltipString?.text || '';
     document.getElementById('wizard-modifier-bind-to-civ').checked = modifier.bind_to_civilization === true;
 
     if (modifier.modifier?.arguments) {
