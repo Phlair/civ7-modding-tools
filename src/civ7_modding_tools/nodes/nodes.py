@@ -194,7 +194,7 @@ class ProgressionTreeNodeNode(BaseNode):
     progression_tree: Optional[str] = None
     cost: Optional[int] = 150
     name: Optional[str] = None
-    icon_string: Optional[str] = "cult_aksum"
+    icon_string: Optional[str] = "cult_futurecivic"
     depth: Optional[int] = None
     index: Optional[int] = None
 

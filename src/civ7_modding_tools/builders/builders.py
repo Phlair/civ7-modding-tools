@@ -2621,7 +2621,10 @@ class ProgressionTreeBuilder(BaseBuilder):
                     ))
         
         if localization_rows:
-            self._localizations.english_text = localization_rows
+            if self._localizations.english_text:
+                self._localizations.english_text = self._localizations.english_text + localization_rows
+            else:
+                self._localizations.english_text = localization_rows
         
         return self
 
@@ -2789,16 +2792,34 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
         from civ7_modding_tools.nodes import (
             ProgressionTreeNodeNode,
             TypeQuoteNode,
+            EnglishTextNode,
+            TypeNode,
+            ProgressionTreeAdvisoryNode,
+            ProgressionTreeNodeUnlockNode,
         )
         
         if not self.progression_tree_node_type:
             return self
         
         # Generate localization keys
-        loc_name = locale(self.progression_tree_node_type, 'name')
-        loc_desc = locale(self.progression_tree_node_type, 'description')
-        loc_quote = locale(self.progression_tree_node_type, 'quote')
-        loc_quote_author = locale(self.progression_tree_node_type, 'quote_author')
+        node_type = self.progression_tree_node_type
+        if node_type.startswith('NODE_CIVIC_'):
+            suffix = node_type.replace('NODE_CIVIC_', '')
+            loc_name = f'LOC_CIVIC_{suffix}_NAME'
+            loc_desc = f'LOC_CIVIC_{suffix}_DESCRIPTION'
+            loc_quote = f'LOC_CIVIC_{suffix}_QUOTE'
+            loc_quote_author = f'LOC_CIVIC_{suffix}_QUOTE_AUTHOR'
+        elif node_type.startswith('NODE_TECH_'):
+            suffix = node_type.replace('NODE_TECH_', '')
+            loc_name = f'LOC_TECH_{suffix}_NAME'
+            loc_desc = f'LOC_TECH_{suffix}_DESCRIPTION'
+            loc_quote = f'LOC_TECH_{suffix}_QUOTE'
+            loc_quote_author = f'LOC_TECH_{suffix}_QUOTE_AUTHOR'
+        else:
+            loc_name = locale(node_type, 'name')
+            loc_desc = locale(node_type, 'description')
+            loc_quote = locale(node_type, 'quote')
+            loc_quote_author = locale(node_type, 'quote_author')
         
         # ==== POPULATE _current DATABASE ====
         # Types
@@ -2827,13 +2848,17 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
         
         # TypeQuotes (for node quotes)
         if self.quote:
-            # Support both custom quotes and existing quote references
-            if self.quote.get('quote_loc'):
-                # Existing quote from reference data
+            # Prioritize custom quote text over base game references
+            # Use generated LOC keys if custom text is provided
+            if self.quote.get('quote_text') or self.quote.get('quote_author'):
+                quote_loc_key = loc_quote
+                quote_author_loc_key = loc_quote_author
+            elif self.quote.get('quote_loc'):
+                # Fall back to existing quote references only if no custom text
                 quote_loc_key = self.quote['quote_loc']
                 quote_author_loc_key = self.quote.get('quote_author_loc', '')
             else:
-                # Custom quote text - generate LOC keys
+                # No quote content at all
                 quote_loc_key = loc_quote
                 quote_author_loc_key = loc_quote_author
             
@@ -2876,8 +2901,9 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
                         text=loc["description"]
                     ))
         
-        # Add quote localizations if custom quote provided
-        if self.quote and not self.quote.get('quote_loc'):
+        # Add quote localizations if custom quote text provided
+        # Generate LOC entries whenever quote_text or quote_author are present
+        if self.quote:
             if self.quote.get('quote_text'):
                 localization_rows.append(EnglishTextNode(
                     tag=loc_quote,
