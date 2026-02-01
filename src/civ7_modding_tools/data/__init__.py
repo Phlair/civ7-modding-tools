@@ -303,6 +303,11 @@ def get_civilization_traits() -> List[Dict[str, str]]:
     return load_reference_data('civilization-traits.json')['values']
 
 
+def get_quotes() -> List[Dict[str, str]]:
+    """Get all available quotes from progression tree nodes with resolved text."""
+    return load_reference_data('quotes.json')['values']
+
+
 __all__ = [
     'load_reference_data',
     # Original types
@@ -351,4 +356,5 @@ __all__ = [
     'get_constructibles',
     'get_traditions',
     'get_civilization_traits',
+    'get_quotes',
 ]

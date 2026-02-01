@@ -1,6 +1,12 @@
 {
   "values": [
     {
+      "id": "AgeCountdownLengths"
+    },
+    {
+      "id": "AgeTransitionSettings"
+    },
+    {
       "id": "AntiquityAgeCivilizations"
     },
     {
@@ -13,10 +19,85 @@
       "id": "DOMAIN_SEA"
     },
     {
+      "id": "DistantLandsMapSizes"
+    },
+    {
       "id": "ExplorationAgeCivilizations"
     },
     {
       "id": "ModernAgeCivilizations"
+    },
+    {
+      "id": "Rulesets"
+    },
+    {
+      "id": "StandardAgeLengths"
+    },
+    {
+      "id": "StandardAges"
+    },
+    {
+      "id": "StandardCalendars"
+    },
+    {
+      "id": "StandardCivilizations"
+    },
+    {
+      "id": "StandardCrises"
+    },
+    {
+      "id": "StandardDifficulties"
+    },
+    {
+      "id": "StandardDifficultiesNoCustom"
+    },
+    {
+      "id": "StandardDisasterIntensities"
+    },
+    {
+      "id": "StandardGameSpeeds"
+    },
+    {
+      "id": "StandardIndependentHostilities"
+    },
+    {
+      "id": "StandardLeaders"
+    },
+    {
+      "id": "StandardLegacyPaths"
+    },
+    {
+      "id": "StandardMapSizes"
+    },
+    {
+      "id": "StandardMapStartPositions"
+    },
+    {
+      "id": "StandardMaps"
+    },
+    {
+      "id": "StandardMementoSlots"
+    },
+    {
+      "id": "StandardMementos"
+    },
+    {
+      "id": "StandardTurnLimits"
+    },
+    {
+      "id": "StandardTurnTimers"
+    },
+    {
+      "id": "bool"
+    },
+    {
+      "id": "int"
+    },
+    {
+      "id": "text"
+    },
+    {
+      "id": "uint"
     }
   ]
 }

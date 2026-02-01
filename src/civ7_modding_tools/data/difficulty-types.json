@@ -1,6 +1,9 @@
 {
   "values": [
     {
+      "id": "DIFFICULTY_CUSTOM"
+    },
+    {
       "id": "DIFFICULTY_DEITY"
     },
     {

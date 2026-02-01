@@ -1,10 +1,22 @@
 {
   "values": [
     {
+      "id": "PROMOTION_CLASS_AERODROME_COMMANDER"
+    },
+    {
+      "id": "PROMOTION_CLASS_AIR_COMMANDER"
+    },
+    {
+      "id": "PROMOTION_CLASS_CARRIER_COMMANDER"
+    },
+    {
       "id": "PROMOTION_CLASS_LAND_COMMANDER"
     },
     {
       "id": "PROMOTION_CLASS_NAVAL_COMMANDER"
+    },
+    {
+      "id": "PROMOTION_CLASS_TRUNG_NHI_COMMANDER"
     }
   ]
 }

@@ -19,6 +19,30 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_ALLOW_UNIT_UPGRADE_OUTSIDE_FRIENDLY_TERRITORY",
+      "name": "LOC_ABILITY_ALLOW_UNIT_UPGRADE_OUTSIDE_FRIENDLY_TERRITORY_NAME",
+      "description": "LOC_ABILITY_ALLOW_UNIT_UPGRADE_OUTSIDE_FRIENDLY_TERRITORY_DESCRIPTION",
+      "description_text": "Unit can be upgraded as if in friendly territory, and heals 10 HP when upgraded."
+    },
+    {
+      "id": "ABILITY_AMINA_BIOME_COMBAT_STRENGTH",
+      "name": "LOC_TRAIT_LEADER_AMINA_ABILITY_NAME",
+      "description": "LOC_ABILITY_AMINA_DESERT_MELEE_DESCRIPTION",
+      "description_text": "+{1_Value} Combat Strength in Desert"
+    },
+    {
+      "id": "ABILITY_AMINA_CHECK_FOR_BIOME",
+      "name": "LOC_TRAIT_LEADER_AMINA_ABILITY_NAME",
+      "description": "LOC_ABILITY_AMINA_DESERT_MELEE_DESCRIPTION",
+      "description_text": "+{1_Value} Combat Strength in Desert"
+    },
+    {
+      "id": "ABILITY_AMPHIBIOUS",
+      "name": "LOC_KEYWORD_ABILITY_AMPHIBIOUS",
+      "description": "LOC_KEYWORD_ABILITY_AMPHIBIOUS_DESCRIPTION",
+      "description_text": "Ignores the Combat Strength penalty for being Embarked. Pays no Movement cost to Embark or Disembark."
+    },
+    {
       "id": "ABILITY_ANTIQUARIAN",
       "name": "LOC_UNIT_ANTIQUARIAN_NAME",
       "description": "LOC_ABILITY_ANTIQUARIAN_DESCRIPTION",
@@ -50,6 +74,150 @@
     },
     {
       "id": "ABILITY_AQ_TECH_SIEGE",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_AREA_DAMAGE",
+      "name": "LOC_ABILITY_AREA_DAMAGE_NAME",
+      "description": "LOC_ABILITY_AREA_DAMAGE_DESCRIPTION",
+      "description_text": "Deals 15 damage to enemy Units within the command radius."
+    },
+    {
+      "id": "ABILITY_ARMY_BARRAGE",
+      "name": "LOC_ABILITY_ARMY_BARRAGE_NAME",
+      "description": "LOC_ABILITY_ARMY_BARRAGE_DESCRIPTION",
+      "description_text": "+5 Combat Strength with Focus Fire."
+    },
+    {
+      "id": "ABILITY_ARMY_BARRAGE_TRUNG_NHI",
+      "name": "LOC_PROMOTION_ARMY_TRUNG_NHI_ONE_SINGLE_CRY_NAME",
+      "description": "LOC_PROMOTION_ARMY_TRUNG_NHI_ONE_SINGLE_CRY_DESCRIPTION",
+      "description_text": "+5 Combat Strength with Coordinated Attack and Focus Fire. [n]{LOC_PROMOTION_ARMY_TRUNG_NHI_ATTACK_DAMAGE_FINAL_DESCRIPTION}"
+    },
+    {
+      "id": "ABILITY_ARMY_BULWARK",
+      "name": "LOC_ABILITY_ARMY_BULWARK_NAME",
+      "description": "LOC_ABILITY_ARMY_BULWARK_DESCRIPTION",
+      "description_text": "Land Units within the Command Radius complete Fortifications 1 turn faster."
+    },
+    {
+      "id": "ABILITY_ARMY_DEFILADE",
+      "name": "LOC_ABILITY_ARMY_DEFILADE_NAME",
+      "description": "LOC_ABILITY_ARMY_DEFILADE_DESCRIPTION",
+      "description_text": "+3 Combat Strength from Fortifications for Land Units within the Command Radius."
+    },
+    {
+      "id": "ABILITY_ARMY_ENFILADE",
+      "name": "LOC_ABILITY_ARMY_ENFILADE_NAME",
+      "description": "LOC_ABILITY_ARMY_ENFILADE_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength for Siege Units when attacking."
+    },
+    {
+      "id": "ABILITY_ARMY_FIELD_MEDIC",
+      "name": "LOC_ABILITY_ARMY_FIELD_MEDIC_NAME",
+      "description": "LOC_ABILITY_ARMY_FIELD_MEDIC_DESCRIPTION",
+      "description_text": "Land Units within the Command Radius gain +5 Healing in enemy and neutral territory."
+    },
+    {
+      "id": "ABILITY_ARMY_HARASSMENT",
+      "name": "LOC_ABILITY_ARMY_HARASSMENT_NAME",
+      "description": "LOC_ABILITY_ARMY_HARASSMENT_DESCRIPTION",
+      "description_text": "Land Units within the Command Radius have a +2 Flanking bonus when attacking."
+    },
+    {
+      "id": "ABILITY_ARMY_HOLD_THE_LINE",
+      "name": "LOC_ABILITY_ARMY_HOLD_THE_LINE_NAME",
+      "description": "LOC_ABILITY_ARMY_HOLD_THE_LINE_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength when stationed on a District."
+    },
+    {
+      "id": "ABILITY_ARMY_LOOTING",
+      "name": "LOC_ABILITY_ARMY_LOOTING_NAME",
+      "description": "LOC_PROMOTION_ARMY_LOOTING_DESCRIPTION",
+      "description_text": "+50% Yield and HP from pillaging within the Command Radius."
+    },
+    {
+      "id": "ABILITY_ARMY_ONSLAUGHT",
+      "name": "LOC_ABILITY_ARMY_ONSLAUGHT_NAME",
+      "description": "LOC_ABILITY_ARMY_ONSLAUGHT_DESCRIPTION",
+      "description_text": "+5 Combat Strength with Coordinated Attack."
+    },
+    {
+      "id": "ABILITY_ARMY_ONSLAUGHT_TRUNG_NHI",
+      "name": "LOC_PROMOTION_ARMY_TRUNG_NHI_ONE_SINGLE_CRY_NAME",
+      "description": "LOC_PROMOTION_ARMY_TRUNG_NHI_ONE_SINGLE_CRY_DESCRIPTION",
+      "description_text": "+5 Combat Strength with Coordinated Attack and Focus Fire. [n]{LOC_PROMOTION_ARMY_TRUNG_NHI_ATTACK_DAMAGE_FINAL_DESCRIPTION}"
+    },
+    {
+      "id": "ABILITY_ARMY_ORDER",
+      "name": "LOC_ABILITY_ORDER_NAME",
+      "description": "LOC_ABILITY_ARMY_ORDER_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_ARMY_PATHFINDER",
+      "name": "LOC_ABILITY_ARMY_PATHFINDER_NAME",
+      "description": "LOC_ABILITY_ARMY_PATHFINDER_DESCRIPTION",
+      "description_text": "Land Units within the Command Radius ignore Terrain movement restrictions."
+    },
+    {
+      "id": "ABILITY_ARMY_RECRUITMENT",
+      "name": "LOC_PROMOTION_ARMY_RECRUITMENT_NAME",
+      "description": "LOC_PROMOTION_ARMY_RECRUITMENT_DESCRIPTION",
+      "description_text": "+15% Production towards training Land Units when stationed on a District."
+    },
+    {
+      "id": "ABILITY_ARMY_REDEPLOY",
+      "name": "LOC_ABILITY_ARMY_REDEPLOY_NAME",
+      "description": "LOC_ABILITY_ARMY_REDEPLOY_DESCRIPTION",
+      "description_text": "Opponents have -2 to Flanking bonuses when attacking Land Units within the Command Radius."
+    },
+    {
+      "id": "ABILITY_ARMY_RESOLUTE",
+      "name": "LOC_ABILITY_ARMY_RESOLUTE_NAME",
+      "description": "LOC_ABILITY_ARMY_RESOLUTE_DESCRIPTION",
+      "description_text": "Units heal {Amount} HP after attacking."
+    },
+    {
+      "id": "ABILITY_ARMY_ROUT",
+      "name": "LOC_ABILITY_ARMY_ROUT_NAME",
+      "description": "LOC_ABILITY_ARMY_ROUT_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength for Infantry Units when attacking."
+    },
+    {
+      "id": "ABILITY_ARMY_SERVICE",
+      "name": "LOC_ABILITY_SERVICE_NAME",
+      "description": "LOC_ABILITY_ARMY_SERVICE_DESCRIPTION",
+      "description_text": "+1 Movement for Land Units within the Command Radius."
+    },
+    {
+      "id": "ABILITY_ARMY_SHOCK_TACTICS",
+      "name": "LOC_ABILITY_ARMY_SHOCK_TACTICS_NAME",
+      "description": "LOC_ABILITY_ARMY_SHOCK_TACTICS_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength for Cavalry Units when attacking."
+    },
+    {
+      "id": "ABILITY_ARMY_STEADFAST",
+      "name": "LOC_ABILITY_ARMY_STEADFAST_NAME",
+      "description": "LOC_ABILITY_ARMY_STEADFAST_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength when defending."
+    },
+    {
+      "id": "ABILITY_ARMY_STORM",
+      "name": "LOC_ABILITY_ARMY_STORM_NAME",
+      "description": "LOC_ABILITY_ARMY_STORM_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_ASHOKA_CONQUEROR",
+      "name": "LOC_TRAIT_LEADER_ASHOKA_ABILITY_NAME",
+      "description": "LOC_ABILITY_ASHOKA_CONQUEROR_DESCRIPTION",
+      "description_text": "+{1_Value} Combat Strength against Districts for all Units during a Celebration."
+    },
+    {
+      "id": "ABILITY_ATTRIBUTE_MILITARISTIC_12",
       "name": "",
       "description": "",
       "description_text": ""
@@ -88,7 +256,7 @@
       "id": "ABILITY_BANNER_ARMY",
       "name": "LOC_TRADITION_BANNER_ARMY_NAME",
       "description": "LOC_TRADITION_BANNER_ARMY_DESCRIPTION",
-      "description_text": ""
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength for all Units against Land Units."
     },
     {
       "id": "ABILITY_BARBARY_CORSAIR",
@@ -145,6 +313,12 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_CARRIER_BATTLE_GROUP_STRENGTH",
+      "name": "LOC_ABILITY_CARRIER_BATTLE_GROUP_STRENGTH_NAME",
+      "description": "LOC_ABILITY_CARRIER_BATTLE_GROUP_STRENGTH_DESCRIPTION",
+      "description_text": ""
+    },
+    {
       "id": "ABILITY_CETBANG",
       "name": "LOC_UNIT_CETBANG_NAME",
       "description": "LOC_ABILITY_CETBANG_DESCRIPTION",
@@ -155,6 +329,12 @@
       "name": "LOC_ABILITY_CHANG_BEUN",
       "description": "LOC_ABILITY_CHANG_BEUN_DESCRIPTION",
       "description_text": ""
+    },
+    {
+      "id": "ABILITY_CHARLEMAGNE_CAVALRY",
+      "name": "LOC_TRAIT_LEADER_CHARLEMAGNE_ABILITY_NAME",
+      "description": "LOC_ABILITY_CHARLEMAGNE_CAVALRY_DESCRIPTION",
+      "description_text": "+{1_Value} Combat Strength for Cavalry Units during a Celebration"
     },
     {
       "id": "ABILITY_CHASQUI",
@@ -191,6 +371,18 @@
       "name": "LOC_UNIT_COLONIST_NAME",
       "description": "LOC_ABILITY_COLONIST_DESCRIPTION",
       "description_text": "+1 [icon:Action_Move] Embarked Movement and +1 [icon:YIELD_POPULATION] Population if Settled adjacent to a [icon:RADIAL_RESOURCES] Resource."
+    },
+    {
+      "id": "ABILITY_COMMANDER_ATTACK",
+      "name": "LOC_ABILITY_COMMANDER_ATTACK_NAME",
+      "description": "LOC_ABILITY_COMMANDER_ATTACK_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_CONQUISTA_DISTANT_LANDS_STRENGTH",
+      "name": "LOC_TRADITION_CONQUISTA_NAME",
+      "description": "LOC_TRADITION_CONQUISTA_DESCRIPTION",
+      "description_text": "+4 [icon:NAR_REW_COMBAT] Combat Strength for all Units in Distant Lands. "
     },
     {
       "id": "ABILITY_CORSAIR",
@@ -235,6 +427,12 @@
       "description_text": "+{1_Amount} Combat Strength on Coast."
     },
     {
+      "id": "ABILITY_DOUBLE_TERRAIN_COMBAT_BONUS_AND_INGORE_CLIFFS",
+      "name": "LOC_ABILITY_COMMANDO_NAME",
+      "description": "LOC_ABILITY_COMMANDO_DESCRIPTION",
+      "description_text": "Land Units within the Command Radius gain the Commando ability. Terrain combat bonuses are doubled, and Infantry Units can move and attack through cliffs."
+    },
+    {
       "id": "ABILITY_ECONOMIC_DARK_AGE",
       "name": "",
       "description": "",
@@ -251,6 +449,24 @@
       "name": "LOC_ABILITY_EGILL_SKALLAGRIMSSON_NAME",
       "description": "LOC_ABILITYEGILL_SKALLAGRIMSSON_DESCRIPTION",
       "description_text": ""
+    },
+    {
+      "id": "ABILITY_EMBED_LOOKOUT_RECON",
+      "name": "LOC_KEYWORD_ABILITY_LOOKOUT",
+      "description": "LOC_KEYWORD_ABILITY_LOOKOUT_DESCRIPTION",
+      "description_text": "Gain +1 [icon:Action_Showall] Sight."
+    },
+    {
+      "id": "ABILITY_ENTER_FOREIGN_LANDS",
+      "name": "LOC_KEYWORD_ABILITY_ENTER_FOREIGN_LANDS",
+      "description": "LOC_KEYWORD_ABILITY_ENTER_FOREIGN_LANDS_DESCRIPTION",
+      "description_text": "Can enter foreign territory even without Open Borders."
+    },
+    {
+      "id": "ABILITY_ESPIONAGE_MILITARY_SABOTAGE",
+      "name": "LOC_ABILITY_ESPIONAGE_MILITARY_SABOTAGE_NAME",
+      "description": "LOC_ABILITY_ESPIONAGE_MILITARY_SABOTAGE_DESCRIPTION",
+      "description_text": "-{1_Amount} Combat Strength against Siege Units"
     },
     {
       "id": "ABILITY_EX_TECH_CAVALRY",
@@ -283,6 +499,138 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_FEAR",
+      "name": "LOC_KEYWORD_ABILITY_FEAR",
+      "description": "LOC_KEYWORD_ABILITY_FEAR_DESCRIPTION",
+      "description_text": "-4 [icon:NAR_REW_COMBAT] Combat Strength to adjacent enemy Units, does not stack."
+    },
+    {
+      "id": "ABILITY_FIRST_STRIKE",
+      "name": "LOC_KEYWORD_ABILITY_FIRST_STRIKE",
+      "description": "LOC_KEYWORD_ABILITY_FIRST_STRIKE_DESCRIPTION",
+      "description_text": "+{1_Value} [icon:NAR_REW_COMBAT] Combat Strength against Units at full health."
+    },
+    {
+      "id": "ABILITY_FLEET_BARRAGE",
+      "name": "LOC_ABILITY_FLEET_BARRAGE_NAME",
+      "description": "LOC_ABILITY_FLEET_BARRAGE_DESCRIPTION",
+      "description_text": "+5 Combat Strength with Focus Fire."
+    },
+    {
+      "id": "ABILITY_FLEET_BRACE",
+      "name": "LOC_ABILITY_FLEET_BRACE_NAME",
+      "description": "LOC_ABILITY_FLEET_BRACE_DESCRIPTION",
+      "description_text": "Opponents have -3 to Flanking bonuses when attacking Naval Units within the Command Radius."
+    },
+    {
+      "id": "ABILITY_FLEET_COMMANDER_MOVEMENT",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_FLEET_CONVOYS",
+      "name": "LOC_ABILITY_FLEET_CONVOYS_NAME",
+      "description": "LOC_ABILITY_FLEET_CONVOYS_DESCRIPTION",
+      "description_text": "Land Units within the Command Radius have +{Amount} Embarked Strength. Traders within the Command Radius cannot be pillaged."
+    },
+    {
+      "id": "ABILITY_FLEET_CROSSING_THE_T",
+      "name": "LOC_ABILITY_FLEET_CROSSING_THE_T_NAME",
+      "description": "LOC_ABILITY_FLEET_CROSSING_THE_T_DESCRIPTION",
+      "description_text": "Naval Units within the Command Radius have a +3 Flanking bonus when attacking."
+    },
+    {
+      "id": "ABILITY_FLEET_FUSILLADE",
+      "name": "LOC_ABILITY_FLEET_FUSILLADE_NAME",
+      "description": "LOC_ABILITY_FLEET_FUSILLADE_DESCRIPTION",
+      "description_text": "Naval Units within the Command Radius have the First Strike ability. +5 Combat Strength when at full health."
+    },
+    {
+      "id": "ABILITY_FLEET_LOOTING",
+      "name": "LOC_ABILITY_FLEET_LOOTING_NAME",
+      "description": "LOC_ABILITY_FLEET_LOOTING_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_FLEET_NAVAL_ARTILLERY",
+      "name": "LOC_ABILITY_FLEET_NAVAL_ARTILLERY_NAME",
+      "description": "LOC_ABILITY_FLEET_NAVAL_ARTILLERY_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength when attacking Fortified Districts."
+    },
+    {
+      "id": "ABILITY_FLEET_ORDER",
+      "name": "LOC_ABILITY_ORDER_NAME",
+      "description": "LOC_ABILITY_FLEET_ORDER_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_FLEET_PACK_LAND_UNITS",
+      "name": "LOC_ABILITY_FLEET_PACK_LAND_UNITS_NAME",
+      "description": "LOC_ABILITY_FLEET_PACK_LAND_UNITS_DESCRIPTION",
+      "description_text": "Allows land units to pack into a fleet commander."
+    },
+    {
+      "id": "ABILITY_FLEET_RAKING_FIRE",
+      "name": "LOC_ABILITY_FLEET_RAKING_FIRE_NAME",
+      "description": "LOC_ABILITY_FLEET_RAKING_FIRE_DESCRIPTION",
+      "description_text": "Naval Units within the Command Radius take half reciprocal damage when flanking."
+    },
+    {
+      "id": "ABILITY_FLEET_REINFORCED_HULL",
+      "name": "LOC_ABILITY_FLEET_REINFORCED_HULL_NAME",
+      "description": "LOC_ABILITY_FLEET_REINFORCED_HULL_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength when defending."
+    },
+    {
+      "id": "ABILITY_FLEET_SALVO",
+      "name": "LOC_ABILITY_FLEET_SALVO_NAME",
+      "description": "LOC_ABILITY_FLEET_SALVO_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength when attacking Naval Units."
+    },
+    {
+      "id": "ABILITY_FLEET_SERVICE",
+      "name": "LOC_ABILITY_SERVICE_NAME",
+      "description": "LOC_ABILITY_FLEET_SERVICE_DESCRIPTION",
+      "description_text": "+1 Movement for Naval Units within the Command Radius."
+    },
+    {
+      "id": "ABILITY_FLEET_SHELLING",
+      "name": "LOC_ABILITY_FLEET_SHELLING_NAME",
+      "description": "LOC_ABILITY_FLEET_SHELLING_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength when attacking Land Units."
+    },
+    {
+      "id": "ABILITY_FLEET_SHIPS_TENDER",
+      "name": "LOC_ABILITY_FLEET_SHIPS_TENDER_NAME",
+      "description": "LOC_ABILITY_FLEET_SHIPS_TENDER_DESCRIPTION",
+      "description_text": "Naval Units within the Command Radius gain +5 Healing in enemy and neutral territory."
+    },
+    {
+      "id": "ABILITY_FLEET_SPOTTER",
+      "name": "LOC_ABILITY_FLEET_SPOTTER_NAME",
+      "description": "LOC_ABILITY_FLEET_SPOTTER_DESCRIPTION",
+      "description_text": "+{Amount} Range"
+    },
+    {
+      "id": "ABILITY_FLEET_WARSHIPS",
+      "name": "LOC_PROMOTION_FLEET_WARSHIPS_NAME",
+      "description": "LOC_PROMOTION_FLEET_WARSHIPS_DESCRIPTION",
+      "description_text": "+15% Production towards training Naval Units when stationed on a water District."
+    },
+    {
+      "id": "ABILITY_FLEET_WEATHER_GAGE",
+      "name": "LOC_ABILITY_FLEET_WEATHER_GAGE_NAME",
+      "description": "LOC_ABILITY_FLEET_WEATHER_GAGE_DESCRIPTION",
+      "description_text": "Naval Units can move after unpacking."
+    },
+    {
+      "id": "ABILITY_FLOODPLAIN_COMBAT",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
       "id": "ABILITY_FOEDERATI",
       "name": "LOC_UNIT_FOEDERATI_NAME",
       "description": "LOC_UNIT_FOEDERATI_DESCRIPTION",
@@ -301,6 +649,24 @@
       "description_text": "+{1_Amount} Combat Strength in Tundra"
     },
     {
+      "id": "ABILITY_GENGHIS_KHAN_ARMY_COMMANDER",
+      "name": "LOC_TRAIT_LEADER_GENGHIS_KHAN_ABILITY_NAME",
+      "description": "LOC_ABILITY_GENGHIS_KHAN_ARMY_COMMANDER_DESCRIPTION",
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength for Cavalry Units, +5 when in [icon:COMMANDER_RADIUS] Command Radius. [icon:UNIT_ARMY_COMMANDER] Army Commanders have +1 [icon:Action_Move] Movement even when no Units are packed into them. Once per Age, [icon:UNIT_ARMY_COMMANDER] Army Commanders can use the Convert Independents Action to convert adjacent [icon:INDEPENDENT_POWER] Independent Military Units to your control."
+    },
+    {
+      "id": "ABILITY_GENGHIS_KHAN_COMMAND_RADIUS_COMBAT",
+      "name": "LOC_TRAIT_LEADER_GENGHIS_KHAN_ABILITY_NAME",
+      "description": "LOC_ABILITY_GENGHIS_KHAN_COMMAND_RADIUS_COMBAT_DESCRIPTION",
+      "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength to Cavalry Units"
+    },
+    {
+      "id": "ABILITY_GENGHIS_KHAN_NO_COMMAND_RADIUS_COMBAT",
+      "name": "LOC_TRAIT_LEADER_GENGHIS_KHAN_ABILITY_NAME",
+      "description": "LOC_ABILITY_GENGHIS_KHAN_NO_COMMAND_RADIUS_COMBAT_DESCRIPTION",
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength for Cavalry Units"
+    },
+    {
       "id": "ABILITY_GHILMAN",
       "name": "LOC_ABILITY_GHILMAN",
       "description": "LOC_ABILITY_GHILMAN_DESCRIPTION",
@@ -316,6 +682,12 @@
       "id": "ABILITY_GRANDE_ARMEE",
       "name": "LOC_CIVIC_GRANDE_ARMEE_NAME",
       "description": "LOC_CIVIC_GRANDE_ARMEE_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_GRANT_SECOND_WIND",
+      "name": "LOC_ABILITY_GRANT_SECOND_WIND_NAME",
+      "description": "LOC_ABILITY_GRANT_SECOND_WIND_DESCRIPTION",
       "description_text": ""
     },
     {
@@ -352,6 +724,12 @@
       "id": "ABILITY_GUSA",
       "name": "LOC_ABILITY_GUSA",
       "description": "LOC_ABILITY_GUSA_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_HALICARNASSUS",
+      "name": "LOC_WONDER_MAUSOLEUM_AT_HALICARNASSUS_NAME",
+      "description": "LOC_ABILITY_HALICARNASSUS_DESCRIPTION",
       "description_text": ""
     },
     {
@@ -397,6 +775,12 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_HOCEEPKILENI",
+      "name": "LOC_UNIT_HOCEEPKILENI_NAME",
+      "description": "LOC_ABILITY_HOCEEPKILENI_DESCRIPTION",
+      "description_text": ""
+    },
+    {
       "id": "ABILITY_HOPLITE",
       "name": "LOC_ABILITY_HOPLITE_NAME",
       "description": "LOC_ABILITY_HOPLITE_DESCRIPTION",
@@ -421,6 +805,18 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_HWARANG",
+      "name": "LOC_ABILITY_HWARANG_NAME",
+      "description": "LOC_ABILITY_HWARANG_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_HWARANG_CULTURE",
+      "name": "NODE_CIVIC_AQ_SILLA_KOLP_UM",
+      "description": "LOC_ABILITY_HWARANG_CULTURE_DESCRIPTION",
+      "description_text": "Gain [icon:YIELD_CULTURE] Culture equal to 25% of the defeated Unit's [icon:NAR_REW_COMBAT] Combat Strength."
+    },
+    {
       "id": "ABILITY_IGNORE_BORDERS",
       "name": "",
       "description": "",
@@ -431,6 +827,24 @@
       "name": "LOC_ABILITY_IMMORTAL_NAME",
       "description": "LOC_ABILITY_IMMORTAL_DESCRIPTION",
       "description_text": "Heals 15 [icon:Action_Heal] HP after defeating an enemy Unit."
+    },
+    {
+      "id": "ABILITY_INDEPENDENT_COMBAT_MAJOR",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_INDEPENDENT_COMBAT_MINOR",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_INDEPENDENT_COMBAT_MINOR_PENALTY",
+      "name": "",
+      "description": "",
+      "description_text": ""
     },
     {
       "id": "ABILITY_INITIATION",
@@ -529,6 +943,18 @@
       "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength to [icon:UNIT_MAGARRU] Magarru if they are in a [icon:COMMANDER_RADIUS] Command Radius."
     },
     {
+      "id": "ABILITY_KISPOKO_NENA_TO",
+      "name": "LOC_UNIT_KISPOKO_NENA_TO_NAME",
+      "description": "LOC_ABILITY_KISPOKO_NENA_TO_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_LAFAYETTE_TRADITION",
+      "name": "LOC_TRAIT_LEADER_LAFAYETTE_ABILITY_NAME",
+      "description": "LOC_ABILITY_LAFAYETTE_COMBAT_DESCRIPTION",
+      "description_text": "+{1_Value} Combat Strength in friendly territory for every Tradition slotted into the Government"
+    },
+    {
       "id": "ABILITY_LEGATUS",
       "name": "LOC_ABILITY_LEGATUS_NAME",
       "description": "LOC_ABILITY_LEGATUS_DESCRIPTION",
@@ -613,6 +1039,18 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_MISSISSIPPIAN_ATASSA",
+      "name": "LOC_TRADITION_ATASSA_NAME",
+      "description": "LOC_TRADITION_ATASSA_DESCRIPTION",
+      "description_text": "+4 [icon:NAR_REW_COMBAT] Combat Strength for Ranged Units when defending."
+    },
+    {
+      "id": "ABILITY_MOVE_AFTER_UNPACKING",
+      "name": "LOC_ABILITY_MOVE_AFTER_UNPACKING_NAME",
+      "description": "LOC_ABILITY_MOVE_AFTER_UNPACKING_DESCRIPTION",
+      "description_text": "Units can move after unpacking from this Commander."
+    },
+    {
       "id": "ABILITY_MO_TECH_CAVALRY",
       "name": "",
       "description": "",
@@ -655,10 +1093,52 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_NARRATIVE_AGGRESSION",
+      "name": "LOC_ABILITY_NARRATIVE_AGGRESSION_NAME",
+      "description": "LOC_ABILITY_NARRATIVE_AGGRESSION_DESCRIPTION",
+      "description_text": "+3 Combat Strength when attacking; -2 Combat Strength when defending"
+    },
+    {
+      "id": "ABILITY_NARRATIVE_DEFENSIVE",
+      "name": "LOC_ABILITY_NARRATIVE_DEFENSIVE_NAME",
+      "description": "LOC_ABILITY_NARRATIVE_DEFENSIVE_DESCRIPTION",
+      "description_text": "+3 Combat Strength when defending; -2 Combat Strength when attacking"
+    },
+    {
+      "id": "ABILITY_NARRATIVE_MOVEMENT",
+      "name": "LOC_ABILITY_NARRATIVE_MOVEMENT_NAME",
+      "description": "LOC_ABILITY_NARRATIVE_MOVEMENT_DESCRIPTION",
+      "description_text": "+1 Movement"
+    },
+    {
+      "id": "ABILITY_NARRATIVE_MOVEMENT_PENALTY",
+      "name": "LOC_ABILITY_NARRATIVE_MOVEMENT_PENALTY_NAME",
+      "description": "LOC_ABILITY_NARRATIVE_MOVEMENT_PENALTY_DESCRIPTION",
+      "description_text": "-1 Movement"
+    },
+    {
+      "id": "ABILITY_NARRATIVE_RANGE_DEFENSE",
+      "name": "LOC_ABILITY_NARRATIVE_RANGE_DEFENSE_NAME",
+      "description": "LOC_ABILITY_NARRATIVE_RANGE_DEFENSE_DESCRIPTION",
+      "description_text": "+2 Combat Strength against ranged attacks"
+    },
+    {
+      "id": "ABILITY_NARRATIVE_STRENGTH",
+      "name": "LOC_ABILITY_NARRATIVE_STRENGTH_NAME",
+      "description": "LOC_ABILITY_NARRATIVE_STRENGTH_DESCRIPTION",
+      "description_text": "+2 Combat Strength"
+    },
+    {
+      "id": "ABILITY_NARRATIVE_STRENGTH_PENALTY",
+      "name": "LOC_ABILITY_NARRATIVE_STRENGTH_PENALTY_NAME",
+      "description": "LOC_ABILITY_NARRATIVE_STRENGTH_PENALTY_DESCRIPTION",
+      "description_text": "-2 Combat Strength"
+    },
+    {
       "id": "ABILITY_NG_OMA",
       "name": "LOC_TRADITION_NG_OMA_NAME",
       "description": "LOC_TRADITION_NG_OMA_DESCRIPTION",
-      "description_text": ""
+      "description_text": "+6 [icon:NAR_REW_COMBAT] Combat Strength for all Units when adjacent to a Lake."
     },
     {
       "id": "ABILITY_NOYAN",
@@ -703,16 +1183,34 @@
       "description_text": "Receive {1_Amount}[icon:YIELD_CULTURE] Culture when you convert a Settlement for the first time."
     },
     {
+      "id": "ABILITY_PERSIA_SHAHANSHAH",
+      "name": "LOC_TRADITION_SHAHANSHAH_NAME",
+      "description": "LOC_TRADITION_SHAHANSHAH_DESCRIPTION",
+      "description_text": "+3 [icon:NAR_REW_COMBAT] Combat Strength for Units in enemy territory."
+    },
+    {
       "id": "ABILITY_PHYSICIAN",
       "name": "LOC_UNIT_PHYSICIAN_NAME",
       "description": "LOC_ABILITY_PHYSICIAN_HAPPINESS_DESCRIPTION",
       "description_text": "Use in an Infected Urban District to remove [icon:YIELD_ANGRY] Unrest from that Settlement."
     },
     {
+      "id": "ABILITY_PILLAGE_XP",
+      "name": "LOC_ABILITY_PILLAGE_XP_NAME",
+      "description": "LOC_ABILITY_PILLAGE_XP_DESCRIPTION",
+      "description_text": "Unit awards experience to Commanders for pillaging"
+    },
+    {
       "id": "ABILITY_PLUNDER_TRADE_ROUTES_BETWEEN_OTHER_CIVS",
       "name": "",
       "description": "",
       "description_text": ""
+    },
+    {
+      "id": "ABILITY_POISON",
+      "name": "LOC_KEYWORD_ABILITY_POISON",
+      "description": "LOC_KEYWORD_ABILITY_POISON_DESCRIPTION",
+      "description_text": "+{1_Value} [icon:NAR_REW_COMBAT] Combat Strength against [icon:DAMAGED] Wounded Units."
     },
     {
       "id": "ABILITY_PRIVATEER",
@@ -745,6 +1243,18 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_RESETTLE",
+      "name": "LOC_ABILITY_RESETTLE_NAME",
+      "description": "LOC_ABILITY_RESETTLE_DESCRIPTION",
+      "description_text": "Join a Settlement and become part of its Population. Usable on any owned District."
+    },
+    {
+      "id": "ABILITY_RETALIATE_WHEN_RANGED_DAMAGE_RECEIVED",
+      "name": "LOC_ABILITY_RETALIATE_WHEN_RANGED_DAMAGE_RECEIVED_NAME",
+      "description": "LOC_ABILITY_RETALIATE_WHEN_RANGED_DAMAGE_RECEIVED_DESCRIPTION",
+      "description_text": "50% damage received from retaliation attacks."
+    },
+    {
       "id": "ABILITY_REVENGE",
       "name": "LOC_UNIT_REVENGE_NAME",
       "description": "LOC_ABILITY_REVENGE_DESCRIPTION",
@@ -775,9 +1285,33 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_SANGDAEDEUNG",
+      "name": "LOC_UNIT_SANGDAEDEUNG_NAME",
+      "description": "LOC_ABILITY_SANGDAEDEUNG_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SCALING_COMMANDER_ATTACK",
+      "name": "LOC_ABILITY_SCALING_COMMANDER_ATTACK_NAME",
+      "description": "LOC_ABILITY_SCALING_COMMANDER_ATTACK_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SCOUT_RANGE_INCREASE",
+      "name": "LOC_MEMENTO_FOUNDATION_IMAGO_MUNDI_NAME",
+      "description": "LOC_MEMENTO_FOUNDATION_IMAGO_MUNDI_FUNCTIONAL_DESCRIPTION",
+      "description_text": "+2 Sight instead of +1 for Scout's Search & Lookout abilities."
+    },
+    {
       "id": "ABILITY_SEARCH_RECON",
       "name": "",
       "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SEE_HIDDEN_UNIT",
+      "name": "LOC_ABILITY_SEE_HIDDEN_UNIT_NAME",
+      "description": "LOC_ABILITY_SEE_HIDDEN_UNIT_DESCRIPTION",
       "description_text": ""
     },
     {
@@ -811,10 +1345,28 @@
       "description_text": "+5 [icon:NAR_REW_COMBAT] Combat Strength for Naval Units at full health."
     },
     {
+      "id": "ABILITY_SHOCK_ATTACK",
+      "name": "LOC_ABILITY_SHOCK_ATTACK_NAME",
+      "description": "LOC_ABILITY_SHOCK_ATTACK_DESCRIPTION",
+      "description_text": "Cavalry Charge"
+    },
+    {
       "id": "ABILITY_SHORE_BATTERY",
       "name": "LOC_IMPROVEMENT_SHORE_BATTERY_NAME",
       "description": "LOC_IMPROVEMENT_SHORE_BATTERY_DESCRIPTION",
       "description_text": "City-State Unique Improvement. +5 [icon:YIELD_PRODUCTION] Production. +3 [icon:Action_Ranged] Ranged Combat Strength, +1 range to Ranged and Siege Units in this tile. +5 [icon:Action_Heal]Healing per turn to Military Units in this tile. Ageless. Does not remove [icon:YIELD_WAREHOUSE] Warehouse bonuses on a tile. Must be placed on an existing [icon:CITY_RURAL] Improvement adjacent to Coast. "
+    },
+    {
+      "id": "ABILITY_SIEGE_VULNERABILITY",
+      "name": "LOC_ABILITY_SIEGE_VULNERABILITY_NAME",
+      "description": "LOC_ABILITY_SIEGE_VULNERABILITY_DESCRIPTION",
+      "description_text": "Unit takes increased damage from Siege Units"
+    },
+    {
+      "id": "ABILITY_SKIRMISH",
+      "name": "LOC_ABILITY_SKIRMISH_NAME",
+      "description": "LOC_ABILITY_SKIRMISH_DESCRIPTION",
+      "description_text": ""
     },
     {
       "id": "ABILITY_SLOOP",
@@ -847,6 +1399,102 @@
       "description_text": "When you create a [icon:TRADE_ROUTE] Trade Route receive an additional 100[icon:YIELD_GOLD] Gold if this is a Trade Route with at least 1 Navigable River."
     },
     {
+      "id": "ABILITY_SQUADRON_ACHIEVEMENT",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SQUADRON_AERIAL_RECON",
+      "name": "LOC_ABILITY_SQUADRON_AERIAL_RECON_NAME",
+      "description": "LOC_ABILITY_SQUADRON_AERIAL_RECON_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SQUADRON_CARGO_DROP",
+      "name": "LOC_ABILITY_SQUADRON_CARGO_DROP_NAME",
+      "description": "LOC_ABILITY_SQUADRON_CARGO_DROP_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SQUADRON_DANGER_CLOSE",
+      "name": "LOC_ABILITY_SQUADRON_DANGER_CLOSE_NAME",
+      "description": "LOC_ABILITY_SQUADRON_DANGER_CLOSE_DESCRIPTION",
+      "description_text": "+3 Combat Strength for packed Air Units when attacking an enemy Unit that is adjacent to a friendly Military Unit."
+    },
+    {
+      "id": "ABILITY_SQUADRON_EVASIVE_MANEUVERS",
+      "name": "LOC_ABILITY_SQUADRON_EVASIVE_MANEUVERS_NAME",
+      "description": "LOC_ABILITY_SQUADRON_EVASIVE_MANEUVERS_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength when defending."
+    },
+    {
+      "id": "ABILITY_SQUADRON_FIRST_STRIKE",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SQUADRON_FLIGHT_DECK",
+      "name": "LOC_ABILITY_SQUADRON_FLIGHT_DECK_NAME",
+      "description": "LOC_ABILITY_SQUADRON_FLIGHT_DECK_DESCRIPTION",
+      "description_text": "+2 Unit Slots. +1 Movement for packed Air Units."
+    },
+    {
+      "id": "ABILITY_SQUADRON_LOW_LEVEL_EXTRACTION",
+      "name": "LOC_ABILITY_SQUADRON_LOW_LEVEL_EXTRACTION_NAME",
+      "description": "LOC_ABILITY_SQUADRON_LOW_LEVEL_EXTRACTION_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SQUADRON_ORDER",
+      "name": "LOC_ABILITY_ORDER_NAME",
+      "description": "LOC_ABILITY_SQUADRON_ORDER_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_SQUADRON_SERVICE",
+      "name": "LOC_ABILITY_SERVICE_NAME",
+      "description": "LOC_ABILITY_SQUADRON_SERVICE_DESCRIPTION",
+      "description_text": "+2 Movement for packed Air Units."
+    },
+    {
+      "id": "ABILITY_SQUADRON_SPOTTING",
+      "name": "LOC_ABILITY_SQUADRON_SPOTTING_NAME",
+      "description": "LOC_ABILITY_SQUADRON_SPOTTING_DESCRIPTION",
+      "description_text": "All Units within 3 tiles are revealed. +5 Combat for packed Air Units against Stealth Units."
+    },
+    {
+      "id": "ABILITY_SQUADRON_SYNCHRONIZATION",
+      "name": "LOC_ABILITY_SQUADRON_SYNCHRONIZATION_NAME",
+      "description": "LOC_ABILITY_SQUADRON_SYNCHRONIZATION_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength for Fighters against Air Units."
+    },
+    {
+      "id": "ABILITY_SQUADRON_TACTICAL_STRIKE",
+      "name": "LOC_ABILITY_SQUADRON_TACTICAL_STRIKE_NAME",
+      "description": "LOC_ABILITY_SQUADRON_TACTICAL_STRIKE_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength for Attack Air Units and Bombers when attacking Land Units."
+    },
+    {
+      "id": "ABILITY_SQUADRON_TORPEDO_BOMBERS",
+      "name": "LOC_ABILITY_SQUADRON_TORPEDO_BOMBERS_NAME",
+      "description": "LOC_ABILITY_SQUADRON_TORPEDO_BOMBERS_DESCRIPTION",
+      "description_text": "+5 Combat for packed Ground Attack Air Units and Bombers against Naval Units."
+    },
+    {
+      "id": "ABILITY_SQUADRON_VERTICAL_ENVELOPMENT",
+      "name": "LOC_ABILITY_SQUADRON_VERTICAL_ENVELOPMENT_NAME",
+      "description": "LOC_ABILITY_SQUADRON_VERTICAL_ENVELOPMENT_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_STEALTH",
+      "name": "LOC_ABILITY_STEALTH_NAME",
+      "description": "LOC_ABILITY_STEALTH_DESCRIPTION",
+      "description_text": ""
+    },
+    {
       "id": "ABILITY_STONE_TRAP",
       "name": "LOC_ABILITY_STONE_TRAP_NAME",
       "description": "LOC_ABILITY_STONE_TRAP_DESCRIPTION",
@@ -859,10 +1507,22 @@
       "description_text": ""
     },
     {
+      "id": "ABILITY_STRENGTH_FROM_MOVEMENT",
+      "name": "LOC_ABILITY_STRENGTH_FROM_MOVEMENT_NAME",
+      "description": "LOC_ABILITY_STRENGTH_FROM_MOVEMENT_DESCRIPTION",
+      "description_text": "+{Amount} Combat Strength per movement point"
+    },
+    {
       "id": "ABILITY_STUKA",
       "name": "LOC_ABILITY_STUKA",
       "description": "LOC_ABILITY_STUKA_DESCRIPTION",
       "description_text": ""
+    },
+    {
+      "id": "ABILITY_SWIFT",
+      "name": "LOC_KEYWORD_ABILITY_SWIFT_NAME",
+      "description": "LOC_KEYWORD_ABILITY_SWIFT_DESCRIPTION",
+      "description_text": "Unit ignores Zone of Control."
     },
     {
       "id": "ABILITY_TAJIRO",
@@ -881,6 +1541,12 @@
       "name": "LOC_ABILITY_TANKWA_NAME",
       "description": "LOC_ABILITY_TANKWA_DESCRIPTION",
       "description_text": ""
+    },
+    {
+      "id": "ABILITY_TECUMSEH_SUZERAIN",
+      "name": "LOC_LEADER_TECUMSEH_NAME",
+      "description": "LOC_ABILITY_TECUMSEH_SUZERAIN_DESCRIPTION",
+      "description_text": "+1 [icon:NAR_REW_COMBAT] Combat Strength for every City-State you are Suzerain of."
     },
     {
       "id": "ABILITY_TEHINA",
@@ -931,10 +1597,28 @@
       "description_text": "Infantry and Cavalry Units within the [icon:COMMANDER_RADIUS] Command Radius have +5 [icon:NAR_REW_COMBAT] Combat Strength against [icon:CITY_FORTIFIED] Fortified Districts."
     },
     {
+      "id": "ABILITY_UNIT_AFFECTED_BY_ZOC",
+      "name": "LOC_ABILITY_ABILITY_UNIT_AFFECTED_BY_ZOC_NAME",
+      "description": "LOC_ABILITY_UNIT_AFFECTED_BY_ZOC_DESCRIPTION",
+      "description_text": ""
+    },
+    {
+      "id": "ABILITY_UNIT_AIR_DROP",
+      "name": "LOC_ABILITY_UNIT_AIR_DROP_NAME",
+      "description": "LOC_ABILITY_UNIT_AIR_DROP_DESCRIPTION",
+      "description_text": ""
+    },
+    {
       "id": "ABILITY_VAISHYA",
       "name": "LOC_ABILITY_VAISHYA_NAME",
       "description": "LOC_ABILITY_VAISHYA_DESCRIPTION",
       "description_text": ""
+    },
+    {
+      "id": "ABILITY_VEGETATED_STEALTH",
+      "name": "LOC_KEYWORD_ABILITY_STEALTH_NAME",
+      "description": "LOC_ABILITY_VEGETATED_STEALTH_DESCRIPTION",
+      "description_text": "This Unit gains Stealth in Vegetated Terrain."
     },
     {
       "id": "ABILITY_VIET_KIEU",
@@ -997,6 +1681,18 @@
       "description_text": "+3 Combat Strength"
     },
     {
+      "id": "ABILITY_XERXES_UNIT_ATTACK",
+      "name": "LOC_TRAIT_LEADER_XERXES_ABILITY_NAME",
+      "description": "LOC_ABILITY_XERXES_UNIT_ATTACK_DESCRIPTION",
+      "description_text": "+{1_Value} Combat Strength when attacking in neutral or enemy territory"
+    },
+    {
+      "id": "ABILITY_XERXES_UNIT_FOREIGN_TERRITORY",
+      "name": "LOC_TRAIT_LEADER_XERXES_ABILITY_NAME",
+      "description": "LOC_ABILITY_XERXES_UNIT_ATTACK_DESCRIPTION",
+      "description_text": "+{1_Value} Combat Strength when attacking in neutral or enemy territory"
+    },
+    {
       "id": "ABILITY_XUNLEICHONG",
       "name": "LOC_UNIT_XUNLEICHONG_NAME",
       "description": "LOC_ABILITY_XUNLEICHONG_DESCRIPTION",
@@ -1027,6 +1723,12 @@
       "description_text": ""
     },
     {
+      "id": "CHARGED_ABILITY_AREA_DAMAGE",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
       "id": "CHARGED_ABILITY_CLAIM_MOUNTAIN",
       "name": "",
       "description": "",
@@ -1039,13 +1741,55 @@
       "description_text": ""
     },
     {
+      "id": "CHARGED_ABILITY_COMMANDER_ATTACK",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "CHARGED_ABILITY_GRANT_SECOND_WIND",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "CHARGED_ABILITY_LAND_CLAIM",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "CHARGED_ABILITY_MAKE_TRADE_ROUTE",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
       "id": "CHARGED_ABILITY_RAIDING_PARTY",
       "name": "",
       "description": "",
       "description_text": ""
     },
     {
+      "id": "CHARGED_ABILITY_RESPAWN",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "CHARGED_ABILITY_SCALING_COMMANDER_ATTACK",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
       "id": "CHARGED_ABILITY_STONE_TRAP",
+      "name": "",
+      "description": "",
+      "description_text": ""
+    },
+    {
+      "id": "CHARGED_ABILITY_TREAT_SICK",
       "name": "",
       "description": "",
       "description_text": ""

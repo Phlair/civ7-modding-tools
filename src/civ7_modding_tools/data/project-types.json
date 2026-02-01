@@ -28,6 +28,9 @@
       "id": "PROJECT_TOWN_FISHING"
     },
     {
+      "id": "PROJECT_TOWN_FORT"
+    },
+    {
       "id": "PROJECT_TOWN_GRANARY"
     },
     {
@@ -37,10 +40,16 @@
       "id": "PROJECT_TOWN_PRODUCTION"
     },
     {
+      "id": "PROJECT_TOWN_RESORT"
+    },
+    {
       "id": "PROJECT_TOWN_TEMPLE"
     },
     {
       "id": "PROJECT_TOWN_TRADE"
+    },
+    {
+      "id": "PROJECT_TOWN_URBAN_CENTER"
     },
     {
       "id": "PROJECT_TRANS_OCEANIC_FLIGHT"

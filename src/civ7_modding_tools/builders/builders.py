@@ -2629,6 +2629,7 @@ class ProgressionTreeBuilder(BaseBuilder):
         """Bind ProgressionTreeNodeBuilder items to this tree.
         
         This merges all nodes from the child node builders into this tree.
+        Also processes prereq_node_indices to generate ProgressionTreePrereqs.
         """
         for item in items:
             if hasattr(item, 'migrate'):
@@ -2665,6 +2666,12 @@ class ProgressionTreeBuilder(BaseBuilder):
                     if not self._current.progression_tree_prereqs:
                         self._current.progression_tree_prereqs = []
                     self._current.progression_tree_prereqs = self._current.progression_tree_prereqs + item._current.progression_tree_prereqs
+                
+                # Merge type_quotes
+                if item._current.type_quotes:
+                    if not self._current.type_quotes:
+                        self._current.type_quotes = []
+                    self._current.type_quotes = self._current.type_quotes + item._current.type_quotes
             
             # Merge game_effects modifiers
             if hasattr(item, '_game_effects') and item._game_effects:
@@ -2681,6 +2688,27 @@ class ProgressionTreeBuilder(BaseBuilder):
                     if not self._localizations.english_text:
                         self._localizations.english_text = []
                     self._localizations.english_text = self._localizations.english_text + item._localizations.english_text
+        
+        # Process prereq_node_indices to generate ProgressionTreePrereqs
+        # This must happen after all nodes are added so we can look up node types by index
+        for idx, item in enumerate(items):
+            if hasattr(item, 'prereq_node_indices') and item.prereq_node_indices:
+                from civ7_modding_tools.nodes import ProgressionTreePrereqNode
+                
+                if not self._current.progression_tree_prereqs:
+                    self._current.progression_tree_prereqs = []
+                
+                node_type = item.progression_tree_node_type
+                for prereq_idx in item.prereq_node_indices:
+                    # Ensure the index is valid
+                    if 0 <= prereq_idx < len(items):
+                        prereq_node_type = items[prereq_idx].progression_tree_node_type
+                        self._current.progression_tree_prereqs.append(
+                            ProgressionTreePrereqNode(
+                                node=node_type,
+                                prereq_node=prereq_node_type
+                            )
+                        )
         
         return self
 
@@ -2744,6 +2772,9 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
         self.progression_tree_node: Dict[str, Any] = {}
         self.progression_tree_advisories: List[str] = []
         self.localizations: List[Dict[str, Any]] = []
+        self.quote: Optional[Dict[str, Any]] = None  # {quote_loc, quote_author_loc, quote_audio}
+        self.prereq_node_indices: List[int] = []  # Indices of prerequisite nodes (resolved in tree bind)
+        self.unlocks: List[Dict[str, Any]] = []  # [{target_kind, target_type, unlock_depth, hidden, ai_ignore_unlock_value}]
 
     def fill(self, payload: Dict[str, Any]) -> "ProgressionTreeNodeBuilder":
         """Fill progression tree node builder from payload."""
@@ -2757,6 +2788,7 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
         from civ7_modding_tools.utils import locale
         from civ7_modding_tools.nodes import (
             ProgressionTreeNodeNode,
+            TypeQuoteNode,
         )
         
         if not self.progression_tree_node_type:
@@ -2764,6 +2796,9 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
         
         # Generate localization keys
         loc_name = locale(self.progression_tree_node_type, 'name')
+        loc_desc = locale(self.progression_tree_node_type, 'description')
+        loc_quote = locale(self.progression_tree_node_type, 'quote')
+        loc_quote_author = locale(self.progression_tree_node_type, 'quote_author')
         
         # ==== POPULATE _current DATABASE ====
         # Types
@@ -2790,6 +2825,42 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
                 for advisory in self.progression_tree_advisories
             ]
         
+        # TypeQuotes (for node quotes)
+        if self.quote:
+            # Support both custom quotes and existing quote references
+            if self.quote.get('quote_loc'):
+                # Existing quote from reference data
+                quote_loc_key = self.quote['quote_loc']
+                quote_author_loc_key = self.quote.get('quote_author_loc', '')
+            else:
+                # Custom quote text - generate LOC keys
+                quote_loc_key = loc_quote
+                quote_author_loc_key = loc_quote_author
+            
+            self._current.type_quotes = [
+                TypeQuoteNode(
+                    type=self.progression_tree_node_type,
+                    quote=quote_loc_key,
+                    quote_author=quote_author_loc_key,
+                    quote_audio=self.quote.get('quote_audio', '')
+                )
+            ]
+        
+        # Process direct unlock definitions (from wizard UI)
+        if self.unlocks:
+            if not self._current.progression_tree_node_unlocks:
+                self._current.progression_tree_node_unlocks = []
+            for unlock in self.unlocks:
+                unlock_node = ProgressionTreeNodeUnlockNode(
+                    progression_tree_node_type=self.progression_tree_node_type,
+                    target_kind=unlock.get('target_kind'),
+                    target_type=unlock.get('target_type'),
+                    unlock_depth=unlock.get('unlock_depth', 1),
+                    hidden=unlock.get('hidden'),
+                    ai_ignore_unlock_value=unlock.get('ai_ignore_unlock_value'),
+                )
+                self._current.progression_tree_node_unlocks.append(unlock_node)
+        
         # ==== POPULATE _localizations DATABASE ====
         localization_rows = []
         for loc in self.localizations:
@@ -2799,6 +2870,24 @@ class ProgressionTreeNodeBuilder(BaseBuilder):
                         tag=loc_name,
                         text=loc["name"]
                     ))
+                if "description" in loc:
+                    localization_rows.append(EnglishTextNode(
+                        tag=loc_desc,
+                        text=loc["description"]
+                    ))
+        
+        # Add quote localizations if custom quote provided
+        if self.quote and not self.quote.get('quote_loc'):
+            if self.quote.get('quote_text'):
+                localization_rows.append(EnglishTextNode(
+                    tag=loc_quote,
+                    text=self.quote['quote_text']
+                ))
+            if self.quote.get('quote_author'):
+                localization_rows.append(EnglishTextNode(
+                    tag=loc_quote_author,
+                    text=self.quote['quote_author']
+                ))
         
         if localization_rows:
             self._localizations.english_text = localization_rows
@@ -3269,14 +3358,17 @@ class TraditionBuilder(BaseBuilder):
     
     def __init__(self) -> None:
         """Initialize tradition builder."""
+        from civ7_modding_tools.nodes import GameEffectNode
+
         super().__init__()
         self._current = DatabaseNode()
-        self._game_effects = DatabaseNode()
+        self._game_effects = GameEffectNode()
         self._localizations = DatabaseNode()
         
         self.tradition_type: Optional[str] = None
         self.tradition: Dict[str, Any] = {}
         self.localizations: List[Dict[str, Any]] = []
+        self.base_modifiers: list[str] = []
 
     def fill(self, payload: Dict[str, Any]) -> "TraditionBuilder":
         """Fill tradition builder from payload."""
@@ -3289,6 +3381,7 @@ class TraditionBuilder(BaseBuilder):
         """Migrate and populate all database variants."""
         from civ7_modding_tools.utils import locale
         from civ7_modding_tools.nodes import TraditionNode
+        from civ7_modding_tools.nodes.database import TraditionModifierNode
         
         if not self.tradition_type:
             return self
@@ -3312,6 +3405,22 @@ class TraditionBuilder(BaseBuilder):
         for key, value in self.tradition.items():
             setattr(tradition_node, key, value)
         self._current.traditions = [tradition_node]
+
+        # Add base modifiers (existing game modifiers) if provided
+        if self.base_modifiers:
+            if not self._current.tradition_modifiers:
+                self._current.tradition_modifiers = []
+            for modifier_id in self.base_modifiers:
+                if modifier_id and not any(
+                    getattr(existing, 'modifier_id', None) == modifier_id
+                    for existing in self._current.tradition_modifiers
+                ):
+                    self._current.tradition_modifiers.append(
+                        TraditionModifierNode(
+                            tradition_type=self.tradition_type,
+                            modifier_id=modifier_id,
+                        )
+                    )
         
         # ==== POPULATE _localizations DATABASE ====
         localization_rows = []
@@ -3343,17 +3452,19 @@ class TraditionBuilder(BaseBuilder):
         for item in items:
             # Check for ModifierBuilder
             if hasattr(item, 'modifier') and hasattr(item, '_game_effects'):
+                if hasattr(item, 'migrate'):
+                    item.migrate()
                 # Merge modifiers from game_effects
-                if hasattr(item._game_effects, 'modifiers') and item._game_effects.game_modifiers:
-                    if not self._game_effects.game_modifiers:
-                        self._game_effects.game_modifiers = []
-                    self._game_effects.game_modifiers.extend(item._game_effects.game_modifiers)
+                if hasattr(item._game_effects, 'modifiers') and item._game_effects.modifiers:
+                    if not self._game_effects.modifiers:
+                        self._game_effects.modifiers = []
+                    self._game_effects.modifiers.extend(item._game_effects.modifiers)
                     
                     # Add tradition modifiers if not detached
                     if not getattr(item, 'is_detached', False):
                         if not self._current.tradition_modifiers:
                             self._current.tradition_modifiers = []
-                        for modifier in item._game_effects.game_modifiers:
+                        for modifier in item._game_effects.modifiers:
                             modifier_id = getattr(modifier, 'id', None)
                             if modifier_id:
                                 self._current.tradition_modifiers.append(
@@ -3395,7 +3506,7 @@ class TraditionBuilder(BaseBuilder):
             action_group=self.action_group_bundle.current
         ))
         
-        if self._game_effects and len(self._game_effects.game_modifiers) > 0:
+        if self._game_effects and len(self._game_effects.modifiers) > 0:
             files.append(XmlFile(
                 path=path,
                 name="game-effects.xml",

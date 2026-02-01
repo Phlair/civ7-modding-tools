@@ -11,6 +11,9 @@
     },
     {
       "id": "COST_PROGRESSION_PREVIOUS_COPIES_CITY"
+    },
+    {
+      "id": "NO_COST_PROGRESSION"
     }
   ]
 }

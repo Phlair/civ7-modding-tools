@@ -1,6 +1,9 @@
 {
   "values": [
     {
+      "id": "NO_UNIT_MOVEMENT_CLASS"
+    },
+    {
       "id": "UNIT_MOVEMENT_CLASS_AIR"
     },
     {

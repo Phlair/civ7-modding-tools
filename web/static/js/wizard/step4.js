@@ -6,6 +6,7 @@ import { wizardData, markDirty } from '../state.js';
 import { showToast } from '../ui.js';
 import { createWizardDropdown } from './wizard.js';
 import { fetchReferenceData } from '../data/loader.js';
+import { renderProgressionTreeSection } from './progression_trees.js';
 
 // Cache for traditions reference data
 let cachedTraditions = null;
@@ -411,6 +412,8 @@ export function renderWizardStep4(container) {
                     </div>
                 </div>
             </div>
+            
+            ${renderProgressionTreeSection()}
             
             <div class="bg-blue-900/20 border border-blue-700 rounded-lg p-4">
                 <p class="text-sm text-blue-300">

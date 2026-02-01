@@ -526,6 +526,8 @@ export function populateWizardFromData(loadedData) {
             named_rivers: loadedData.civilization.named_rivers || [],
             named_volcanoes: loadedData.civilization.named_volcanoes || [],
             bindings: loadedData.civilization.bindings || [],
+            civ_ability_name: loadedData.civilization.civ_ability_name || '',
+            civ_ability_modifier_ids: loadedData.civilization.civ_ability_modifier_ids || [],
         };
     }
 

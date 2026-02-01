@@ -13,16 +13,28 @@
       "id": "COLLECTION_ALL_PLAYERS"
     },
     {
+      "id": "COLLECTION_ALL_PLOT_YIELDS"
+    },
+    {
       "id": "COLLECTION_ALL_UNITS"
     },
     {
+      "id": "COLLECTION_ANY_CITY_AT_STORY"
+    },
+    {
       "id": "COLLECTION_CITIES_FOLLOWING_OWNER_RELIGION"
+    },
+    {
+      "id": "COLLECTION_CITY_DISTRICTS"
     },
     {
       "id": "COLLECTION_CITY_PLOT_YIELDS"
     },
     {
       "id": "COLLECTION_CITY_TRAINED_UNITS"
+    },
+    {
+      "id": "COLLECTION_COMMANDER_PACKED_UNITS"
     },
     {
       "id": "COLLECTION_HOMELANDS_INDEPENDENT_NEAREST_STORY"
@@ -43,6 +55,9 @@
       "id": "COLLECTION_OPPONENT_AT_STORY"
     },
     {
+      "id": "COLLECTION_OPPONENT_FROM_STORY"
+    },
+    {
       "id": "COLLECTION_OWNER"
     },
     {
@@ -58,6 +73,9 @@
       "id": "COLLECTION_OWNER_COMMANDER_NEAREST_STORY"
     },
     {
+      "id": "COLLECTION_OWNER_PLAYER"
+    },
+    {
       "id": "COLLECTION_OWNER_UNIT_NEAREST_STORY"
     },
     {
@@ -71,6 +89,9 @@
     },
     {
       "id": "COLLECTION_PLAYER_COMBAT"
+    },
+    {
+      "id": "COLLECTION_PLAYER_CONSTRUCTIBLES"
     },
     {
       "id": "COLLECTION_PLAYER_DISTRICTS"
@@ -95,6 +116,9 @@
     },
     {
       "id": "COLLECTION_UNIT_OCCUPIED_CITY"
+    },
+    {
+      "id": "COLLECTION_UNIT_OCCUPIED_DISTRICT"
     }
   ]
 }

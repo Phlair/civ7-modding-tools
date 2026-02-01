@@ -149,8 +149,16 @@
       "age": "AGE_MODERN"
     },
     {
+      "id": "CIVILIZATION_SHAWNEE",
+      "age": "AGE_EXPLORATION"
+    },
+    {
       "id": "CIVILIZATION_SIAM",
       "age": "AGE_MODERN"
+    },
+    {
+      "id": "CIVILIZATION_SILLA",
+      "age": "AGE_ANTIQUITY"
     },
     {
       "id": "CIVILIZATION_SONGHAI",

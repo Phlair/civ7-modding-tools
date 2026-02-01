@@ -366,6 +366,7 @@ class ProgressionTreeNodeUnlockNode(BaseNode):
     unlock_depth: Optional[int] = None
     required_trait_type: Optional[str] = None
     hidden: Optional[bool] = None
+    ai_ignore_unlock_value: Optional[bool] = None
 
 
 class ProgressionTreeQuoteNode(BaseNode):
@@ -374,6 +375,15 @@ class ProgressionTreeQuoteNode(BaseNode):
     progression_tree_type: Optional[str] = None
     quote_type: Optional[str] = None
     text: Optional[str] = None
+
+
+class TypeQuoteNode(BaseNode):
+    """Represents a quote in TypeQuotes table (for progression tree nodes)."""
+    _name: str = "Row"
+    type: Optional[str] = None  # Node type (e.g., NODE_CIVIC_AQ_ROME_...)
+    quote: Optional[str] = None  # LOC key for quote text
+    quote_author: Optional[str] = None  # LOC key for quote author
+    quote_audio: Optional[str] = None  # Audio file reference
 
 
 # ============================================================================
@@ -761,6 +771,7 @@ class DatabaseNode(BaseNode):
     progression_tree_node_unlocks: list['ProgressionTreeNodeUnlockNode'] = []
     progression_tree_prereqs: list['BaseNode'] = []
     progression_tree_quotes: list['ProgressionTreeQuoteNode'] = []
+    type_quotes: list['TypeQuoteNode'] = []
     
     # Traditions
     traditions: list['BaseNode'] = []

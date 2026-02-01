@@ -26,8 +26,9 @@ import xml.etree.ElementTree as ET
 class CivVIIDataExtractor:
     """Extract reference values from Civ VII mod files."""
 
-    def __init__(self, root_dir: Path):
+    def __init__(self, root_dir: Path, game_install_dir: Path = None):
         self.root = root_dir
+        self.game_install_dir = game_install_dir
         self.data = {
             # Original requested types
             'building_cultures': defaultdict(set),
@@ -73,6 +74,7 @@ class CivVIIDataExtractor:
             'constructibles': set(),  # All building, improvement, and wonder types
             'traditions': {},  # {tradition_id: {name, description, age, trait_type, is_crisis, modifiers}}
             'modifiers': {},  # {modifier_id: {effect, collection, tooltip_loc, description, arguments}}
+            'quotes': {},  # {node_type: {quote_loc, quote_author_loc, quote_text, quote_author, audio}}
         }
         self.localization_texts = {}  # {LOC_TAG: english_text} - for resolving LOC_ keys
         self.civ_cache = defaultdict(dict)
@@ -93,11 +95,19 @@ class CivVIIDataExtractor:
         for dist_dir in self.root.glob('dist-*'):
             self._scan_directory(dist_dir, is_example=False)
         
+        # Game installation directory (if provided)
+        if self.game_install_dir and self.game_install_dir.exists():
+            print(f"Scanning game installation directory: {self.game_install_dir}")
+            self._scan_directory(self.game_install_dir, is_example=False)
+        
         # Resolve LOC_ keys to English text for abilities
         self._resolve_ability_descriptions()
         
         # Resolve LOC_ keys to English text for modifiers
         self._resolve_modifier_descriptions()
+        
+        # Resolve LOC_ keys to English text for traditions
+        self._resolve_tradition_localizations()
 
     def _scan_directory(self, directory: Path, is_example: bool = False) -> None:
         """Scan a directory for XML files."""
@@ -164,7 +174,24 @@ class CivVIIDataExtractor:
             if desc_loc and desc_loc in self.localization_texts:
                 tradition_data['description'] = self.localization_texts[desc_loc]
             else:
-                tradition_data['description'] = ''
+                # For placeholders, note that it's incomplete data
+                if tradition_data.get('is_placeholder'):
+                    tradition_data['description'] = '(Civ-specific tradition - full data not available in EXAMPLE files)'
+                else:
+                    tradition_data['description'] = ''
+    
+    def _resolve_quote_localizations(self) -> None:
+        """Resolve LOC_ keys to actual English text for quotes."""
+        for node_type, quote_data in self.data['quotes'].items():
+            # Resolve quote text
+            quote_loc = quote_data.get('quote_loc', '')
+            if quote_loc and quote_loc in self.localization_texts:
+                quote_data['quote_text'] = self.localization_texts[quote_loc]
+            
+            # Resolve quote author
+            author_loc = quote_data.get('quote_author_loc', '')
+            if author_loc and author_loc in self.localization_texts:
+                quote_data['quote_author'] = self.localization_texts[author_loc]
     def _extract_english_text(self, file_path: Path) -> None:
         """Extract English localization text from EnglishText or LocalizedText nodes."""
         try:
@@ -476,6 +503,21 @@ class CivVIIDataExtractor:
                     self.unit_unlocks[target_type].add(node_type)
                     # Infer age from node name pattern
                     self._infer_node_age_from_name(node_type)
+                
+                # Track tradition unlocks - create placeholder entries for traditions we don't have full data for
+                if target_kind == 'KIND_TRADITION' and target_type and target_type not in self.data['traditions']:
+                    # Infer age and trait from node name
+                    node_age = self._infer_age_from_node_name(node_type) or era_id or 'AGE_ANTIQUITY'
+                    trait_type = self._infer_trait_from_node_name(node_type)
+                    self.data['traditions'][target_type] = {
+                        'name_loc': '',
+                        'description_loc': '',
+                        'is_crisis': False,
+                        'age': node_age,
+                        'trait_type': trait_type,
+                        'modifiers': [],
+                        'is_placeholder': True  # Flag to indicate this is incomplete data
+                    }
 
             # Traditions - extract from Traditions table
             if tag == 'Row' and 'TraditionType' in attribs:
@@ -496,6 +538,20 @@ class CivVIIDataExtractor:
                         'age': age_type if age_type else era_id,  # Use file-inferred era if not explicit
                         'trait_type': trait_type,
                         'modifiers': []
+                    }
+            
+            # TypeQuotes - extract quotes for progression tree nodes
+            if tag == 'Row' and 'Type' in attribs and 'Quote' in attribs:
+                node_type = attribs['Type']
+                # Only extract quotes for progression tree nodes
+                if 'NODE_' in node_type or 'TREE_' in node_type:
+                    self.data['quotes'][node_type] = {
+                        'quote_loc': attribs.get('Quote', ''),
+                        'quote_author_loc': attribs.get('QuoteAuthor', ''),
+                        'quote_audio': attribs.get('QuoteAudio', ''),
+                        'quote_text': '',
+                        'quote_author': '',
+                        'age': era_id or 'AGE_ANTIQUITY'
                     }
             
             # TraditionModifiers - track which modifiers are attached to traditions
@@ -643,6 +699,44 @@ class CivVIIDataExtractor:
         elif '_MO_' in node_type or node_type.endswith('_MO'):
             self._node_ages[node_type] = 'AGE_MODERN'
     
+    def _infer_age_from_node_name(self, node_type: str) -> str:
+        """Return inferred age from node type name pattern."""
+        # Parse node name: NODE_TECH_AQ_*, NODE_CIVIC_AQ_*, NODE_TECH_EX_*, etc.
+        if '_AQ_' in node_type or node_type.endswith('_AQ'):
+            return 'AGE_ANTIQUITY'
+        elif '_EX_' in node_type or node_type.endswith('_EX'):
+            return 'AGE_EXPLORATION'
+        elif '_MO_' in node_type or node_type.endswith('_MO'):
+            return 'AGE_MODERN'
+        return ''
+    
+    def _infer_trait_from_node_name(self, node_type: str) -> str:
+        """Infer civilization trait from node name pattern.
+        
+        Examples:
+        - NODE_CIVIC_AQ_ROME_* → TRAIT_ROME
+        - NODE_CIVIC_AQ_EGYPT_* → TRAIT_EGYPT
+        - NODE_TECH_EX_ASSYRIA_* → TRAIT_ASSYRIA
+        """
+        # Look for civ name after age marker
+        patterns = [
+            r'NODE_(?:CIVIC|TECH)_(?:AQ|EX|MO)_([A-Z_]+?)_',  # Standard pattern
+            r'NODE_CIVIC_AQ_([A-Z_]+?)_',  # Fallback for antiquity
+            r'NODE_CIVIC_EX_([A-Z_]+?)_',  # Exploration
+            r'NODE_CIVIC_MO_([A-Z_]+?)_',  # Modern
+        ]
+        
+        import re
+        for pattern in patterns:
+            match = re.search(pattern, node_type)
+            if match:
+                civ_name = match.group(1)
+                # Filter out common non-civ keywords
+                if civ_name not in ['MAIN', 'COMMON', 'BASE', 'SHARED']:
+                    return f'TRAIT_{civ_name}'
+        
+        return ''
+    
     def _resolve_unit_ages(self) -> None:
         """Resolve ages for all units based on progression tree unlocks."""
         if not hasattr(self, '_unit_unlock_nodes'):
@@ -726,6 +820,8 @@ class CivVIIDataExtractor:
         self._resolve_unit_ages()
         # Resolve tradition localizations
         self._resolve_tradition_localizations()
+        # Resolve quote localizations
+        self._resolve_quote_localizations()
         
         # BuildingCulture split into two categories:
         # 1. Palace/Premium styles (BUILDING_CULTURE_XXX)
@@ -1103,15 +1199,69 @@ class CivVIIDataExtractor:
         }
         self._write_json('modifiers.json', modifiers)
 
+        # Quotes (for progression tree nodes)
+        quotes = {
+            'name': 'quotes',
+            'description': 'Quotes from progression tree nodes with resolved text',
+            'values': [
+                {
+                    'id': node_type,
+                    'quote_loc': quote_data.get('quote_loc', ''),
+                    'quote_author_loc': quote_data.get('quote_author_loc', ''),
+                    'quote_text': quote_data.get('quote_text', ''),
+                    'quote_author': quote_data.get('quote_author', ''),
+                    'quote_audio': quote_data.get('quote_audio', ''),
+                    'age': quote_data.get('age', '')
+                }
+                for node_type, quote_data in sorted(self.data['quotes'].items())
+                # Only include quotes with resolved text
+                if quote_data.get('quote_text', '')
+            ]
+        }
+        self._write_json('quotes.json', quotes)
+
 
 def main() -> None:
     """Run the extractor."""
+    import os
+    
     # Use the repository root, not the script directory
     root_dir = Path(__file__).parent.parent.parent.parent
     print(f"Scanning Civ VII data files in {root_dir}...")
+    
+    # Check for game installation directory from environment or common Steam paths
+    game_install_dir = None
+    
+    # Try environment variable first
+    env_path = os.environ.get('CIV7_INSTALL_DIR')
+    if env_path:
+        game_install_dir = Path(env_path)
+        if game_install_dir.exists():
+            print(f"Using game installation from CIV7_INSTALL_DIR: {game_install_dir}")
+    
+    # Try common Steam library paths
+    if not game_install_dir or not game_install_dir.exists():
+        steam_paths = [
+            Path(r"S:\SteamLibrary\steamapps\common\Sid Meier's Civilization VII"),
+            Path(r"C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization VII"),
+            Path(r"C:\Program Files\Steam\steamapps\common\Sid Meier's Civilization VII"),
+            Path.home() / "Games" / "Sid Meier's Civilization VII",
+        ]
+        
+        for steam_path in steam_paths:
+            if steam_path.exists():
+                game_install_dir = steam_path
+                print(f"Found game installation at: {game_install_dir}")
+                break
+    
+    if not game_install_dir or not game_install_dir.exists():
+        print("Note: Game installation directory not found. Only scanning EXAMPLE files.")
+        print("To include base game data, set CIV7_INSTALL_DIR environment variable.")
+        game_install_dir = None
+    
     print()
 
-    extractor = CivVIIDataExtractor(root_dir)
+    extractor = CivVIIDataExtractor(root_dir, game_install_dir)
     extractor.scan_files()
     extractor.export_json_files()
 

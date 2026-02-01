@@ -98,6 +98,10 @@ export function renderWizardStep5(container) {
                             <dt class="text-slate-400">Traditions:</dt>
                             <dd class="text-slate-200 font-medium">${wizardData.traditions?.length || 0}</dd>
                         </div>
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Tree Nodes:</dt>
+                            <dd class="text-slate-200 font-medium">${wizardData.progression_tree_nodes?.length || 0}</dd>
+                        </div>
                     </dl>
                 </div>
                 

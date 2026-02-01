@@ -4,6 +4,9 @@
       "id": "EFFECT_ADD_BELIEF"
     },
     {
+      "id": "EFFECT_ADD_COMMANDER_WITH_UNITS"
+    },
+    {
       "id": "EFFECT_ADD_EVENT_FREQUENCY_OVERRIDE"
     },
     {
@@ -11,6 +14,12 @@
     },
     {
       "id": "EFFECT_ADD_PANTHEON"
+    },
+    {
+      "id": "EFFECT_ADD_PLAYER_UNITS_PILLAGE_BUILDING_PLUNDER"
+    },
+    {
+      "id": "EFFECT_ADD_PLAYER_UNITS_PILLAGE_IMPROVEMENT_PLUNDER"
     },
     {
       "id": "EFFECT_ADD_RELIGIOUS_BELIEF_YIELD"
@@ -22,7 +31,16 @@
       "id": "EFFECT_ADJUST_CITY_AUTO_TREASURE_FLEET"
     },
     {
+      "id": "EFFECT_ADJUST_CITY_COMMANDER_UNHAPPINESS_REDUCTION"
+    },
+    {
+      "id": "EFFECT_ADJUST_CITY_IGNORE_UNHAPPINESS_EFFECT"
+    },
+    {
       "id": "EFFECT_ADJUST_CITY_REPAIR_PURCHASE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_ADJUST_CITY_TREASURE_FLEET_MOD"
     },
     {
       "id": "EFFECT_ADJUST_FORBID_UPGRADE_TOWN_TO_CITY"
@@ -32,6 +50,12 @@
     },
     {
       "id": "EFFECT_ADJUST_PLAYER_ADDITIONAL_ARTIFACTS_IN_TERRITORY"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_ALLIANCE_CAPITAL_ROUTES"
+    },
+    {
+      "id": "EFFECT_ADJUST_PLAYER_ALLIANCE_TRADE"
     },
     {
       "id": "EFFECT_ADJUST_PLAYER_AUTO_SPREAD_COASTAL_RAID"
@@ -91,6 +115,9 @@
       "id": "EFFECT_ADJUST_PLAYER_RELIC_NEW_WORLD"
     },
     {
+      "id": "EFFECT_ADJUST_PLAYER_RETAIN_CS_INCORPORATE_UNITS"
+    },
+    {
       "id": "EFFECT_ADJUST_PLAYER_SUZERAIN_CAPITAL_ROUTES"
     },
     {
@@ -119,6 +146,9 @@
     },
     {
       "id": "EFFECT_ADJUST_TOWN_CAN_PURCHASE_TAGGED_CONSTRUCTIBLES"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_ACTIVE_DIPLOMACY_GROUP_COMBAT_STRENGTH"
     },
     {
       "id": "EFFECT_ADJUST_UNIT_ADVANCED_PILLAGING"
@@ -151,6 +181,12 @@
       "id": "EFFECT_ADJUST_UNIT_COMBAT_STRENGTH_MULTIPLE_ADJACENT_ENEMIES_MODIFIER"
     },
     {
+      "id": "EFFECT_ADJUST_UNIT_COMBAT_STRENGTH_PREVIOUS_ENGAGEMENT_KILL_BONUS"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_CONVERT_INDEPENDENT_CHARGES"
+    },
+    {
       "id": "EFFECT_ADJUST_UNIT_EMBARKED_MOVEMENT"
     },
     {
@@ -158,6 +194,9 @@
     },
     {
       "id": "EFFECT_ADJUST_UNIT_ENTER_FOREIGN_LANDS"
+    },
+    {
+      "id": "EFFECT_ADJUST_UNIT_FOCUSED_ATTACK_DAMAGE"
     },
     {
       "id": "EFFECT_ADJUST_UNIT_HIDDEN_VISIBILITY"
@@ -205,6 +244,9 @@
       "id": "EFFECT_ADJUST_UNIT_ROUGH_COMBAT_IGNORE_MODIFIER"
     },
     {
+      "id": "EFFECT_ADJUST_UNIT_SEE_HIDDEN"
+    },
+    {
       "id": "EFFECT_ADJUST_UNIT_SEE_THROUGH_FEATURES"
     },
     {
@@ -238,6 +280,9 @@
       "id": "EFFECT_ADJUST_UNIT_VALID_TERRAIN"
     },
     {
+      "id": "EFFECT_ADJUST_UNIT_WAR_SUPPORT_COMBAT_STRENGTH"
+    },
+    {
       "id": "EFFECT_ADJUST_UNIT_WATER_DAMAGE_PROTECTION"
     },
     {
@@ -245,6 +290,9 @@
     },
     {
       "id": "EFFECT_ADJUST_WAR_WEARINESS_YIELD_PENALTY"
+    },
+    {
+      "id": "EFFECT_ADJUST_YIELD_FOR_ALLIES"
     },
     {
       "id": "EFFECT_ADVANCED_START_ADD_ARMY"
@@ -259,6 +307,15 @@
       "id": "EFFECT_ARMY_ADJUST_AIR_INTERCEPTION_RANGE"
     },
     {
+      "id": "EFFECT_ARMY_ADJUST_ALWAYS_FULL_MOVE"
+    },
+    {
+      "id": "EFFECT_ARMY_ADJUST_COMMANDER_ATTACK_DAMAGE"
+    },
+    {
+      "id": "EFFECT_ARMY_ADJUST_COMMAND_RADIUS"
+    },
+    {
       "id": "EFFECT_ARMY_ADJUST_EXPERIENCE_RATE"
     },
     {
@@ -268,10 +325,25 @@
       "id": "EFFECT_ARMY_ADJUST_NAME"
     },
     {
+      "id": "EFFECT_ARMY_ADJUST_RESPAWN_SPEED"
+    },
+    {
+      "id": "EFFECT_ARMY_ADJUST_UNIT_CAPACITY"
+    },
+    {
+      "id": "EFFECT_ARMY_ADJUST_UNIT_REINFORCE_SPEED"
+    },
+    {
       "id": "EFFECT_ARMY_GRANT_UNIT"
     },
     {
       "id": "EFFECT_ATTACH_MODIFIERS"
+    },
+    {
+      "id": "EFFECT_BASIC_DIPLOMACY_MODS"
+    },
+    {
+      "id": "EFFECT_BLOCK_DIPLOMAITC_ACTION_GROUP_FOR_X_TURNS"
     },
     {
       "id": "EFFECT_CHANGE_INDEPENDENT_AT_LOCATION_INVESTMENT"
@@ -281,6 +353,9 @@
     },
     {
       "id": "EFFECT_CITY_ACTIVATE_CONSTRUCTIBLE_WAREHOUSE_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADD_FOOD_AFTER_GROWTH_EVENT"
     },
     {
       "id": "EFFECT_CITY_ADD_RESOURCE_TO_PLOT"
@@ -296,6 +371,12 @@
     },
     {
       "id": "EFFECT_CITY_ADJUST_BUILDING_MAINTENANCE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_BUILDING_PRODUCTION_PRODUCTION_PER_LEGACY_POINT"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_CAN_PURCHASE_IN_UNREST"
     },
     {
       "id": "EFFECT_CITY_ADJUST_CONSTRUCTIBLE_PRODUCTION"
@@ -337,6 +418,9 @@
       "id": "EFFECT_CITY_ADJUST_GROWTH_PER_RESOURCE"
     },
     {
+      "id": "EFFECT_CITY_ADJUST_GROWTH_PER_WORKER"
+    },
+    {
       "id": "EFFECT_CITY_ADJUST_OVERBUILD_PRODUCTION_MOD"
     },
     {
@@ -344,6 +428,9 @@
     },
     {
       "id": "EFFECT_CITY_ADJUST_PROJECT_PRODUCTION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_PROJECT_PRODUCTION_PER_LEGACY_POINT"
     },
     {
       "id": "EFFECT_CITY_ADJUST_RANDOM_EVENT_CONSTRUCTIBLE_YIELD"
@@ -355,10 +442,16 @@
       "id": "EFFECT_CITY_ADJUST_RESOURCE_CAP"
     },
     {
+      "id": "EFFECT_CITY_ADJUST_RESOURCE_CAP_PER_SUZERAIN"
+    },
+    {
       "id": "EFFECT_CITY_ADJUST_SPECIFIC_CONSTRUCTIBLE_MAINTENANCE"
     },
     {
       "id": "EFFECT_CITY_ADJUST_SUZERAIN_OF_CONSTRUCTIBLE_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_TOTAL_DISTRICT_HEALTH"
     },
     {
       "id": "EFFECT_CITY_ADJUST_TOWN_UPGRADE_DISCOUNT"
@@ -376,7 +469,13 @@
       "id": "EFFECT_CITY_ADJUST_UNHAPPINESS_EFFECT"
     },
     {
+      "id": "EFFECT_CITY_ADJUST_UNIT_DOMAIN_PRODUCTION"
+    },
+    {
       "id": "EFFECT_CITY_ADJUST_UNIT_PRODUCTION"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_UNIT_PRODUCTION_MOD_PER_SETTLEMENT"
     },
     {
       "id": "EFFECT_CITY_ADJUST_UNIT_PRODUCTION_PER_GREAT_WORK"
@@ -401,6 +500,9 @@
     },
     {
       "id": "EFFECT_CITY_ADJUST_YIELD"
+    },
+    {
+      "id": "EFFECT_CITY_ADJUST_YIELDS_PER_SETTLEMENT_OVER_CAP"
     },
     {
       "id": "EFFECT_CITY_ADJUST_YIELD_CONVERSION"
@@ -463,6 +565,9 @@
       "id": "EFFECT_CITY_DAMAGE_CONSTRUCTIBLES"
     },
     {
+      "id": "EFFECT_CITY_GRANT_FREE_BUILDING"
+    },
+    {
       "id": "EFFECT_CITY_GRANT_GREAT_WORK"
     },
     {
@@ -475,16 +580,55 @@
       "id": "EFFECT_CITY_GRANT_WAREHOUSE_YIELD"
     },
     {
+      "id": "EFFECT_CITY_GRANT_YIELD"
+    },
+    {
       "id": "EFFECT_CITY_GRANT_YIELD_DISCOVERY"
     },
     {
       "id": "EFFECT_CITY_GRANT_YIELD_PER_POP_DEFENSE_CONSTRUCTED"
     },
     {
+      "id": "EFFECT_CITY_TRANSFER_OWNER"
+    },
+    {
       "id": "EFFECT_CITY_UNLOCK_PROJECT"
     },
     {
+      "id": "EFFECT_CONSTRUCTIBLE_ADJUST_GREAT_WORK_SLOTS"
+    },
+    {
+      "id": "EFFECT_DAE_ADJUST_SETTLEMENT_YIELD"
+    },
+    {
+      "id": "EFFECT_DAE_APPLY_NON_AGGRESSION_PACT"
+    },
+    {
+      "id": "EFFECT_DAE_COMPLETE_APPLY_BEHAVIOR"
+    },
+    {
+      "id": "EFFECT_DAE_COMPLETE_FREE_CAPTURED_COMMANDER"
+    },
+    {
+      "id": "EFFECT_DAE_COMPLETE_GRANT_FAVORS_GRIEVANCES"
+    },
+    {
+      "id": "EFFECT_DAE_COMPLETE_IMPROVE_TRADE_RELATIONS"
+    },
+    {
       "id": "EFFECT_DAE_COOPERATIVE_ATTACH_MODIFIER"
+    },
+    {
+      "id": "EFFECT_DAE_DESCRIBE_GRANT_COOPERATIVE_YIELD"
+    },
+    {
+      "id": "EFFECT_DAE_DESCRIBE_GRANT_FAVORS_GRIEVANCES"
+    },
+    {
+      "id": "EFFECT_DAE_DESCRIBE_IMPROVE_TRADE_RELATIONS"
+    },
+    {
+      "id": "EFFECT_DAE_DESCRIBE_INDEPENDENT_AND_TARGET"
     },
     {
       "id": "EFFECT_DAE_ESPIONAGE_ADJUST_CITY_CONSTRUCTIBLE_PRODUCTION"
@@ -511,7 +655,16 @@
       "id": "EFFECT_DAE_ESPIONAGE_DISABLE_SETTLEMENT_WORKERS"
     },
     {
+      "id": "EFFECT_DAE_ESPIONAGE_GRANT_TARGET_COMMANDER_VISION"
+    },
+    {
       "id": "EFFECT_DAE_ESPIONAGE_SPAWN_TREASURE_FLEET"
+    },
+    {
+      "id": "EFFECT_DAE_ESPIONAGE_STEAL_TREE_NODE"
+    },
+    {
+      "id": "EFFECT_DAE_FREE_CAPTURED_COMMANDER_CHANGE_INITIATOR_GOLD"
     },
     {
       "id": "EFFECT_DAE_GRANT_CAPITAL_DISTRICT_VISION"
@@ -523,7 +676,19 @@
       "id": "EFFECT_DAE_GRANT_YIELD_PER_RELATIONSHIP"
     },
     {
+      "id": "EFFECT_DAE_INCORPORATE_CITY_STATE"
+    },
+    {
+      "id": "EFFECT_DAE_LEVY_UNIT"
+    },
+    {
+      "id": "EFFECT_DAE_SEND_GOLD"
+    },
+    {
       "id": "EFFECT_DAE_TARGET_ATTACH_MODIFIER"
+    },
+    {
+      "id": "EFFECT_DAE_TRADE_MAP"
     },
     {
       "id": "EFFECT_DECLARE_WAR"
@@ -557,6 +722,15 @@
     },
     {
       "id": "EFFECT_DIPLOMACY_ADJUST_YIELD_PER_PLAYER_RELATIONSHIP"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_ADJUST_YIELD_PER_SANCTIONED_PLAYER"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_AGENDA_ON_DISPERSE_IP"
+    },
+    {
+      "id": "EFFECT_DIPLOMACY_AGENDA_ON_WAR_START"
     },
     {
       "id": "EFFECT_DIPLOMACY_AGENDA_TIMED_UPDATE"
@@ -616,6 +790,9 @@
       "id": "EFFECT_GRANT_PRODUCTION_IN_CITY"
     },
     {
+      "id": "EFFECT_GRANT_RETURNED_CITIES_BONUS"
+    },
+    {
       "id": "EFFECT_GRANT_REVEAL_TYPE"
     },
     {
@@ -632,6 +809,9 @@
     },
     {
       "id": "EFFECT_GRANT_UNIT_OF_CLASS_AND_APPLY_ABILITY"
+    },
+    {
+      "id": "EFFECT_GRANT_UNIT_ON_SUCCESSFUL_UNDETECTED_ESPIONAGE_ACTION"
     },
     {
       "id": "EFFECT_GRANT_UNIT_PROMOTION"
@@ -655,7 +835,16 @@
       "id": "EFFECT_GRANT_WALLS"
     },
     {
+      "id": "EFFECT_GRANT_YIELD_FOR_GREAT_WORK"
+    },
+    {
+      "id": "EFFECT_GRANT_YIELD_PER_XP_EARNED"
+    },
+    {
       "id": "EFFECT_METAPROGRESSION_COMPLETE_CHALLENGE"
+    },
+    {
+      "id": "EFFECT_METAPROGRESSION_SEND_EVENT"
     },
     {
       "id": "EFFECT_MODIFY_CITY_YIELD_FOR_X_TURNS"
@@ -688,13 +877,25 @@
       "id": "EFFECT_PLAYER_ADJUST_GOLDEN_AGE_DURATION"
     },
     {
+      "id": "EFFECT_PLAYER_ADJUST_NO_INFLUENCE_PENALTY_REVEALED_SPIES"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_NO_OPPOSING_COUNTER_ESPIONAGE"
+    },
+    {
       "id": "EFFECT_PLAYER_ADJUST_PROGRESSION_TREE_EFFICIENCY"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_PROGRESSION_TREE_MASTERY_EFFICIENCY"
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_PURCHASE_EFFICIENCY_PER_RESOURCE"
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_SETTLEMENT_CAP"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_TRADE_CAPACITY"
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_UNIT_CAPTURE_ADDITIONAL_BOOTY"
@@ -718,7 +919,16 @@
       "id": "EFFECT_PLAYER_ADJUST_YIELD"
     },
     {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_CONVERSION"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_FOR_BECOMING_SUZERAIN"
+    },
+    {
       "id": "EFFECT_PLAYER_ADJUST_YIELD_FOR_COMPLETING_NARRATIVE_EVENTS"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_FOR_GOLDEN_AGE_START"
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_YIELD_FROM_DISTATERS"
@@ -728,6 +938,21 @@
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_ATTRIBUTE_AND_ALLIANCES"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_COMMANDER_LEVEL"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_COMPLETED_MASTERY"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_CONQUERED_CITY"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_CONQUERED_SETTLEMENT"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_NUM_CITIES"
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_NUM_CIVS_TRADING_WITH"
@@ -740,6 +965,9 @@
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_PROPERTY_VALUE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_RAZED_SETTLEMENT"
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_RESOURCE"
@@ -755,6 +983,9 @@
     },
     {
       "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_UNIQUE_RESOURCE"
+    },
+    {
+      "id": "EFFECT_PLAYER_ADJUST_YIELD_PER_UNIT_LEVEL"
     },
     {
       "id": "EFFECT_PLAYER_ATTRIBUTE"
@@ -775,19 +1006,49 @@
       "id": "EFFECT_PLAYER_DEDUCT_TREASURY_NARRATIVE"
     },
     {
+      "id": "EFFECT_PLAYER_DESTROY_UNIT_WITH_HIGHEST_LEVEL"
+    },
+    {
+      "id": "EFFECT_PLAYER_DIPLOMACY_ACTION_BASIC_DIPLOMACY_MODS"
+    },
+    {
+      "id": "EFFECT_PLAYER_DIPLOMACY_ACTION_DESCRIBE_PROGRESS_ENVOY_MOD"
+    },
+    {
       "id": "EFFECT_PLAYER_DIPLOMACY_ACTION_GROUP_MOD"
+    },
+    {
+      "id": "EFFECT_PLAYER_DIPLOMACY_ACTION_PROGRESS_ENVOY_MOD"
     },
     {
       "id": "EFFECT_PLAYER_DIPLOMACY_ADJUST_HAS_BOOSTED_SUPPORT_EFFECTS"
     },
     {
+      "id": "EFFECT_PLAYER_DIPLOMACY_ADJUST_THIRD_PARTY_SUPPORT_MAX"
+    },
+    {
+      "id": "EFFECT_PLAYER_DIPLOMACY_ALLOW_LEVY_FROM_ALL_CITY_STATES"
+    },
+    {
       "id": "EFFECT_PLAYER_DIPLOMACY_CHANGE_TRADE_ROUTE_CAPACITY"
+    },
+    {
+      "id": "EFFECT_PLAYER_DIPLOMACY_FAVOR_ACCRUE_MOD"
+    },
+    {
+      "id": "EFFECT_PLAYER_DIPLOMACY_IGNORE_WAR_REQUIREMENTS"
+    },
+    {
+      "id": "EFFECT_PLAYER_DIPLOMACY_INCITE_RAID"
     },
     {
       "id": "EFFECT_PLAYER_DISABLE_BUILD_UNIT"
     },
     {
       "id": "EFFECT_PLAYER_FORCE_MILITARY_OPERATION"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_BONUS_STORIES"
     },
     {
       "id": "EFFECT_PLAYER_GRANT_CONSTRUCTIBLE_UNLOCK"
@@ -800,6 +1061,9 @@
     },
     {
       "id": "EFFECT_PLAYER_GRANT_GOLDEN_AGE"
+    },
+    {
+      "id": "EFFECT_PLAYER_GRANT_LEGACY_POINTS"
     },
     {
       "id": "EFFECT_PLAYER_GRANT_NARRATIVE_TAG"
@@ -841,6 +1105,9 @@
       "id": "EFFECT_PLAYER_GRANT_YIELD_NARRATIVE"
     },
     {
+      "id": "EFFECT_PLAYER_LOWER_ALL_INDEPENDENT_RELATIONSHIPS"
+    },
+    {
       "id": "EFFECT_PLAYER_OPEN_ARCHAEOLOGY"
     },
     {
@@ -868,7 +1135,22 @@
       "id": "EFFECT_PLAYER_UNLOCK_TRADITION"
     },
     {
+      "id": "EFFECT_PLAYER_WAR_DIPLOMATIC_RELATIONSHIP_CHANGE"
+    },
+    {
+      "id": "EFFECT_PLOT_ADJUST_WORKER_MAINTENANCE"
+    },
+    {
+      "id": "EFFECT_PLOT_ADJUST_WORKER_YIELD"
+    },
+    {
       "id": "EFFECT_PLOT_ADJUST_YIELD"
+    },
+    {
+      "id": "EFFECT_PLOT_ADJUST_YIELD_PER_PLAYER_NATURAL_WONDER"
+    },
+    {
+      "id": "EFFECT_PLOT_DESTROY_DISCOVERY"
     },
     {
       "id": "EFFECT_PLOT_PLACE_RESOURCE"
@@ -878,6 +1160,18 @@
     },
     {
       "id": "EFFECT_RESTORE_UNIT_MOVEMENT"
+    },
+    {
+      "id": "EFFECT_REVEAL_PLOTS"
+    },
+    {
+      "id": "EFFECT_REVEAL_UNIT_PLOT_FOR_PLAYER"
+    },
+    {
+      "id": "EFFECT_STEAL_MAP"
+    },
+    {
+      "id": "EFFECT_TELEPORT_UNIT"
     },
     {
       "id": "EFFECT_UNITS_EXTRA_RANDOM_EVENT_DAMAGE"
@@ -902,6 +1196,9 @@
     },
     {
       "id": "EFFECT_UNIT_ADJUST_FLANKING_ATTACK_MODIFIER"
+    },
+    {
+      "id": "EFFECT_UNIT_ADJUST_FLANK_DEFENSE_MODIFIER"
     },
     {
       "id": "EFFECT_UNIT_ADJUST_FORTIFICATION_CONSTRUCTION_TIME"
@@ -934,6 +1231,9 @@
       "id": "EFFECT_UNIT_GRANT_UNASSIGNED_WORKERS"
     },
     {
+      "id": "EFFECT_UNIT_PROPERTY"
+    },
+    {
       "id": "EFFECT_UNIT_SET_CAN_PLUNDER_TRADE_ROUTES_BETWEEN_OTHER_CIVS"
     },
     {
@@ -955,7 +1255,22 @@
       "id": "TRIGGER_CITY_GRANT_YIELD_ON_PROGRESSION_TREE_NODE_DEPTH_UNLOCKED"
     },
     {
+      "id": "TRIGGER_PLAYER_ADJUST_POPULATION_ON_CELEBRATION_STARTED"
+    },
+    {
+      "id": "TRIGGER_PLAYER_ADJUST_YIELD_PER_ATTRIBUTE_TREE_UNLOCKED"
+    },
+    {
+      "id": "TRIGGER_PLAYER_GRANT_UNIT_ON_GOLDEN_AGE"
+    },
+    {
+      "id": "TRIGGER_PLAYER_GRANT_UNIT_ON_PROGRESSION_TREE_NODE_DEPTH_UNLOCKED"
+    },
+    {
       "id": "TRIGGER_PLAYER_GRANT_YIELD_ON_FIND_WONDER"
+    },
+    {
+      "id": "TRIGGER_PLAYER_GRANT_YIELD_ON_MASTERY_COMPLETED"
     },
     {
       "id": "TRIGGER_PLAYER_GRANT_YIELD_ON_PROGRESSION_TREE_NODE_DEPTH_UNLOCKED"

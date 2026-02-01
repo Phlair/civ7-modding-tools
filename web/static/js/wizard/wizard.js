@@ -407,14 +407,73 @@ export async function createWizardDropdown(
 // ============================================================================
 
 export function generateDefaultProgressionTree() {
-    if (currentData.progression_trees && currentData.progression_trees.length > 0) {
-        return;
+    // Check if we need to generate default nodes for existing trees
+    const existingTrees = currentData.progression_trees || [];
+    const existingNodes = currentData.progression_tree_nodes || [];
+    const existingNodeIds = new Set(existingNodes.map(n => n.id));
+    
+    // For each tree, ensure it has valid node bindings
+    for (const tree of existingTrees) {
+        if (!tree.bindings || tree.bindings.length === 0 || 
+            !tree.bindings.some(bindingId => existingNodeIds.has(bindingId))) {
+            // Tree has no nodes - generate defaults for it
+            const civType = currentData.civilization?.civilization_type || 'CIVILIZATION_CUSTOM';
+            const civName = currentData.civilization?.localizations?.[0]?.name || 'Custom';
+            const treeId = tree.id;
+            const treeType = tree.progression_tree_type;
+            const node1Type = `${treeType.replace('TREE_', 'NODE_')}_1`;
+            const node2Type = `${treeType.replace('TREE_', 'NODE_')}_2`;
+            
+            if (!currentData.progression_tree_nodes) {
+                currentData.progression_tree_nodes = [];
+            }
+            
+            currentData.progression_tree_nodes.push({
+                id: `${treeId}_node1`,
+                progression_tree_node_type: node1Type,
+                progression_tree_node: {
+                    progression_tree_node_type: node1Type,
+                },
+                localizations: [{
+                    name: `${civName} Foundations`,
+                }],
+                bindings: [],
+            });
+            
+            currentData.progression_tree_nodes.push({
+                id: `${treeId}_node2`,
+                progression_tree_node_type: node2Type,
+                progression_tree_node: {
+                    progression_tree_node_type: node2Type,
+                },
+                localizations: [{
+                    name: `${civName} Advancement`,
+                }],
+                bindings: [],
+            });
+            
+            // Update tree bindings
+            tree.bindings = [`${treeId}_node1`, `${treeId}_node2`];
+            
+            // Ensure prereqs exist
+            if (!tree.progression_tree_prereqs) {
+                tree.progression_tree_prereqs = [];
+            }
+            tree.progression_tree_prereqs.push({
+                node: node2Type,
+                prereq_node: node1Type,
+            });
+            
+            markDirty();
+        }
     }
-
-    const civType = currentData.civilization?.civilization_type || 'CIVILIZATION_CUSTOM';
-    const civName = currentData.civilization?.localizations?.[0]?.name || 'Custom';
-    const ageType = currentData.action_group?.action_group_id || 'AGE_ANTIQUITY';
-    const modId = currentData.metadata?.id || 'custom';
+    
+    // If no trees exist at all, create a default one
+    if (existingTrees.length === 0) {
+        const civType = currentData.civilization?.civilization_type || 'CIVILIZATION_CUSTOM';
+        const civName = currentData.civilization?.localizations?.[0]?.name || 'Custom';
+        const ageType = currentData.action_group?.action_group_id || 'AGE_ANTIQUITY';
+        const modId = currentData.metadata?.id || 'custom';
 
     const treeId = `progression_tree_${modId}`;
     const treeType = `TREE_CIVICS_${civType.replace('CIVILIZATION_', '')}`;
@@ -453,39 +512,40 @@ export function generateDefaultProgressionTree() {
         currentData.progression_trees = [];
     }
 
-    currentData.progression_trees.push({
-        id: treeId,
-        progression_tree_type: treeType,
-        progression_tree: {
+        currentData.progression_trees.push({
+            id: treeId,
             progression_tree_type: treeType,
-            age_type: ageType,
-        },
-        progression_tree_prereqs: [{
-            node: node2Type,
-            prereq_node: node1Type,
-        }],
-        localizations: [{
-            name: `${civName} Civic Tree`,
-        }],
-        bindings: [
-            `${modId}_node1`,
-            `${modId}_node2`,
-        ],
-    });
+            progression_tree: {
+                progression_tree_type: treeType,
+                age_type: ageType,
+            },
+            progression_tree_prereqs: [{
+                node: node2Type,
+                prereq_node: node1Type,
+            }],
+            localizations: [{
+                name: `${civName} Civic Tree`,
+            }],
+            bindings: [
+                `${modId}_node1`,
+                `${modId}_node2`,
+            ],
+        });
 
-    if (currentData.civilization) {
-        if (!currentData.civilization.civilization) {
-            currentData.civilization.civilization = {};
-        }
-        currentData.civilization.civilization.unique_culture_progression_tree = treeType;
+        if (currentData.civilization) {
+            if (!currentData.civilization.civilization) {
+                currentData.civilization.civilization = {};
+            }
+            currentData.civilization.civilization.unique_culture_progression_tree = treeType;
 
-        if (!currentData.civilization.bindings) {
-            currentData.civilization.bindings = [];
+            if (!currentData.civilization.bindings) {
+                currentData.civilization.bindings = [];
+            }
+            if (!currentData.civilization.bindings.includes(treeId)) {
+                currentData.civilization.bindings.push(treeId);
+            }
         }
-        if (!currentData.civilization.bindings.includes(treeId)) {
-            currentData.civilization.bindings.push(treeId);
-        }
+
+        markDirty();
     }
-
-    markDirty();
 }

@@ -1,0 +1,2130 @@
+{
+  "name": "quotes",
+  "description": "Quotes from progression tree nodes with resolved text",
+  "values": [
+    {
+      "id": "NODE_CIVIC_AQ_AKSUM_BOOK_OF_THE_HIMYARITES",
+      "quote_loc": "LOC_CIVIC_BOOK_OF_THE_HIMYARITES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_BOOK_OF_THE_HIMYARITES_QUOTE_AUTHOR",
+      "quote_text": "\"Africa will write its own history, and in both north and south it will be a history of glory and dignity.\"",
+      "quote_author": "Patrice Lumumba",
+      "quote_audio": "VO_Quote_BookHimyarites",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_AKSUM_MONUMENTUM_ADULITANUM",
+      "quote_loc": "LOC_CIVIC_MONUMENTUM_ADULITANUM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MONUMENTUM_ADULITANUM_QUOTE_AUTHOR",
+      "quote_text": "\"I set up here this throne and consecrated it to Ares.\"",
+      "quote_author": "Monumentum Adulitanum",
+      "quote_audio": "VO_Quote_MonumentumAdulitanum",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_AKSUM_PERIPLUS_OF_THE_ERYTHRAEAN_SEA",
+      "quote_loc": "LOC_CIVIC_PERIPLUS_OF_THE_ERYTHRAEAN_SEA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PERIPLUS_OF_THE_ERYTHRAEAN_SEA_QUOTE_AUTHOR",
+      "quote_text": "\"To that place all the ivory is brought.\"",
+      "quote_author": "The Periplus of the Erythraean Sea",
+      "quote_audio": "VO_Quote_PeriplusErythraeanSea",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_ASSYRIA_BIRTUTU",
+      "quote_loc": "LOC_CIVIC_BIRTUTU_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_BIRTUTU_AUTHOR",
+      "quote_text": "\"The city's wall I established firm as the mountains, and peoples of the land which my hands had conquered, I settled therein.\"",
+      "quote_author": "Sargon II",
+      "quote_audio": "VO_Quote_Birtutu",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_ASSYRIA_KIBRAT_ARBA_I",
+      "quote_loc": "LOC_CIVIC_KIBRAT_ARBA_I_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_KIBRAT_ARBA_I_AUTHOR",
+      "quote_text": "\"I led my armies from one end of the earth to the other and brought into submission all princes of the four quarters.\"",
+      "quote_author": "Sennacherib",
+      "quote_audio": "VO_Quote_KibratArbai",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_ASSYRIA_TUPSARRUTU",
+      "quote_loc": "LOC_CIVIC_TUPSARRUTU_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TUPSARRUTU_AUTHOR",
+      "quote_text": "\"You, O Ashur, hold all knowledge from the ancient past to the distant future.\"",
+      "quote_author": "Ashurbanipal",
+      "quote_audio": "VO_Quote_Tupsarrutu",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_CARTHAGE_RED_SLIP",
+      "quote_loc": "LOC_CIVIC_RED_SLIP_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_RED_SLIP_AUTHOR",
+      "quote_text": "\"He who finds more joy in an urban dwelling will have no need for a rural farm.\"",
+      "quote_author": "Mago",
+      "quote_audio": "VO_Quote_RedSlip",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_CARTHAGE_SHIPSHEDS",
+      "quote_loc": "LOC_CIVIC_SHIPSHEDS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SHIPSHEDS_AUTHOR",
+      "quote_text": "\"Sailing quickly forth, we passed a country burning with fires and fragrance, from which streams of flames fell into the sea.\"",
+      "quote_author": "Hanno the Navigator",
+      "quote_audio": "VO_Quote_Shipsheds",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_CARTHAGE_SICILIAN_WARS",
+      "quote_loc": "LOC_CIVIC_SICILIAN_WARS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SICILIAN_WARS_AUTHOR",
+      "quote_text": "\"Presenting the captured fleet, the Carthaginians ensured that the people could not only hear but see the greatness of their success.\"",
+      "quote_author": "Diodorus Siculus",
+      "quote_audio": "VO_Quote_SicilianWars",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_EGYPT_ARRIVAL_OF_HAPI",
+      "quote_loc": "LOC_CIVIC_ARRIVAL_OF_HAPI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ARRIVAL_OF_HAPI_QUOTE_AUTHOR",
+      "quote_text": "\"The river begins to rise when other rivers diminish and begins to subside just when other rivers increase.\"",
+      "quote_author": "Ibn Battuta",
+      "quote_audio": "VO_Quote_ArrivalHapi",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_EGYPT_LIGHT_OF_AMUN_RA",
+      "quote_loc": "LOC_CIVIC_LIGHT_OF_AMUN_RA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LIGHT_OF_AMUN_RA_QUOTE_AUTHOR",
+      "quote_text": "\"Behold, thou image of gold, thou lord of terror; thou rollest along and art renewed day by day.\"",
+      "quote_author": "The Book of the Dead",
+      "quote_audio": "VO_Quote_LightAmunRa",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_EGYPT_SCALES_OF_ANUBIS",
+      "quote_loc": "LOC_CIVIC_SCALES_OF_ANUBIS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SCALES_OF_ANUBIS_QUOTE_AUTHOR",
+      "quote_text": "\"The god Anubis said: Pass, thou, for thou knowest the names.\"",
+      "quote_author": "The Book of the Dead",
+      "quote_audio": "VO_Quote_ScalesAnubis",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_GREECE_AGOGE",
+      "quote_loc": "LOC_CIVIC_AGOGE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_AGOGE_QUOTE_AUTHOR",
+      "quote_text": "\"If you think that I rely on numbers, then all Greece is not sufficient. If on men's valor, then this number will do.\"",
+      "quote_author": "Leonidas",
+      "quote_audio": "VO_Quote_Agoge",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_GREECE_EKKLESIA",
+      "quote_loc": "LOC_CIVIC_EKKLESIA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_EKKLESIA_QUOTE_AUTHOR",
+      "quote_text": "\"The administration is in the hands of the many and not of the few.\"",
+      "quote_author": "Pericles",
+      "quote_audio": "VO_Quote_Ekklesia",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_GREECE_SYMMACHIA",
+      "quote_loc": "LOC_CIVIC_SYMMACHIA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SYMMACHIA_QUOTE_AUTHOR",
+      "quote_text": "\"Right, as the world goes, is only in question between equals in power, while the strong do what they can and the weak suffer what they must.\"",
+      "quote_author": "Thucydides",
+      "quote_audio": "VO_Quote_Symmachia",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_HAN_JUNZI",
+      "quote_loc": "LOC_CIVIC_JUNZI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_JUNZI_QUOTE_AUTHOR",
+      "quote_text": "\"Looked at from a distance, the scholar appears stern; when approached, he is mild; when he is heard to speak, his language is firm.\"",
+      "quote_author": "Confucius",
+      "quote_audio": "VO_Quote_Junzi",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_HAN_LI",
+      "quote_loc": "LOC_CIVIC_LI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LI_QUOTE_AUTHOR",
+      "quote_text": "\"Always and in everything let there be reverence.\"",
+      "quote_author": "The Book of Rites",
+      "quote_audio": "VO_Quote_HanLi",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_HAN_YI",
+      "quote_loc": "LOC_CIVIC_YI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_YI_QUOTE_AUTHOR",
+      "quote_text": "\"Riches and honors acquired by unrighteousness are to me as a floating cloud.\"",
+      "quote_author": "Confucius",
+      "quote_audio": "VO_Quote_Yi",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_HAN_ZHI",
+      "quote_loc": "LOC_CIVIC_ZHI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ZHI_QUOTE_AUTHOR",
+      "quote_text": "\"I do not open up the truth to one who is not eager to get knowledge.\"",
+      "quote_author": "Confucius",
+      "quote_audio": "VO_Quote_Zhi",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_KHMER_AMNACH",
+      "quote_loc": "LOC_CIVIC_AMNACH_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_AMNACH_QUOTE_AUTHOR",
+      "quote_text": "\"The king's fire was like the moon, and his enemies drooped to the ground like lotuses at night.\"",
+      "quote_author": "Preah Khan Inscription",
+      "quote_audio": "VO_Quote_Amnach",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_KHMER_CHAKRAVARTI",
+      "quote_loc": "LOC_CIVIC_CHAKRAVARTI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CHAKRAVARTI_QUOTE_AUTHOR",
+      "quote_text": "\"Live with the Dhamma as your island, the Dhamma as your refuge, with nothing else as your refuge.\"",
+      "quote_author": "The Cakkavatti Sutta",
+      "quote_audio": "VO_Quote_Chakravarti",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_KHMER_MOUSONG",
+      "quote_loc": "LOC_CIVIC_MOUSONG_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MOUSONG_QUOTE_AUTHOR",
+      "quote_text": "\"Rain fell like crystal, swelling the river and giving life to the forest, on the bodies of the young and old alike.\"",
+      "quote_author": "Moni Mekhala and Ream Eyso",
+      "quote_audio": "VO_Quote_KhmerMousong",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_CHIEFDOM",
+      "quote_loc": "LOC_CIVIC_CHIEFDOM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CHIEFDOM_QUOTE_AUTHOR",
+      "quote_text": "\"I protect thee with this flame, and I drive away the foe and the sand from thy feet.\"",
+      "quote_author": "The Book of the Dead",
+      "quote_audio": "VO_Quote_Chiefdom",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_CITIZENSHIP",
+      "quote_loc": "LOC_CIVIC_CITIZENSHIP_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CITIZENSHIP_QUOTE_AUTHOR",
+      "quote_text": "\"After the assembly gathered, the elders gave their answer.\"",
+      "quote_author": "The Epic of Gilgamesh",
+      "quote_audio": "VO_Quote_Citizenship",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_CODE_OF_LAWS",
+      "quote_loc": "LOC_CIVIC_CODE_OF_LAWS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CODE_OF_LAWS_QUOTE_AUTHOR",
+      "quote_text": "\"An eye for an eye, a tooth for a tooth.\"",
+      "quote_author": "Exodus 21:24",
+      "quote_audio": "VO_Quote_CodeLaws",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_COMMERCE",
+      "quote_loc": "LOC_CIVIC_COMMERCE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_COMMERCE_QUOTE_AUTHOR",
+      "quote_text": "\"The dogs bark, but the caravan moves on.\"",
+      "quote_author": "Turkish Proverb",
+      "quote_audio": "VO_Quote_Commerce",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_DISCIPLINE",
+      "quote_loc": "LOC_CIVIC_DISCIPLINE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_DISCIPLINE_QUOTE_AUTHOR",
+      "quote_text": "\"Do nothing which is of no use.\"",
+      "quote_author": "Miyamoto Musashi",
+      "quote_audio": "VO_Quote_Discipline",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_ENTERTAINMENT",
+      "quote_loc": "LOC_CIVIC_ENTERTAINMENT_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ENTERTAINMENT_QUOTE_AUTHOR",
+      "quote_text": "\"All the world's a stage, and all the men and women merely players.\"",
+      "quote_author": "William Shakespeare",
+      "quote_audio": "VO_Quote_Entertainment",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_LITERACY",
+      "quote_loc": "LOC_CIVIC_LITERACY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LITERACY_QUOTE_AUTHOR",
+      "quote_text": "\"God, with such splendid irony, granted me books and night at one touch.\"",
+      "quote_author": "Jorge Luis Borges",
+      "quote_audio": "VO_Quote_Literacy",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_MYSTICISM",
+      "quote_loc": "LOC_CIVIC_MYSTICISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MYSTICISM_QUOTE_AUTHOR",
+      "quote_text": "\"There is another world, but it is in this one.\"",
+      "quote_author": "Paul \u00c9luard",
+      "quote_audio": "VO_Quote_Mysticism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_ORG_MILITARY",
+      "quote_loc": "LOC_CIVIC_ORG_MILITARY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ORG_MILITARY_QUOTE_AUTHOR",
+      "quote_text": "\"An army is a miniature of the society which produces it.\"",
+      "quote_author": "C. L. R. James",
+      "quote_audio": "VO_Quote_OrganizedMilitary",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_PHILOSOPHY",
+      "quote_loc": "LOC_CIVIC_PHILOSOPHY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PHILOSOPHY_QUOTE_AUTHOR",
+      "quote_text": "\"The unexamined life is not worth living.\"",
+      "quote_author": "Socrates",
+      "quote_audio": "VO_Quote_Philosophy",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_PUBLIC_LIFE",
+      "quote_loc": "LOC_CIVIC_PUBLIC_LIFE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PUBLIC_LIFE_QUOTE_AUTHOR",
+      "quote_text": "\"Remain less interested in who we imagine ourselves to be than in what we can do for one another.\"",
+      "quote_author": "Paul Gilroy",
+      "quote_audio": "VO_Quote_PublicLife",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_SKILLED_TRADES",
+      "quote_loc": "LOC_CIVIC_SKILLED_TRADES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SKILLED_TRADES_QUOTE_AUTHOR",
+      "quote_text": "\"Skill is handed down to me from my ancestors in a perpetual line of accumulated wisdom.\"",
+      "quote_author": "Shuji Nakagawa",
+      "quote_audio": "VO_Quote_SkilledTrades",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAIN_TACTICS",
+      "quote_loc": "LOC_CIVIC_BANNERS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_BANNERS_QUOTE_AUTHOR",
+      "quote_text": "\"Those who delight to attack and to display their valour and fealty should be formed in companies.\"",
+      "quote_author": "Sun Tzu",
+      "quote_audio": "VO_Quote_Tactics",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAURYA_ACHARYA",
+      "quote_loc": "LOC_CIVIC_ACHARYA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ACHARYA_QUOTE_AUTHOR",
+      "quote_text": "\"Those who know true wisdom are one with Thee, O God.\"",
+      "quote_author": "Vishnu Purana",
+      "quote_audio": "VO_Quote_Acharya",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAURYA_AYURVEDA",
+      "quote_loc": "LOC_CIVIC_AYURVEDA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_AYURVEDA_QUOTE_AUTHOR",
+      "quote_text": "\"Preserve the health of the healthy, and break the cause of disease.\"",
+      "quote_author": "Ayurveda Motto",
+      "quote_audio": "VO_Quote_Ayurveda",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAURYA_MANTRIPARISHAD",
+      "quote_loc": "LOC_CIVIC_MANTRIPARISHAD_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MANTRIPARISHAD_QUOTE_AUTHOR",
+      "quote_text": "\"Test a servant in duty, a relative in difficulty, a friend in adversity, and a wife in misfortune.\"",
+      "quote_author": "Chanakya",
+      "quote_audio": "VO_Quote_Mantiparishad",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAURYA_VYUHAM",
+      "quote_loc": "LOC_CIVIC_VYUHAM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_VYUHAM_QUOTE_AUTHOR",
+      "quote_text": "\"For those who are born, death is certain, and for those who are dead, birth is certain.\"",
+      "quote_author": "The Mah\u0101bh\u0101rata",
+      "quote_audio": "VO_Quote_MauryaVyuham",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAYA_CALENDAR_ROUND",
+      "quote_loc": "LOC_CIVIC_CALENDAR_ROUND_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CALENDAR_ROUND_QUOTE_AUTHOR",
+      "quote_text": "\"It is 12 Ahau 8 Pax. The Holy Lord of Ixtutz drives the stone into the ground.\"",
+      "quote_author": "The Geneva Stela",
+      "quote_audio": "VO_Quote_CalendarRound",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAYA_LORDS_OF_XIBALBA",
+      "quote_loc": "LOC_CIVIC_LORDS_OF_XIBALBA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LORDS_OF_XIBALBA_QUOTE_AUTHOR",
+      "quote_text": "\"The monarchs of Xibalba requested to be slain and resuscitated. They were killed, but the brothers refrained from resuscitating.\"",
+      "quote_author": "Popol Vuh",
+      "quote_audio": "VO_Quote_LordsXibalba",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MAYA_RAIN_OF_CHAAC",
+      "quote_loc": "LOC_CIVIC_RAIN_OF_CHAAC_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_RAIN_OF_CHAAC_QUOTE_AUTHOR",
+      "quote_text": "\"All alone the sky exists. The face of the earth has not yet appeared.\"",
+      "quote_author": "Popol Vuh",
+      "quote_audio": "VO_Quote_RainChaac",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MISSISSIPPIAN_CAH_NAH_HA",
+      "quote_loc": "LOC_CIVIC_CAH_NAH_HA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CAH_NAH_HA_QUOTE_AUTHOR",
+      "quote_text": "\"The things the worshipper gives to his gods are not the food he places on the altar, or the blood in his veins. It is his thought.\"",
+      "quote_author": "\u00c9mile Durkheim",
+      "quote_audio": "VO_Quote_Cahnahha",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MISSISSIPPIAN_EARTHWORKS",
+      "quote_loc": "LOC_CIVIC_EARTHWORKS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_EARTHWORKS_QUOTE_AUTHOR",
+      "quote_text": "\"The king's cup was placed on a tumulus, with many arrows set about it.\"",
+      "quote_author": "Jacques le Moyne",
+      "quote_audio": "VO_Quote_Earthworks",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_MISSISSIPPIAN_WAAHIH",
+      "quote_loc": "LOC_CIVIC_WAAHIH_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_WAAHIH_QUOTE_AUTHOR",
+      "quote_text": "\"This is a good day to die!\"",
+      "quote_author": "Sitting Bull",
+      "quote_audio": "VO_Quote_Waahih",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_PERSIA_ACHAEMENID_EMPIRE",
+      "quote_loc": "LOC_CIVIC_ACHAEMENID_EMPIRE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ACHAEMENID_EMPIRE_QUOTE_AUTHOR",
+      "quote_text": "\"Should I pass you by and leave you lying there because of your war against us, or should I set you up again because of your virtues?\"",
+      "quote_author": "Plutarch",
+      "quote_audio": "VO_Quote_AchaemenidEmpire",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_PERSIA_SATRAPIES",
+      "quote_loc": "LOC_CIVIC_SATRAPIES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SATRAPIES_QUOTE_AUTHOR",
+      "quote_text": "\"Better to live in a rugged land and rule than to cultivate rich plains and serve.\"",
+      "quote_author": "Cyrus the Great",
+      "quote_audio": "VO_Quote_Satrapies",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_PERSIA_SPADA",
+      "quote_loc": "LOC_CIVIC_SPADA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SPADA_QUOTE_AUTHOR",
+      "quote_text": "\"Be eager in the face of danger.\"",
+      "quote_author": "Xenophon",
+      "quote_audio": "VO_Quote_Spada",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_ROME_CIVIS_ROMANUS",
+      "quote_loc": "LOC_CIVIC_CIVIS_ROMANUS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CIVIS_ROMANUS_QUOTE_AUTHOR",
+      "quote_text": "\"Avoid any specific discussion of public policy at public meetings.\"",
+      "quote_author": "Cicero",
+      "quote_audio": "VO_Quote_CivisRomanus",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_ROME_EXERCITUS_ROMANUS",
+      "quote_loc": "LOC_CIVIC_EXERCITUS_ROMANUS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_EXERCITUS_ROMANUS_QUOTE_AUTHOR",
+      "quote_text": "\"It is easier to find men who will volunteer to die, than to find those who are willing to endure pain with patience.\"",
+      "quote_author": "Julius Caesar",
+      "quote_audio": "VO_Quote_ExercitusRomanus",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_ROME_LEGATUS_PRO_PRAETORE",
+      "quote_loc": "LOC_CIVIC_LEGATUS_PRO_PRAETORE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LEGATUS_PRO_PRAETORE_QUOTE_AUTHOR",
+      "quote_text": "\"Those who steal from one person spend their lives in shackles and chains - those who steal from all people, in purple and gold.\"",
+      "quote_author": "Cato",
+      "quote_audio": "VO_Quote_LegatusProPraetore",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_ROME_SENATUS_POPULUSQUE_ROMANUS",
+      "quote_loc": "LOC_CIVIC_SENATUS_POPULUSQUE_ROMANUS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SENATUS_POPULUSQUE_ROMANUS_QUOTE_AUTHOR",
+      "quote_text": "\"Let arms yield to the toga.\"",
+      "quote_author": "Cicero",
+      "quote_audio": "VO_Quote_SenatusPopulusqueRomanus",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_SILLA_JINGOL",
+      "quote_loc": "LOC_CIVIC_JINGOL_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_JINGOL_AUTHOR",
+      "quote_text": "\"Ah, Hwarang, you are the high pine branch that does not know frost.\"",
+      "quote_author": "Ode to Knight Kipa",
+      "quote_audio": "VO_Quote_Jingol",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_SILLA_KOLP_UM",
+      "quote_loc": "LOC_CIVIC_KOLP_UM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_KOLP_UM_AUTHOR",
+      "quote_text": "\"How brilliant is the autumn field, ripe with the fruit of enlightenment beneath the full moon.\"",
+      "quote_author": "Kyunyeo",
+      "quote_audio": "VO_Quote_KolpUm",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_SILLA_SAMGUK_SAGI",
+      "quote_loc": "LOC_CIVIC_SAMGUK_SAGI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SAMGUK_SAGI_AUTHOR",
+      "quote_text": "\"In the third month, a comet appeared in the southeast and a dragon flew past Mount Yangsan.\"",
+      "quote_author": "Samguk Sagi",
+      "quote_audio": "VO_Quote_SamgukSagi",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_SILLA_SEONGGOL",
+      "quote_loc": "LOC_CIVIC_SEONGGOL_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SEONGGOL_AUTHOR",
+      "quote_text": "\"It is no wonder that the founders of the Three Kingdoms had divine origins.\"",
+      "quote_author": "Samguk Yusa",
+      "quote_audio": "VO_Quote_Seonggol",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_TONGA_ESI_MAKA_FAAKINANGA",
+      "quote_loc": "LOC_CIVIC_ESI_MAKA_FAAKINANGA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ESI_MAKA_FAAKINANGA_AUTHOR",
+      "quote_text": "\"The whole island submitted to him. From thence he proceeded to another group of islands. They readily yielded to his power.\"",
+      "quote_author": "George Vason",
+      "quote_audio": "VO_Quote_EsiMakaFaakinanga",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_TONGA_KAVA_CEREMONY",
+      "quote_loc": "LOC_CIVIC_KAVA_CEREMONY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_KAVA_CEREMONY_AUTHOR",
+      "quote_text": "\"They are still as their children, and one with them.\"",
+      "quote_author": "T\u0101ufa\u02bb\u0101hau I",
+      "quote_audio": "VO_Quote_KavaCeremony",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_AQ_TONGA_LAPITA_ORIGINS",
+      "quote_loc": "LOC_CIVIC_LAPITA_ORIGINS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LAPITA_ORIGINS_AUTHOR",
+      "quote_text": "\"Stand firm and the waves will break.\"",
+      "quote_author": "Tongan Proverb",
+      "quote_audio": "VO_Quote_LapitaOrigins",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_ABBASID_AL_JABR",
+      "quote_loc": "LOC_CIVIC_AL_JABR_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_AL_JABR_AUTHOR",
+      "quote_text": "When I considered what people generally want in calculating, I found that it always is a number.",
+      "quote_author": "Al-Khwarizmi",
+      "quote_audio": "VO_Quote_AlJabr",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_ABBASID_MAWLA",
+      "quote_loc": "LOC_CIVIC_MAWLA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MAWLA_AUTHOR",
+      "quote_text": "Know that God has assigned a leader for you - nomad and city resident, Arab and non-Arab, free or slave, young or old.",
+      "quote_author": "The Hadith of Ghadir Khumm",
+      "quote_audio": "VO_Quote_Mawla",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_ABBASID_ROUND_CITY",
+      "quote_loc": "LOC_CIVIC_ROUND_CITY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ROUND_CITY_AUTHOR",
+      "quote_text": "Baghdad was a city of palaces, not of stucco and mortar, but of marble.",
+      "quote_author": "The Yakut",
+      "quote_audio": "VO_Quote_RoundCity",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_BRANCH_REFORMATION",
+      "quote_loc": "LOC_CIVIC_REFORMATION_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_REFORMATION_QUOTE_AUTHOR",
+      "quote_text": "\"The gospel cannot be truly preached without offense and tumult.\"",
+      "quote_author": "Martin Luther",
+      "quote_audio": "VO_Quote_Reformation",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_BRANCH_THEOLOGY",
+      "quote_loc": "LOC_CIVIC_THEOLOGY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_THEOLOGY_QUOTE_AUTHOR",
+      "quote_text": "\"By knowing things in their true nature, one knows the divine.\"",
+      "quote_author": "The Book of Causes",
+      "quote_audio": "VO_Quote_Theology",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_BULGARIA_SEVEN_TRIBES",
+      "quote_loc": "LOC_CIVIC_SEVEN_TRIBES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SEVEN_TRIBES_AUTHOR",
+      "quote_text": "\"As previously reported, the Bulgars annihilated all of their foes.\"",
+      "quote_author": "The Laws of Khan Krum",
+      "quote_audio": "VO_Quote_SevenTribes",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_BULGARIA_TARNOVO_SCHOOLS",
+      "quote_loc": "LOC_CIVIC_TARNOVO_SCHOOLS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TARNOVO_SCHOOLS_AUTHOR",
+      "quote_text": "\"Demons fear these relics and dare not approach their bless-ed contents.\"",
+      "quote_author": "Presbyter Kosmas",
+      "quote_audio": "VO_Quote_TarnovoSchools",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_BULGARIA_TSARSTVIE",
+      "quote_loc": "LOC_CIVIC_TSARSTVIE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TSARSTVIE_AUTHOR",
+      "quote_text": "\"Like the morning star, you appeared to us and dispelled the shadow of the enemy.\"",
+      "quote_author": "Eulogy for Peter I",
+      "quote_audio": "VO_Quote_Tsarstvie",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_CHOLA_DIGVIJAYA",
+      "quote_loc": "LOC_CIVIC_DIGVIJAYA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_DIGVIJAYA_AUTHOR",
+      "quote_text": "The ten heads of Ravana lay like the mountains holding the earth, his shoulders like tides, without movement.",
+      "quote_author": "Ramavataram",
+      "quote_audio": "VO_Quote_Digvijaya",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_CHOLA_KANAKAM",
+      "quote_loc": "LOC_CIVIC_KANAKAM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_KANAKAM_AUTHOR",
+      "quote_text": "If the goddess wills it, wealth will multiply. When she departs, these gifts vanish.",
+      "quote_author": "Naanmanik Kadigai",
+      "quote_audio": "VO_Quote_Kanakam",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_CHOLA_MONSOON_WINDS",
+      "quote_loc": "LOC_CIVIC_MONSOON_WINDS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MONSOON_WINDS_AUTHOR",
+      "quote_text": "It is preceded by desolation; it brings with it the hopes of spring.",
+      "quote_author": "Khushwant Singh",
+      "quote_audio": "VO_Quote_MonsoonWinds",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_CHOLA_NAGARAM",
+      "quote_loc": "LOC_CIVIC_NAGARAM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NAGARAM_AUTHOR",
+      "quote_text": "Swifter than the monsoon rains, I hurry home, thinking only of you.",
+      "quote_author": "Ainkurunooru",
+      "quote_audio": "VO_Quote_Nagaram",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_DAI_VIET_CAM_QUAN",
+      "quote_loc": "LOC_CIVIC_CAM_QUAN_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CAM_QUAN_AUTHOR",
+      "quote_text": "\"Swinging gleaming blades will cleave you into bamboo chips!\"",
+      "quote_author": "Nam qu\u1ed1c s\u01a1n h\u00e0",
+      "quote_audio": "VO_Quote_CamQuan",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_DAI_VIET_CHU_NOM",
+      "quote_loc": "LOC_CIVIC_CHU_NOM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CHU_NOM_AUTHOR",
+      "quote_text": "\"Which door leads to fortune and which to misfortune? The result is determined by people.\"",
+      "quote_author": "Nguy\u1ec5n B\u1ec9nh Khi\u00eam",
+      "quote_audio": "VO_Quote_ChuNom",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_DAI_VIET_THANH_HOANG",
+      "quote_loc": "LOC_CIVIC_THANH_HOANG_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_THANH_HOANG_AUTHOR",
+      "quote_text": "\"As the lotus withers, the chrysanthemums bloom. Long sadness, short days \u2013 then winter turns to spring.\"",
+      "quote_author": "The Tale of Ki\u1ec1u",
+      "quote_audio": "VO_Quote_ThanhHoang",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_DAI_VIET_TU_DAN",
+      "quote_loc": "LOC_CIVIC_TU_DAN_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TU_DAN_AUTHOR",
+      "quote_text": "\"The path to fame is one amid a hundred paths to failure.\"",
+      "quote_author": "\u0110\u1eb7ng Tr\u1ea7n C\u00f4n",
+      "quote_audio": "VO_Quote_TuDan",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_HAWAII_HE_E_NALU",
+      "quote_loc": "LOC_CIVIC_HE_E_NALU_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_HE_E_NALU_AUTHOR",
+      "quote_text": "Just take your time - wave comes. Let the other guys go.",
+      "quote_author": "Duke Kahanamoku",
+      "quote_audio": "VO_Quote_HeeNalu",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_HAWAII_MANA",
+      "quote_loc": "LOC_CIVIC_MANA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MANA_AUTHOR",
+      "quote_text": "Mana is a part of the spiritual world, but felt in the physical.",
+      "quote_author": "Bradd Shore",
+      "quote_audio": "VO_Quote_Mana",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_HAWAII_OHANA",
+      "quote_loc": "LOC_CIVIC_OHANA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_OHANA_AUTHOR",
+      "quote_text": "N\u0101n\u0101 i ke kumu. Look to the source.",
+      "quote_author": "Hawaiian Saying",
+      "quote_audio": "VO_Quote_Ohana",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_ICELAND_HUGINS_DREKKA",
+      "quote_loc": "LOC_CIVIC_HUGINS_DREKKA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_HUGINS_DREKKA_AUTHOR",
+      "quote_text": "\"Eagerly I accepted your sword, Nj\u01ebr\u00f0r of battle, and I will find no fault with it later. This is is my wish \u2013 it is a praiseworthy pursuit.\"",
+      "quote_author": "Sigvatr \u00de\u00f3r\u00f0arson",
+      "quote_audio": "VO_Quote_HuginsDrekka",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_ICELAND_LANDNAMABOK",
+      "quote_loc": "LOC_CIVIC_LANDNAMABOK_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LANDNAMABOK_AUTHOR",
+      "quote_text": "\"With law our land will rise and with lawlessness it will perish.\"",
+      "quote_author": "Nj\u00e1ls saga",
+      "quote_audio": "VO_Quote_Landnamabok",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_ICELAND_THJODVELDID",
+      "quote_loc": "LOC_CIVIC_THJODVELDID_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_THJODVELDID_AUTHOR",
+      "quote_text": "\"The battle-hardened enemy of the wolf gave to me the craft of poetry devoid of fault.\"",
+      "quote_author": "Egill Skallagr\u00edmsson",
+      "quote_audio": "VO_Quote_Thjodveldid",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_ICELAND_VAERINGJAR",
+      "quote_loc": "LOC_CIVIC_VAERINGJAR_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_VAERINGJAR_AUTHOR",
+      "quote_text": "\"The ship was covered in gold above the water, with marvelous dragon heads and a double-sided sail of the most precious cloth.\"",
+      "quote_author": "Flateyjarb\u00f3k",
+      "quote_audio": "VO_Quote_Vaeringjar",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_INCA_AYLLU",
+      "quote_loc": "LOC_CIVIC_AYLLU_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_AYLLU_AUTHOR",
+      "quote_text": "The valley sings with the voice of the morning, of the noontide, of the afternoon, of the evening.",
+      "quote_author": "Jos\u00e9 Mar\u00eda Arguedas",
+      "quote_audio": "VO_Quote_Ayllu",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_INCA_MITA",
+      "quote_loc": "LOC_CIVIC_MITA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MITA_AUTHOR",
+      "quote_text": "Labor service is generally considered to be the critical means by which the Inca state funded its activities.",
+      "quote_author": "Terry Yarov LeVine ",
+      "quote_audio": "VO_Quote_Mita",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_INCA_QHAPAQ_NAN",
+      "quote_loc": "LOC_CIVIC_QHAPAQ_NAN_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_QHAPAQ_NAN_AUTHOR",
+      "quote_text": "The Earth and the Places watch human consumption jealously and demand their part in it.",
+      "quote_author": "Catherine Allen",
+      "quote_audio": "VO_Quote_QhapaqNan",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_AUTHORITY",
+      "quote_loc": "LOC_CIVIC_AUTHORITY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_AUTHORITY_QUOTE_AUTHOR",
+      "quote_text": "\"I have collected all the writings and burnt those which were of no use.\"",
+      "quote_author": "Qin Shi Huang",
+      "quote_audio": "VO_Quote_Authority",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_BUREAUCRACY",
+      "quote_loc": "LOC_CIVIC_BUREAUCRACY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_BUREAUCRACY_QUOTE_AUTHOR",
+      "quote_text": "\"A bureaucracy always tends to become a pedantocracy.\"",
+      "quote_author": "John Stuart Mill",
+      "quote_audio": "VO_Quote_Bureaucracy",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_COLONIALISM",
+      "quote_loc": "LOC_CIVIC_COLONIALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_COLONIALISM_QUOTE_AUTHOR",
+      "quote_text": "\"Colonialism is not satisfied merely with holding a people in its grip, but it turns to the past of the oppressed people, and destroys it.\"",
+      "quote_author": "Frantz Fanon",
+      "quote_audio": "VO_Quote_Colonialism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_DIPLOMATIC_SERVICE",
+      "quote_loc": "LOC_CIVIC_DIPLOMATIC_SERVICE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_DIPLOMATIC_SERVICE_QUOTE_AUTHOR",
+      "quote_text": "\"Since words are not fine, fine words are not sincere.\"",
+      "quote_author": "Lao Tzu",
+      "quote_audio": "VO_Quote_DiplomaticService",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_ECONOMICS",
+      "quote_loc": "LOC_CIVIC_ECONOMICS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ECONOMICS_QUOTE_AUTHOR",
+      "quote_text": "\"Wealth circulates like blood, all parts partake.\"",
+      "quote_author": "William Penn",
+      "quote_audio": "VO_Quote_Economics",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_IMPERIALISM",
+      "quote_loc": "LOC_CIVIC_IMPERIALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_IMPERIALISM_QUOTE_AUTHOR",
+      "quote_text": "\"Every empire tells itself that its mission is not to plunder and control but to educate and liberate.\"",
+      "quote_author": "Edward Said",
+      "quote_audio": "VO_Quote_Imperialism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_INSPIRATION",
+      "quote_loc": "LOC_CIVIC_INSPIRATION_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_INSPIRATION_QUOTE_AUTHOR",
+      "quote_text": "\"O for a muse of fire.\"",
+      "quote_author": "William Shakespeare",
+      "quote_audio": "VO_Quote_Inspiration",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_MERCANTILISM",
+      "quote_loc": "LOC_CIVIC_MERCANTILISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MERCANTILISM_QUOTE_AUTHOR",
+      "quote_text": "\"Plenty of money maketh generally things dear, and scarcity of money maketh likewise generally things good cheape.\"",
+      "quote_author": "Gerard de Malynes",
+      "quote_audio": "VO_Quote_Mercantilism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_PIETY",
+      "quote_loc": "LOC_CIVIC_PIETY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PIETY_QUOTE_AUTHOR",
+      "quote_text": "\"I take refuge in the Buddha. I take refuge in the Dharma. I take refuge in the Sangha.\"",
+      "quote_author": "Ratanattaya Chant",
+      "quote_audio": "VO_Quote_Piety",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_SOCIAL_CLASS",
+      "quote_loc": "LOC_CIVIC_SOCIAL_CLASS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SOCIAL_CLASS_QUOTE_AUTHOR",
+      "quote_text": "\"When monks are righteous, rajahs are righteous. When ministers are righteous, brahmins and householders are righteous. Thus townsfolk and villagers are righteous.\"",
+      "quote_author": "The Book of Gradual Sayings",
+      "quote_audio": "VO_Quote_SocialClass",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_SOCIETY",
+      "quote_loc": "LOC_CIVIC_SOCIETY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SOCIETY_QUOTE_AUTHOR",
+      "quote_text": "\"The social pact ensures that men become equal by covenant and by right.\"",
+      "quote_author": "Jean-Jacques Rousseau",
+      "quote_audio": "VO_Quote_Society",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAIN_SOVEREIGNTY",
+      "quote_loc": "LOC_CIVIC_SOVEREIGNTY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SOVEREIGNTY_QUOTE_AUTHOR",
+      "quote_text": "\"The spear and the title go together.\"",
+      "quote_author": "Nuer Saying",
+      "quote_audio": "VO_Quote_Sovereignty",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAJAPAHIT_ALIRAN_KEPERCAYAAN",
+      "quote_loc": "LOC_CIVIC_ALIRAN_KEPERCAYAAN_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ALIRAN_KEPERCAYAAN_AUTHOR",
+      "quote_text": "Whoever is given compassion will return love.",
+      "quote_author": "Gagak Mwang Sarpa Pejah Dening Yuyu",
+      "quote_audio": "VO_Quote_AliranKepercayaan",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAJAPAHIT_GAMELAN",
+      "quote_loc": "LOC_CIVIC_GAMELAN_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_GAMELAN_AUTHOR",
+      "quote_text": "The king of the gods descended with a loud noise from instruments ringing in the sky.",
+      "quote_author": "Arjunawiw\u0101ha",
+      "quote_audio": "VO_Quote_Gamelan",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAJAPAHIT_NUSUNTARA",
+      "quote_loc": "LOC_CIVIC_NUSUNTARA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NUSUNTARA_AUTHOR",
+      "quote_text": "Wherever you go, we will follow, and share in joy and sorrow.",
+      "quote_author": "Cakrangga Mwang Durbuddhi",
+      "quote_audio": "VO_Quote_Nusuntara",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MAJAPAHIT_WAYANG",
+      "quote_loc": "LOC_CIVIC_WAYANG_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_WAYANG_AUTHOR",
+      "quote_text": "A set of betel nut offerings and incense shivers in the clear stillness of the world.",
+      "quote_author": "I. Wayan Arthawa",
+      "quote_audio": "VO_Quote_Wayang",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MING_DA_MING_LU",
+      "quote_loc": "LOC_CIVIC_DA_MING_LU_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_DA_MING_LU_AUTHOR",
+      "quote_text": "Rituals guide the people; law codes restrain the wayward.",
+      "quote_author": "The Hongwu Emperor",
+      "quote_audio": "VO_Quote_DaMingLu",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MING_LIJIA",
+      "quote_loc": "LOC_CIVIC_LIJIA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LIJIA_AUTHOR",
+      "quote_text": "Bright are the city walls of the capital; red-robed officials shout on broad streets.",
+      "quote_author": "Yuan Hongdao",
+      "quote_audio": "VO_Quote_Lijia",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MING_NINE_GARRISONS",
+      "quote_loc": "LOC_CIVIC_NINE_GARRISONS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NINE_GARRISONS_AUTHOR",
+      "quote_text": "If we do not destroy our enemies, what are armies for?",
+      "quote_author": "The Yongle Emperor",
+      "quote_audio": "VO_Quote_NineGarrisons",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MONGOLIA_FOUR_HOUNDS",
+      "quote_loc": "LOC_CIVIC_FOUR_HOUNDS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_FOUR_HOUNDS_AUTHOR",
+      "quote_text": "Chisels for snouts and awls for tongues, iron for hearts and whips for swords, drinking the dew and racing the wind - they go.",
+      "quote_author": "The Secret History of the Mongols",
+      "quote_audio": "VO_Quote_FourHounds",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MONGOLIA_ULUS",
+      "quote_loc": "LOC_CIVIC_ULUS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ULUS_AUTHOR",
+      "quote_text": "The Mongols did not find honor in fighting; they found honor in winning.",
+      "quote_author": "Jack Weatherford",
+      "quote_audio": "VO_Quote_Ulus",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_MONGOLIA_YASSA",
+      "quote_loc": "LOC_CIVIC_YASSA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_YASSA_AUTHOR",
+      "quote_text": "It is forbidden to make peace with a monarch who has not submitted.",
+      "quote_author": "The Yassa",
+      "quote_audio": "VO_Quote_Yassa",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_NORMAN_COMMON_LAW",
+      "quote_loc": "LOC_CIVIC_COMMON_LAW_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_COMMON_LAW_AUTHOR",
+      "quote_text": "They cover their sins with excuses of error and ignorance.",
+      "quote_author": "The Mirror of Justices",
+      "quote_audio": "VO_Quote_CommonLaw",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_NORMAN_CONSUETUDINES_ET_JUSTICIE",
+      "quote_loc": "LOC_CIVIC_CONSUETUDINES_ET_JUSTICIE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CONSUETUDINES_ET_JUSTICIE_AUTHOR",
+      "quote_text": "Never promise anything except what you are willing to give.",
+      "quote_author": "The Book of Good Manners",
+      "quote_audio": "VO_Quote_ConsuetudinesJusticie",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_NORMAN_DOMESDAY_BOOK",
+      "quote_loc": "LOC_CIVIC_DOMESDAY_BOOK_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_DOMESDAY_BOOK_AUTHOR",
+      "quote_text": "It has been a city since ancient times.",
+      "quote_author": "Description of England",
+      "quote_audio": "VO_Quote_DomesdayBook",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_PIRATE_REPUBLIC_ARTICLES_OF_AGREEMENT",
+      "quote_loc": "LOC_CIVIC_ARTICLES_OF_AGREEMENT_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ARTICLES_OF_AGREEMENT_AUTHOR",
+      "quote_text": "\"Yes, I do heartily repent. I repent I had not done more mischief.\"",
+      "quote_author": "Anonymous Pirate",
+      "quote_audio": "VO_Quote_ArticlesOfAgreement",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_PIRATE_REPUBLIC_ENEMY_OF_ALL_NATIONS",
+      "quote_loc": "LOC_CIVIC_ENEMY_OF_ALL_NATIONS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ENEMY_OF_ALL_NATIONS_AUTHOR",
+      "quote_text": "\"I am a man of fortune, and must seek my fortune.\"",
+      "quote_author": "Henry Avery",
+      "quote_audio": "VO_Quote_EnemyOfAllNations",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_PIRATE_REPUBLIC_PORTS_OF_CALL",
+      "quote_loc": "LOC_CIVIC_PORTS_OF_CALL_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PORTS_OF_CALL_AUTHOR",
+      "quote_text": "\"Heaven, you fool? Did you ever hear of any pirate going thither? Give me hell, it's a merrier place.\"",
+      "quote_author": "Pirate, Black Bart's crew",
+      "quote_audio": "VO_Quote_PortsOfCall",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SHAWNEE_MALEKI_KINTAKE",
+      "quote_loc": "LOC_CIVIC_MALEKI_KINTAKE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MALEKI_KINTAKE_QUOTE_AUTHOR",
+      "quote_text": "\"Kill no more animals than are necessary to feed and clothe you.\"",
+      "quote_author": "Tenskwatawa",
+      "quote_audio": "VO_Quote_MalekiKintake",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SHAWNEE_MIYASKA_LATOWEKI",
+      "quote_loc": "LOC_CIVIC_MIYASKA_LATOWEKI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MIYASKA_LATOWEKI_QUOTE_AUTHOR",
+      "quote_text": "\"Our words are to be believed, when we say a thing we stand to it.\"",
+      "quote_author": "Kekewepelethy",
+      "quote_audio": "VO_Quote_Miyasaka",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SHAWNEE_TELWATIKI",
+      "quote_loc": "LOC_CIVIC_TELWATIKI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TELWATIKI_QUOTE_AUTHOR",
+      "quote_text": "Annihilation is at hand unless we unite in one common cause against the common foe.",
+      "quote_author": "Tecumseh",
+      "quote_audio": "VO_Quote_Telwatiki",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SHAWNEE_WYEHI_SIMEKOFI",
+      "quote_loc": "LOC_CIVIC_WYEHI_SIMEKOFI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_WYEHI_SIMEKOFI_QUOTE_AUTHOR",
+      "quote_text": "\"I am the maker of my own destiny.\"",
+      "quote_author": "Tecumseh",
+      "quote_audio": "VO_Quote_WyehiSimekofi",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SONGHAI_HI_KOI",
+      "quote_loc": "LOC_CIVIC_HI_KOI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_HI_KOI_AUTHOR",
+      "quote_text": "One finds oneself on the path already traveled and one foresees what remains to be done.",
+      "quote_author": "Jean-Marie Gibbal",
+      "quote_audio": "VO_Quote_HiKoi",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SONGHAI_KANTA",
+      "quote_loc": "LOC_CIVIC_KANTA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_KANTA_AUTHOR",
+      "quote_text": "Every village that follows his wishes, he conquers them. He moves on. Every village that refuses, he conquers it, he burns it, he moves on.",
+      "quote_author": "The Epic of Askia Mohammed",
+      "quote_audio": "VO_Quote_Kanta",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SONGHAI_SHIPS_OF_THE_DESERT",
+      "quote_loc": "LOC_CIVIC_SHIPS_OF_THE_DESERT_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SHIPS_OF_THE_DESERT_AUTHOR",
+      "quote_text": "He knew the desert routes and watering places, the stars at night, the scent and touch of sand.",
+      "quote_author": "H. J. Fisher",
+      "quote_audio": "VO_Quote_ShipsDesert",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SPAIN_ARMADA",
+      "quote_loc": "LOC_CIVIC_ARMADA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ARMADA_AUTHOR",
+      "quote_text": "I sent the Armada against men, not God's winds and waves.",
+      "quote_author": "Philip II",
+      "quote_audio": "VO_Quote_Armada",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SPAIN_COUNCIL_OF_THE_INDIES",
+      "quote_loc": "LOC_CIVIC_COUNCIL_OF_THE_INDIES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_COUNCIL_OF_THE_INDIES_AUTHOR",
+      "quote_text": "I have a glove into which I can put your whole city.",
+      "quote_author": "Charles V",
+      "quote_audio": "VO_Quote_CouncilIndies",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_EX_SPAIN_NEW_WORLD_RICHES",
+      "quote_loc": "LOC_CIVIC_NEW_WORLD_RICHES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NEW_WORLD_RICHES_AUTHOR",
+      "quote_text": "We came to serve God - and get rich.",
+      "quote_author": "Bernal D\u00edaz del Castillo",
+      "quote_audio": "VO_Quote_NewWorldRiches",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_AMERICA_CAPTAINS_OF_INDUSTRY",
+      "quote_loc": "LOC_CIVIC_CAPTAINS_OF_INDUSTRY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CAPTAINS_OF_INDUSTRY_AUTHOR",
+      "quote_text": "\"I would rather earn one percent off a hundred people's efforts than one hundred percent of my own efforts.\"",
+      "quote_author": "John D. Rockefeller",
+      "quote_audio": "VO_Quote_CaptainsIndusty",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_AMERICA_WARTIME_MANUFACTURING",
+      "quote_loc": "LOC_CIVIC_WARTIME_MANUFACTURING_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_WARTIME_MANUFACTURING_AUTHOR",
+      "quote_text": "\"What's good for M and M Enterprises is good for the country!\"",
+      "quote_author": "Joseph Heller",
+      "quote_audio": "VO_Quote_WartimeManufacturing",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_AMERICA_YANKEE_INGENUITY",
+      "quote_loc": "LOC_CIVIC_YANKEE_INGEUNITY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_YANKEE_INGEUNITY_AUTHOR",
+      "quote_text": "\"We have it in our power to begin the world over again.\"",
+      "quote_author": "Thomas Paine",
+      "quote_audio": "VO_Quote_YankeeIngenuity",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_AUTHORITARIANISM",
+      "quote_loc": "LOC_CIVIC_AUTHORITARIANISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_AUTHORITARIANISM_QUOTE_AUTHOR",
+      "quote_text": "\"The center of authority in this new system is no longer an all-powerful king but the system itself, invisible but omnipresent.\"",
+      "quote_author": "Lewis Mumford",
+      "quote_audio": "VO_Quote_Authoritarianism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_CENTRALISM",
+      "quote_loc": "LOC_CIVIC_CENTRALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CENTRALISM_QUOTE_AUTHOR",
+      "quote_text": "\"I read, I study, I examine, I listen, I reflect, and out of all of this I try to form an idea into which I put as much common sense as I can.\"",
+      "quote_author": "Marquis de Lafayette",
+      "quote_audio": "VO_Quote_Centralism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_COMMUNISM",
+      "quote_loc": "LOC_CIVIC_COMMUNISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_COMMUNISM_QUOTE_AUTHOR",
+      "quote_text": "\"Workers of the world, unite! You have nothing to lose but your chains.\"",
+      "quote_author": "Karl Marx",
+      "quote_audio": "VO_Quote_Communism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_DEMOCRACY",
+      "quote_loc": "LOC_CIVIC_DEMOCRACY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_DEMOCRACY_QUOTE_AUTHOR",
+      "quote_text": "\"Suffrage is the pivotal right.\"",
+      "quote_author": "Susan B. Anthony",
+      "quote_audio": "VO_Quote_Democracy",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_FASCISM",
+      "quote_loc": "LOC_CIVIC_FASCISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_FASCISM_QUOTE_AUTHOR",
+      "quote_text": "\"For authoritarians, facts depend entirely on the power of men who can fabricate it.\"",
+      "quote_author": "Hannah Arendt",
+      "quote_audio": "VO_Quote_Facism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_LIBERALISM",
+      "quote_loc": "LOC_CIVIC_LIBERALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LIBERALISM_QUOTE_AUTHOR",
+      "quote_text": "\"We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights.\"",
+      "quote_author": "The Declaration of Independence",
+      "quote_audio": "VO_Quote_Liberalism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_PROGRESSIVISM",
+      "quote_loc": "LOC_CIVIC_PROGRESSIVISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PROGRESSIVISM_QUOTE_AUTHOR",
+      "quote_text": "\"The idea of freedom is inspiring. But what does it mean? If you are free in a political sense but have no food, what's that? The freedom to starve?\"",
+      "quote_author": "Angela Davis",
+      "quote_audio": "VO_Quote_Progressivism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_RADICALISM",
+      "quote_loc": "LOC_CIVIC_RADICALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_RADICALISM_QUOTE_AUTHOR",
+      "quote_text": "\"The urge to destroy is also a creative urge.\"",
+      "quote_author": "Mikhail Bakunin",
+      "quote_audio": "VO_Quote_Radicalism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BRANCH_SOCIALISM",
+      "quote_loc": "LOC_CIVIC_SOCIALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SOCIALISM_QUOTE_AUTHOR",
+      "quote_text": "\"Socialism does not mean much more than better wages and shorter hours and nobody bossing you about.\"",
+      "quote_author": "George Orwell",
+      "quote_audio": "VO_Quote_Socialism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BUGANDA_BLUTABAALO",
+      "quote_loc": "LOC_CIVIC_BLUTABAALO_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_BLUTABAALO_AUTHOR",
+      "quote_text": "\"When elephants fight, it is the grass that suffers.\"",
+      "quote_author": "Kikuyu Proverb",
+      "quote_audio": "VO_Quote_Blutabaalo",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BUGANDA_NNALUBAALE",
+      "quote_loc": "LOC_CIVIC_NNALUBAALE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NNALUBAALE_AUTHOR",
+      "quote_text": "\"We want our cattle to get fat on our land, and we do not want the fat removed to feed others.\"",
+      "quote_author": "Jomo Kenyatta",
+      "quote_audio": "VO_Quote_Nnalubaale",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_BUGANDA_NYANZA",
+      "quote_loc": "LOC_CIVIC_NYANZA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NYANZA_AUTHOR",
+      "quote_text": "\"One small twig, combined with others, makes a bundle.\"",
+      "quote_author": "Ugandan Proverb",
+      "quote_audio": "VO_Quote_Nyanza",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_FRENCH_EMPIRE_BELLE_EPOQUE",
+      "quote_loc": "LOC_CIVIC_BELLE_EPOQUE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_BELLE_EPOQUE_AUTHOR",
+      "quote_text": "\"There is only one good thing in life, and that is love.\"",
+      "quote_author": "Guy de Maupassant",
+      "quote_audio": "VO_Quote_BelleEpoque",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_FRENCH_EMPIRE_CODE_CIVIL",
+      "quote_loc": "LOC_CIVIC_CODE_CIVIL_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CODE_CIVIL_AUTHOR",
+      "quote_text": "\"Is it not an absurd and terrible thing that that which is true in one village is false in another?\"",
+      "quote_author": "Voltaire",
+      "quote_audio": "VO_Quote_CodeCivildesFrancais",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_FRENCH_EMPIRE_GRANDE_ARMEE",
+      "quote_loc": "LOC_CIVIC_GRANDE_ARMEE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_GRANDE_ARMEE_AUTHOR",
+      "quote_text": "\"I can do other things besides war, but duty comes first.\"",
+      "quote_author": "Napoleon Bonaparte",
+      "quote_audio": "VO_Quote_GrandeArmee",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_FRENCH_EMPIRE_VOIE_TRIOMPHALE",
+      "quote_loc": "LOC_CIVIC_VOIE_TRIOMPHALE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_VOIE_TRIOMPHALE_AUTHOR",
+      "quote_text": "\"Beauty perishes in life, but is immortal in art.\"",
+      "quote_author": "Leonardo da Vinci",
+      "quote_audio": "VO_Quote_VoieTriomphale",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_GREAT_BRITAIN_CHARTERED_COMPANIES",
+      "quote_loc": "LOC_CIVIC_CHARTERED_COMPANIES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CHARTERED_COMPANIES_AUTHOR",
+      "quote_text": "\"They say that \"Knowledge is Power.\" I used to think so; but I now know that they meant \"money.\"\"",
+      "quote_author": "Lord Byron",
+      "quote_audio": "VO_Quote_CharteredCompanies",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_GREAT_BRITAIN_PAX_BRITANNICA",
+      "quote_loc": "LOC_CIVIC_PAX_BRITANNICA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PAX_BRITANNICA_AUTHOR",
+      "quote_text": "\"Increased means and increased leisure are the two civilizers of man.\"",
+      "quote_author": "Benjamin Disraeli",
+      "quote_audio": "VO_Quote_PaxBritannica",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_GREAT_BRITAIN_SOCIETY_OF_ANTIQUARIES",
+      "quote_loc": "LOC_CIVIC_SOCIETY_OF_ANTIQUARIES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SOCIETY_OF_ANTIQUARIES_AUTHOR",
+      "quote_text": "\"As my eyes grew accustomed to the light, details of the room emerged. Strange animals, statues, and gold \u2013 everywhere the glint of gold.\"",
+      "quote_author": "Howard Carter",
+      "quote_audio": "VO_Quote_SocietyOfAntiquaries",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_GREAT_BRITAIN_SPLENDID_ISOLATION",
+      "quote_loc": "LOC_CIVIC_SPLENDID_ISOLATION_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SPLENDID_ISOLATION_AUTHOR",
+      "quote_text": "\"War is righteous or unrighteous according as it is opportune or inopportune.\"",
+      "quote_author": "Lord Salisbury",
+      "quote_audio": "VO_Quote_SplendidIsolation",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_CAPITALISM",
+      "quote_loc": "LOC_CIVIC_CAPITALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_CAPITALISM_QUOTE_AUTHOR",
+      "quote_text": "\"It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest.\"",
+      "quote_author": "Adam Smith",
+      "quote_audio": "VO_Quote_Capitalism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_GLOBALISM",
+      "quote_loc": "LOC_CIVIC_GLOBALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_GLOBALISM_QUOTE_AUTHOR",
+      "quote_text": "\"The well-being of faraway strangers should be no less of a concern than our immediate neighbors.\"",
+      "quote_author": "Fuyuki Kurasawa",
+      "quote_audio": "VO_Quote_Globalism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_HEGEMONY",
+      "quote_loc": "LOC_CIVIC_HEGEMONY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_HEGEMONY_QUOTE_AUTHOR",
+      "quote_text": "\"We feel free because we lack the very language to articulate our unfreedom.\"",
+      "quote_author": "Slavoj \u017di\u017eek",
+      "quote_audio": "VO_Quote_Hegemony",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_MILITARISM",
+      "quote_loc": "LOC_CIVIC_MILITARISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MILITARISM_QUOTE_AUTHOR",
+      "quote_text": "\"If I cannot inspire love, I will cause fear.\"",
+      "quote_author": "Mary Shelley",
+      "quote_audio": "VO_Quote_Militarism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_MODERNIZATION",
+      "quote_loc": "LOC_CIVIC_MODERNIZATION_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MODERNIZATION_QUOTE_AUTHOR",
+      "quote_text": "\"In the enlightenment, what does not add up in numbers becomes illusion.\"",
+      "quote_author": "Theodor Adorno",
+      "quote_audio": "VO_Quote_Modernization",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_NATIONALISM",
+      "quote_loc": "LOC_CIVIC_NATIONALISM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NATIONALISM_QUOTE_AUTHOR",
+      "quote_text": "\"The members of the nation will never know most of their fellow-members, yet in the minds of each lives the image of their communion.\"",
+      "quote_author": "Benedict Anderson",
+      "quote_audio": "VO_Quote_Nationalism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_NATURAL_HISTORY",
+      "quote_loc": "LOC_CIVIC_NATURAL_HISTORY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NATURAL_HISTORY_QUOTE_AUTHOR",
+      "quote_text": "\"I died from the mineral and I became the plant; I died from the plant and I arose the animal; I died from the animal and I became the man.\"",
+      "quote_author": "Rumi",
+      "quote_audio": "VO_Quote_NaturalHistory",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_POLITICAL_THEORY",
+      "quote_loc": "LOC_CIVIC_POLITICAL_THEORY_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_POLITICAL_THEORY_QUOTE_AUTHOR",
+      "quote_text": "\"The one who adapts his policy to his times prospers.\"",
+      "quote_author": "Niccol\u00f2 Machiavelli",
+      "quote_audio": "VO_Quote_PoliticalTheory",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION",
+      "quote_loc": "LOC_CIVIC_SOCIAL_QUESTION_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SOCIAL_QUESTION_QUOTE_AUTHOR",
+      "quote_text": "\"The memory of having sat at someone\u2019s feet will later make you want to trample him underfoot.\"",
+      "quote_author": "Natsume S\u014dseki",
+      "quote_audio": "VO_Quote_SocialQuestion",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MEIJI_BUNMEI_KAIKA",
+      "quote_loc": "LOC_CIVIC_BUNMEI_KAIKA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_BUNMEI_KAIKA_AUTHOR",
+      "quote_text": "\"The man I used to meet in the mirror is no more.\"",
+      "quote_author": "Masaoka Shiki",
+      "quote_audio": "VO_Quote_BunmeiKaika",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MEIJI_KANTAI_KESSEN",
+      "quote_loc": "LOC_CIVIC_KANTAI_KESSEN_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_KANTAI_KESSEN_AUTHOR",
+      "quote_text": "\"Humanity is born for love and revolution.\"",
+      "quote_author": "Osamu Dazai",
+      "quote_audio": "VO_Quote_RisingSun",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MEIJI_OATH_IN_FIVE_ARTICLES",
+      "quote_loc": "LOC_CIVIC_OATH_IN_FIVE_ARTICLES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_OATH_IN_FIVE_ARTICLES_AUTHOR",
+      "quote_text": "\"Knowledge will be sought through the whole world to strengthen the foundation of imperial rule.\"",
+      "quote_author": "The Oath in Five Articles",
+      "quote_audio": "VO_Quote_OathFiveArticles",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MEIJI_SUPREME_WAR_COUNCIL",
+      "quote_loc": "LOC_CIVIC_SUPREME_WAR_COUNCIL_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SUPREME_WAR_COUNCIL_AUTHOR",
+      "quote_text": "\"First, we protect the line of sovereignty. Then, the line of advantage.\"",
+      "quote_author": "Yamagata Aritomo",
+      "quote_audio": "VO_Quote_SupremeWarCouncil",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MEXICO_PLANES_POLITICOS",
+      "quote_loc": "LOC_CIVIC_PLANES_POLITICOS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PLANES_POLITICOS_AUTHOR",
+      "quote_text": "\"I'd rather die on my feet than live on my knees.\"",
+      "quote_author": "Emiliano Zapata",
+      "quote_audio": "VO_Quote_PlanesPoliticos",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MEXICO_PLAN_OF_AYUTLA",
+      "quote_loc": "LOC_CIVIC_PLAN_OF_AYUTLA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PLAN_OF_AYUTLA_AUTHOR",
+      "quote_text": "\"The Mexican nation is an indivisible one.\"",
+      "quote_author": "Constitution of the United Mexican States",
+      "quote_audio": "VO_Quote_PlanAyutla",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MEXICO_PLAN_OF_IGUALA",
+      "quote_loc": "LOC_CIVIC_PLAN_OF_IGUALA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PLAN_OF_IGUALA_AUTHOR",
+      "quote_text": "\"My own will was law, and who compelled me to divide my power? Myself, and myself alone.\"",
+      "quote_author": "Agust\u00edn de Iturbide",
+      "quote_audio": "VO_Quote_PlanIguala",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MEXICO_PLAN_OF_TUXTEPEC",
+      "quote_loc": "LOC_CIVIC_PLAN_OF_TUXTEPEC_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_PLAN_OF_TUXTEPEC_AUTHOR",
+      "quote_text": "\"Nothing ever happens in Mexico until it happens.\"",
+      "quote_author": "Porfirio D\u00edaz",
+      "quote_audio": "VO_Quote_PlanTuxtepec",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MUGHAL_GARDENS_OF_PARADISE",
+      "quote_loc": "LOC_CIVIC_GARDENS_OF_PARADISE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_GARDENS_OF_PARADISE_AUTHOR",
+      "quote_text": "\"The world is a bridge - pass over it, but build no houses.\"",
+      "quote_author": "Akbar the Great",
+      "quote_audio": "VO_Quote_GardensParadise",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MUGHAL_JAGIR",
+      "quote_loc": "LOC_CIVIC_JAGIR_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_JAGIR_AUTHOR",
+      "quote_text": "\"We think these big people are very happy, but we are just worried about hunger. They have a thousand worries.\"",
+      "quote_author": "Munshi Premchand",
+      "quote_audio": "VO_Quote_Jagir",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MUGHAL_MANSABDARI",
+      "quote_loc": "LOC_CIVIC_MANSABDARI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MANSABDARI_AUTHOR",
+      "quote_text": "\"A monarch should be ever intent on conquest, lest his neighbors rise against him.\"",
+      "quote_author": "Akbar the Great",
+      "quote_audio": "VO_Quote_Mansabdari",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_MUGHAL_ZABT",
+      "quote_loc": "LOC_CIVIC_ZABT_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ZABT_AUTHOR",
+      "quote_text": "\"Not a virgin or rupee was safe in his realm.\"",
+      "quote_author": "Mulk Raj Anand",
+      "quote_audio": "VO_Quote_Zabt",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_NEPAL_GORKHAPATRA",
+      "quote_loc": "LOC_CIVIC_GORKHAPATRA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_GORKHAPATRA_AUTHOR",
+      "quote_text": "\"There is an inseparable relationship between the culture of a country and the ideology it follows.\"",
+      "quote_author": "King Birendra",
+      "quote_audio": "VO_Quote_Gorkhapatra",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_NEPAL_JYUMDO_BAGHA",
+      "quote_loc": "LOC_CIVIC_JYUMDO_BAGHA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_JYUMDO_BAGHA_AUTHOR",
+      "quote_text": "\"Better to die than be a coward.\"",
+      "quote_author": "Gurkha Motto",
+      "quote_audio": "VO_Quote_JyumdoBagha",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_NEPAL_SAGARMATHA",
+      "quote_loc": "LOC_CIVIC_SAGARMATHA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SAGARMATHA_AUTHOR",
+      "quote_text": "\"Flee to the mountains, once and for all \u2013 to the calm, cool rains and the drifting fog.\"",
+      "quote_author": "Rudyard Kipling",
+      "quote_audio": "VO_Quote_Sagarmatha",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_NEPAL_SINGHA_DURBAR",
+      "quote_loc": "LOC_CIVIC_SINGHA_DURBAR_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SINGHA_DURBAR_AUTHOR",
+      "quote_text": "\"Ayo gorkhali! The Gurkhas are upon you!\"",
+      "quote_author": "Gurkha Battle Cry",
+      "quote_audio": "VO_Quote_SinghaDurbar",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_OTTOMANS_HARBIYE_NEZARETI",
+      "quote_loc": "LOC_CIVIC_HARBIYE_NEZARETI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_HARBIYE_NEZARETI_AUTHOR",
+      "quote_text": "\"Either I take the city or the city takes me.\"",
+      "quote_author": "Mehmed II",
+      "quote_audio": "VO_Quote_HarbiyeNezareti",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_OTTOMANS_LALE_DEVRI",
+      "quote_loc": "LOC_CIVIC_LALE_DEVRI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_LALE_DEVRI_AUTHOR",
+      "quote_text": "\"If the tulip cups are absent, bring the wine cups instead.\"",
+      "quote_author": "Ned\u00eem",
+      "quote_audio": "VO_Quote_LaleDevri",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_OTTOMANS_SAHI_TOPU",
+      "quote_loc": "LOC_CIVIC_SAHI_TOPU_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SAHI_TOPU_AUTHOR",
+      "quote_text": "\"With extraordinary thunder and a flame that illuminated, then blackened, all surroundings, the rod set the stone violently in motion.\"",
+      "quote_author": "Michael Kritoboulos",
+      "quote_audio": "VO_Quote_SahiTopu",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_OTTOMANS_TANZIMAT",
+      "quote_loc": "LOC_CIVIC_TANZIMAT_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TANZIMAT_AUTHOR",
+      "quote_text": "\"We deem it appropriate to provide the provinces of the Ottoman Empire the benefit of a good administration through new institutions.\"",
+      "quote_author": "G\u00fclhane Hatt-\u0131 \u015eerifi",
+      "quote_audio": "VO_Quote_Tanzimat",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_PRUSSIA_BEWEGUNGSKRIEG",
+      "quote_loc": "LOC_CIVIC_BEWEGUNGSKRIEG_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_BEWEGUNGSKRIEG_AUTHOR",
+      "quote_text": "\"War is merely the continuation of policy by other means.\"",
+      "quote_author": "Carl von Clausewitz",
+      "quote_audio": "VO_Quote_Bewegungskreig",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_PRUSSIA_EMS_DISPATCH",
+      "quote_loc": "LOC_CIVIC_EMS_DISPATCH_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_EMS_DISPATCH_AUTHOR",
+      "quote_text": "\"Prussia was hatched from a cannonball.\"",
+      "quote_author": "Napoleon Bonaparte",
+      "quote_audio": "VO_Quote_EmsDispatch",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_PRUSSIA_RUHR",
+      "quote_loc": "LOC_CIVIC_RUHR_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_RUHR_AUTHOR",
+      "quote_text": "\"Technology puts to nature the unreasonable demand that it supply power which can be extracted and stored.\"",
+      "quote_author": "Martin Heidegger",
+      "quote_audio": "VO_Quote_Ruhr",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_PRUSSIA_ZOLLVEREIN",
+      "quote_loc": "LOC_CIVIC_ZOLLVEREIN_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_ZOLLVEREIN_AUTHOR",
+      "quote_text": "\"A nation should not view industries' progress from a purely economic standpoint.\"",
+      "quote_author": "Friedrich List",
+      "quote_audio": "VO_Quote_Zollverein",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_QAJAR_NEZAM_E_JADID",
+      "quote_loc": "LOC_CIVIC_NEZAM_E_JADID_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NEZAM_E_JADID_AUTHOR",
+      "quote_text": "\"If there be no war in paradise, how can there be any delights there?\"",
+      "quote_author": "Nader Shah",
+      "quote_audio": "VO_Quote_NezamEJadid",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_QAJAR_THE_SUN_THRONE",
+      "quote_loc": "LOC_CIVIC_THE_SUN_THRONE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_THE_SUN_THRONE_AUTHOR",
+      "quote_text": "\"We sat down and conversation ensued. We then arose and passed on.\"",
+      "quote_author": "Naser al-Din Shah Qajar",
+      "quote_audio": "VO_Quote_TheSunThrone",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_QAJAR_TWELVE_GATES",
+      "quote_loc": "LOC_CIVIC_TWELVE_GATES_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TWELVE_GATES_AUTHOR",
+      "quote_text": "\"Here all work is laid aside, while nothing but pleasure becomes the order of the day.\"",
+      "quote_author": "Henry Ballantine",
+      "quote_audio": "VO_Quote_TwelveGates",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_QING_KANG_XI_TAX_REFORMATION",
+      "quote_loc": "LOC_CIVIC_KANG_XI_TAX_REFORMATION_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_KANG_XI_TAX_REFORMATION_AUTHOR",
+      "quote_text": "\"There are many ways of governing well, and they all are order and prosperity.\"",
+      "quote_author": "Qing Emperor",
+      "quote_audio": "VO_Quote_KangXiTaxReformation",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_QING_OPEN_CUSTOMS",
+      "quote_loc": "LOC_CIVIC_OPEN_CUSTOMS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_OPEN_CUSTOMS_AUTHOR",
+      "quote_text": "\"Go abroad and trade to show the populous and affluent nature of our rule.\"",
+      "quote_author": "The Kangxi Emperor",
+      "quote_audio": "VO_Quote_QingOpenCustoms",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_QING_STABILIZING_FRONTIER",
+      "quote_loc": "LOC_CIVIC_STABILIZING_FRONTIER_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_STABILIZING_FRONTIER_AUTHOR",
+      "quote_text": "\"If I just folded my arms and yielded, I would have no face to see our ancestors after death.\"",
+      "quote_author": "Qing Emperor",
+      "quote_audio": "VO_Quote_QingStabilizingFrontier",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_QING_TEN_GREAT_CAMPAIGNS",
+      "quote_loc": "LOC_CIVIC_TEN_GREAT_CAMPAIGNS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TEN_GREAT_CAMPAIGNS_AUTHOR",
+      "quote_text": "\"Foreigners appreciate only military power.\"",
+      "quote_author": "The Qianlong Emperor",
+      "quote_audio": "VO_Quote_TenGreatCampaigns",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_RUSSIA_SAMODERZHAVIYE",
+      "quote_loc": "LOC_CIVIC_SAMODERZHAVIYE_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SAMODERZHAVIYE_AUTHOR",
+      "quote_text": "\"The well-being of the sovereign is inseparable from the national well-being.\"",
+      "quote_author": "Nicholas II",
+      "quote_audio": "VO_Quote_Samoderzhaviye",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_RUSSIA_SERFDOM",
+      "quote_loc": "LOC_CIVIC_SERFDOM_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SERFDOM_AUTHOR",
+      "quote_text": "\"Men accept servility so as to accumulate wealth.\"",
+      "quote_author": "\u00c9tienne de La Bo\u00e9tie",
+      "quote_audio": "VO_Quote_Serfdom",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_RUSSIA_TABLE_OF_RANKS",
+      "quote_loc": "LOC_CIVIC_TABLE_OF_RANKS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_TABLE_OF_RANKS_AUTHOR",
+      "quote_text": "\"Kings are the slaves of history.\"",
+      "quote_author": "Leo Tolstoy",
+      "quote_audio": "VO_Quote_TableRanks",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_SIAM_MANDALA",
+      "quote_loc": "LOC_CIVIC_MANDALA_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_MANDALA_AUTHOR",
+      "quote_text": "\"The universe consists of an infinite amount of suns and an infinite amount of worlds. At the center of each is Mount Meru.\"",
+      "quote_author": "Chaophraya Thiphakorawong",
+      "quote_audio": "VO_Quote_Mandala",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_SIAM_NINE_GEMS",
+      "quote_loc": "LOC_CIVIC_NINE_GEMS_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_NINE_GEMS_AUTHOR",
+      "quote_text": "\"City of angels, great city of immortals, magnificent city of the nine gems, seat of the king, home of the gods.\"",
+      "quote_author": "Name of Bangkok",
+      "quote_audio": "VO_Quote_NineGems",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_CIVIC_MO_SIAM_SRIWILAI",
+      "quote_loc": "LOC_CIVIC_SRIWILAI_QUOTE",
+      "quote_author_loc": "LOC_CIVIC_SRIWILAI_AUTHOR",
+      "quote_text": "\"From every nation, from twelvefold tongues, all come and stand in the shade of this city.\"",
+      "quote_author": "King Narai",
+      "quote_audio": "VO_Quote_Sriwilai",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_AGRICULTURE",
+      "quote_loc": "LOC_TECH_AGRICULTURE_QUOTE",
+      "quote_author_loc": "LOC_TECH_AGRICULTURE_QUOTE_AUTHOR",
+      "quote_text": "\"The radiance of the new world came into being bathed in nectar, bathed in love.\"",
+      "quote_author": "Preah Khan Inscription",
+      "quote_audio": "VO_Quote_Agriculture",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_ANIMAL_HUSBANDRY",
+      "quote_loc": "LOC_TECH_ANIMAL_HUSBANDRY_QUOTE",
+      "quote_author_loc": "LOC_TECH_ANIMAL_HUSBANDRY_QUOTE_AUTHOR",
+      "quote_text": "\"The caged bird watches butterflies with envy.\"",
+      "quote_author": "Kobayashi Issa",
+      "quote_audio": "VO_Quote_AnimalHusbandry",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_BRONZE_WORKING",
+      "quote_loc": "LOC_TECH_BRONZE_WORKING_QUOTE",
+      "quote_author_loc": "LOC_TECH_BRONZE_WORKING_QUOTE_AUTHOR",
+      "quote_text": "\"He heard these horrors and his spirit stirred, and spurred to action, he sheathed his skin in burnished bronze.\"",
+      "quote_author": "The Iliad",
+      "quote_audio": "VO_Quote_BronzeWorking",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_CURRENCY",
+      "quote_loc": "LOC_TECH_CURRENCY_QUOTE",
+      "quote_author_loc": "LOC_TECH_CURRENCY_QUOTE_AUTHOR",
+      "quote_text": "\"When I was young I thought that money was the most important thing in life; now that I am old I know that it is.\"",
+      "quote_author": "Oscar Wilde",
+      "quote_audio": "VO_Quote_Currency",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_ENGINEERING",
+      "quote_loc": "LOC_TECH_ENGINEERING_QUOTE",
+      "quote_author_loc": "LOC_TECH_ENGINEERING_QUOTE_AUTHOR",
+      "quote_text": "\"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.\"",
+      "quote_author": "Antoine de Saint-Exup\u00e9ry",
+      "quote_audio": "VO_Quote_Engineering",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_IRON_WORKING",
+      "quote_loc": "LOC_TECH_IRON_WORKING_QUOTE",
+      "quote_author_loc": "LOC_TECH_IRON_WORKING_QUOTE_AUTHOR",
+      "quote_text": "\"Iron made this promise: 'By the tongs and the hammer, many trees I can injure, but I shall not kill the best of heroes.'\"",
+      "quote_author": "The Kalevala",
+      "quote_audio": "VO_Quote_IronWorking",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_IRRIGATION",
+      "quote_loc": "LOC_TECH_IRRIGATION_QUOTE",
+      "quote_author_loc": "LOC_TECH_IRRIGATION_QUOTE_AUTHOR",
+      "quote_text": "\"The essence of all beings is the earth; the earth, water; the water, plants; plants, man; and man, speech.\"",
+      "quote_author": "The Upanishads",
+      "quote_audio": "VO_Quote_Irrigation",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_MASONRY",
+      "quote_loc": "LOC_TECH_MASONRY_QUOTE",
+      "quote_author_loc": "LOC_TECH_MASONRY_QUOTE_AUTHOR",
+      "quote_text": "\"He was the first to construct a wall, eighty miles in length, which was to separate the barbarians from the Romans.\"",
+      "quote_author": "Cassius Dio",
+      "quote_audio": "VO_Quote_Masonry",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_MATHEMATICS",
+      "quote_loc": "LOC_TECH_MATHEMATICS_QUOTE",
+      "quote_author_loc": "LOC_TECH_MATHEMATICS_QUOTE_AUTHOR",
+      "quote_text": "\"There is geometry in the humming of the strings. There is music in the spacing of the spheres.\"",
+      "quote_author": "Pythagoras",
+      "quote_audio": "VO_Quote_Mathematics",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_MILITARY_TRAINING",
+      "quote_loc": "LOC_TECH_MILITARY_TRAINING_QUOTE",
+      "quote_author_loc": "LOC_TECH_MILITARY_TRAINING_QUOTE_AUTHOR",
+      "quote_text": "\"The truly brave never boast.\"",
+      "quote_author": "The Mah\u0101bh\u0101rata",
+      "quote_audio": "VO_Quote_MilitaryTraining",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_NAVIGATION",
+      "quote_loc": "LOC_TECH_NAVIGATION_QUOTE",
+      "quote_author_loc": "LOC_TECH_NAVIGATION_QUOTE_AUTHOR",
+      "quote_text": "\"Ships at a distance have every man's wish on board.\"",
+      "quote_author": "Zora Neale Hurston",
+      "quote_audio": "VO_Quote_Navigation",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_POTTERY",
+      "quote_loc": "LOC_TECH_POTTERY_QUOTE",
+      "quote_author_loc": "LOC_TECH_POTTERY_QUOTE_AUTHOR",
+      "quote_text": "\"All are made of clay.\"",
+      "quote_author": "Henry Wadsworth Longfellow",
+      "quote_audio": "VO_Quote_Pottery",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_SAILING",
+      "quote_loc": "LOC_TECH_SAILING_QUOTE",
+      "quote_author_loc": "LOC_TECH_SAILING_QUOTE_AUTHOR",
+      "quote_text": "\"The fair breeze blew, the white foam flew, the furrow followed free; we were the first that ever burst into that silent sea.\"",
+      "quote_author": "Samuel Taylor Coleridge",
+      "quote_audio": "VO_Quote_Sailing",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_WHEEL",
+      "quote_loc": "LOC_TECH_WHEEL_QUOTE",
+      "quote_author_loc": "LOC_TECH_WHEEL_QUOTE_AUTHOR",
+      "quote_text": "\"INVENTOR, n. A person who makes an ingenious arrangement of wheels, levers, and springs, and believes it civilization.\"",
+      "quote_author": "Ambrose Bierce",
+      "quote_audio": "VO_Quote_Wheel",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_AQ_WRITING",
+      "quote_loc": "LOC_TECH_WRITING_QUOTE",
+      "quote_author_loc": "LOC_TECH_WRITING_QUOTE_AUTHOR",
+      "quote_text": "\"The spoken word conquers all thought, but the written word commands it.\"",
+      "quote_author": "Walter Benjamin",
+      "quote_audio": "VO_Quote_Writing",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_ARCHITECTURE",
+      "quote_loc": "LOC_TECH_ARCHITECTURE_QUOTE",
+      "quote_author_loc": "LOC_TECH_ARCHITECTURE_QUOTE_AUTHOR",
+      "quote_text": "\"The purpose of construction is to make things hold together; of architecture to move us.\"",
+      "quote_author": "Le Corbusier",
+      "quote_audio": "VO_Quote_Architecture",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_ASTRONOMY",
+      "quote_loc": "LOC_TECH_ASTRONOMY_QUOTE",
+      "quote_author_loc": "LOC_TECH_ASTRONOMY_QUOTE_AUTHOR",
+      "quote_text": "\"There exists beyond the world a void without a terminal limit - a thousand thousand worlds beyond this world.\"",
+      "quote_author": "Fakhr al-Din al-Razi",
+      "quote_audio": "VO_Quote_Astronomy",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_CARTOGRAPHY",
+      "quote_loc": "LOC_TECH_CARTOGRAPHY_QUOTE",
+      "quote_author_loc": "LOC_TECH_CARTOGRAPHY_QUOTE_AUTHOR",
+      "quote_text": "\"The map was a model for, rather than a model of, what it purported to represent.\"",
+      "quote_author": "Thongchai Winichakul",
+      "quote_audio": "VO_Quote_Cartography",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_CASTLES",
+      "quote_loc": "LOC_TECH_CASTLES_QUOTE",
+      "quote_author_loc": "LOC_TECH_CASTLES_QUOTE_AUTHOR",
+      "quote_text": "\"Matsuyama castle; the keep is higher than the autumn sky.\"",
+      "quote_author": "Masaoka Shiki",
+      "quote_audio": "VO_Quote_Castles",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_EDUCATION",
+      "quote_loc": "LOC_TECH_EDUCATION_QUOTE",
+      "quote_author_loc": "LOC_TECH_EDUCATION_QUOTE_AUTHOR",
+      "quote_text": "\"The best investment for one year is to grow grains; the best investment for ten years is to grow trees; the best investment for a lifetime is to educate people.\"",
+      "quote_author": "Guan Zhong",
+      "quote_audio": "VO_Quote_Education",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_FEUDALISM",
+      "quote_loc": "LOC_TECH_FEUDALISM_QUOTE",
+      "quote_author_loc": "LOC_TECH_FEUDALISM_QUOTE_AUTHOR",
+      "quote_text": "\"The king established all his knights, gave them lands, and charged them to give mercy.\"",
+      "quote_author": "Thomas Malory",
+      "quote_audio": "VO_Quote_Feudalism",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_GUILDS",
+      "quote_loc": "LOC_TECH_GUILDS_QUOTE",
+      "quote_author_loc": "LOC_TECH_GUILDS_QUOTE_AUTHOR",
+      "quote_text": "\"The master and apprentice love the master in different ways.\"",
+      "quote_author": "Friedrich Nietzsche",
+      "quote_audio": "VO_Quote_Guilds",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_GUNPOWDER",
+      "quote_loc": "LOC_TECH_GUNPOWDER_QUOTE",
+      "quote_author_loc": "LOC_TECH_GUNPOWDER_QUOTE_AUTHOR",
+      "quote_text": "\"The real use of gunpowder is to make all men tall.\"",
+      "quote_author": "Thomas Carlyle",
+      "quote_audio": "VO_Quote_Gunpowder",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_HERALDRY",
+      "quote_loc": "LOC_TECH_HERALDRY_QUOTE",
+      "quote_author_loc": "LOC_TECH_HERALDRY_QUOTE_AUTHOR",
+      "quote_text": "\"Yes, but...do you have a flag?\"",
+      "quote_author": "Suzy Eddie Izzard",
+      "quote_audio": "VO_Quote_Heraldry",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_MACHINERY",
+      "quote_loc": "LOC_TECH_MACHINERY_QUOTE",
+      "quote_author_loc": "LOC_TECH_MACHINERY_QUOTE_AUTHOR",
+      "quote_text": "\"I worked my wits and thoughts about shapes and figures, and I arranged these shapes one by one.\"",
+      "quote_author": "Ibn Khalaf al-Mur\u0101d\u012b",
+      "quote_audio": "VO_Quote_Machinery",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_METALLURGY",
+      "quote_loc": "LOC_TECH_METALLURGY_QUOTE",
+      "quote_author_loc": "LOC_TECH_METALLURGY_QUOTE_AUTHOR",
+      "quote_text": "\"From the new land of gold, a sun of gold, a whole fathom wide, and a moon of silver.\"",
+      "quote_author": "Albrecht D\u00fcrer",
+      "quote_audio": "VO_Quote_Metallurgy",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_METAL_CASTING",
+      "quote_loc": "LOC_TECH_METAL_CASTING_QUOTE",
+      "quote_author_loc": "LOC_TECH_METAL_CASTING_QUOTE_AUTHOR",
+      "quote_text": "\"The bellows worked incessantly for three days and three nights, and the bronze melted down and became as water.\"",
+      "quote_author": "Michael Kritoboulos",
+      "quote_audio": "VO_Quote_MetalCasting",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_SHIPBUILDING",
+      "quote_loc": "LOC_TECH_SHIPBUILDING_QUOTE",
+      "quote_author_loc": "LOC_TECH_SHIPBUILDING_QUOTE_AUTHOR",
+      "quote_text": "\"If ship-building art were in the wood, ships would exist by nature.\"",
+      "quote_author": "Aristotle",
+      "quote_audio": "VO_Quote_Shipbuilding",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_EX_URBAN_PLANNING",
+      "quote_loc": "LOC_TECH_URBAN_PLANNING_QUOTE",
+      "quote_author_loc": "LOC_TECH_URBAN_PLANNING_QUOTE_AUTHOR",
+      "quote_text": "\"The city is like a great house, and the house is like a small city.\"",
+      "quote_author": "Leon Battista Alberti",
+      "quote_audio": "VO_Quote_UrbanPlanning",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_ACADEMICS",
+      "quote_loc": "LOC_TECH_ACADEMICS_QUOTE",
+      "quote_author_loc": "LOC_TECH_ACADEMICS_QUOTE_AUTHOR",
+      "quote_text": "\"Now is the time to understand more, so that we may fear less.\"",
+      "quote_author": "Marie Curie",
+      "quote_audio": "VO_Quote_Academics",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_AERODYNAMICS",
+      "quote_loc": "LOC_TECH_AERODYNAMICS_QUOTE",
+      "quote_author_loc": "LOC_TECH_AERODYNAMICS_QUOTE_AUTHOR",
+      "quote_text": "\"All birds need to fly are the right-shaped wings, the right pressure, and the right angle.\"",
+      "quote_author": "Daniel Bernoulli",
+      "quote_audio": "VO_Quote_Aerodynamics",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_ARMOR",
+      "quote_loc": "LOC_TECH_ARMOR_QUOTE",
+      "quote_author_loc": "LOC_TECH_ARMOR_QUOTE_AUTHOR",
+      "quote_text": "\"Bombardment, barrage, curtain-fire, mines, gas, tanks, machine-guns, hand-grenades - words, words, but they hold the horror of the world.\"",
+      "quote_author": "Erich Maria Remarque",
+      "quote_audio": "VO_Quote_Armor",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_COMBUSTION",
+      "quote_loc": "LOC_TECH_COMBUSTION_QUOTE",
+      "quote_author_loc": "LOC_TECH_COMBUSTION_QUOTE_AUTHOR",
+      "quote_text": "\"So readily do people adapt themselves to the marvelous contrivances which modern inventive ingenuity has devised.\"",
+      "quote_author": "The Marvelous Vogue of the Automobile",
+      "quote_audio": "VO_Quote_Combustion",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_ELECTRICITY",
+      "quote_loc": "LOC_TECH_ELECTRICITY_QUOTE",
+      "quote_author_loc": "LOC_TECH_ELECTRICITY_QUOTE_AUTHOR",
+      "quote_text": "\"The beauty of electricity is not that the power is mysterious, but that it is under law, and that the taught intellect can even now govern it.\"",
+      "quote_author": "Michael Faraday",
+      "quote_audio": "VO_Quote_Electricity",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_FLIGHT",
+      "quote_loc": "LOC_TECH_FLIGHT_QUOTE",
+      "quote_author_loc": "LOC_TECH_FLIGHT_QUOTE_AUTHOR",
+      "quote_text": "\"The sound of wings.\"",
+      "quote_author": "Amelia Earhart",
+      "quote_audio": "VO_Quote_Flight",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_INDUSTRIALIZATION",
+      "quote_loc": "LOC_TECH_INDUSTRIALIZATION_QUOTE",
+      "quote_author_loc": "LOC_TECH_INDUSTRIALIZATION_QUOTE_AUTHOR",
+      "quote_text": "\"And was Jerusalem builded here among these dark Satanic Mills?\"",
+      "quote_author": "William Blake",
+      "quote_audio": "VO_Quote_Industrialization",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_MASS_PRODUCTION",
+      "quote_loc": "LOC_TECH_MASS_PRODUCTION_QUOTE",
+      "quote_author_loc": "LOC_TECH_MASS_PRODUCTION_QUOTE_AUTHOR",
+      "quote_text": "\"Just as modern mass production requires the standardization of commodities, so the social process requires standardization of man.\"",
+      "quote_author": "Erich Fromm",
+      "quote_audio": "VO_Quote_MassProduction",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_MILITARY_SCIENCE",
+      "quote_loc": "LOC_TECH_MILITARY_SCIENCE_QUOTE",
+      "quote_author_loc": "LOC_TECH_MILITARY_SCIENCE_QUOTE_AUTHOR",
+      "quote_text": "\"Confuse your enemy. Keep him in the dark about your intentions.\"",
+      "quote_author": "V\u00f5 Nguy\u00ean Gi\u00e1p",
+      "quote_audio": "VO_Quote_MilitaryScience",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_MOBILIZATION",
+      "quote_loc": "LOC_TECH_MOBILIZATION_QUOTE",
+      "quote_author_loc": "LOC_TECH_MOBILIZATION_QUOTE_AUTHOR",
+      "quote_text": "\"The young men shall fight; the women shall make tents; the old shall arouse the courage of the warriors.\"",
+      "quote_author": "Lev\u00e9e en Masse",
+      "quote_audio": "VO_Quote_Mobilization",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_NUCLEAR_FISSION",
+      "quote_loc": "LOC_TECH_NUCLEAR_FISSION_QUOTE",
+      "quote_author_loc": "LOC_TECH_NUCLEAR_FISSION_QUOTE_AUTHOR",
+      "quote_text": "\"Scientists are not dependent on the ideas of a single man, but on the combined wisdom of thousands.\"",
+      "quote_author": "Ernest Rutherford",
+      "quote_audio": "VO_Quote_NuclearFission",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_RADIO",
+      "quote_loc": "LOC_TECH_RADIO_QUOTE",
+      "quote_author_loc": "LOC_TECH_RADIO_QUOTE_AUTHOR",
+      "quote_text": "\"We annihilated the world before your very ears\u2026 You will be relieved, I hope, to learn that we didn't mean it.\"",
+      "quote_author": "Orson Welles",
+      "quote_audio": "VO_Quote_Radio",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_ROCKETRY",
+      "quote_loc": "LOC_TECH_ROCKETRY_QUOTE",
+      "quote_author_loc": "LOC_TECH_ROCKETRY_QUOTE_AUTHOR",
+      "quote_text": "\"A screaming comes across the sky.\"",
+      "quote_author": "Thomas Pynchon",
+      "quote_audio": "VO_Quote_Rocketry",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_STEAM_ENGINE",
+      "quote_loc": "LOC_TECH_STEAM_ENGINE_QUOTE",
+      "quote_author_loc": "LOC_TECH_STEAM_ENGINE_QUOTE_AUTHOR",
+      "quote_text": "\"Soon shall thy arm, unconquered steam, afar drag the slow barge or drive the rapid car.\"",
+      "quote_author": "Erasmus Darwin",
+      "quote_audio": "VO_Quote_SteamEngine",
+      "age": "AGE_ANTIQUITY"
+    },
+    {
+      "id": "NODE_TECH_MO_URBANIZATION",
+      "quote_loc": "LOC_TECH_URBANIZATION_QUOTE",
+      "quote_author_loc": "LOC_TECH_URBANIZATION_QUOTE_AUTHOR",
+      "quote_text": "\"The face of a city changes faster than a human heart.\"",
+      "quote_author": "Charles Baudelaire",
+      "quote_audio": "VO_Quote_Urbanization",
+      "age": "AGE_ANTIQUITY"
+    }
+  ]
+}

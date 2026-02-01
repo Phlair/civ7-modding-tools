@@ -169,6 +169,9 @@
       "id": "BUILDING_LAUNCH_PAD"
     },
     {
+      "id": "BUILDING_LECTURE_HALL"
+    },
+    {
       "id": "BUILDING_LIBRARY"
     },
     {
@@ -239,6 +242,9 @@
     },
     {
       "id": "BUILDING_OPERA_HOUSE"
+    },
+    {
+      "id": "BUILDING_PAGODA"
     },
     {
       "id": "BUILDING_PALACE"
@@ -340,13 +346,40 @@
       "id": "IMPROVEMENT_BARAY"
     },
     {
+      "id": "IMPROVEMENT_CAIRN"
+    },
+    {
+      "id": "IMPROVEMENT_CAMP"
+    },
+    {
+      "id": "IMPROVEMENT_CAMPFIRE"
+    },
+    {
       "id": "IMPROVEMENT_CARAVANSERAI"
+    },
+    {
+      "id": "IMPROVEMENT_CAVE"
     },
     {
       "id": "IMPROVEMENT_CIRCUS_FAIR"
     },
     {
+      "id": "IMPROVEMENT_CLAY_PIT"
+    },
+    {
+      "id": "IMPROVEMENT_CLAY_PIT_RESOURCE"
+    },
+    {
+      "id": "IMPROVEMENT_COAST"
+    },
+    {
+      "id": "IMPROVEMENT_ENCAMPMENT"
+    },
+    {
       "id": "IMPROVEMENT_ENTREPOT"
+    },
+    {
+      "id": "IMPROVEMENT_EXPEDITION_BASE"
     },
     {
       "id": "IMPROVEMENT_FARM"
@@ -356,6 +389,9 @@
     },
     {
       "id": "IMPROVEMENT_FISHING_BOAT"
+    },
+    {
+      "id": "IMPROVEMENT_FISHING_BOAT_RESOURCE"
     },
     {
       "id": "IMPROVEMENT_HAN_GREAT_WALL"
@@ -394,7 +430,16 @@
       "id": "IMPROVEMENT_LO_I_KALO"
     },
     {
+      "id": "IMPROVEMENT_MAWASKAWE_SKOTE"
+    },
+    {
       "id": "IMPROVEMENT_MEGALITH"
+    },
+    {
+      "id": "IMPROVEMENT_MINE"
+    },
+    {
+      "id": "IMPROVEMENT_MINE_RESOURCE"
     },
     {
       "id": "IMPROVEMENT_MING_GREAT_WALL"
@@ -412,6 +457,9 @@
       "id": "IMPROVEMENT_OBSHCHINA"
     },
     {
+      "id": "IMPROVEMENT_OIL_RIG"
+    },
+    {
       "id": "IMPROVEMENT_OPEN_AIR_MUSEUM"
     },
     {
@@ -421,16 +469,34 @@
       "id": "IMPROVEMENT_PAIRIDAEZA"
     },
     {
+      "id": "IMPROVEMENT_PASTURE"
+    },
+    {
       "id": "IMPROVEMENT_PLANTATION"
     },
     {
+      "id": "IMPROVEMENT_PLAZA"
+    },
+    {
       "id": "IMPROVEMENT_POTKOP"
+    },
+    {
+      "id": "IMPROVEMENT_QUARRY"
+    },
+    {
+      "id": "IMPROVEMENT_REPAIR_ALL"
+    },
+    {
+      "id": "IMPROVEMENT_RICH"
     },
     {
       "id": "IMPROVEMENT_RUINS"
     },
     {
       "id": "IMPROVEMENT_SAQIYA"
+    },
+    {
+      "id": "IMPROVEMENT_SHIPWRECK"
     },
     {
       "id": "IMPROVEMENT_SHORE_BATTERY"
@@ -445,6 +511,9 @@
       "id": "IMPROVEMENT_STONE_HEAD"
     },
     {
+      "id": "IMPROVEMENT_TENTS"
+    },
+    {
       "id": "IMPROVEMENT_TERRACE_FARM"
     },
     {
@@ -454,7 +523,19 @@
       "id": "IMPROVEMENT_TRADING_FACTORY"
     },
     {
+      "id": "IMPROVEMENT_VILLAGE"
+    },
+    {
       "id": "IMPROVEMENT_WATER_PUPPET_THEATER"
+    },
+    {
+      "id": "IMPROVEMENT_WOODCUTTER"
+    },
+    {
+      "id": "IMPROVEMENT_WOODCUTTER_RESOURCE"
+    },
+    {
+      "id": "IMPROVEMENT_WRECKAGE"
     },
     {
       "id": "IMPROVEMENT_ZIGGURAT"
@@ -520,7 +601,13 @@
       "id": "WONDER_GATE_OF_ALL_NATIONS"
     },
     {
+      "id": "WONDER_GRAND_BAZAAR"
+    },
+    {
       "id": "WONDER_GREAT_LIBRARY"
+    },
+    {
+      "id": "WONDER_GREAT_LIGHTHOUSE"
     },
     {
       "id": "WONDER_GREAT_STELE"
@@ -550,6 +637,9 @@
       "id": "WONDER_MANHATTAN_PROJECT"
     },
     {
+      "id": "WONDER_MAUSOLEUM_AT_HALICARNASSUS"
+    },
+    {
       "id": "WONDER_MAUSOLEUM_OF_THEODORIC"
     },
     {
@@ -563,6 +653,9 @@
     },
     {
       "id": "WONDER_NALANDA"
+    },
+    {
+      "id": "WONDER_NAN_MADOL"
     },
     {
       "id": "WONDER_NOTRE_DAME"
@@ -598,6 +691,9 @@
       "id": "WONDER_SANCHI_STUPA"
     },
     {
+      "id": "WONDER_SERPENT_MOUND"
+    },
+    {
       "id": "WONDER_SHWEDAGON_ZEDI_DAW"
     },
     {
@@ -617,6 +713,12 @@
     },
     {
       "id": "WONDER_TOMB_OF_ASKIA"
+    },
+    {
+      "id": "WONDER_UBUDIAH_MOSQUE"
+    },
+    {
+      "id": "WONDER_WAT_XIENG_THONG"
     },
     {
       "id": "WONDER_WEIYANG_PALACE"

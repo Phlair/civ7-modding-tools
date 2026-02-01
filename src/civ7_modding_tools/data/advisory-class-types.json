@@ -1,6 +1,9 @@
 {
   "values": [
     {
+      "id": "ADVISORY_CLASS_CITY_EXPANSION"
+    },
+    {
       "id": "ADVISORY_CLASS_CULTURE"
     },
     {
@@ -23,6 +26,9 @@
     },
     {
       "id": "ADVISORY_CLASS_INFRASTRUCTURE"
+    },
+    {
+      "id": "ADVISORY_CLASS_LAND"
     },
     {
       "id": "ADVISORY_CLASS_MILITARY"

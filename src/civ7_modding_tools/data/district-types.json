@@ -10,6 +10,9 @@
       "id": "DISTRICT_URBAN"
     },
     {
+      "id": "DISTRICT_WILDERNESS"
+    },
+    {
       "id": "DISTRICT_WONDER"
     }
   ]

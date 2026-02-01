@@ -339,7 +339,7 @@ async def export_built_mod(data: dict[str, Any]) -> StreamingResponse:
         with open(yaml_file, "w", encoding="utf-8") as f:
             yaml.dump(data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
 
-        # Convert YAML to Python
+        # Convert YAML to Python (YamlToPyConverter handles all preprocessing)
         converter = YamlToPyConverter(data)
         python_code = converter.convert()
 
@@ -552,7 +552,7 @@ async def export_built_mod_to_disk(request: ExportToDiskRequest) -> dict[str, st
         with open(yaml_file, "w", encoding="utf-8") as f:
             yaml.dump(request.data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
 
-        # Convert YAML to Python
+        # Convert YAML to Python (YamlToPyConverter handles all preprocessing)
         converter = YamlToPyConverter(request.data)
         python_code = converter.convert()
 

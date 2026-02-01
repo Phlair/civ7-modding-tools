@@ -1,3 +1,25 @@
 {
-  "values": []
+  "values": [
+    {
+      "id": "TRAIT_LEADER_ATTRIBUTE_CULTURAL"
+    },
+    {
+      "id": "TRAIT_LEADER_ATTRIBUTE_ECONOMIC"
+    },
+    {
+      "id": "TRAIT_LEADER_ATTRIBUTE_EXPANSIONIST"
+    },
+    {
+      "id": "TRAIT_LEADER_ATTRIBUTE_MILITARISTIC"
+    },
+    {
+      "id": "TRAIT_LEADER_ATTRIBUTE_POLITICAL"
+    },
+    {
+      "id": "TRAIT_LEADER_ATTRIBUTE_SCIENTIFIC"
+    },
+    {
+      "id": "TRAIT_LEADER_ATTRIBUTE_WILDCARD"
+    }
+  ]
 }

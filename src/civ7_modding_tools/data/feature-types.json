@@ -4,6 +4,12 @@
       "id": "FEATURE_ATOLL"
     },
     {
+      "id": "FEATURE_BARRIER_REEF"
+    },
+    {
+      "id": "FEATURE_BERMUDA_TRIANGLE"
+    },
+    {
       "id": "FEATURE_COLD_REEF"
     },
     {
@@ -16,19 +22,52 @@
       "id": "FEATURE_FOREST"
     },
     {
+      "id": "FEATURE_GRAND_CANYON"
+    },
+    {
       "id": "FEATURE_GRASSLAND_FLOODPLAIN_MINOR"
     },
     {
       "id": "FEATURE_GRASSLAND_FLOODPLAIN_NAVIGABLE"
     },
     {
+      "id": "FEATURE_GREAT_BLUE_HOLE"
+    },
+    {
+      "id": "FEATURE_GULLFOSS"
+    },
+    {
+      "id": "FEATURE_HOERIKWAGGO"
+    },
+    {
+      "id": "FEATURE_ICE"
+    },
+    {
+      "id": "FEATURE_IGUAZU_FALLS"
+    },
+    {
+      "id": "FEATURE_KILIMANJARO"
+    },
+    {
       "id": "FEATURE_LOTUS"
+    },
+    {
+      "id": "FEATURE_MACHAPUCHARE"
     },
     {
       "id": "FEATURE_MANGROVE"
     },
     {
+      "id": "FEATURE_MAPU_A_VAEA_BLOWHOLES"
+    },
+    {
       "id": "FEATURE_MARSH"
+    },
+    {
+      "id": "FEATURE_MOUNT_EVEREST"
+    },
+    {
+      "id": "FEATURE_MOUNT_FUJI"
     },
     {
       "id": "FEATURE_OASIS"
@@ -43,6 +82,9 @@
       "id": "FEATURE_RAINFOREST"
     },
     {
+      "id": "FEATURE_REDWOOD_FOREST"
+    },
+    {
       "id": "FEATURE_REEF"
     },
     {
@@ -53,6 +95,12 @@
     },
     {
       "id": "FEATURE_TAIGA"
+    },
+    {
+      "id": "FEATURE_THERA"
+    },
+    {
+      "id": "FEATURE_TORRES_DEL_PAINE"
     },
     {
       "id": "FEATURE_TROPICAL_FLOODPLAIN_MINOR"
@@ -70,7 +118,25 @@
       "id": "FEATURE_TUNDRA_FLOODPLAIN_NAVIGABLE"
     },
     {
+      "id": "FEATURE_ULURU"
+    },
+    {
+      "id": "FEATURE_VALLEY_OF_FLOWERS"
+    },
+    {
+      "id": "FEATURE_VIHREN"
+    },
+    {
+      "id": "FEATURE_VINICUNCA"
+    },
+    {
+      "id": "FEATURE_VOLCANO"
+    },
+    {
       "id": "FEATURE_WATERING_HOLE"
+    },
+    {
+      "id": "FEATURE_ZHANGJIAJIE"
     }
   ]
 }

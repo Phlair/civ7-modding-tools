@@ -13,7 +13,43 @@
       "id": "EX_HANDICAP_TOWN_WALLS"
     },
     {
+      "id": "HANDICAP_ARMY_XP"
+    },
+    {
+      "id": "HANDICAP_BUILDINGS"
+    },
+    {
+      "id": "HANDICAP_CIVIC_COST"
+    },
+    {
+      "id": "HANDICAP_COMBAT"
+    },
+    {
       "id": "HANDICAP_CRISIS_INVASION_UNITS"
+    },
+    {
+      "id": "HANDICAP_CULTURE"
+    },
+    {
+      "id": "HANDICAP_GOLD"
+    },
+    {
+      "id": "HANDICAP_HAPPINESS"
+    },
+    {
+      "id": "HANDICAP_INDEPENDENTS_COMBAT"
+    },
+    {
+      "id": "HANDICAP_SCIENCE"
+    },
+    {
+      "id": "HANDICAP_TECH_COST"
+    },
+    {
+      "id": "HANDICAP_UNITS"
+    },
+    {
+      "id": "HANDICAP_WATER_DAMAGE"
     },
     {
       "id": "MO_HANDICAP_CITY_WALLS"

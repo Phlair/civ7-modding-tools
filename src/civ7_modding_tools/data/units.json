@@ -27,6 +27,12 @@
       "replaces": "UNIT_INFANTRY_COMPANY"
     },
     {
+      "id": "UNIT_AERODROME_COMMANDER",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
       "id": "UNIT_ALEXANDER_VON_HUMBOLDT",
       "ages": [],
       "unlocked_by": [],
@@ -119,6 +125,16 @@
       "replaces": null
     },
     {
+      "id": "UNIT_ARMY_COMMANDER",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_AQ_MAIN_DISCIPLINE"
+      ],
+      "replaces": null
+    },
+    {
       "id": "UNIT_ARQUEBUSIER",
       "ages": [
         "AGE_EXPLORATION"
@@ -146,6 +162,18 @@
       "unlocked_by": [
         "NODE_TECH_MO_ARMOR"
       ],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_AUDIO_SANDBOX_MELEE",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_AUDIO_SANDBOX_RANGED",
+      "ages": [],
+      "unlocked_by": [],
       "replaces": null
     },
     {
@@ -297,6 +325,16 @@
       ],
       "unlocked_by": [
         "NODE_TECH_EX_SHIPBUILDING"
+      ],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_CARRIER_COMMANDER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_MOBILIZATION"
       ],
       "replaces": null
     },
@@ -669,7 +707,23 @@
       "replaces": null
     },
     {
+      "id": "UNIT_FLEET_COMMANDER",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_ASTRONOMY"
+      ],
+      "replaces": null
+    },
+    {
       "id": "UNIT_FOEDERATI",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_FOUNDER",
       "ages": [],
       "unlocked_by": [],
       "replaces": null
@@ -779,6 +833,12 @@
       "replaces": "UNIT_PIKEMAN"
     },
     {
+      "id": "UNIT_GREAT_MERCHANT",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
       "id": "UNIT_GURKHA",
       "ages": [],
       "unlocked_by": [],
@@ -879,6 +939,12 @@
       "replaces": null
     },
     {
+      "id": "UNIT_HOCEEPKILENI",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": "UNIT_MISSIONARY"
+    },
+    {
       "id": "UNIT_HOPLITE",
       "ages": [],
       "unlocked_by": [],
@@ -959,6 +1025,26 @@
         "NODE_TECH_MO_ARMOR"
       ],
       "replaces": null
+    },
+    {
+      "id": "UNIT_HWARANG",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_ANIMAL_HUSBANDRY"
+      ],
+      "replaces": "UNIT_SLINGER"
+    },
+    {
+      "id": "UNIT_HWARANG_2",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_AQ_BRONZE_WORKING"
+      ],
+      "replaces": "UNIT_ARCHER"
     },
     {
       "id": "UNIT_IMMORTAL",
@@ -1201,6 +1287,32 @@
         "NODE_TECH_EX_GUNPOWDER"
       ],
       "replaces": "UNIT_ARQUEBUSIER"
+    },
+    {
+      "id": "UNIT_KISPOKO_NENA_TO",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": "UNIT_SWORDSMAN"
+    },
+    {
+      "id": "UNIT_KISPOKO_NENA_TO_2",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_HERALDRY"
+      ],
+      "replaces": "UNIT_MAN_AT_ARMS"
+    },
+    {
+      "id": "UNIT_KISPOKO_NENA_TO_3",
+      "ages": [
+        "AGE_EXPLORATION"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_EX_METAL_CASTING"
+      ],
+      "replaces": "UNIT_PIKEMAN"
     },
     {
       "id": "UNIT_KNIGHT",
@@ -1467,6 +1579,22 @@
         "NODE_TECH_AQ_IRON_WORKING"
       ],
       "replaces": "UNIT_PHALANX"
+    },
+    {
+      "id": "UNIT_MERCHANT",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_AQ_MAIN_CODE_OF_LAWS"
+      ],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_MIGRANT",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_MIKASA",
@@ -1845,6 +1973,29 @@
       "replaces": null
     },
     {
+      "id": "UNIT_SANDBOX",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_SANGDAEDEUNG",
+      "ages": [
+        "AGE_ANTIQUITY"
+      ],
+      "unlocked_by": [
+        "NODE_CIVIC_AQ_MAIN_CODE_OF_LAWS",
+        "NODE_CIVIC_AQ_SILLA_SEONGGOL"
+      ],
+      "replaces": "UNIT_MERCHANT"
+    },
+    {
+      "id": "UNIT_SCOUT",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
       "id": "UNIT_SEPOY",
       "ages": [],
       "unlocked_by": [],
@@ -1869,6 +2020,12 @@
         "NODE_TECH_MO_ARMOR"
       ],
       "replaces": "UNIT_INFANTRY_COMPANY"
+    },
+    {
+      "id": "UNIT_SETTLER",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
     },
     {
       "id": "UNIT_SHERPA",
@@ -2023,6 +2180,16 @@
       ],
       "unlocked_by": [
         "NODE_TECH_AQ_BRONZE_WORKING"
+      ],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_SQUADRON_COMMANDER",
+      "ages": [
+        "AGE_MODERN"
+      ],
+      "unlocked_by": [
+        "NODE_TECH_MO_FLIGHT"
       ],
       "replaces": null
     },
@@ -2183,7 +2350,25 @@
       "replaces": null
     },
     {
+      "id": "UNIT_TRADE_CARAVAN",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_TRADE_SHIP",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
       "id": "UNIT_TREASURE_FLEET",
+      "ages": [],
+      "unlocked_by": [],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_TREASURE_FLEET_SMALL",
       "ages": [],
       "unlocked_by": [],
       "replaces": null
@@ -2206,6 +2391,12 @@
       "unlocked_by": [
         "NODE_TECH_MO_FLIGHT"
       ],
+      "replaces": null
+    },
+    {
+      "id": "UNIT_TRUNG_NHI",
+      "ages": [],
+      "unlocked_by": [],
       "replaces": null
     },
     {

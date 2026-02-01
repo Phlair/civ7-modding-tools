@@ -473,6 +473,9 @@ class TraditionNode(BaseNode):
     tradition_type: Optional[str] = None
     name: Optional[str] = None
     description: Optional[str] = None
+    age_type: Optional[str] = None
+    trait_type: Optional[str] = None
+    is_crisis: Optional[bool] = None
     loyalty_per_turn: Optional[int] = None
 
 

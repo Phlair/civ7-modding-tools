@@ -88,6 +88,7 @@ from civ7_modding_tools.nodes.database import (
     ProgressionTreeAdvisoryNode,
     ProgressionTreeNodeUnlockNode,
     ProgressionTreeQuoteNode,
+    TypeQuoteNode,
     TraditionModifierNode,
     UnitAbilityNode,
     UnitClassAbilityNode,
@@ -180,6 +181,7 @@ __all__ = [
     "ProgressionTreeAdvisoryNode",
     "ProgressionTreeNodeUnlockNode",
     "ProgressionTreeQuoteNode",
+    "TypeQuoteNode",
     # Types/Tags
     "KindNode",
     "TypeNode",
