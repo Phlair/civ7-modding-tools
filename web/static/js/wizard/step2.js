@@ -214,7 +214,16 @@ export function renderWizardStep2(container) {
                 </div>
                 
                 <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
-                    <h4 class="font-semibold text-slate-200 mb-4">City Names</h4>
+                    <h4 class="font-semibold text-slate-200 mb-4">
+                        City Names
+                        <button 
+                            onclick="window.generateCityNames()"
+                            class="ml-2 px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs font-medium"
+                            title="Generate culturally appropriate city names using AI"
+                        >
+                            ✨ AI Generate
+                        </button>
+                    </h4>
                     <div id="wizard-cities-container" class="space-y-2 max-h-48 overflow-y-auto">
                         ${(wizardData.civilization?.localizations?.[0]?.city_names || []).map((city, idx) => `
                             <div class="flex items-center gap-2">
@@ -1333,6 +1342,52 @@ export async function generateCitizenNames() {
     }
 }
 
+export async function generateCityNames() {
+    const civName = wizardData.civilization?.localizations?.[0]?.name || 'Generic';
+    const adjective = wizardData.civilization?.localizations?.[0]?.adjective || civName;
+    const settings = getSettings();
+    
+    if (!settings.openai?.apiKey) {
+        showToast('Please set your OpenAI API key in Settings first', 'error');
+        return;
+    }
+    
+    const dismissLoading = showLoadingToast('Generating city names using AI...');
+    
+    try {
+        const response = await fetch('/api/cities/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                civilization_name: civName,
+                adjective: adjective,
+                count: 16,
+                api_key: settings.openai.apiKey
+            })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to generate city names');
+        }
+        
+        const data = await response.json();
+        
+        if (!wizardData.civilization) wizardData.civilization = {};
+        if (!wizardData.civilization.localizations) wizardData.civilization.localizations = [{}];
+        wizardData.civilization.localizations[0].city_names = data.cities || [];
+        
+        rerenderStep2();
+        markDirty();
+        dismissLoading();
+        showToast(`✅ Generated ${data.cities.length} city names`, 'success');
+    } catch (error) {
+        console.error('Failed to generate city names:', error);
+        dismissLoading();
+        showToast(`❌ ${error.message || 'Failed to generate city names. Check your OpenAI API key in settings.'}`, 'error');
+    }
+}
+
 export async function generateNamedPlaces(placeType) {
     const civName = wizardData.civilization?.localizations?.[0]?.name || 'Generic';
     const adjective = wizardData.civilization?.localizations?.[0]?.adjective || civName;
@@ -1354,7 +1409,7 @@ export async function generateNamedPlaces(placeType) {
                 civilization_name: civName,
                 adjective: adjective,
                 place_type: placeType,
-                count: 5,
+                count: 8,
                 api_key: settings.openai.apiKey
             })
         });
@@ -1551,6 +1606,7 @@ if (typeof window !== 'undefined') {
     window.updateWizardCitizenNameAt = updateWizardCitizenNameAt;
     window.removeWizardCitizenName = removeWizardCitizenName;
     window.generateCitizenNames = generateCitizenNames;
+    window.generateCityNames = generateCityNames;
     // Favored wonders
     window.addWizardFavoredWonder = addWizardFavoredWonder;
     window.autoFillFavoredWonder = autoFillFavoredWonder;

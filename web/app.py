@@ -1161,12 +1161,86 @@ Generate the names now:"""
         )
 
 
+class CityNamesGenerateRequest(BaseModel):
+    """Request to generate city names using OpenAI."""
+    civilization_name: str
+    adjective: str
+    count: int = 16
+    api_key: str
+
+
+@app.post("/api/cities/generate")
+async def generate_city_names(request: CityNamesGenerateRequest) -> dict[str, list[str]]:
+    """
+    Generate culturally appropriate city names using OpenAI GPT.
+    
+    Args:
+        request: City names generation parameters
+        
+    Returns:
+        List of city names
+    """
+    try:
+        from openai import OpenAI
+        
+        # Initialize OpenAI client
+        client = OpenAI(api_key=request.api_key)
+        
+        prompt = f"""Generate {request.count} culturally appropriate city names for the {request.civilization_name} civilization.
+Requirements:
+- Names should be historically accurate or inspired by actual {request.adjective} cities
+- Use authentic {request.adjective} naming conventions and language
+- Mix well-known historical cities and lesser-known regional cities for variety
+- They should be in order from major cities to smaller towns
+- Avoid generic or Western names unless culturally appropriate
+- Return ONLY a JSON object with one array: "cities"
+- The array should contain exactly {request.count} strings (just the city names)
+- Example format: {{"cities": ["CityName1", "CityName2", "CityName3"]}}
+
+Generate the city names now:"""
+        
+        response = client.chat.completions.create(
+            model="gpt-5-nano",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a historical geographer specialising in city names. Return ONLY valid JSON with no additional text."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+        
+        # Parse JSON response
+        content = response.choices[0].message.content
+        # Strip markdown code fences if present
+        if content.startswith("```"):
+            content = content.split("\n", 1)[1].rsplit("\n", 1)[0]
+            if content.startswith("json"):
+                content = content[4:].strip()
+        
+        import json
+        cities_data = json.loads(content)
+        
+        return {
+            "cities": cities_data.get("cities", [])
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate city names: {str(e)}"
+        )
+
+
 class NamedPlacesGenerateRequest(BaseModel):
     """Request to generate named places using OpenAI."""
     civilization_name: str
     adjective: str
     place_type: str  # 'rivers' or 'volcanoes'
-    count: int = 5
+    count: int = 8
     api_key: str
 
 

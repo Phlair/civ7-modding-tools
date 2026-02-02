@@ -998,18 +998,6 @@ class CivilizationBuilder(BaseBuilder):
                     text=tooltip_text
                 ))
         
-        # Civilization Favored Wonders Localizations
-        for wonder_config in self.civilization_favored_wonders:
-            favored_wonder_name_key = wonder_config.get('favored_wonder_name')
-            favored_wonder_type = wonder_config.get('favored_wonder_type', '')
-            if favored_wonder_name_key:
-                # Extract wonder name from WONDER_XXX format for display
-                wonder_display_name = favored_wonder_type.replace('WONDER_', '').replace('_', ' ').title()
-                localization_rows.append(EnglishTextNode(
-                    tag=favored_wonder_name_key,
-                    text=wonder_display_name
-                ))
-        
         if localization_rows:
             self._localizations.english_text = localization_rows
         
